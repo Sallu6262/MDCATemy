@@ -1,0 +1,116 @@
+.landing-page {
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+.landing-page .btn-primary {
+  background: #ffc600;
+  color: #181a18;
+  font-weight: 900;
+  padding: 0.6rem 1.5rem;
+  border-radius: 0.75rem;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  display: inline-block;
+  text-decoration: none;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.landing-page .btn-primary:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 24px rgba(255, 198, 0, 0.45);
+}
+
+.landing-page .divider-yellow {
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgba(255, 198, 0, 0.4),
+    transparent
+  );
+}
+
+@keyframes landing-pulse-glow {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 198, 0, 0);
+  }
+  50% {
+    box-shadow: 0 0 24px 8px rgba(255, 198, 0, 0.25);
+  }
+}
+
+.landing-page .animate-pulse-glow {
+  animation: landing-pulse-glow 2s ease-in-out infinite;
+}
+
+@keyframes landing-bounce-y {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(8px);
+  }
+}
+
+.landing-page .animate-bounce-y {
+  animation: landing-bounce-y 1.5s ease-in-out infinite;
+}
+
+.landing-page .card-hover {
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.landing-page .card-hover:hover {
+  transform: translateY(-6px);
+  box-shadow:
+    0 20px 50px rgba(0, 0, 0, 0.08),
+    0 0 20px rgba(255, 198, 0, 0.1);
+}
+
+.landing-page details summary {
+  list-style: none;
+  cursor: pointer;
+}
+
+.landing-page details summary::-webkit-details-marker {
+  display: none;
+}
+
+.landing-page details .faq-plus {
+  display: flex;
+}
+
+.landing-page details .faq-minus {
+  display: none;
+}
+
+.landing-page details[open] .faq-plus {
+  display: none;
+}
+
+.landing-page details[open] .faq-minus {
+  display: flex;
+}
+
+.landing-page details[open] summary {
+  background: rgba(255, 198, 0, 0.04);
+}
+
+.landing-page details[open] {
+  border: 1px solid rgba(255, 198, 0, 0.3) !important;
+  box-shadow: inset 3px 0 0 #ffc600;
+}
+
+.landing-page details[open] .faq-question {
+  color: #ffc600 !important;
+}
+
+.landing-page .hero-bg {
+  background-size: cover;
+  background-position: center 30%;
+}
