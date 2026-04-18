@@ -3,21 +3,21 @@ import { Link } from 'react-router-dom'
 
 const NotFoundPage = () => {
   return (
-    <section class="min-h-screen antialiased bg-[#181A18] text-white font-[Inter,sans-serif] flex flex-col items-center justify-center px-6 py-16">
-        <div class="max-w-lg w-full text-center">
-        <p class="text-[#FFC600] text-sm font-bold uppercase tracking-[0.2em] mb-4">Error 404</p>
-        <h1 class="text-5xl sm:text-6xl font-black tracking-tight text-white mb-4">Page not found</h1>
-        <p class="text-white/60 text-base sm:text-lg leading-relaxed mb-10">
+    <section className="min-h-screen antialiased bg-[#121212] text-white font-[Inter,sans-serif] flex flex-col items-center justify-center px-6 py-16">
+        <div className="max-w-lg w-full text-center">
+        <p className="text-[#FFC600] text-sm font-bold uppercase tracking-[0.2em] mb-4">Error 404</p>
+        <h1 className="text-5xl sm:text-6xl font-black tracking-tight text-white mb-4">Page not found</h1>
+        <p className="text-white/60 text-base sm:text-lg leading-relaxed mb-10">
             The page you are looking for does not exist or has been moved. Head back to the home page to continue.
         </p>
         <Link
             to='/'
-            class="inline-flex items-center justify-center gap-2 rounded-xl bg-[#FFC600] px-8 py-3.5 text-sm font-black uppercase tracking-wider text-[#181A18] no-underline transition hover:opacity-90 hover:shadow-[0_8px_32px_rgba(255,198,0,0.35)]"
+            className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#FFC600] px-8 py-3.5 text-sm font-black uppercase tracking-wider text-[#181A18] no-underline transition hover:opacity-90 hover:shadow-[0_8px_32px_rgba(255,198,0,0.35)]"
         >
             Back to home
         </Link>
         </div>
-        <p class="mt-16 text-xs text-white/25">MDCATEMY</p>
+        <p className="mt-16 text-xs text-white/25">MDCATEMY</p>
     </section>
   )
 }

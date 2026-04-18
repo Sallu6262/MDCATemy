@@ -3,7 +3,7 @@ import logoImg from "../assets/mdcat.svg"
 
 const Navbar = ({isLoggedIn}) => {
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50" style={{ background: "rgba(24,26,24,0.85)", backdropFilter: "blur(24px) saturate(180%)", borderBottom: "1px solid rgba(255,255,255,0.08)", boxShadow: "0 4px 24px rgba(0,0,0,0.25)" }}>
+    <nav className="sticky top-0 left-0 right-0 z-50" style={{ background: "rgba(18,18,18,0.88)", backdropFilter: "blur(24px) saturate(180%)", borderBottom: "1px solid rgba(255,255,255,0.08)", boxShadow: "0 4px 24px rgba(0,0,0,0.25)" }}>
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <div className="flex items-center justify-between" style={{ height: "72px" }}>
           <Link onClick={() => window.scrollTo({top: 0, behavior: 'smooth'})} className="flex h-full items-center flex-shrink-0">
