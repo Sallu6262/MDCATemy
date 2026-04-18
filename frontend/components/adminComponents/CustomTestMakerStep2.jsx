@@ -7,7 +7,6 @@ const CustomTestMakerStep2 = () => {
                 <header className="mb-8">
                 <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#FFC600]">Custom test maker</p>
                 <h1 className="mt-2 text-2xl font-black tracking-tight sm:text-3xl">Step 2 — New test details</h1>
-                <p className="mt-2 text-sm text-white/55">Upload a CSV blueprint and set schedule metadata (static form — no submit).</p>
                 <div className="mt-4 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 text-xs text-white/50">
                     <span className="font-semibold text-[#FFC600]">2</span> / 4
                 </div>
@@ -15,17 +14,15 @@ const CustomTestMakerStep2 = () => {
 
                 <section className="flex-1 rounded-2xl border border-white/10 bg-[#1A1A1A]/90 p-5 shadow-[0_24px_80px_rgba(0,0,0,0.45)] sm:p-8">
                 <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[#FFC600]">Test configuration</p>
-                <p className="mt-1 text-sm text-white/45">Fields map to your API: file, duration, count, date, name.</p>
-
                 <form className="mt-8 space-y-6" action="#" method="get">
                     <div>
-                    <label className="mb-2 block text-xs font-semibold uppercase tracking-wide text-white/50" htmlFor="csv-file">CSV file</label>
+                    <label className="mb-2 block text-xs font-semibold uppercase tracking-wide text-white/50" htmlFor="excel-file">Excel file — containing emails for allowed users</label>
                     <div className="rounded-xl border border-dashed border-white/15 bg-[#121212]/80 p-6 text-center">
-                        <input id="csv-file" name="csv" type="file" accept=".csv,text/csv" className="sr-only" />
-                        <label htmlFor="csv-file" className="inline-flex cursor-pointer items-center justify-center rounded-xl bg-[#FFC600] px-6 py-3 text-sm font-black uppercase tracking-wider text-[#181A18] shadow-[0_8px_28px_rgba(255,198,0,0.2)] transition hover:brightness-105">
-                        Upload CSV file
+                        <input id="excel-file" name="excel" type="file" accept=".xlsx,.xls,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel" className="sr-only" />
+                        <label htmlFor="excel-file" className="inline-flex cursor-pointer items-center justify-center rounded-xl bg-[#FFC600] px-6 py-3 text-sm font-black uppercase tracking-wider text-[#181A18] shadow-[0_8px_28px_rgba(255,198,0,0.2)] transition hover:brightness-105">
+                        Upload Excel file
                         </label>
-                        <p className="mt-3 text-xs text-white/40">Accepts .csv · Max size enforced on server</p>
+                        <p className="mt-3 text-xs text-white/40">Accepts .xlsx · Max size enforced on server</p>
                     </div>
                     </div>
 

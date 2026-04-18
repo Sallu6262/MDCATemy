@@ -23,7 +23,9 @@ const CustomTestMakerStep1 = ({nextStage}) => {
                     </div>
 
                     <ul className="space-y-3">
-                        <ExistingTestCard />
+                        <li className="rounded-xl border border-white/10 bg-[#121212]/80 p-4 transition hover:border-white/15">
+                            <ExistingTestCard />
+                        </li>
                     </ul>
 
                     <div className="mt-8 flex flex-col gap-3 border-t border-white/[0.06] pt-6 sm:flex-row sm:justify-end sm:gap-4">
