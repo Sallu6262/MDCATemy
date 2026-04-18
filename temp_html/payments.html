@@ -91,21 +91,23 @@
                 <img
                   src="https://images.unsplash.com/photo-1556740738-b6a63e27c4df?auto=format&fit=crop&w=1200&q=80"
                   alt="Payment proof"
-                  class="h-[340px] w-full object-cover"
+                  class="relative z-0 h-[340px] w-full object-cover"
                 />
 
                 <button
                   type="button"
-                  class="absolute left-3 top-1/2 -translate-y-1/2 rounded-lg border border-white/20 bg-black/45 px-3 py-2 text-sm font-bold text-white/90 transition hover:bg-black/60"
+                  aria-label="Previous image"
+                  class="absolute left-3 top-1/2 z-20 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-[#FFC600]/40 bg-[#FFC600] text-lg font-black text-[#181A18] shadow-[0_8px_24px_rgba(0,0,0,0.45)] transition hover:opacity-90"
                 >
-                  ←
+                  ‹
                 </button>
 
                 <button
                   type="button"
-                  class="absolute right-3 top-1/2 -translate-y-1/2 rounded-lg border border-white/20 bg-black/45 px-3 py-2 text-sm font-bold text-white/90 transition hover:bg-black/60"
+                  aria-label="Next image"
+                  class="absolute right-3 top-1/2 z-20 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-[#FFC600]/40 bg-[#FFC600] text-lg font-black text-[#181A18] shadow-[0_8px_24px_rgba(0,0,0,0.45)] transition hover:opacity-90"
                 >
-                  →
+                  ›
                 </button>
               </div>
             </article>
