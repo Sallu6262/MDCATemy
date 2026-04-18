@@ -1,5 +1,5 @@
 import React from 'react'
-import ExistingTestCard from '../components/ExistingTestCard'
+import ExistingTestCard from './ExistingTestCard'
 
 const CustomTestMakerStep1 = ({nextStage}) => {
     return (

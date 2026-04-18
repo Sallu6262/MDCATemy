@@ -1,5 +1,5 @@
 import React from 'react'
-import MCQCard from '../components/MCQCard'
+import MCQCard from '../MCQCard'
 
 const CustomTestMakerStep4 = () => {
     return (
