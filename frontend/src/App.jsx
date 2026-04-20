@@ -31,7 +31,7 @@ const App = () => {
             <Route path='/signup' element={<SignUpPage />}/>
           </Route>
 
-          <Route path='/payment-error' element={<PaymentErrorPage />}/>
+          <Route path='/payment-status' element={<PaymentErrorPage />}/>
           <Route path='*' element={<NotFoundPage />}/>
         </Route>
 

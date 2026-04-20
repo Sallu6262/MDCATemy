@@ -3,7 +3,7 @@ import logoImg from "../assets/mdcat.svg"
 
 const Navbar = ({user, setUser}) => {
   let name = user?.name;
-  name = name?.split(' ')?.map(n => n[0].toUpperCase());
+  name = name?.split(' ')?.map(n => n[0].toUpperCase()).slice(0,2);
 
   const API_URL = import.meta.env.VITE_API_URL;
   const navigate = useNavigate();
@@ -44,7 +44,7 @@ const Navbar = ({user, setUser}) => {
           </div>
           <div className="hidden lg:flex items-center gap-2 ml-6">
             {
-              user?.payment_status === 'VERIFIED' ?
+              user?.payment_status === 'VERIFIED' || user?.role === 'ADMIN' ?
               <>
                 <button onClick={logOutWebsite} type="button" style={{cursor: 'pointer' ,border: "1px solid #FFC600", borderRadius: "8px", padding: "0.5rem 1.25rem", color: "#FFC600", fontSize: "0.875rem", fontWeight: 500, display: "inline-flex", alignItems: "center", height: "38px", textDecoration: "none" }}>Logout</button>
                 <button type="button" className="cursor-pointer inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#FFC600]/40 bg-[#FFC600]/15 text-sm font-black text-[#FFC600]" aria-label="Profile initials">
@@ -74,14 +74,20 @@ const Navbar = ({user, setUser}) => {
                 <Link to="/pricing" className="rounded-lg px-3 py-2 text-sm font-medium text-white/80 transition hover:bg-white/[0.06] hover:text-white">Pricing</Link>
                 <Link to="/contact" className="rounded-lg px-3 py-2 text-sm font-medium text-white/80 transition hover:bg-white/[0.06] hover:text-white">About Us</Link>
                 <div className="my-1 h-px bg-white/10"></div>
-                <Link to="/login" className="rounded-lg border border-[#FFC600]/60 px-3 py-2 text-center text-sm font-semibold text-[#FFC600]">Login</Link>
-                <Link to="/join-today" className="rounded-lg bg-[#FFC600] px-3 py-2 text-center text-sm font-black uppercase tracking-wide text-[#181A18]">Join today</Link>
-                <Link to="/login" className="rounded-lg border border-[#FFC600]/60 px-3 py-2 text-center text-sm font-semibold text-[#FFC600]">Login As Admin</Link>
-                <button type="button" className="rounded-lg border border-white/20 bg-white/[0.04] px-3 py-2 text-sm font-semibold text-white/80 transition hover:bg-white/[0.08] hover:text-white">Logout</button>
-                <button type="button" className="mt-1 inline-flex items-center justify-center gap-2 rounded-lg border border-[#FFC600]/40 bg-[#FFC600]/10 px-3 py-2 text-sm font-semibold text-[#FFC600]" aria-label="Profile initials">
-                  <span className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-[#FFC600]/40 bg-[#FFC600]/15 text-xs font-black">UN</span>
-                  <span>Profile</span>
-                </button>
+                {
+                  user?.payment_status === 'VERIFIED' ? 
+                  <>
+                    <button type="button" className="rounded-lg border border-white/20 bg-white/[0.04] px-3 py-2 text-sm font-semibold text-white/80 transition hover:bg-white/[0.08] hover:text-white">Logout</button>
+                    <button type="button" className="mt-1 inline-flex items-center justify-center gap-2 rounded-lg border border-[#FFC600]/40 bg-[#FFC600]/10 px-3 py-2 text-sm font-semibold text-[#FFC600]" aria-label="Profile initials">
+                      <span className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-[#FFC600]/40 bg-[#FFC600]/15 text-xs font-black">{name}</span>
+                      <span>Profile</span>
+                    </button>
+                  </> :
+                  <>
+                    <Link to="/login" className="rounded-lg border border-[#FFC600]/60 px-3 py-2 text-center text-sm font-semibold text-[#FFC600]">Login</Link>
+                    <Link to="/join-today" className="rounded-lg bg-[#FFC600] px-3 py-2 text-center text-sm font-black uppercase tracking-wide text-[#181A18]">Join today</Link>
+                  </>
+                }
               </div>
             </div>
           </details>

@@ -4,14 +4,16 @@ import { Link, useNavigate, useOutletContext } from 'react-router-dom'
 const LoginPage = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [loading, setLoading] = useState(false);
 
     const API_URL = import.meta.env.VITE_API_URL;
 
-    const {setUser} = useOutletContext();
+    const {setStudent, setAdmin} = useOutletContext();
     const navigate = useNavigate();
 
     const loginToWebsite = async (e) => {
         e.preventDefault();
+        setLoading(true);
 
         const res1 = await fetch(`${API_URL}/users/login`, {
             method: 'POST',
@@ -33,16 +35,25 @@ const LoginPage = () => {
             });
 
             const data2 = await res2.json();
-
+            
             if(data2.status === 'success'){
-                if(data2.data.payment_status === 'PENDING'){
-                    navigate('/payment-error');
+                if(data2.data.payment_status && data2.data.payment_status !== 'VERIFIED'){
+                    setStudent(data2.data);
+                    navigate('/payment-status');
                 } else {
-                    setUser(data2.data);
-                    navigate('/dashboard');
+                    if(data2.data.role === 'ADMIN'){
+                        setAdmin(data2.data);
+                        navigate('/admin');
+                    }
+                    else{
+                        setStudent(data2.data);
+                        navigate('/dashboard');
+                    }
                 }
             }
         }
+
+        setLoading(false);
     }
 
     return (
@@ -81,8 +92,8 @@ const LoginPage = () => {
                     </div>
                 </div>
 
-                <button type="submit" className="cursor-pointer flex w-full items-center justify-center gap-2 rounded-xl bg-[#FFC600] py-4 text-sm font-black uppercase tracking-wider text-[#181A18] shadow-[0_8px_32px_rgba(255,198,0,0.25)] hover:brightness-105">
-                    Login to my camp
+                <button type="submit" disabled={loading} className={`${loading ? 'cursor-not-allowed' : 'cursor-pointer'} flex w-full items-center justify-center gap-2 rounded-xl bg-[#FFC600] py-4 text-sm font-black uppercase tracking-wider text-[#181A18] shadow-[0_8px_32px_rgba(255,198,0,0.25)] hover:brightness-105`}>
+                    {loading ? 'Processing....' : 'Login to my camp'}
                     <span aria-hidden="true">→</span>
                 </button>
                 </form>

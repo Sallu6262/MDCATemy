@@ -5,30 +5,34 @@ const selectChevron =
   "url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 fill=%22none%22 viewBox=%220 0 24 24%22 stroke=%22%23FFC600%22%3E%3Cpath stroke-linecap=%22round%22 stroke-linejoin=%22round%22 stroke-width=%222%22 d=%22M19 9l-7 7-7-7%22/%3E%3C/svg%3E')"
 
 const SignUpForm = ({setStep}) => {
-    const [userName, setUserName] = useState('');
-    const [fatherName, setFatherName] = useState('');
-    const [gender, setGender] = useState('');
-    const [number, setNumber] = useState('');
-    const [province, setProvince] = useState('');
-    const [city, setCity] = useState('');
-    const [studentType, setStudentType] = useState('');
-    const [sscMarks, setSSCMarks] = useState('');
-    const [fscMarks1, setFSCMarks1] = useState('');
-    const [fscMarks2, setFSCMarks2] = useState('');
-    const [mdcatScore, setMdcatScore] = useState('');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [academicStatus, setAcademicStatus] = useState('');
-
     const studentTypeMapping = {
         'quiz-builder-student' : 'QUIZ_ONLY',
         'study-tribe-student' : 'TRIBE_MEMBER'
     }
+    const {student} = useOutletContext();
+
+    const [userName, setUserName] = useState(student?.name || '');
+    const [fatherName, setFatherName] = useState(student?.father_name || '');
+    const [gender, setGender] = useState(student?.gender || '');
+    const [number, setNumber] = useState(student?.phone || '');
+    const [province, setProvince] = useState(student?.province || '');
+    const [city, setCity] = useState(student?.city || '');
+    const [studentType, setStudentType] = useState(studentTypeMapping[student?.role] || '');
+    const [sscMarks, setSSCMarks] = useState(student?.sscMarks || '');
+    const [fscMarks1, setFSCMarks1] = useState(student?.fscMarks1 || '');
+    const [fscMarks2, setFSCMarks2] = useState(student?.fscMarks2 || '');
+    const [mdcatScore, setMdcatScore] = useState(student?.prev_mdcat_score || '');
+    const [email, setEmail] = useState(student?.email || '');
+    const [password, setPassword] = useState(student?.password || '');
+    const [academicStatus, setAcademicStatus] = useState(student?.academic_status || '');
+
+    const [loading, setLoading] = useState(false);
 
     const API_URL = import.meta.env.VITE_API_URL;
 
     const signupToWebsite = async (e) => {
         e.preventDefault();
+        setLoading(true);
 
         const res = await fetch(`${API_URL}/users/signup`,{
             method: 'POST',
@@ -58,6 +62,8 @@ const SignUpForm = ({setStep}) => {
         if(data.status === 'success'){
             setStep(prev => prev == 1 ? prev + 1 : prev);
         }
+
+        setLoading(false);
     }
 
     return (
@@ -73,6 +79,7 @@ const SignUpForm = ({setStep}) => {
                     Full name
                     </label>
                     <input
+                    readOnly={student}
                     value={userName}
                     onChange={e => setUserName(e.target.value)}
                     id="full_name"
@@ -90,6 +97,7 @@ const SignUpForm = ({setStep}) => {
                     Father name
                     </label>
                     <input
+                    readOnly={student}
                     value={fatherName}
                     onChange={e => setFatherName(e.target.value)}
                     id="father_name"
@@ -105,6 +113,7 @@ const SignUpForm = ({setStep}) => {
                     <legend className="mb-2 block text-[11px] font-bold uppercase tracking-wider text-white/45">Gender</legend>
                     <div className="flex flex-wrap gap-4">
                     <select
+                        readOnly={student}
                         value={gender}
                         onChange={e => setGender(e.target.value)}
                         id="gender"
@@ -135,6 +144,7 @@ const SignUpForm = ({setStep}) => {
                         +92
                     </span>
                     <input
+                        readOnly={student}
                         value={number}
                         onChange={e => setNumber(e.target.value)}
                         id="whatsapp_local"
@@ -157,6 +167,7 @@ const SignUpForm = ({setStep}) => {
                         Province
                     </label>
                     <select
+                        readOnly={student}
                         value={province}
                         onChange={e => setProvince(e.target.value)}
                         id="province"
@@ -196,6 +207,7 @@ const SignUpForm = ({setStep}) => {
                         City
                     </label>
                     <input
+                        readOnly={student}
                         value={city}
                         onChange={e => setCity(e.target.value)}
                         id="city"
@@ -213,6 +225,7 @@ const SignUpForm = ({setStep}) => {
                     MDCAT status
                     </label>
                     <select
+                    readOnly={student}
                     value={academicStatus}
                     onChange={e => setAcademicStatus(e.target.value)}
                     id="mdcat_status"
@@ -238,6 +251,7 @@ const SignUpForm = ({setStep}) => {
                     Student type
                     </label>
                     <select
+                    readOnly={student}
                     value={studentType}
                     onChange={e => setStudentType(e.target.value)}
                     id="student_type"
@@ -270,6 +284,7 @@ const SignUpForm = ({setStep}) => {
                         SSC marks
                     </label>
                     <input
+                        readOnly={student}
                         value={sscMarks}
                         onChange={e => setSSCMarks(e.target.value)}
                         id="ssc_year"
@@ -289,6 +304,7 @@ const SignUpForm = ({setStep}) => {
                         FSC first year marks
                     </label>
                     <input
+                        readOnly={student}
                         value={fscMarks1}
                         onChange={e => setFSCMarks1(e.target.value)}
                         id="fsc_year1"
@@ -307,6 +323,7 @@ const SignUpForm = ({setStep}) => {
                         FSC second year marks
                     </label>
                     <input
+                        readOnly={student}
                         value={fscMarks2}
                         onChange={e => setFSCMarks2(e.target.value)}
                         id="fsc_year2"
@@ -328,6 +345,7 @@ const SignUpForm = ({setStep}) => {
                         Previous MDCAT score
                         </label>
                         <input
+                        readOnly={student}
                         value={mdcatScore}
                         onChange={e => setMdcatScore(e.target.value)}
                         id="prev_mdcat"
@@ -348,6 +366,7 @@ const SignUpForm = ({setStep}) => {
                     Email address
                     </label>
                     <input
+                    readOnly={student}
                     value={email}
                     onChange={e => setEmail(e.target.value)}
                     id="email"
@@ -365,6 +384,7 @@ const SignUpForm = ({setStep}) => {
                     Password
                     </label>
                     <input
+                    readOnly={student}
                     value={password}
                     onChange={e => setPassword(e.target.value)}
                     id="password"
@@ -377,18 +397,22 @@ const SignUpForm = ({setStep}) => {
                     />
                 </div>
 
-                <div className="mt-2 grid gap-3 sm:grid-cols-2">
-                    <button
-                        type="button"
-                        className="cursor-pointer inline-flex w-full items-center justify-center rounded-xl border border-[#FFC600]/55 bg-[#FFC600]/10 py-4 text-sm font-black uppercase tracking-wider text-[#FFC600] transition hover:bg-[#FFC600]/15"
-                    >
-                        Upgrade Plan
-                    </button>
+                <div className={`mt-2 grid gap-3 ${student?.pending_status === 'VERIFIED' ? 'sm:grid-cols-2': 'sm:grid-cols-1'}`}>
+                    {
+                        student?.pending_status === 'VERIFIED' ? 
+                        <button
+                            type="button"
+                            className={`${loading ? 'cursor-not-allowed' : 'cursor-pointer'} inline-flex w-full items-center justify-center rounded-xl border border-[#FFC600]/55 bg-[#FFC600]/10 py-4 text-sm font-black uppercase tracking-wider text-[#FFC600] transition hover:bg-[#FFC600]/15`}
+                        >
+                            {loading ? 'Processing...' : 'Upgrade Plan'}
+                        </button> :
+                        ''
+                    }
                     <button
                         type="submit"
-                        className="cursor-pointer inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#FFC600] py-4 text-sm font-black uppercase tracking-wider text-[#181A18] shadow-[0_8px_32px_rgba(255,198,0,0.25)] transition hover:brightness-105"
+                        className={`${loading ? 'cursor-not-allowed' : 'cursor-pointer'} inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#FFC600] py-4 text-sm font-black uppercase tracking-wider text-[#181A18] shadow-[0_8px_32px_rgba(255,198,0,0.25)] transition hover:brightness-105`}
                     >
-                        Next
+                        {loading ? 'Processing...' : 'Next'}
                         <span aria-hidden="true">→</span>
                     </button>
                 </div>
