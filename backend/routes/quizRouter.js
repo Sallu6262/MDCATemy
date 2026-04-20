@@ -1,15 +1,11 @@
 import express from "express";
 import multer from "multer";
 import { isPaymentVerified, protect, restrictTo } from "../controllers/auth.js";
-import { submitQuiz, generateQuiz, getAllUserQuizzesNames, createQuiz, getAllUserQuizzesDetails, resumeQuiz } from "../controllers/quiz.js";
+import { submitQuiz, generateQuiz, createQuiz, getAllUserQuizzesDetails, resumeQuiz } from "../controllers/quiz.js";
 
 const router = express.Router();
 
 // Student functions
-// TODO: Implement
-
-// This function is only to help user not enter duplicate name. Althoug HE CAN!
-router.get("/names", protect, isPaymentVerified, /* restrictTo("student"), */ getAllUserQuizzesNames);
 
 // TODO: Implement
 router.get("/details", protect, isPaymentVerified, /* restrictTo("student"), */ getAllUserQuizzesDetails);
