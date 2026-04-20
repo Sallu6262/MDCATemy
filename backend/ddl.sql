@@ -19,13 +19,16 @@ CREATE TABLE topics(
     CONSTRAINT fkey_topic_chapter FOREIGN KEY (chapter_id) REFERENCES chapters(chapter_id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
+CREATE TYPE USER_ROLE AS ENUM ('ADMIN', 'QUIZ_ONLY', 'TEST_ONLY', 'DUAL_ACCESS', 'TRIBE_MEMBER');
+
 CREATE TABLE users (
     user_id SERIAL PRIMARY KEY,
     name VARCHAR(50) NOT NULL,
+    father_name VARCHAR(50) NOT NULL DEFAULT 'Father',
     age INT NOT NULL CHECK(age > 0),
     email VARCHAR(50) NOT NULL UNIQUE,
     gender CHAR(1) NOT NULL,
-    role VARCHAR(20) NOT NULL DEFAULT 'student',
+    role USER_ROLE NOT NULL DEFAULT 'DUAL_ACCESS',
     password VARCHAR(100) NOT NULL,
     password_changed_at BIGINT DEFAULT 0 CHECK(password_changed_at >= 0),
     created_at DATE NOT NULL DEFAULT CURRENT_DATE
@@ -36,10 +39,19 @@ CREATE TYPE PAYMENT_STATUS AS ENUM ('PENDING', 'VERIFIED', 'REJECTED');
 CREATE TABLE students (
     student_id INT PRIMARY KEY,
     academic_status VARCHAR(50) NOT NULL DEFAULT 'Fresher',
-    streak INT NOT NULL DEFAULT 0, 
+    streak INT NOT NULL DEFAULT 0,
     total_mistakes INT NOT NULL DEFAULT 0,
-    new_student BOOLEAN NOT NULL DEFAULT 1,
+    new_student INT NOT NULL DEFAULT 1,
+    phone VARCHAR(15) NOT NULL,
+    province VARCHAR(30) NOT NULL,
+    city VARCHAR(30) NOT NULL,
+    fsc_1_percentage NUMERIC(10,2) NOT NULL,
+    fsc_2_percentage NUMERIC(10,2) NOT NULL,
+    prev_mdcat_score INT CHECK(prev_mdcat_score >= 0),
+    coupon VARCHAR(10),
     payment_status PAYMENT_STATUS NOT NULL DEFAULT 'PENDING',
+    upgrade_status PAYMENT_STATUS,
+    upgrade_role USER_ROLE,
 
     CONSTRAINT streak_non_negative CHECK(streak >= 0),
     CONSTRAINT total_mistakes_non_negative CHECK(total_mistakes >= 0),
@@ -153,4 +165,8 @@ CREATE TABLE test_mcqs(
     CONSTRAINT pkey_testmcqs PRIMARY KEY(test_id, mcq_id),
     CONSTRAINT fkey_testmcqs_tests FOREIGN KEY (test_id) REFERENCES tests(test_id) ON UPDATE CASCADE ON DELETE CASCADE,
     CONSTRAINT fkey_testmcqs_mcqbank FOREIGN KEY (mcq_id) REFERENCES mcq_bank(mcq_id) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+CREATE TABLE coupons (
+    code VARCHAR(10) NOT NULL UNIQUE
 );

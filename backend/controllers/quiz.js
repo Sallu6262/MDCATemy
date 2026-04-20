@@ -31,15 +31,17 @@ export const generateQuiz = handleAsyncError(async (req, res, next) => {
     let query = "SELECT mcq_bank.mcq_id, topic_id, question, option_a, option_b, option_c, option_d, correct_option, explanation, difficulty, subject_name, chapter_name, (CASE WHEN bookmarks.mcq_id IS NOT NULL THEN 1 ELSE 0 END) AS is_bookmarked FROM mcq_bank INNER JOIN subjects ON subjects.subject_id = mcq_bank.subject_id INNER JOIN chapters ON chapters.chapter_id = mcq_bank.chapter_id LEFT JOIN bookmarks ON bookmarks.mcq_id=mcq_bank.mcq_id AND bookmarks.student_id=$1 WHERE difficulty='<<diff>>' AND topic_id = ANY($3) ORDER BY RANDOM() LIMIT $2";
 
     if (easy) {
-        query = query.replace("<<diff>>", "Easy")
+        query = query.replace("<<diff>>", "Easy");
         quiz.mcqs.easy = (await pool.query(query, [req.user.student_id ?? -1, easy, req.body.topic_ids])).rows;
+        query = query.replace("Easy", "<<diff>>");
     }
     if (medium) {
-        query = query.replace("Easy", "Medium")
+        query = query.replace("<<diff>>", "Medium");
         quiz.mcqs.medium = (await pool.query(query, [req.user.student_id ?? -1, medium, req.body.topic_ids])).rows;
+        query = query.replace("Medium", "<<diff>>");
     }
     if (hard) {
-        query = query.replace("<<diff>>", "Hard")
+        query = query.replace("<<diff>>", "Hard");
         quiz.mcqs.hard = (await pool.query(query, [req.user.student_id ?? -1, hard, req.body.topic_ids])).rows;
     }
 
@@ -80,4 +82,8 @@ export const submitQuiz = handleAsyncError(async (req, res, next) => {
 
 export const getAllQuizNamesForUser = handleAsyncError(async (req, res, next) => {
 
+});
+
+export const createQuiz = handleAsyncError(async (req, res, next) => {
+    
 });

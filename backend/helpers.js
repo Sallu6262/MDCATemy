@@ -12,12 +12,11 @@ export const getSlug = (str) => str.toLowerCase().split(" ").join("-");
 export const initialize = () => {
     process.env.MODE = process.env.MODE.trim();
 }
+export const formatColumnName = (name) => name.replaceAll(" ", "_").toLowerCase();
 
 export const readDataFromExcelFile = async (buffer) => {
     const data = await readSheet(Readable.from(buffer));
     const res = [];
-    
-    const formatColumnName = (name) => name.replaceAll(" ", "_").toLowerCase();
     
     data.forEach((row, index) => {
         if (index == 0) return;
@@ -46,8 +45,6 @@ export const gracefulShutdown = (server) => {
 export const convertSubjectsChapterTopicsIntoNestedObject = (data) => {
     const subjects = ["Biology", "Chemistry", "Physics", "Logical Reasoning", "English"];
     const syllabus = [];    
-
-    console.log(data);
 
     subjects.forEach(subject => {
         syllabus.push({

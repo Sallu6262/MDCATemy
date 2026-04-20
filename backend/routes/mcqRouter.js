@@ -1,5 +1,5 @@
 import express from "express";
-import { protect, restrictTo } from "../controllers/auth.js";
+import { isPaymentVerified, protect, restrictTo } from "../controllers/auth.js";
 import { getMcqDistributionPerTopic, uploadMCQs, getAllTopics } from "../controllers/mcq.js";
 import { excelFileUpload } from "../helpers.js";
 
@@ -10,8 +10,7 @@ const router = express.Router();
 router.post("/upload", protect, /* restrictTo("admin"), */ excelFileUpload.single("file"), uploadMCQs);
 
 // Both student and admin functions.
-router.get("/distribution-per-topic", protect, getMcqDistributionPerTopic);
-router.get("/topics", protect, getAllTopics);
-
+router.get("/distribution-per-topic", protect, isPaymentVerified, getMcqDistributionPerTopic);
+router.get("/topics", protect, isPaymentVerified, getAllTopics);
 
 export default router;

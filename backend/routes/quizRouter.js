@@ -1,13 +1,16 @@
 import express from "express";
 import multer from "multer";
-import { protect, restrictTo } from "../controllers/auth.js";
-import { submitQuiz, generateQuiz, getAllQuizNamesForUser } from "../controllers/quiz.js";
+import { isPaymentVerified, protect, restrictTo } from "../controllers/auth.js";
+import { submitQuiz, generateQuiz, getAllQuizNamesForUser, createQuiz } from "../controllers/quiz.js";
 
 const router = express.Router();
 
 // Student functions
-router.post("/submit", protect, /* restrictTo("student"), */ submitQuiz);
-router.post("/generate", protect, /* restrictTo("student"), */ generateQuiz);
-router.get("/names", protect, /* restrictTo("student"), */ getAllQuizNamesForUser);
+// TODO: Implement
+router.get("/names", protect, isPaymentVerified, /* restrictTo("student"), */ getAllQuizNamesForUser);
+// TODO: Implement
+router.post("/create", protect, isPaymentVerified, /* restrictTo("student"), */ createQuiz);
+router.post("/generate", protect, isPaymentVerified, /* restrictTo("student"), */ generateQuiz);
+router.post("/submit", protect, isPaymentVerified, /* restrictTo("student"), */ submitQuiz);
 
 export default router;
