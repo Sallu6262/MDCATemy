@@ -12,8 +12,11 @@ import testRouter from "./routes/testRouter.js";
 import paymentRouter from "./routes/paymentRouter.js";
 import { errorMiddleware } from "./error.js";
 import pool from "./database.js";
+import cors from "cors";
 
 const app = express();
+
+app.use(cors({origin: 'http://localhost:5174'}));
 
 // BODY PARSING
 app.set('query parser', 'extended');    
