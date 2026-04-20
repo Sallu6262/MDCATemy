@@ -44,7 +44,7 @@ const Navbar = ({user, setUser}) => {
           </div>
           <div className="hidden lg:flex items-center gap-2 ml-6">
             {
-              user ?
+              user?.payment_status === 'VERIFIED' ?
               <>
                 <button onClick={logOutWebsite} type="button" style={{cursor: 'pointer' ,border: "1px solid #FFC600", borderRadius: "8px", padding: "0.5rem 1.25rem", color: "#FFC600", fontSize: "0.875rem", fontWeight: 500, display: "inline-flex", alignItems: "center", height: "38px", textDecoration: "none" }}>Logout</button>
                 <button type="button" className="cursor-pointer inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#FFC600]/40 bg-[#FFC600]/15 text-sm font-black text-[#FFC600]" aria-label="Profile initials">

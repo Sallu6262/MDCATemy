@@ -7,7 +7,7 @@ import { useState } from "react"
 const MainLayout = () => {
   const res = useRouteLoaderData('root');
   const [analytics, setAnalytics] = useState();
-  const [user, setUser] = useState(res.status === 'success' && res.data.payment_status === 'VERIFIED' ? res.data : null);
+  const [user, setUser] = useState(res.status === 'success' ? res.data : null);
 
   return (
     <>
