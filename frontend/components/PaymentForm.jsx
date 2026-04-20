@@ -1,6 +1,8 @@
-import React from 'react'
+import React, { useState } from 'react'
 
-const PaymentForm = () => {
+const PaymentForm = ({paymentType}) => {
+    const [payment, setPayment] = useState(paymentType);
+
     return (
         <main className="mx-auto w-full max-w-3xl px-5 py-10 sm:px-8 sm:py-14">
             <section className="rounded-2xl border border-white/[0.1] bg-[#181818] p-5 shadow-[0_20px_70px_rgba(0,0,0,0.35)] sm:p-8">

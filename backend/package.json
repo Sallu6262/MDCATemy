@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "set MODE=dev && nodemon index.js",
     "prod": "set MODE=prod && nodemon index.js",
-    "rayyan-dev": "set MODE=prod && set DATABASE_USERNAME=postgres && set DATABASE_PASSWORD=database123 && nodemon index.js"
+    "rayyan-dev": "cross-env MODE=dev DATABASE_USERNAME=postgres DATABASE_PASSWORD=database123 nodemon index.js"
   },
   "author": "Umair Anwar",
   "license": "ISC",
@@ -15,6 +15,7 @@
     "argon2": "^0.44.0",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.6",
+    "cross-env": "^10.1.0",
     "dotenv": "^17.4.1",
     "express": "^5.2.1",
     "express-rate-limit": "^8.3.2",

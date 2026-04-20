@@ -75,7 +75,7 @@ const AdminPaymentsPage = () => {
                     </div>
                 </div>
 
-                <div className="mt-5 grid gap-3 sm:grid-cols-2">
+                <div className="mt-5 grid gap-3 sm:grid-cols-3">
                     <button
                     type="button"
                     className="cursor-pointer rounded-lg bg-[#FFC600] px-5 py-3 text-sm font-black uppercase tracking-wider text-[#181A18] transition hover:opacity-90"
@@ -87,6 +87,12 @@ const AdminPaymentsPage = () => {
                     className="cursor-pointer rounded-lg border border-red-400/50 bg-red-500/10 px-5 py-3 text-sm font-black uppercase tracking-wider text-red-200 transition hover:bg-red-500/20"
                     >
                     Reject
+                    </button>
+                    <button
+                    type="button"
+                    className="cursor-pointer rounded-lg bg-[#FFC600] px-5 py-3 text-sm font-black uppercase tracking-wider text-[#181A18] transition hover:opacity-90"
+                    >
+                    Upgrade Plan
                     </button>
                 </div>
                 </article>

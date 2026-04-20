@@ -1,11 +1,64 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useOutletContext } from 'react-router-dom'
 
 const selectChevron =
   "url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 fill=%22none%22 viewBox=%220 0 24 24%22 stroke=%22%23FFC600%22%3E%3Cpath stroke-linecap=%22round%22 stroke-linejoin=%22round%22 stroke-width=%222%22 d=%22M19 9l-7 7-7-7%22/%3E%3C/svg%3E')"
 
 const SignUpForm = ({setStep}) => {
-    const [mdcatStatus, setMdcatStatus] = useState('');
+    const [userName, setUserName] = useState('');
+    const [fatherName, setFatherName] = useState('');
+    const [gender, setGender] = useState('');
+    const [number, setNumber] = useState('');
+    const [province, setProvince] = useState('');
+    const [city, setCity] = useState('');
+    const [studentType, setStudentType] = useState('');
+    const [sscMarks, setSSCMarks] = useState('');
+    const [fscMarks1, setFSCMarks1] = useState('');
+    const [fscMarks2, setFSCMarks2] = useState('');
+    const [mdcatScore, setMdcatScore] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [academicStatus, setAcademicStatus] = useState('');
+
+    const studentTypeMapping = {
+        'quiz-builder-student' : 'QUIZ_ONLY',
+        'study-tribe-student' : 'TRIBE_MEMBER'
+    }
+
+    const API_URL = import.meta.env.VITE_API_URL;
+
+    const signupToWebsite = async (e) => {
+        e.preventDefault();
+
+        const res = await fetch(`${API_URL}/users/signup`,{
+            method: 'POST',
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                name: userName,
+                father_name: fatherName,
+                gender,
+                role: studentTypeMapping[studentType],
+                email,
+                password,
+                phone: `+92${number}`,
+                province,
+                city,
+                academic_status: academicStatus,
+                matric_percentage: Number(((sscMarks / 1100) * 100).toFixed(2)) || 0,
+                fsc_percentage: Number((((fscMarks2 ?? fscMarks1) / (fscMarks2 ? 1100 : 550)) * 100).toFixed(2)) || 0,
+                prev_mdcat_score: mdcatScore || 0
+            })
+        });
+
+        const data = await res.json();
+        
+        if(data.status === 'success'){
+            setStep(prev => prev == 1 ? prev + 1 : prev);
+        }
+    }
 
     return (
         <main className="flex flex-1 flex-col justify-start px-6 pb-12 pt-8 sm:px-10 sm:pt-10 lg:px-16 lg:pt-12 xl:px-24">
@@ -14,12 +67,14 @@ const SignUpForm = ({setStep}) => {
                 <h2 className="mt-2 text-3xl font-extrabold tracking-tight text-white sm:text-4xl">Warrior, enlist.</h2>
                 <p className="mt-2 text-sm text-white/50">Tell us who you are — we’ll shape your camp around your story.</p>
 
-                <form className="mt-8 space-y-5 sm:mt-10" action="#" method="post">
+                <form className="mt-8 space-y-5 sm:mt-10" onSubmit={signupToWebsite}>
                 <div>
                     <label htmlFor="full_name" className="mb-2 block text-[11px] font-bold uppercase tracking-wider text-white/45">
                     Full name
                     </label>
                     <input
+                    value={userName}
+                    onChange={e => setUserName(e.target.value)}
                     id="full_name"
                     name="full_name"
                     type="text"
@@ -35,6 +90,8 @@ const SignUpForm = ({setStep}) => {
                     Father name
                     </label>
                     <input
+                    value={fatherName}
+                    onChange={e => setFatherName(e.target.value)}
                     id="father_name"
                     name="father_name"
                     type="text"
@@ -47,33 +104,25 @@ const SignUpForm = ({setStep}) => {
                 <fieldset>
                     <legend className="mb-2 block text-[11px] font-bold uppercase tracking-wider text-white/45">Gender</legend>
                     <div className="flex flex-wrap gap-4">
-                    <label className="inline-flex cursor-pointer items-center gap-2 text-sm text-white/85">
-                        <input
-                        type="radio"
+                    <select
+                        value={gender}
+                        onChange={e => setGender(e.target.value)}
+                        id="gender"
                         name="gender"
-                        value="male"
-                        className="h-4 w-4 border-white/20 bg-[#1c1c1c] text-[#FFC600] focus:ring-[#FFC600]/40"
-                        />
-                        Male
-                    </label>
-                    <label className="inline-flex cursor-pointer items-center gap-2 text-sm text-white/85">
-                        <input
-                        type="radio"
-                        name="gender"
-                        value="female"
-                        className="h-4 w-4 border-white/20 bg-[#1c1c1c] text-[#FFC600] focus:ring-[#FFC600]/40"
-                        />
-                        Female
-                    </label>
-                    <label className="inline-flex cursor-pointer items-center gap-2 text-sm text-white/85">
-                        <input
-                        type="radio"
-                        name="gender"
-                        value="rather_not_say"
-                        className="h-4 w-4 border-white/20 bg-[#1c1c1c] text-[#FFC600] focus:ring-[#FFC600]/40"
-                        />
-                        Rather not say
-                    </label>
+                        required
+                        style={{ backgroundImage: selectChevron }}
+                        className="w-full cursor-pointer appearance-none rounded-xl border border-white/[0.1] bg-[#1c1c1c] bg-[length:1rem] bg-[right_1rem_center] bg-no-repeat px-4 py-3.5 text-sm text-white outline-none transition focus:border-[#FFC600]/50 focus:ring-2 focus:ring-[#FFC600]/20"
+                    >
+                        <option value="" disabled className="bg-[#1c1c1c]">
+                        Select Gender
+                        </option>
+                        <option value="M" className="bg-[#1c1c1c]">
+                        M
+                        </option>
+                        <option value="F" className="bg-[#1c1c1c]">
+                        F
+                        </option>
+                    </select>
                     </div>
                 </fieldset>
 
@@ -86,6 +135,8 @@ const SignUpForm = ({setStep}) => {
                         +92
                     </span>
                     <input
+                        value={number}
+                        onChange={e => setNumber(e.target.value)}
                         id="whatsapp_local"
                         name="whatsapp_local"
                         type="tel"
@@ -106,10 +157,11 @@ const SignUpForm = ({setStep}) => {
                         Province
                     </label>
                     <select
+                        value={province}
+                        onChange={e => setProvince(e.target.value)}
                         id="province"
                         name="province"
                         required
-                        defaultValue=""
                         style={{ backgroundImage: selectChevron }}
                         className="w-full cursor-pointer appearance-none rounded-xl border border-white/[0.1] bg-[#1c1c1c] bg-[length:1rem] bg-[right_1rem_center] bg-no-repeat px-4 py-3.5 text-sm text-white outline-none transition focus:border-[#FFC600]/50 focus:ring-2 focus:ring-[#FFC600]/20"
                     >
@@ -144,6 +196,8 @@ const SignUpForm = ({setStep}) => {
                         City
                     </label>
                     <input
+                        value={city}
+                        onChange={e => setCity(e.target.value)}
                         id="city"
                         name="city"
                         type="text"
@@ -159,8 +213,8 @@ const SignUpForm = ({setStep}) => {
                     MDCAT status
                     </label>
                     <select
-                    value={mdcatStatus}
-                    onChange={e => setMdcatStatus(e.target.value)}
+                    value={academicStatus}
+                    onChange={e => setAcademicStatus(e.target.value)}
                     id="mdcat_status"
                     name="mdcat_status"
                     required
@@ -184,10 +238,12 @@ const SignUpForm = ({setStep}) => {
                     Student type
                     </label>
                     <select
+                    value={studentType}
+                    onChange={e => setStudentType(e.target.value)}
                     id="student_type"
                     name="student_type"
                     required
-                    defaultValue=""
+
                     style={{ backgroundImage: selectChevron }}
                     className="w-full cursor-pointer appearance-none rounded-xl border border-white/[0.1] bg-[#1c1c1c] bg-[length:1rem] bg-[right_1rem_center] bg-no-repeat px-4 py-3.5 text-sm text-white outline-none transition focus:border-[#FFC600]/50 focus:ring-2 focus:ring-[#FFC600]/20"
                     >
@@ -210,12 +266,14 @@ const SignUpForm = ({setStep}) => {
                 </div>
 
                 <div>
-                    <label htmlFor="fsc_year2" className="mb-2 block text-[11px] font-bold uppercase tracking-wider text-white/45">
+                    <label htmlFor="ssc_year" className="mb-2 block text-[11px] font-bold uppercase tracking-wider text-white/45">
                         SSC marks
                     </label>
                     <input
-                        id="fsc_year2"
-                        name="fsc_year2"
+                        value={sscMarks}
+                        onChange={e => setSSCMarks(e.target.value)}
+                        id="ssc_year"
+                        name="ssc_year"
                         type="number"
                         min={0}
                         max={1100}
@@ -231,9 +289,12 @@ const SignUpForm = ({setStep}) => {
                         FSC first year marks
                     </label>
                     <input
+                        value={fscMarks1}
+                        onChange={e => setFSCMarks1(e.target.value)}
                         id="fsc_year1"
                         name="fsc_year1"
                         type="number"
+                        required
                         min={0}
                         max={550}
                         step={1}
@@ -246,6 +307,8 @@ const SignUpForm = ({setStep}) => {
                         FSC second year marks
                     </label>
                     <input
+                        value={fscMarks2}
+                        onChange={e => setFSCMarks2(e.target.value)}
                         id="fsc_year2"
                         name="fsc_year2"
                         type="number"
@@ -259,12 +322,14 @@ const SignUpForm = ({setStep}) => {
                 </div>
 
                 {
-                    mdcatStatus === 'repeater' ? 
+                    academicStatus === 'repeater' ? 
                     <div>
                         <label htmlFor="prev_mdcat" className="mb-2 block text-[11px] font-bold uppercase tracking-wider text-white/45">
                         Previous MDCAT score
                         </label>
                         <input
+                        value={mdcatScore}
+                        onChange={e => setMdcatScore(e.target.value)}
                         id="prev_mdcat"
                         name="prev_mdcat"
                         type="number"
@@ -283,6 +348,8 @@ const SignUpForm = ({setStep}) => {
                     Email address
                     </label>
                     <input
+                    value={email}
+                    onChange={e => setEmail(e.target.value)}
                     id="email"
                     name="email"
                     type="email"
@@ -298,6 +365,8 @@ const SignUpForm = ({setStep}) => {
                     Password
                     </label>
                     <input
+                    value={password}
+                    onChange={e => setPassword(e.target.value)}
                     id="password"
                     name="password"
                     type="password"
@@ -317,7 +386,6 @@ const SignUpForm = ({setStep}) => {
                     </button>
                     <button
                         type="submit"
-                        onClick={() => setStep(prev => prev == 1 ? prev + 1 : prev)}
                         className="cursor-pointer inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#FFC600] py-4 text-sm font-black uppercase tracking-wider text-[#181A18] shadow-[0_8px_32px_rgba(255,198,0,0.25)] transition hover:brightness-105"
                     >
                         Next

@@ -1,7 +1,24 @@
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import logoImg from "../assets/mdcat.svg"
 
-const Navbar = ({isLoggedIn}) => {
+const Navbar = ({user, setUser}) => {
+  let name = user?.name;
+  name = name?.split(' ')?.map(n => n[0].toUpperCase());
+
+  const API_URL = import.meta.env.VITE_API_URL;
+  const navigate = useNavigate();
+
+  const logOutWebsite = async () => {
+    const res = await fetch(`${API_URL}/users/logout`,{
+      credentials: 'include'
+    });
+
+    if(res?.status === 200){
+      setUser(null);
+      navigate('/');
+    }
+  }
+
   return (
     <nav className="sticky top-0 left-0 right-0 z-50" style={{ background: "rgba(18,18,18,0.88)", backdropFilter: "blur(24px) saturate(180%)", borderBottom: "1px solid rgba(255,255,255,0.08)", boxShadow: "0 4px 24px rgba(0,0,0,0.25)" }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -26,11 +43,11 @@ const Navbar = ({isLoggedIn}) => {
           </div>
           <div className="hidden lg:flex items-center gap-2 ml-6">
             {
-              isLoggedIn ?
+              user ?
               <>
-                <Link to="/login" style={{ border: "1px solid #FFC600", borderRadius: "8px", padding: "0.5rem 1.25rem", color: "#FFC600", fontSize: "0.875rem", fontWeight: 500, display: "inline-flex", alignItems: "center", height: "38px", textDecoration: "none" }}>Logout</Link>
-                <button type="button" className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#FFC600]/40 bg-[#FFC600]/15 text-sm font-black text-[#FFC600]" aria-label="Profile initials">
-                  UN
+                <button onClick={logOutWebsite} type="button" style={{cursor: 'pointer' ,border: "1px solid #FFC600", borderRadius: "8px", padding: "0.5rem 1.25rem", color: "#FFC600", fontSize: "0.875rem", fontWeight: 500, display: "inline-flex", alignItems: "center", height: "38px", textDecoration: "none" }}>Logout</button>
+                <button type="button" className="cursor-pointer inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#FFC600]/40 bg-[#FFC600]/15 text-sm font-black text-[#FFC600]" aria-label="Profile initials">
+                  {name}
                 </button>
               </>
               : 

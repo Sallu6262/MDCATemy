@@ -6,13 +6,14 @@ import { useState } from "react"
 
 const MainLayout = () => {
   const res = useRouteLoaderData('root');
-  const [user, setUser] = useState();
+  const [analytics, setAnalytics] = useState();
+  const [user, setUser] = useState(res.status === 'success' ? res.data : null);
 
   return (
     <>
-      <Navbar />
+      <Navbar user={user} setUser={setUser}/>
       <ScrollToTop />
-      <Outlet />
+      <Outlet context={{user, setUser, analytics, setAnalytics}}/>
       <Footer />
     </>
   )
