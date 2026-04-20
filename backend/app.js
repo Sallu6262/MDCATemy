@@ -16,7 +16,7 @@ import cors from "cors";
 
 const app = express();
 
-app.use(cors({origin: 'http://localhost:5174'}));
+app.use(cors({origin: 'http://localhost:5174', credentials: true}));
 
 // BODY PARSING
 app.set('query parser', 'extended');    
@@ -29,7 +29,7 @@ app.use(morgan("tiny"));
 
 // SECURITY
 // TODO: SQL INJECTION REMAINS
-app.use([xss(), helmet(), hpp({ whitelist: ['attempts', 'topic_ids'] })]);
+app.use([xss(), helmet(), hpp({ whitelist: ['attempts', 'topic_ids', 'subject_ids'] })]);
 
 // Rate limiting
 app.use(rateLimit({

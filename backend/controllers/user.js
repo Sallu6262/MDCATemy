@@ -164,7 +164,7 @@ export const getWrongMCQs = handleAsyncError(async (req, res, next) => {
         case "most_attempted":
             order_by = "attempted_mcqs.attempt_count DESC"; break;
         case "hardest":
-            order_by = "CASE mcq_bank.difficulty WHEN 'Hard' THEN 1 WHEN 'Medium' THEN 2 WHEN 'Easy' THEN 3 END ASC"; break;
+            order_by = "CASE mcq_bank.difficulty WHEN 'HARD' THEN 1 WHEN 'MEDIUM' THEN 2 WHEN 'EASY' THEN 3 END ASC"; break;
         default:
             order_by = "saved_date DESC";
     }

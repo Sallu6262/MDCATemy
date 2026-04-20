@@ -9,6 +9,10 @@ const router = express.Router();
 // Admin functions.
 router.post("/upload", protect, /* restrictTo("admin"), */ excelFileUpload.single("file"), uploadMCQs);
 
+// Student Functions.
+// I don't remember why this function was?
+// router.post("/add", protect, isPaymentVerified, getAllTopics);
+
 // Both student and admin functions.
 router.get("/distribution-per-topic", protect, isPaymentVerified, getMcqDistributionPerTopic);
 router.get("/topics", protect, isPaymentVerified, getAllTopics);

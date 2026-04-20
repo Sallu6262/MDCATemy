@@ -110,7 +110,7 @@ export const login = handleAsyncError(async (req, res, next) => {
     if (!input_email || !input_password) 
         return next(new AppError("Please provide complete credentials", 400));
 
-        const user = (await pool.query("SELECT email, password, role FROM users WHERE email=$1", [input_email])).rows[0];
+        const user = (await pool.query("SELECT name, email, password, role FROM users WHERE email=$1", [input_email])).rows[0];
 
     if (!user || !await verifyPassword(user.password, input_password))
         return next(new AppError("Incorrect email or password!", 401));
@@ -119,7 +119,10 @@ export const login = handleAsyncError(async (req, res, next) => {
     
     res.status(200).json({
         status: "success",
-        message: "Logged In Successfully!"
+        data: {
+            email: user.email,
+            role: user.role
+        }
     });
 });
 
