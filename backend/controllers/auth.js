@@ -105,15 +105,15 @@ export const signup = handleAsyncError(async (req, res, next) => {
 });
 
 export const login = handleAsyncError(async (req, res, next) => {
-    const {email: input_email, password: input_password, role} = req.body;
+    const {email: input_email, password: input_password} = req.body;
 
-    if (!input_email || !input_password || !role) 
+    if (!input_email || !input_password) 
         return next(new AppError("Please provide complete credentials", 400));
 
-    const user = (await pool.query("SELECT email, password, role FROM users WHERE email=$1", [input_email])).rows[0];
+        const user = (await pool.query("SELECT email, password, role FROM users WHERE email=$1", [input_email])).rows[0];
 
-    if (!user || !await verifyPassword(user.password, input_password) || user.role != role)
-        return next(new AppError("Incorrect email or password or role!", 401));
+    if (!user || !await verifyPassword(user.password, input_password))
+        return next(new AppError("Incorrect email or password!", 401));
 
     signTokenAndSetInCookie(user.email, user.role, res);
     

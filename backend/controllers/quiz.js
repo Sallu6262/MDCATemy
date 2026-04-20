@@ -1,5 +1,6 @@
 import { readDataFromExcelFile } from "../helpers.js";
 import { AppError, handleAsyncError } from "../error.js";
+import pool from "../database.js";
 
 export const generateQuiz = handleAsyncError(async (req, res, next) => {
     /*
@@ -80,10 +81,28 @@ export const submitQuiz = handleAsyncError(async (req, res, next) => {
     });
 });
 
-export const getAllQuizNamesForUser = handleAsyncError(async (req, res, next) => {
-
+export const getAllUserQuizzesNames = handleAsyncError(async (req, res, next) => {
+    const data = (await pool.query("SELECT quiz_name FROM quizzes WHERE student_id=$1", [req.user.student_id])).rows.map(elem => elem.quiz_name);
+    res.status(200).json({
+        status: "success",
+        data
+    });
+});
+export const getAllUserQuizzesDetails = handleAsyncError(async (req, res, next) => {
+    let data = (await pool.query("SELECT quizzes.quiz_id, quiz_name, correct_count, mcq_count, attempt_date::TEXT, quiz_mode, STRING_AGG(subject_name, ',') AS subjects FROM quizzes INNER JOIN quiz_subjects ON quizzes.quiz_id=quiz_subjects.quiz_id INNER JOIN subjects ON subjects.subject_id=quiz_subjects.subject_id WHERE student_id=$1 GROUP BY quizzes.quiz_id, quiz_name, correct_count, mcq_count, attempt_date, quiz_mode", [req.user.student_id])).rows;
+    data = data.map(elem => {
+        elem.subjects = elem.subjects.split(",");
+        return elem;
+    });
+    res.status(200).json({
+        status: "success",
+        data
+    });
 });
 
 export const createQuiz = handleAsyncError(async (req, res, next) => {
+    
+});
+export const resumeQuiz = handleAsyncError(async (req, res, next) => {
     
 });

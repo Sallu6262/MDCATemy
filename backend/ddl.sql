@@ -123,12 +123,28 @@ CREATE TABLE activity(
     CONSTRAINT fkey_activity_student FOREIGN KEY(student_id) REFERENCES student(student_id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
+CREATE TYPE QUIZ_MODE_TYPE AS ENUM ('EXAM', 'TUTOR');
+
 CREATE TABLE quizzes(
     quiz_id SERIAL PRIMARY KEY,
-    quiz_name VARCHAR(30) NOT NULL UNIQUE,
-    slug VARCHAR(30) NOT NULL UNIQUE,
+    quiz_name VARCHAR(30),
     attempt_date DATE NOT NULL DEFAULT CURRENT_DATE,
-    mcq_count INT NOT NULL CHECK(mcq_count > 0)
+    correct_count INT,
+    mcq_count INT NOT NULL CHECK(mcq_count > 0),
+    student_id INT NOT NULL,
+    quiz_mode QUIZ_MODE_TYPE NOT NULL,
+
+
+    FOREIGN KEY (student_id) REFERENCES students(student_id);
+);
+
+CREATE TABLE quiz_subjects (
+    quiz_id INT NOT NULL,
+    subject_id INT NOT NULL,
+
+    CONSTRAINT pkey_quizsubjects PRIMARY KEY (quiz_id, subject_id),
+    CONSTRAINT fkey_quizsubjects_quizzes FOREIGN KEY (quiz_id) REFERENCES quizzes(quiz_id) ON UPDATE CASCADE ON DELETE CASCADE,
+    CONSTRAINT fkey_quizsubjects_subjects FOREIGN KEY (subject_id) REFERENCES subjects(subject_id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 CREATE TABLE tests(
