@@ -2,6 +2,21 @@ import { handleAsyncError } from "../error.js";
 import pool from "../database.js";
 import { convertSubjectsChapterTopicsIntoNestedObject, getSlug, readDataFromExcelFile } from "../helpers.js";
 
+
+// TODO: Impelement
+
+export const editTest = handleAsyncError(async (req, res, next) => {
+    
+});
+
+export const getUpcomingTest = handleAsyncError(async (req, res, next) => {
+
+});
+
+export const submitTest = handleAsyncError(async (req, res, next) => {
+
+});
+
 export const getAllTests = handleAsyncError(async (req, res, next) => {
     let data = (await pool.query("SELECT test_name, slug, test_date, mcq_count, test_time, STRING_AGG(topic_name, ',') AS topics FROM tests INNER JOIN test_topics ON test_topics.test_id=tests.test_id INNER JOIN topics ON topics.topic_id=test_topics.topic_id GROUP BY test_name, slug, test_date, mcq_count, test_time")).rows;
     data = data.map(elem => {
@@ -42,9 +57,6 @@ export const createTest = handleAsyncError(async (req, res, next) => {
     });
 });
 
-export const editTest = handleAsyncError(async (req, res, next) => {
-    
-});
 
 export const addToTest = handleAsyncError(async (req, res, next) => {
     const { slug, mcq_id } = req.body;
@@ -52,10 +64,6 @@ export const addToTest = handleAsyncError(async (req, res, next) => {
     res.status(200).json({
         status: "success"
     });
-});
-
-export const getUpcomingTest = handleAsyncError(async (req, res, next) => {
-
 });
 
 export const getAllTestStats = handleAsyncError(async (req, res, next) => {
@@ -81,8 +89,4 @@ export const getTestInfo = handleAsyncError(async (req, res, next) => {
             mcqs
         }
     });
-});
-
-export const submitTest = handleAsyncError(async (req, res, next) => {
-
 });
