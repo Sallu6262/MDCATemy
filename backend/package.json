@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "dev": "set MODE=dev && nodemon index.js",
-    "prod": "set MODE=prod && nodemon index.js"
+    "prod": "set MODE=prod && nodemon index.js",
+    "rayyan-dev": "set MODE=prod && set DATABASE_USERNAME=postgres && set DATABASE_PASSWORD=database123 && nodemon index.js"
   },
   "author": "Umair Anwar",
   "license": "ISC",
