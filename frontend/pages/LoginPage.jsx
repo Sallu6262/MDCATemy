@@ -35,8 +35,12 @@ const LoginPage = () => {
             const data2 = await res2.json();
 
             if(data2.status === 'success'){
-                setUser(data2.data);
-                navigate('/dashboard');
+                if(data2.data.payment_status === 'PENDING'){
+                    navigate('/payment-error');
+                } else {
+                    setUser(data2.data);
+                    navigate('/dashboard');
+                }
             }
         }
     }

@@ -10,6 +10,7 @@ const Navbar = ({user, setUser}) => {
 
   const logOutWebsite = async () => {
     const res = await fetch(`${API_URL}/users/logout`,{
+      method: 'POST',
       credentials: 'include'
     });
 
