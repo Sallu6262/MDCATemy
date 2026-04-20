@@ -10,15 +10,16 @@ import AdminCustomTestMakerPage from '../pages/AdminCustomTestMakerPage';
 import RegistrationLayout from '../layout/RegistrationLayout';
 import LoginPage from '../pages/LoginPage';
 import SignUpPage from '../pages/SignUpPage';
+import getUserLoader from '../utils/getUserLoader';
 
 const App = () => {
   const router = createBrowserRouter(
     createRoutesFromElements(
       <>
-        <Route element={<MainLayout />}>
+        <Route element={<MainLayout />} id='root' loader={getUserLoader}>
 
-          <Route path='/admin' element={<AdminDashboardLayout />}>
-            <Route index element={<AdminDefaultPage />}/>
+          <Route element={<AdminDashboardLayout />}>
+            <Route path='/admin' element={<AdminDefaultPage />}/>
             <Route path='/admin/payments' element={<AdminPaymentsPage />}/>
             <Route path='/admin/upload-mcqs' element={<AdminUploadMcqsPage />}/>
             <Route path='/admin/custom-test-maker' element={<AdminCustomTestMakerPage />}/>

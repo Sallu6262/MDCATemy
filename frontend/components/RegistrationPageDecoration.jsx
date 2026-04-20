@@ -31,10 +31,11 @@ const REVIEWS = [
 ]
 
 const RegistrationPageDecoration = () => {
-  return (
-    <aside className="relative flex flex-1 flex-col justify-between border-b border-white/[0.06] px-6 py-10 lg:max-w-[46%] lg:border-b-0 lg:border-r lg:px-12 lg:py-14">
-      <div>
+  const review = REVIEWS[0]
 
+  return (
+    <aside className="relative flex flex-1 flex-col border-b border-white/[0.06] px-6 py-10 lg:max-w-[46%] lg:border-b-0 lg:border-r lg:px-12 lg:py-14">
+      <div>
         <div className="relative mx-auto mt-10 max-w-md">
           <div className="mx-auto w-full max-w-[min(300px,78vw)]">
             <svg
@@ -129,40 +130,26 @@ const RegistrationPageDecoration = () => {
             />
             <div className="min-w-0 flex-1 px-4 py-4 sm:px-5 sm:py-5">
               <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/40">From the tribe</p>
-              <div
-                data-reviews-root
-                className="relative mt-3 min-h-[8.5rem] sm:min-h-[9rem]"
-              >
-                {REVIEWS.map((r, index) => (
-                  <article
-                    key={r.id}
-                    data-review-index={index}
-                    data-review-panel
-                    aria-hidden={index !== 0}
-                    className={
-                      index === 0
-                        ? 'relative z-10'
-                        : 'absolute inset-0 z-0 flex flex-col justify-center overflow-hidden hidden'
-                    }
-                  >
-                    <blockquote className="border-none p-0">
-                      <p className="text-[13px] leading-relaxed text-white/80 sm:text-sm">
-                        <span className="font-semibold text-[#FFC600]">&ldquo;</span>
-                        {r.quote}
-                        <span className="font-semibold text-[#FFC600]">&rdquo;</span>
-                      </p>
-                      <footer className="mt-4 flex flex-col gap-1 border-t border-white/[0.06] pt-4 sm:flex-row sm:items-end sm:justify-between sm:gap-2">
-                        <cite className="not-italic text-sm font-bold text-[#FFC600]">{r.name}</cite>
-                        <span className="text-xs text-white/45">{r.meta}</span>
-                      </footer>
-                    </blockquote>
-                  </article>
-                ))}
+              <div data-reviews-root className="relative mt-3 min-h-[8.5rem] sm:min-h-[9rem]">
+                <article data-review-panel data-review-index={0} className="relative z-10">
+                  <blockquote className="border-none p-0">
+                    <p className="text-[13px] leading-relaxed text-white/80 sm:text-sm">
+                      <span className="font-semibold text-[#FFC600]">&ldquo;</span>
+                      {review.quote}
+                      <span className="font-semibold text-[#FFC600]">&rdquo;</span>
+                    </p>
+                    <footer className="mt-4 flex flex-col gap-1 border-t border-white/[0.06] pt-4 sm:flex-row sm:items-end sm:justify-between sm:gap-2">
+                      <cite className="not-italic text-sm font-bold text-[#FFC600]">{review.name}</cite>
+                      <span className="text-xs text-white/45">{review.meta}</span>
+                    </footer>
+                  </blockquote>
+                </article>
               </div>
             </div>
           </div>
         </div>
       </div>
+      
     </aside>
   )
 }

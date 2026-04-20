@@ -1,9 +1,13 @@
 import Navbar from "../components/Navbar"
 import Footer from "../components/Footer"
-import { Outlet } from "react-router-dom"
+import { Outlet, useRouteLoaderData } from "react-router-dom"
 import ScrollToTop from "../components/Scroller"
+import { useState } from "react"
 
 const MainLayout = () => {
+  const res = useRouteLoaderData('root');
+  const [user, setUser] = useState();
+
   return (
     <>
       <Navbar />
