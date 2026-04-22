@@ -5,7 +5,7 @@ const selectChevron =
   "url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 fill=%22none%22 viewBox=%220 0 24 24%22 stroke=%22%23FFC600%22%3E%3Cpath stroke-linecap=%22round%22 stroke-linejoin=%22round%22 stroke-width=%222%22 d=%22M19 9l-7 7-7-7%22/%3E%3C/svg%3E')"
 
 const SignUpForm = ({setStep}) => {
-    const {student} = useOutletContext();
+    const {student, setStudent} = useOutletContext();
 
     const [userName, setUserName] = useState(student?.name || '');
     const [fatherName, setFatherName] = useState(student?.father_name || '');
@@ -62,7 +62,17 @@ const SignUpForm = ({setStep}) => {
         const data = await res.json();
         
         if(data.status === 'success'){
-            setStep(prev => prev == 1 ? prev + 1 : prev);
+            const res2 = await fetch(`${API_URL}/users/me`,{
+                credentials: 'include'
+            });
+
+            const data2 = await res2.json();
+
+            if(data2.status === 'success'){
+                setStudent(data2.data);
+                setStep(prev => prev == 1 ? prev + 1 : prev);
+            }
+
         }
 
         setLoading(false);
@@ -298,6 +308,7 @@ const SignUpForm = ({setStep}) => {
                         id="ssc_year"
                         name="ssc_year"
                         type="number"
+                        required
                         min={0}
                         max={student?.matric_percentage ? 100 : 1100}
                         step={1}
@@ -310,14 +321,14 @@ const SignUpForm = ({setStep}) => {
                     {
                         student ? 
                         <div>
-                            <label htmlFor="ssc_year" className="mb-2 block text-[11px] font-bold uppercase tracking-wider text-white/45">
+                            <label htmlFor="fsc_year" className="mb-2 block text-[11px] font-bold uppercase tracking-wider text-white/45">
                                 FSC Percentage
                             </label>
                             <input
                                 readOnly={student}
                                 value={student?.fsc_percentage}
-                                id="ssc_year"
-                                name="ssc_year"
+                                id="fsc_year"
+                                name="fsc_year"
                                 type="number"
                                 min={0}
                                 max={100}
@@ -356,7 +367,7 @@ const SignUpForm = ({setStep}) => {
                                 name="fsc_year2"
                                 type="number"
                                 min={0}
-                                max={550}
+                                max={1100}
                                 step={1}
                                 placeholder="e.g. 540"
                                 className="w-full rounded-xl border border-white/[0.1] bg-[#1c1c1c] px-4 py-3.5 text-sm text-white placeholder:text-white/30 outline-none transition focus:border-[#FFC600]/50 focus:ring-2 focus:ring-[#FFC600]/20"
@@ -379,6 +390,7 @@ const SignUpForm = ({setStep}) => {
                         id="prev_mdcat"
                         name="prev_mdcat"
                         type="number"
+                        required
                         min={0}
                         max={200}
                         step={1}

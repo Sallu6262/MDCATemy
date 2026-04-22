@@ -4,12 +4,19 @@ import { useNavigate, useOutletContext } from 'react-router-dom';
 const selectChevron =
   "url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 fill=%22none%22 viewBox=%220 0 24 24%22 stroke=%22%23FFC600%22%3E%3Cpath stroke-linecap=%22round%22 stroke-linejoin=%22round%22 stroke-width=%222%22 d=%22M19 9l-7 7-7-7%22/%3E%3C/svg%3E')"
 
-const PaymentForm = ({paymentType}) => {
+const PaymentForm = () => {
     const {student} = useOutletContext();
+    const paymentType = {
+        'QUIZ_ONLY' : 3000,
+        'TEST_ONLY' : 2000,
+        'DUAL_ACCESS' : 5000,
+        'TRIBE_MEMBER' : 25000
+    }
+
     const API_URL = import.meta.env.VITE_API_URL;
     const navigate = useNavigate();
 
-    const [payment, setPayment] = useState(paymentType);
+    const [payment, setPayment] = useState(paymentType[student?.role]);
     const [paymentProof, setPaymentProof] = useState('');
     const [coupon, setCoupon] = useState('');
     const [tempCoupon, setTempCoupon] = useState('');
