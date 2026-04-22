@@ -35,3 +35,10 @@ export const getAllTopics = handleAsyncError(async (req, res, next) => {
         data
     });
 });
+
+export const deleteMCQ = handleAsyncError(async (req, res, next) => {
+    (await pool.query("DELETE FROM mcq_bank WHERE mcq_id=$1", [req.params.mcq_id]));
+    res.status(204).json({
+        status: "success"
+    });
+});

@@ -23,6 +23,7 @@ export const getMe = handleAsyncError(async (req, res, next) => {
             id: user.student_id,
             name: user.name,
             father_name: user.father_name,
+            email: user.email,
             role: user.role,
             gender: user.gender,
             phone: user.phone,

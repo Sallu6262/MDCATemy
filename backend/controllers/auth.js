@@ -68,6 +68,14 @@ export const protect = handleAsyncError(async (req, res, next) => {
     next();
 });
 
+export const verifyTestAccess = handleAsyncError(async (req, res, next) => {
+    const { test_id } = req.body;    
+    const result = (await pool.query("SELECT * FROM test_enrollments WHERE test_id=$1 AND student_id=$2", [test_id, req.user.student_id])).rows[0];
+    if (!result)
+        return next(new AppError("You don't have access to this Test.", 401));
+    next();
+});
+
 export const isPaymentVerified = handleAsyncError(async (req, res, next) => {
     if (req.user.payment_status === 'PENDING') 
         return next(new AppError("Your payment process is pending. Please wait until your payment is verified.", 100));
