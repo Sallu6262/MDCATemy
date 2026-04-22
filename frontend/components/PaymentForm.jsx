@@ -1,6 +1,10 @@
-import React from 'react'
+import React, { useState } from 'react'
 
-const PaymentForm = () => {
+const PaymentForm = ({paymentType}) => {
+    const [payment, setPayment] = useState(paymentType);
+    const [paymentProof, setPaymentProof] = useState('');
+    const [coupon, setCoupon] = useState('');
+
     return (
         <main className="mx-auto w-full max-w-3xl px-5 py-10 sm:px-8 sm:py-14">
             <section className="rounded-2xl border border-white/[0.1] bg-[#181818] p-5 shadow-[0_20px_70px_rgba(0,0,0,0.35)] sm:p-8">
@@ -8,11 +12,13 @@ const PaymentForm = () => {
             <h1 className="mt-2 text-3xl font-extrabold tracking-tight text-white sm:text-4xl">Complete your payment</h1>
             <p className="mt-2 text-sm text-white/50">Apply coupon, transfer amount to the account below, then upload proof screenshot.</p>
 
-            <form className="mt-8 space-y-6" action="#" method="post">
+            <div className="mt-8 space-y-6" >
                 <div>
                 <label htmlFor="coupon_code" className="mb-2 block text-[11px] font-bold uppercase tracking-wider text-white/45">Coupon code</label>
                 <div className="flex flex-col gap-3 sm:flex-row">
                     <input
+                    value={coupon}
+                    onChange={e => setCoupon(e.target.value)}
                     id="coupon_code"
                     name="coupon_code"
                     type="text"
@@ -34,7 +40,7 @@ const PaymentForm = () => {
                     id="total_payment"
                     name="total_payment"
                     type="text"
-                    value="Rs 18,000"
+                    value={`Rs ${payment}`}
                     readOnly
                     className="w-full rounded-xl border border-[#FFC600]/25 bg-[#FFC600]/10 px-4 py-3.5 text-base font-bold text-[#FFC600] outline-none"
                 />
@@ -63,8 +69,9 @@ const PaymentForm = () => {
                 <label htmlFor="payment_screenshot" className="flex cursor-pointer flex-col items-center justify-center rounded-xl border border-dashed border-white/[0.18] bg-[#1c1c1c] px-4 py-8 text-center hover:border-[#FFC600]/50">
                     <span className="text-sm font-semibold text-white/85">Choose image file</span>
                     <span className="mt-1 text-xs text-white/45">PNG, JPG, JPEG</span>
+                    <span className="mt-1 text-sm font-semibold text-white/85">{paymentProof?.name || 'No File Selected Yet'}</span>
                 </label>
-                <input id="payment_screenshot" name="payment_screenshot" type="file" accept="image/*" required className="sr-only" />
+                <input onChange={e => setPaymentProof(e.target.files[0])} id="payment_screenshot" name="payment_screenshot" type="file" accept="image/*" required className="sr-only" />
                 </div>
 
                 <button
@@ -74,7 +81,7 @@ const PaymentForm = () => {
                 Submit Payment
                 <span aria-hidden="true">→</span>
                 </button>
-            </form>
+            </div>
             </section>
         </main>
     )

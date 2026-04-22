@@ -79,7 +79,7 @@ export const isPaymentVerified = handleAsyncError(async (req, res, next) => {
 
 export const signup = handleAsyncError(async (req, res, next) => {
     let {name, father_name, gender, role, phone, email, password, academic_status, province, city, matric_percentage, fsc_percentage, prev_mdcat_score} = req.body;
-    
+
     if (!name || !father_name || !email || !password || !gender || !phone || !role || !province || !city || !matric_percentage || !fsc_percentage || !academic_status)
         return next(new AppError("Incomplete Data for Signup!", 400));
     
@@ -94,6 +94,7 @@ export const signup = handleAsyncError(async (req, res, next) => {
     await pool.query("INSERT INTO users (name, father_name, email, password, gender, role) VALUES ($1, $2, $3, $4, $5, $6)", [name, father_name, email, password, gender, role]);
 
     const user = (await pool.query("SELECT user_id, role FROM users WHERE email=$1", [email])).rows[0];
+    
     await pool.query("INSERT INTO students (student_id, phone, academic_status, province, city, matric_percentage, fsc_percentage, prev_mdcat_score, target_marks) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)", [user.user_id, phone, academic_status, province, city, matric_percentage, fsc_percentage, prev_mdcat_score, target_marks]);
     
     signTokenAndSetInCookie(email, user.role, res);
@@ -116,6 +117,7 @@ export const login = handleAsyncError(async (req, res, next) => {
         return next(new AppError("Incorrect email or password!", 401));
 
     signTokenAndSetInCookie(user.email, user.role, res);
+
     
     res.status(200).json({
         status: "success",

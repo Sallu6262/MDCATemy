@@ -1,16 +1,21 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate, useOutletContext } from 'react-router-dom'
 
 const LoginPage = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [loading, setLoading] = useState(false);
 
     const API_URL = import.meta.env.VITE_API_URL;
 
+    const {setStudent, setAdmin} = useOutletContext();
+    const navigate = useNavigate();
+
     const loginToWebsite = async (e) => {
         e.preventDefault();
+        setLoading(true);
 
-        const res = await fetch(`${API_URL}/users/login`, {
+        const res1 = await fetch(`${API_URL}/users/login`, {
             method: 'POST',
             credentials: 'include',
             headers: {
@@ -22,8 +27,33 @@ const LoginPage = () => {
             })
         });
 
-        const data = await res.json();
-        console.log(data);
+        const data1 = await res1.json();
+        
+        if(data1.status === 'success'){
+            const res2 = await fetch(`${API_URL}/users/me`,{
+                credentials: 'include'
+            });
+
+            const data2 = await res2.json();
+            
+            if(data2.status === 'success'){
+                if(data2.data.payment_status && data2.data.payment_status !== 'VERIFIED'){
+                    setStudent(data2.data);
+                    navigate('/payment-status');
+                } else {
+                    if(data2.data.role === 'ADMIN'){
+                        setAdmin(data2.data);
+                        navigate('/admin');
+                    }
+                    else{
+                        setStudent(data2.data);
+                        navigate('/dashboard');
+                    }
+                }
+            }
+        }
+
+        setLoading(false);
     }
 
     return (
@@ -40,7 +70,7 @@ const LoginPage = () => {
                     <span className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-white/35" aria-hidden="true">
                         <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
                     </span>
-                    <input id="email" name="email" type="email" autoComplete="email" placeholder="your@email.com" required
+                    <input value={email} onChange={e => setEmail(e.target.value)} id="email" name="email" type="email" autoComplete="email" placeholder="your@email.com" required
                         className="w-full rounded-xl border border-white/[0.1] bg-[#1c1c1c] py-3.5 pl-12 pr-4 text-sm text-white placeholder:text-white/30 outline-none ring-[#FFC600]/0 focus:border-[#FFC600]/50 focus:ring-2 focus:ring-[#FFC600]/20" />
                     </div>
                 </div>
@@ -54,7 +84,7 @@ const LoginPage = () => {
                     <span className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-white/35" aria-hidden="true">
                         <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
                     </span>
-                    <input id="password" name="password" type="password" autoComplete="current-password" placeholder="••••••••" required
+                    <input value={password} onChange={e => setPassword(e.target.value)} id="password" name="password" type="password" autoComplete="current-password" placeholder="••••••••" required
                         className="w-full rounded-xl border border-white/[0.1] bg-[#1c1c1c] py-3.5 pl-12 pr-12 text-sm text-white placeholder:text-white/30 outline-none focus:border-[#FFC600]/50 focus:ring-2 focus:ring-[#FFC600]/20" />
                     <span className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-white/35" aria-hidden="true" title="Visibility toggle needs JS">
                         <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
@@ -62,8 +92,8 @@ const LoginPage = () => {
                     </div>
                 </div>
 
-                <button type="submit" className="cursor-pointer flex w-full items-center justify-center gap-2 rounded-xl bg-[#FFC600] py-4 text-sm font-black uppercase tracking-wider text-[#181A18] shadow-[0_8px_32px_rgba(255,198,0,0.25)] hover:brightness-105">
-                    Login to my camp
+                <button type="submit" disabled={loading} className={`${loading ? 'cursor-not-allowed' : 'cursor-pointer'} flex w-full items-center justify-center gap-2 rounded-xl bg-[#FFC600] py-4 text-sm font-black uppercase tracking-wider text-[#181A18] shadow-[0_8px_32px_rgba(255,198,0,0.25)] hover:brightness-105`}>
+                    {loading ? 'Processing....' : 'Login to my camp'}
                     <span aria-hidden="true">→</span>
                 </button>
                 </form>

@@ -11,6 +11,8 @@ export const getSlug = (str) => str.toLowerCase().split(" ").join("-");
 
 export const initialize = () => {
     process.env.MODE = process.env.MODE.trim();
+    process.env.DATABASE_USERNAME = process.env.DATABASE_USERNAME.trim();
+    process.env.DATABASE_PASSWORD = process.env.DATABASE_PASSWORD.trim();  
 }
 export const formatColumnName = (name) => name.replaceAll(" ", "_").toLowerCase();
 

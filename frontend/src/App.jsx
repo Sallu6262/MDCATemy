@@ -11,6 +11,7 @@ import RegistrationLayout from '../layout/RegistrationLayout';
 import LoginPage from '../pages/LoginPage';
 import SignUpPage from '../pages/SignUpPage';
 import getUserLoader from '../utils/getUserLoader';
+import PaymentErrorPage from '../pages/PaymentErrorPage';
 
 const App = () => {
   const router = createBrowserRouter(
@@ -30,6 +31,7 @@ const App = () => {
             <Route path='/signup' element={<SignUpPage />}/>
           </Route>
 
+          <Route path='/payment-status' element={<PaymentErrorPage />}/>
           <Route path='*' element={<NotFoundPage />}/>
         </Route>
 

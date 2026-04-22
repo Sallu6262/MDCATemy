@@ -6,8 +6,8 @@ const getUserLoader = async () => {
             credentials: 'include'
         });
 
-        const user = await res.json();
-        return user;
+        const student = await res.json();
+        return student;
     } catch(err){
         return null;
     }
