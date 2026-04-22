@@ -3,6 +3,10 @@ import jwt from "jsonwebtoken";
 import pool from "../database.js";
 import { unlink } from "node:fs/promises";
 
+export const isCouponValid = async (coupon) => {
+    return (await pool.query("SELECT code FROM coupons WHERE code=$1", [coupon])).rows[0] ? true : false;
+};
+
 export const getUnverifiedUsers = handleAsyncError(async (req, res, next) => {
     const data = (await pool.query(" SELECT name, email, role, upgrade_role, academic_status, payment_status, upgrade_status, coupon FROM users INNER JOIN students ON students.student_id=users.user_id WHERE payment_status='PENDING' OR upgrade_status='PENDING' ORDER BY user_id ASC")).rows;
     res.status(200).json({
@@ -44,13 +48,13 @@ export const getPaymentStatus = (req, res, next) => {
     res.status(200).json({
         status: "success",
         payment_status: req.user.payment_status,
-        upgrade_status: req.user.upgrade_status
+        upgrade_status: req.user.upgrade_status ?? undefined
     });
 };
 
 export const verifyCoupon = handleAsyncError(async (req, res, next) => {
-    const result = (await pool.query("SELECT code FROM coupons WHERE code=$1", [req.body.coupon])).rows[0];
-    res.status(result ? 200 : 404).json({
-        status: result ? "success" : "fail"
+    const flag = await isCouponValid(req.body.coupon); 
+    res.status(flag ? 200 : 404).json({
+        status: flag ? "success" : "fail"
     });
 });

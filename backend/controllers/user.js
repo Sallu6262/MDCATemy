@@ -1,22 +1,44 @@
 import pool from "../database.js";
 import { AppError, handleAsyncError } from "../error.js";
 import { formatColumnName, isString } from "../helpers.js";
+import { isCouponValid } from "./payment.js";
 
 const SAVED_MCQS_PER_PAGE = 10;
 const MILLISECONDS_IN_DAY = 86400000;
 
 
 export const getMe = handleAsyncError(async (req, res, next) => {
+    let data, user = req.user;
+    if (req.user.role === "ADMIN") {
+        data = {
+            id: user.user_id,
+            name: user.name,
+            father_name: user.father_name,
+            email: user.email,
+            gender: user.gender,
+            role: user.role
+        }
+    } else {
+        data = {
+            id: user.student_id,
+            name: user.name,
+            father_name: user.father_name,
+            role: user.role,
+            gender: user.gender,
+            phone: user.phone,
+            city: user.city,
+            province: user.province,
+            academic_status: user.academic_status,
+            matric_percentage: user.matric_percentage,
+            fsc_percentage: user.fsc_percentage,
+            prev_mdcat_score: user.prev_mdcat_score,
+            payment_status: user.payment_status,
+            upgrade_status: user.upgrade_status
+        }
+    }
     res.status(200).json({
         status: "success",
-        data: {
-            id: req.user.student_id ?? req.user.user_id,
-            name: req.user.name,
-            email: req.user.email,
-            role: req.user.role,
-            target_score: req.user.target_marks,
-            payment_status: req.user.payment_status
-        }
+        data
     });
 });
 
@@ -196,18 +218,21 @@ export const deleteWrongMCQ = handleAsyncError(async (req, res, next) => {
 
 export const uploadPaymentReceipt = handleAsyncError(async (req, res, next) => {
     const { coupon, upgrade_role } = req.body;
-    if (!upgrade_role) 
-        return next(new AppError("Please provide the role user wants to upgrade to", 400));        
-
-    if (coupon) {
+    
+    if (coupon && await isCouponValid(coupon)) {
         await pool.query("UPDATE students SET coupon=$2 WHERE student_id=$1", [req.user.student_id, coupon]);
         await pool.query("DELETE FROM coupons WHERE code=$1", [coupon]);
     }
     if (req.user.payment_status === "VERIFIED") {
+        if (!upgrade_role) {
+            return next(new AppError("Please provide the role user wants to upgrade to", 400));
+        }
         (await pool.query("UPDATE students SET upgrade_status='PENDING', upgrade_role=$2 WHERE student_id=$1", [req.user.student_id, upgrade_role]));
-    } else {
+    }
+    else {
         (await pool.query("UPDATE students SET payment_status='PENDING' WHERE student_id=$1", [req.user.student_id]));
     }
+
     res.status(200).json({
         status: "success",
         payment_status: req.user.payment_status,

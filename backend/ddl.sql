@@ -48,6 +48,7 @@ CREATE TABLE students (
     matric_percentage NUMERIC(10,2) NOT NULL,
     fsc_percentage NUMERIC(10,2) NOT NULL,
     prev_mdcat_score INT CHECK(prev_mdcat_score >= 0),
+    target_marks INT NOT NULL,
     coupon VARCHAR(10),
     payment_status PAYMENT_STATUS NOT NULL DEFAULT 'PENDING',
     upgrade_status PAYMENT_STATUS,
