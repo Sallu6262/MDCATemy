@@ -9,7 +9,9 @@ const MainLayout = () => {
   const [analytics, setAnalytics] = useState();
 
   const [student, setStudent] = useState(res.status === 'success' && res.data.role !== 'ADMIN' ? res.data : null);
-  const [admin, setAdmin] = useState(res.status === 'success' ? res.data : null);
+  const [admin, setAdmin] = useState(res.status === 'success' && res.data.role === 'ADMIN' ? res.data : null);
+
+  // console.log(student);
 
   return (
     <>

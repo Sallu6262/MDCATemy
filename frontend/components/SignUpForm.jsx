@@ -5,11 +5,7 @@ const selectChevron =
   "url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 fill=%22none%22 viewBox=%220 0 24 24%22 stroke=%22%23FFC600%22%3E%3Cpath stroke-linecap=%22round%22 stroke-linejoin=%22round%22 stroke-width=%222%22 d=%22M19 9l-7 7-7-7%22/%3E%3C/svg%3E')"
 
 const SignUpForm = ({setStep}) => {
-    const studentTypeMapping = {
-        'quiz-builder-student' : 'QUIZ_ONLY',
-        'study-tribe-student' : 'TRIBE_MEMBER'
-    }
-    const {student} = useOutletContext();
+    const {student, setStudent} = useOutletContext();
 
     const [userName, setUserName] = useState(student?.name || '');
     const [fatherName, setFatherName] = useState(student?.father_name || '');
@@ -17,10 +13,10 @@ const SignUpForm = ({setStep}) => {
     const [number, setNumber] = useState(student?.phone || '');
     const [province, setProvince] = useState(student?.province || '');
     const [city, setCity] = useState(student?.city || '');
-    const [studentType, setStudentType] = useState(studentTypeMapping[student?.role] || '');
-    const [sscMarks, setSSCMarks] = useState(student?.sscMarks || '');
-    const [fscMarks1, setFSCMarks1] = useState(student?.fscMarks1 || '');
-    const [fscMarks2, setFSCMarks2] = useState(student?.fscMarks2 || '');
+    const [studentType, setStudentType] = useState(student?.role || '');
+    const [sscMarks, setSSCMarks] = useState('');
+    const [fscMarks1, setFSCMarks1] = useState('');
+    const [fscMarks2, setFSCMarks2] = useState('');
     const [mdcatScore, setMdcatScore] = useState(student?.prev_mdcat_score || '');
     const [email, setEmail] = useState(student?.email || '');
     const [password, setPassword] = useState(student?.password || '');
@@ -32,6 +28,12 @@ const SignUpForm = ({setStep}) => {
 
     const signupToWebsite = async (e) => {
         e.preventDefault();
+
+        if(student){
+            setStep(prev => prev == 1 ? prev + 1 : prev);
+            return;
+        }
+
         setLoading(true);
 
         const res = await fetch(`${API_URL}/users/signup`,{
@@ -44,7 +46,7 @@ const SignUpForm = ({setStep}) => {
                 name: userName,
                 father_name: fatherName,
                 gender,
-                role: studentTypeMapping[studentType],
+                role: studentType,
                 email,
                 password,
                 phone: `+92${number}`,
@@ -60,10 +62,26 @@ const SignUpForm = ({setStep}) => {
         const data = await res.json();
         
         if(data.status === 'success'){
-            setStep(prev => prev == 1 ? prev + 1 : prev);
+            const res2 = await fetch(`${API_URL}/users/me`,{
+                credentials: 'include'
+            });
+
+            const data2 = await res2.json();
+
+            if(data2.status === 'success'){
+                setStudent(data2.data);
+                setStep(prev => prev == 1 ? prev + 1 : prev);
+            }
+
         }
 
         setLoading(false);
+    }
+
+    const upgradePlan = () => {
+        if(student.payment_status === 'VERIFIED'){
+            setStep(prev => prev == 1 ? prev + 1 : prev);
+        }
     }
 
     return (
@@ -113,7 +131,7 @@ const SignUpForm = ({setStep}) => {
                     <legend className="mb-2 block text-[11px] font-bold uppercase tracking-wider text-white/45">Gender</legend>
                     <div className="flex flex-wrap gap-4">
                     <select
-                        readOnly={student}
+                        disabled={student}
                         value={gender}
                         onChange={e => setGender(e.target.value)}
                         id="gender"
@@ -167,7 +185,7 @@ const SignUpForm = ({setStep}) => {
                         Province
                     </label>
                     <select
-                        readOnly={student}
+                        disabled={student}
                         value={province}
                         onChange={e => setProvince(e.target.value)}
                         id="province"
@@ -225,7 +243,7 @@ const SignUpForm = ({setStep}) => {
                     MDCAT status
                     </label>
                     <select
-                    readOnly={student}
+                    disabled={student}
                     value={academicStatus}
                     onChange={e => setAcademicStatus(e.target.value)}
                     id="mdcat_status"
@@ -251,7 +269,7 @@ const SignUpForm = ({setStep}) => {
                     Student type
                     </label>
                     <select
-                    readOnly={student}
+                    disabled={student}
                     value={studentType}
                     onChange={e => setStudentType(e.target.value)}
                     id="student_type"
@@ -264,78 +282,99 @@ const SignUpForm = ({setStep}) => {
                     <option value="" disabled className="bg-[#1c1c1c]">
                         Select student type
                     </option>
-                    <option value="quiz-builder-student" className="bg-[#1c1c1c]">
+                    <option value="QUIZ_ONLY" className="bg-[#1c1c1c]">
                         Quiz Builder Student
                     </option>
-                    <option value="study-tribe-student" className="bg-[#1c1c1c]">
+                    <option value="TRIBE_MEMBER" className="bg-[#1c1c1c]">
                         Study Tribe Student
                     </option>
-                    {/* <option value="test-series-student" className="bg-[#1c1c1c]">
+                    <option value="TEST_ONLY" className="bg-[#1c1c1c]">
                         Test Series Student
                     </option>
-                    <option value="quiz-builder-test-series-student" className="bg-[#1c1c1c]">
+                    <option value="DUAL_ACCESS" className="bg-[#1c1c1c]">
                         Quiz Builder + Test Series Student
-                    </option> */}
+                    </option>
                     </select>
                 </div>
 
                 <div>
                     <label htmlFor="ssc_year" className="mb-2 block text-[11px] font-bold uppercase tracking-wider text-white/45">
-                        SSC marks
+                        {student?.matric_percentage ? 'SSC Percentage' : 'SSC Marks'}
                     </label>
                     <input
                         readOnly={student}
-                        value={sscMarks}
+                        value={student?.matric_percentage || sscMarks}
                         onChange={e => setSSCMarks(e.target.value)}
                         id="ssc_year"
                         name="ssc_year"
                         type="number"
+                        required
                         min={0}
-                        max={1100}
+                        max={student?.matric_percentage ? 100 : 1100}
                         step={1}
                         placeholder="e.g. 1050"
                         className="w-full rounded-xl border border-white/[0.1] bg-[#1c1c1c] px-4 py-3.5 text-sm text-white placeholder:text-white/30 outline-none transition focus:border-[#FFC600]/50 focus:ring-2 focus:ring-[#FFC600]/20"
                     />
                 </div>
 
-                <div className="grid gap-5 sm:grid-cols-2">
-                    <div>
-                    <label htmlFor="fsc_year1" className="mb-2 block text-[11px] font-bold uppercase tracking-wider text-white/45">
-                        FSC first year marks
-                    </label>
-                    <input
-                        readOnly={student}
-                        value={fscMarks1}
-                        onChange={e => setFSCMarks1(e.target.value)}
-                        id="fsc_year1"
-                        name="fsc_year1"
-                        type="number"
-                        required
-                        min={0}
-                        max={550}
-                        step={1}
-                        placeholder="e.g. 520"
-                        className="w-full rounded-xl border border-white/[0.1] bg-[#1c1c1c] px-4 py-3.5 text-sm text-white placeholder:text-white/30 outline-none transition focus:border-[#FFC600]/50 focus:ring-2 focus:ring-[#FFC600]/20"
-                    />
-                    </div>
-                    <div>
-                    <label htmlFor="fsc_year2" className="mb-2 block text-[11px] font-bold uppercase tracking-wider text-white/45">
-                        FSC second year marks
-                    </label>
-                    <input
-                        readOnly={student}
-                        value={fscMarks2}
-                        onChange={e => setFSCMarks2(e.target.value)}
-                        id="fsc_year2"
-                        name="fsc_year2"
-                        type="number"
-                        min={0}
-                        max={550}
-                        step={1}
-                        placeholder="e.g. 540"
-                        className="w-full rounded-xl border border-white/[0.1] bg-[#1c1c1c] px-4 py-3.5 text-sm text-white placeholder:text-white/30 outline-none transition focus:border-[#FFC600]/50 focus:ring-2 focus:ring-[#FFC600]/20"
-                    />
-                    </div>
+                <div className={`grid gap-5 {student ? 'sm:grid-cols-1' : 'sm:grid-cols-2'}`}>
+                    {
+                        student ? 
+                        <div>
+                            <label htmlFor="fsc_year" className="mb-2 block text-[11px] font-bold uppercase tracking-wider text-white/45">
+                                FSC Percentage
+                            </label>
+                            <input
+                                readOnly={student}
+                                value={student?.fsc_percentage}
+                                id="fsc_year"
+                                name="fsc_year"
+                                type="number"
+                                min={0}
+                                max={100}
+                                step={1}
+                                placeholder="e.g. 1050"
+                                className="w-full rounded-xl border border-white/[0.1] bg-[#1c1c1c] px-4 py-3.5 text-sm text-white placeholder:text-white/30 outline-none transition focus:border-[#FFC600]/50 focus:ring-2 focus:ring-[#FFC600]/20"
+                            />
+                        </div> :
+                        <>
+                            <div>
+                                <label htmlFor="fsc_year1" className="mb-2 block text-[11px] font-bold uppercase tracking-wider text-white/45">
+                                    FSC first year marks
+                                </label>
+                                <input
+                                    value={fscMarks1}
+                                    onChange={e => setFSCMarks1(e.target.value)}
+                                    id="fsc_year1"
+                                    name="fsc_year1"
+                                    type="number"
+                                    required
+                                    min={0}
+                                    max={550}
+                                    step={1}
+                                    placeholder="e.g. 520"
+                                    className="w-full rounded-xl border border-white/[0.1] bg-[#1c1c1c] px-4 py-3.5 text-sm text-white placeholder:text-white/30 outline-none transition focus:border-[#FFC600]/50 focus:ring-2 focus:ring-[#FFC600]/20"
+                                />
+                            </div>
+                            <div>
+                            <label htmlFor="fsc_year2" className="mb-2 block text-[11px] font-bold uppercase tracking-wider text-white/45">
+                                FSC second year marks
+                            </label>
+                            <input
+                                value={fscMarks2}
+                                onChange={e => setFSCMarks2(e.target.value)}
+                                id="fsc_year2"
+                                name="fsc_year2"
+                                type="number"
+                                min={0}
+                                max={1100}
+                                step={1}
+                                placeholder="e.g. 540"
+                                className="w-full rounded-xl border border-white/[0.1] bg-[#1c1c1c] px-4 py-3.5 text-sm text-white placeholder:text-white/30 outline-none transition focus:border-[#FFC600]/50 focus:ring-2 focus:ring-[#FFC600]/20"
+                            />
+                            </div>
+                        </>
+                    }
                 </div>
 
                 {
@@ -351,6 +390,7 @@ const SignUpForm = ({setStep}) => {
                         id="prev_mdcat"
                         name="prev_mdcat"
                         type="number"
+                        required
                         min={0}
                         max={200}
                         step={1}
@@ -402,19 +442,19 @@ const SignUpForm = ({setStep}) => {
                         student?.pending_status === 'VERIFIED' ? 
                         <button
                             type="button"
+                            onClick={upgradePlan}
                             className={`${loading ? 'cursor-not-allowed' : 'cursor-pointer'} inline-flex w-full items-center justify-center rounded-xl border border-[#FFC600]/55 bg-[#FFC600]/10 py-4 text-sm font-black uppercase tracking-wider text-[#FFC600] transition hover:bg-[#FFC600]/15`}
                         >
                             {loading ? 'Processing...' : 'Upgrade Plan'}
                         </button> :
-                        ''
+                        <button
+                            type="submit"
+                            className={`${loading ? 'cursor-not-allowed' : 'cursor-pointer'} inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#FFC600] py-4 text-sm font-black uppercase tracking-wider text-[#181A18] shadow-[0_8px_32px_rgba(255,198,0,0.25)] transition hover:brightness-105`}
+                        >
+                            {loading ? 'Processing...' : 'Next'}
+                            <span aria-hidden="true">→</span>
+                        </button>
                     }
-                    <button
-                        type="submit"
-                        className={`${loading ? 'cursor-not-allowed' : 'cursor-pointer'} inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#FFC600] py-4 text-sm font-black uppercase tracking-wider text-[#181A18] shadow-[0_8px_32px_rgba(255,198,0,0.25)] transition hover:brightness-105`}
-                    >
-                        {loading ? 'Processing...' : 'Next'}
-                        <span aria-hidden="true">→</span>
-                    </button>
                 </div>
                 </form>
 

@@ -7,7 +7,8 @@
   "scripts": {
     "dev": "set MODE=dev && nodemon index.js",
     "prod": "set MODE=prod && nodemon index.js",
-    "rayyan-dev": "cross-env MODE=dev DATABASE_USERNAME=postgres DATABASE_PASSWORD=database123 nodemon index.js"
+    "rayyan-dev": "cross-env MODE=dev DATABASE_USERNAME=postgres DATABASE_PASSWORD=database123 nodemon index.js",
+    "rayyan-prod": "cross-env MODE=prod DATABASE_USERNAME=postgres DATABASE_PASSWORD=database123 nodemon index.js"
   },
   "author": "Umair Anwar",
   "license": "ISC",

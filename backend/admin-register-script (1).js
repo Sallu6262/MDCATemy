@@ -22,6 +22,7 @@ try {
 const user = {
     name: "Admin",
     email: "admin@test",
+    age: 20,
     gender: "M",
     role: "ADMIN",
     password: "pass"
@@ -40,7 +41,7 @@ try {
 try {
     await client.query("INSERT INTO users (name, email, password, gender, role) VALUES ($1, $2, $3, $4, $5)", [user.name, user.email, user.password, user.gender, user.role]);
 } catch (err) {
-    console.log(err);
+    // console.log(err);
     console.error("Error: Couldn't insert in the database.");
     process.exit(-3);
 }

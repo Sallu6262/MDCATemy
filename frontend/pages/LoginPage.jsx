@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link, useNavigate, useOutletContext } from 'react-router-dom'
 
 const LoginPage = () => {
@@ -8,7 +8,7 @@ const LoginPage = () => {
 
     const API_URL = import.meta.env.VITE_API_URL;
 
-    const {setStudent, setAdmin} = useOutletContext();
+    const {setStudent, setAdmin, admin, student} = useOutletContext();
     const navigate = useNavigate();
 
     const loginToWebsite = async (e) => {
@@ -35,7 +35,7 @@ const LoginPage = () => {
             });
 
             const data2 = await res2.json();
-            
+
             if(data2.status === 'success'){
                 if(data2.data.payment_status && data2.data.payment_status !== 'VERIFIED'){
                     setStudent(data2.data);
@@ -55,6 +55,11 @@ const LoginPage = () => {
 
         setLoading(false);
     }
+
+    useEffect(() => {
+        if(student && student.payment_status === 'VERIFIED') navigate('/dashboard');
+        if(admin) navigate('/admin');
+    });
 
     return (
         <main className="flex flex-1 flex-col justify-start px-6 pb-12 pt-8 sm:px-10 sm:pt-10 lg:px-16 lg:pt-12 xl:px-24">
