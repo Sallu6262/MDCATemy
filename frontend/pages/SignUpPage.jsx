@@ -18,8 +18,8 @@ const SignUpPage = () => {
 
     return (
         <section ref={sectionRef} className="flex flex-1 flex-col justify-start" onClick={sectionRef?.current?.scrollIntoView()}>
-            {step == 1 && !student ? <SignUpForm setStep={setStep}/> : ''}
-            {step == 2 || (student?.payment_status !== 'VERIFIED') ? <PaymentForm paymentType={paymentType[student?.role]}/> : ''}
+            {step == 1 ? <SignUpForm setStep={setStep} /> : ''}
+            {step == 2 ? <PaymentForm paymentType={paymentType[student?.role]}/> : ''}
         </section>
     )
 }

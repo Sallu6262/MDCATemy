@@ -42,7 +42,7 @@ const Navbar = ({user, setUser}) => {
             <Link to="/pricing" className="text-sm font-medium hover:text-white transition-colors" style={{ color: "rgba(255,255,255,0.8)", textDecoration: "none" }}>Pricing</Link>
             <Link to="/contact" className="text-sm font-medium hover:text-white transition-colors" style={{ color: "rgba(255,255,255,0.8)", textDecoration: "none" }}>About Us</Link>
           </div>
-          <div className="hidden lg:flex items-center gap-2 ml-6">
+          <div className="hidden lg:flex items-center gap-3 ml-6">
             {
               user?.payment_status === 'VERIFIED' || user?.role === 'ADMIN' ?
               <>

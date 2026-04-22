@@ -217,6 +217,8 @@ export const deleteWrongMCQ = handleAsyncError(async (req, res, next) => {
 });
 
 export const uploadPaymentReceipt = handleAsyncError(async (req, res, next) => {
+    console.log(req.body);
+    console.log(req.file);
     const { coupon, upgrade_role } = req.body;
     
     if (coupon && await isCouponValid(coupon)) {
