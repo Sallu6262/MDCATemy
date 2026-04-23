@@ -1,3 +1,4 @@
+import { allowedNodeEnvironmentFlags } from "node:process";
 import pool from "../database.js";
 import { AppError, handleAsyncError } from "../error.js";
 import { formatColumnName, isString } from "../helpers.js";
@@ -79,7 +80,7 @@ export const getDashboardStats = handleAsyncError(async (req, res, next) => {
         user.today_attempt = +today_acitivity.attempt_count;
     }    
 
-    const attempt_and_correct_counts = (await pool.query("SELECT DISTINCT subject_name, chapter_name, topic_name, COUNT(attempted_mcqs.student_id) OVER()::INT AS total_attempt_count, SUM(CASE WHEN attempted_mcqs.selected_option=mcq_bank.correct_option THEN 1 ELSE 0 END) OVER()::INT AS total_correct_count,       COUNT(attempted_mcqs.student_id) OVER(PARTITION BY mcq_bank.subject_id)::INT AS subject_attempt_count, SUM(CASE WHEN attempted_mcqs.selected_option=mcq_bank.correct_option THEN 1 ELSE 0 END) OVER(PARTITION BY mcq_bank.subject_id)::INT AS subject_correct_count, COUNT(attempted_mcqs.student_id) OVER(PARTITION BY mcq_bank.chapter_id)::INT AS chapter_attempt_count, SUM(CASE WHEN attempted_mcqs.selected_option=mcq_bank.correct_option THEN 1 ELSE 0 END) OVER(PARTITION BY mcq_bank.chapter_id)::INT AS chapter_correct_count, COUNT(attempted_mcqs.student_id) OVER(PARTITION BY mcq_bank.topic_id)::INT AS topic_attempt_count, SUM(CASE WHEN attempted_mcqs.selected_option=mcq_bank.correct_option THEN 1 ELSE 0 END) OVER(PARTITION BY mcq_bank.topic_id)::INT AS topic_correct_count FROM attempted_mcqs INNER JOIN mcq_bank ON mcq_bank.mcq_id=attempted_mcqs.mcq_id INNER JOIN subjects ON subjects.subject_id=mcq_bank.subject_id INNER JOIN chapters ON chapters.chapter_id=mcq_bank.chapter_id INNER JOIN topics ON topics.topic_id=mcq_bank.topic_id WHERE attempted_mcqs.student_id=$1", [req.user.student_id])).rows;
+    const attempt_and_correct_counts = (await pool.query("SELECT DISTINCT subject_name, chapter_name, topic_name, COUNT(attempted_mcqs.student_id) OVER()::INT AS total_attempt_count, SUM(CASE WHEN attempted_mcqs.selected_option=mcq_bank.correct_option THEN 1 ELSE 0 END) OVER()::INT AS total_correct_count, COUNT(attempted_mcqs.student_id) OVER(PARTITION BY mcq_bank.subject_id)::INT AS subject_attempt_count, SUM(CASE WHEN attempted_mcqs.selected_option=mcq_bank.correct_option THEN 1 ELSE 0 END) OVER(PARTITION BY mcq_bank.subject_id)::INT AS subject_correct_count, COUNT(attempted_mcqs.student_id) OVER(PARTITION BY mcq_bank.chapter_id)::INT AS chapter_attempt_count, SUM(CASE WHEN attempted_mcqs.selected_option=mcq_bank.correct_option THEN 1 ELSE 0 END) OVER(PARTITION BY mcq_bank.chapter_id)::INT AS chapter_correct_count, COUNT(attempted_mcqs.student_id) OVER(PARTITION BY mcq_bank.topic_id)::INT AS topic_attempt_count, SUM(CASE WHEN attempted_mcqs.selected_option=mcq_bank.correct_option THEN 1 ELSE 0 END) OVER(PARTITION BY mcq_bank.topic_id)::INT AS topic_correct_count FROM attempted_mcqs INNER JOIN mcq_bank ON mcq_bank.mcq_id=attempted_mcqs.mcq_id INNER JOIN subjects ON subjects.subject_id=mcq_bank.subject_id INNER JOIN chapters ON chapters.chapter_id=mcq_bank.chapter_id INNER JOIN topics ON topics.topic_id=mcq_bank.topic_id WHERE attempted_mcqs.student_id=$1", [req.user.student_id])).rows;
 
     user.total_attempt = attempt_and_correct_counts[0] ? attempt_and_correct_counts[0].total_attempt_count : 0;
     user.total_correct = attempt_and_correct_counts[0] ? attempt_and_correct_counts[0].total_correct_count : 0;
@@ -149,13 +150,6 @@ const getMCQsForUser = async (req, res, next, query) => {
         return next(new AppError("Incorrect Query", 400));
 
     [biology, physics, chemistry, english, logical_reasoning]
-    .forEach((flag) => {
-        if (isError || !Number.isInteger(flag) || flag < 0 || flag > 1)
-            return isError = true;
-    });
-    if (isError) return next(new AppError("Incorrect Query", 400));
-
-    [biology, physics, chemistry, english, logical_reasoning]
     .forEach((flag, index) => {
         if (flag == 1)
             selected_subjects.push(subjects[index]);
@@ -174,8 +168,15 @@ const getMCQsForUser = async (req, res, next, query) => {
 
 export const getSavedMCQs = handleAsyncError(async (req, res, next) => {
     // /saved-mcqs?page=1&biology=1&physics=1&chemistry=1&english=1&logical_reasoning=1&search=umair,anwar
-    const query = "SELECT mcq_bank.mcq_id, subject_name, chapter_name, question, option_a, option_b, option_c, option_d, correct_option, explanation, saved_date::text FROM bookmarks INNER JOIN mcq_bank ON mcq_bank.mcq_id = bookmarks.mcq_id INNER JOIN subjects ON mcq_bank.subject_id = subjects.subject_id INNER JOIN chapters ON mcq_bank.chapter_id = chapters.chapter_id WHERE student_id=$1 AND subjects.subject_name = ANY ($4) AND mcq_bank.question ILIKE ANY($5) ORDER BY saved_date DESC LIMIT $2 OFFSET $3";
+    const query = "SELECT mcq_bank.mcq_id, subject_name, chapter_name, question, option_a, option_b, option_c, option_d, correct_option, explanation, saved_date::TEXT FROM bookmarks INNER JOIN mcq_bank ON mcq_bank.mcq_id = bookmarks.mcq_id INNER JOIN subjects ON mcq_bank.subject_id = subjects.subject_id INNER JOIN chapters ON mcq_bank.chapter_id = chapters.chapter_id WHERE student_id=$1 AND subjects.subject_name = ANY ($4) AND mcq_bank.question ILIKE ANY($5) ORDER BY saved_date DESC LIMIT $2 OFFSET $3";
     return await getMCQsForUser(req, res, next, query); 
+});
+
+export const bookmarkMCQ = handleAsyncError(async (req, res, next) => {
+    await pool.query("INSERT INTO bookmarks (student_id, mcq_id) VALUES ($1, $2)", [+req.user.student_id, +req.params.mcq_id]);
+    res.status(200).json({
+        status: "success"
+    });
 });
 
 export const getWrongMCQs = handleAsyncError(async (req, res, next) => {

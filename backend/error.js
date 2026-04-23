@@ -50,6 +50,11 @@ function sendProductionError(error, res) {
                 status: "error",
                 message: "Your image size is more than 100KB. Please upload an image of size under 100KB"
             });
+        } else if (error.code === "42703" && error.routine === "errorMissingColumn") {
+            res.status(400).json({                
+                status: "error",
+                message: "The excel file you've uploaded contains missing columns which are not matching the expected file format. Please contact the DEVs for this problem."
+            });
         } else {
             res.status(500).json({
                 status: "error",

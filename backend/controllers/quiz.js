@@ -110,7 +110,7 @@ export const recordAnswer = handleAsyncError(async (req, res, next) => {
         await pool.query("INSERT INTO activity(student_id, attempt_count, correct_count, streak) VALUES ($1, $2, $3, $4)", [req.user.student_id, attempt_count, correct_count, streak]);
     else
         await pool.query("UPDATE activity SET attempt_count=$2, correct_count=$3, streak=$4 WHERE student_id=$1 AND activity_date=$5::DATE", [req.user.student_id, today_activity[0].attempt_count + attempt_count, today_activity[0].correct_count + correct_count, streak, new Date()]);
-
+    
     if (quiz_id)
         await pool.query("INSERT INTO attempted_mcqs (student_id, mcq_id, quiz_id, selected_option) VALUES " + mcq_attempts.map(mcq => `(${req.user.student_id}, ${mcq.id}, ${quiz_id}, '${mcq.selected_option}')`).join(", "));
     else
