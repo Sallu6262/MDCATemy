@@ -218,18 +218,20 @@ export const deleteWrongMCQ = handleAsyncError(async (req, res, next) => {
 });
 
 export const uploadPaymentReceipt = handleAsyncError(async (req, res, next) => {
-    console.log(req.body);
-    console.log(req.file);
     const { coupon, upgrade_role } = req.body;
     
     if (coupon && await isCouponValid(coupon)) {
-        await pool.query("UPDATE students SET coupon=$2 WHERE student_id=$1", [req.user.student_id, coupon]);
-        await pool.query("DELETE FROM coupons WHERE code=$1", [coupon]);
+        try {
+            await pool.query(`BEGIN; UPDATE students SET coupon='${coupon}' WHERE student_id=${req.user.student_id}; DELETE FROM coupons WHERE code='${coupon}'; COMMIT`);
+        } catch(error) {
+            await pool.query("ROLLBACK");
+            next(error);
+        }
     }
     if (req.user.payment_status === "VERIFIED") {
-        if (!upgrade_role) {
+        if (!upgrade_role) 
             return next(new AppError("Please provide the role user wants to upgrade to", 400));
-        }
+
         (await pool.query("UPDATE students SET upgrade_status='PENDING', upgrade_role=$2 WHERE student_id=$1", [req.user.student_id, upgrade_role]));
     }
     else {

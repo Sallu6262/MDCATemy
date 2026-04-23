@@ -29,7 +29,7 @@ app.use(morgan("tiny"));
 
 // SECURITY
 // TODO: SQL INJECTION REMAINS
-app.use([xss(), helmet(), hpp({ whitelist: ['attempts', 'topic_ids', 'subject_ids'] })]);
+app.use([xss(), helmet(), hpp({ whitelist: ['attempts', 'topic_ids', 'subject_ids', 'topics'] })]);
 
 // Rate limiting
 app.use(rateLimit({

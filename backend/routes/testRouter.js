@@ -9,20 +9,15 @@ const router = express.Router();
 // Admin functions
 router.get("/names", protect, /* restrictTo("admin"), */ getAllTests);
 router.post("/create", protect, /* restrictTo("admin"), */ excelFileUpload.single("file"), createTest);
+router.post("/edit", protect, /* restrictTo("admin"), */ excelFileUpload.single("file"), editTest);
 router.post("/add-mcq", protect, /* restrictTo("admin"), */ addToTest);
 
 
 // Student functions
+router.get("/:test_id", protect, isPaymentVerified, /* restrictTo("student"), */ getTestInfo);
 router.get("/previous", protect, isPaymentVerified, /* restrictTo("student"), */ getAllPreviousTests);
 router.get("/upcoming", protect, isPaymentVerified, /* restrictTo("student"), */ getAllUpcomingTests);
 router.post("/record-answer", protect, isPaymentVerified, verifyTestAccess, /* restrictTo("student"), */ recordAnswer);
 
-
-// TODO: Implement All following.
-router.post("/edit", protect, /* restrictTo("admin"), */ editTest);
-
-
-// Student functions
-router.get("/:slug", protect, isPaymentVerified, /* restrictTo("student"), */ getTestInfo);
 
 export default router;
