@@ -96,7 +96,6 @@ CREATE TABLE quiz_subjects (
 CREATE TABLE tests(
     test_id SERIAL PRIMARY KEY,
     test_name VARCHAR(30) NOT NULL UNIQUE,
-    slug VARCHAR(30) NOT NULL UNIQUE,
     test_date DATE NOT NULL DEFAULT CURRENT_DATE,
     mcq_count INT NOT NULL CHECK(mcq_count > 0),
     test_time INT NOT NULL CHECK(test_time > 0)  -- In minutes

@@ -53,20 +53,25 @@ export const convertSubjectsChapterTopicsIntoNestedObject = (data) => {
             subject,
             chapters: []
         });
+        const chapters_found = [];
+
         data.forEach(elem => {
             if (elem.subject_name === subject) {
-                syllabus.at(-1).chapters.push({
-                        name: elem.chapter_name,
-                        topics: []
-                });
-                data.forEach(inner_elem => {
-                    if (inner_elem.chapter_name === elem.chapter_name) {
-                        syllabus.at(-1).chapters.at(-1).topics.push({
-                            id: inner_elem.topic_id,
-                            name: inner_elem.topic_name
-                        });
-                    }
-                });
+                if (!chapters_found.includes(elem.chapter_name)) {
+                    syllabus.at(-1).chapters.push({
+                            name: elem.chapter_name,
+                            topics: []
+                    });
+                    data.forEach(inner_elem => {
+                        if (inner_elem.chapter_name === elem.chapter_name) {
+                            syllabus.at(-1).chapters.at(-1).topics.push({
+                                id: inner_elem.topic_id,
+                                name: inner_elem.topic_name
+                            });
+                        }
+                    });
+                    chapters_found.push(elem.chapter_name);
+                }
             }
         });
         if (syllabus.at(-1).chapters.length === 0) {
