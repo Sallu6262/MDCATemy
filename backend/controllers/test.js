@@ -83,10 +83,11 @@ export const createTest = handleAsyncError(async (req, res, next) => {
     let {test_name, test_time, mcq_count, test_date, topics } = req.body;
 
     //  Create test
-    await pool.query("INSERT INTO tests(test_name, mcq_count, test_time, test_date) VALUES ($1, $2, $3, $4::DATE)", [test_name, +mcq_count, +test_time, test_date]);
-    
+    const data = await pool.query("INSERT INTO tests(test_name, mcq_count, test_time, test_date) VALUES ($1, $2, $3, $4::DATE) RETURNING test_id", [test_name, +mcq_count, +test_time, test_date]);
+
+
     //  Insert topics
-    const { test_id } = (await pool.query("SELECT test_id FROM tests WHERE test_name=$1", [test_name])).rows[0];
+    const test_id = data.rows[0]?.test_id;
     topics = topics.split(",").map(elem => +elem);
     await pool.query("INSERT INTO test_topics (test_id, topic_id) VALUES " + topics.map(topic_id => `(${test_id},${topic_id})`).join(", "));
         
@@ -96,7 +97,10 @@ export const createTest = handleAsyncError(async (req, res, next) => {
     await pool.query("INSERT INTO test_enrollments (test_id, student_id) VALUES " + student_ids.map(student_id => `(${test_id},${student_id})`).join(", "));
 
     res.status(200).json({
-        status: "success"
+        status: "success",
+        data: {
+            test_id
+        }
     });
 });
 
