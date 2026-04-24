@@ -34,7 +34,7 @@ app.use([xss(), helmet(), hpp({ whitelist: ['attempts', 'topic_ids', 'subject_id
 // Rate limiting
 app.use(rateLimit({
 	windowMs: 15 * 60 * 1000, // 15 minutes
-	limit: 100,
+	limit: 1000,
     message: {
         status: "fail",
         statusCode: 429,

@@ -6,6 +6,9 @@ const LoginPage = () => {
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
 
+    const [message, setMessage] = useState('');
+    const [error, setError] = useState(false);
+
     const API_URL = import.meta.env.VITE_API_URL;
 
     const {setStudent, setAdmin, admin, student} = useOutletContext();
@@ -30,6 +33,9 @@ const LoginPage = () => {
         const data1 = await res1.json();
         
         if(data1.status === 'success'){
+            setError(false);
+            setMessage('Logged In Successfully');
+
             const res2 = await fetch(`${API_URL}/users/me`,{
                 credentials: 'include'
             });
@@ -51,6 +57,9 @@ const LoginPage = () => {
                     }
                 }
             }
+        } else {
+            setMessage(data1.message);
+            setError(true);
         }
 
         setLoading(false);
@@ -96,6 +105,8 @@ const LoginPage = () => {
                     </span>
                     </div>
                 </div>
+
+                <span className={`${error ? 'text-red-500' : 'text-green-500'} block`}>{message}</span>
 
                 <button type="submit" disabled={loading} className={`${loading ? 'cursor-not-allowed' : 'cursor-pointer'} flex w-full items-center justify-center gap-2 rounded-xl bg-[#FFC600] py-4 text-sm font-black uppercase tracking-wider text-[#181A18] shadow-[0_8px_32px_rgba(255,198,0,0.25)] hover:brightness-105`}>
                     {loading ? 'Processing....' : 'Login to my camp'}

@@ -3,13 +3,13 @@ import RegistrationPageDecoration from '../components/RegistrationPageDecoration
 import { Outlet, useOutletContext } from 'react-router-dom'
 
 const RegistrationLayout = () => {
-    const {admin, setAdmin, student, setStudent, analytics, setAnalytics} = useOutletContext();
+    const {admin, setAdmin, student, setStudent} = useOutletContext();
 
     return (
         <section className="min-h-screen bg-[#141414] text-white antialiased">
             <div className="flex min-h-screen flex-col lg:flex-row">
                 <RegistrationPageDecoration />
-                <Outlet context={{admin, setAdmin, student, setStudent, analytics, setAnalytics}}/>
+                <Outlet context={{admin, setAdmin, student, setStudent}}/>
             </div>
         </section>
     )
