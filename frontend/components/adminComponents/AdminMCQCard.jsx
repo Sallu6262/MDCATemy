@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
 const MCQCard = ({mcq, isSearched, mcqNo, testID}) => {
     // console.log(testID);
@@ -12,9 +12,12 @@ const MCQCard = ({mcq, isSearched, mcqNo, testID}) => {
 
     const API_URL = import.meta.env.VITE_API_URL;
 
-    if(isSearched){
-        mcqRef.current.focus();
-    }
+    useEffect(() => {
+        if (!isSearched) return;
+        const el = mcqRef.current;
+        if (!el) return;
+        el.focus({ preventScroll: false });
+    }, [isSearched]);
 
     const addMCQToTest = async () => {
         setAddedLoading(true);
@@ -66,11 +69,11 @@ const MCQCard = ({mcq, isSearched, mcqNo, testID}) => {
     }
 
     return (
-        <article ref={mcqRef} id="mcq-41021" tabIndex="-1" className={`scroll-mt-36 rounded-2xl border border-white/10 bg-[#1A1A1A]/95 p-5 shadow-[0_16px_48px_rgba(0,0,0,0.35)] sm:p-6`}>
+        <article ref={mcqRef} id={`mcq-${mcq.mcq_id}`} tabIndex="-1" className={`scroll-mt-36 rounded-2xl border border-white/10 bg-[#1A1A1A]/95 p-5 shadow-[0_16px_48px_rgba(0,0,0,0.35)] sm:p-6`}>
             <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
             <div className="flex items-start gap-3">
                 <div>
-                <label htmlFor="pick-41021" className="text-sm font-semibold text-white">MCQ <span className="font-mono text-base text-[#FFC600]">#{mcqNo}</span></label>
+                <div className="text-sm font-semibold text-white">MCQ <span className="font-mono text-base text-[#FFC600]">#{mcqNo}</span></div>
                     <p className="mt-1 text-xs text-white/40">Topics: {mcq.chapter_name} · {mcq.subject_name}</p>
                 </div>
             </div>
