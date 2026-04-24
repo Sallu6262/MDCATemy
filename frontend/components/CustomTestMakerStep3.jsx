@@ -3,11 +3,14 @@ import SubjectCard from './SubjectCard'
 
 //show error message in case of no selected topics
 const CustomTestMakerStep3 = ({selectedTest, setSelectedTest, nextStage, isTestCreated}) => {
+    // console.log(selectedTest);
+
     const API_URL = import.meta.env.VITE_API_URL;
 
     const [subjects, setSubjects] = useState([]);
     const [selectedTopics, setSelectedTopics] = useState(() => new Set());
     const [message, setMessage] = useState("");
+    const [submitLoading, setSubmitLoading] = useState(false);
 
     // console.log(selectedTopics);
     const handleTopics = useCallback((topicID) => {
@@ -23,8 +26,10 @@ const CustomTestMakerStep3 = ({selectedTest, setSelectedTest, nextStage, isTestC
         });
     },[]);
 
-    const submitTopics = () => {
+    const submitTopics = async () => {
         let topicIDS = new Set();
+
+        setSubmitLoading(true);
 
         if(selectedTest?.topics?.length){
             subjects.forEach(subject => {
@@ -50,11 +55,49 @@ const CustomTestMakerStep3 = ({selectedTest, setSelectedTest, nextStage, isTestC
 
 
         if(topicIDS.size){
-            setSelectedTest(prev => ({...prev, topics: [...topicIDS]}));
-            nextStage();
+            let topicIDsString = "";
+            [...topicIDS].forEach((topicID, i) => {
+                topicIDsString += `${topicID}`;
+        
+                if(i < [...topicIDS]?.length - 1) topicIDsString += ',';
+            });
+
+            // console.log('topic ids:',topicIDsString);
+
+            const formData = new FormData();
+            formData.append("file", selectedTest?.file);
+            formData.append("test_name", selectedTest?.name);
+            formData.append("test_time", selectedTest?.time);
+            formData.append("test_date", selectedTest?.date?.toISOString());
+            formData.append("mcq_count", selectedTest?.mcq_count);
+            formData.append("topics", topicIDsString);
+
+            if(!isTestCreated){
+                formData.append("test_id", selectedTest?.id);
+            }
+
+            const res = await fetch(`${API_URL}/tests/${isTestCreated ? 'create' : 'edit'}`,{
+                method: 'POST',
+                credentials: 'include',
+                body: formData
+            });
+
+            const data = await res.json();
+
+            if(data.status === 'success'){
+                const id = data.data?.test_id || selectedTest?.id; 
+                if(!isTestCreated) setSelectedTest(prev => ({...prev, id , topics: [...topicIDS]}));
+                else setSelectedTest(prev => ({...prev, topics: [...topicIDS]}));
+                nextStage();
+            } else {
+                setMessage(data.message);
+            }
         } else {
             //show error in case of not selecting topics
+            setMessage("Please select at least 1 topic.");
         }
+
+        setSubmitLoading(false);
     }
 
     useEffect(() => {
@@ -106,9 +149,12 @@ const CustomTestMakerStep3 = ({selectedTest, setSelectedTest, nextStage, isTestC
                         }
                         
                     </section>
-                    <button onClick={submitTopics} className="mt-6 self-end cursor-pointer inline-flex min-h-[44px] items-center justify-center rounded-xl bg-[#FFC600] px-6 text-sm font-black uppercase tracking-wider text-[#181A18] shadow-[0_8px_28px_rgba(255,198,0,0.2)] transition hover:brightness-105">
-                        Submit Topics
-                    </button>
+                    <div className='mt-5 flex md:flex-row flex-col justify-end items-center gap-3'>
+                        <span className='text-base text-red-500'>{message}</span>
+                        <button onClick={submitTopics} disabled={submitLoading} className={`${submitLoading ? 'cursor-not-allowed' : 'cursor-pointer'} self-end inline-flex min-h-[44px] items-center justify-center rounded-xl bg-[#FFC600] px-6 text-sm font-black uppercase tracking-wider text-[#181A18] shadow-[0_8px_28px_rgba(255,198,0,0.2)] transition hover:brightness-105`}>
+                            {submitLoading ? 'Processing....' : 'Submit Topics'}
+                        </button>
+                    </div>
                 </div>
             </section>
         </>

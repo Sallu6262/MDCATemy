@@ -2,7 +2,7 @@ import React from 'react'
 import { useState } from 'react'
 
 const CustomTestMakerStep2 = ({selectedTest, setSelectedTest, nextStage}) => {
-    // console.log(selectedTest?.topics);
+    // console.log(selectedTest);
     const [name, setName] = useState(selectedTest?.name || "");
     const [time, setTime] = useState(selectedTest?.time || "");
     const [mcqCount, setMcqCount] = useState(selectedTest?.mcq_count || "");

@@ -3,14 +3,13 @@ import MCQCard from './adminComponents/AdminMCQCard'
 import { useNavigate, useOutletContext } from 'react-router-dom';
 
 const CustomTestMakerStep4 = ({selectedTest, isTestCreated}) => {
+    // console.log(selectedTest);
     const API_URL = import.meta.env.VITE_API_URL;
     const {student, admin} = useOutletContext();
     const navigate = useNavigate();
 
     const [mcqs, setMCQs] = useState([]);
     const [searchedMCQ, setSearchedMCQ] = useState("");
-    const [enterTrigger, setEnterTrigger] = useState(false);
-    const [testID, setTestID] = useState(null);
 
     useEffect(() => {
         if(!student && !admin){
@@ -18,69 +17,32 @@ const CustomTestMakerStep4 = ({selectedTest, isTestCreated}) => {
             return;
         }
 
-        const fetchMCQsAndCreateOrEditTest = async () => {
-            let topicIDs = "";
-            selectedTest?.topics?.forEach((topicID, i) => {
-                topicIDs += `${topicID}`;
-        
-                if(i < selectedTest.topics?.length - 1) topicIDs += ',';
-            });
+        const fetchMCQs = async () => {
+            const res = await fetch(`${API_URL}/quizzes/generate`, {
+            method: 'POST',
+            credentials: 'include',
+            headers: {
+                'Content-Type' : 'application/json'
+            },
+            body: JSON.stringify({
+                topic_ids: selectedTest?.topics,
+                easy: 10000,
+                medium: 10000,
+                hard: 10000
+            })
+        });
 
-            // console.log('topic ids:',topicIDs);
+        const data = await res.json();
 
-            const formData = new FormData();
-            formData.append("file", selectedTest?.file);
-            formData.append("test_name", selectedTest?.name);
-            formData.append("test_time", selectedTest?.time);
-            formData.append("test_date", selectedTest?.date?.toISOString());
-            formData.append("mcq_count", selectedTest?.mcq_count);
-            formData.append("topics", topicIDs);
-
-            if(!isTestCreated){
-                formData.append("test_id", selectedTest?.id);
-            }
-
-            const res1 = await fetch(`${API_URL}/tests/${isTestCreated ? 'create' : 'edit'}`,{
-                method: 'POST',
-                credentials: 'include',
-                body: formData
-            });
-
-            const data1 = await res1.json();
-
-            console.log(data1);
-
-            if(data1.status === 'success'){
-                if(isTestCreated) setTestID(data.data.test_id);
-                else setTestID(selectedTest.id);
-
-                // console.log(topicIDs);
-                const res2 = await fetch(`${API_URL}/quizzes/generate`, {
-                    method: 'POST',
-                    credentials: 'include',
-                    headers: {
-                        'Content-Type' : 'application/json'
-                    },
-                    body: JSON.stringify({
-                        topic_ids: selectedTest?.topics,
-                        easy: 10000,
-                        medium: 10000,
-                        hard: 10000
-                    })
-                });
-
-                const data2 = await res2.json();
-
-                if(data2.status === 'success'){
-                    // let tempMcqs = Object.keys(data2.data2?.mcqs).map(difficulty => data2.data2?.mcqs[difficulty].map(mcq_per_ => mcq_per_));
-                    let tempMcqs = [];
-                    Object.keys(data2.data.mcqs).forEach(difficulty => data2.data?.mcqs[difficulty].forEach(mcq => tempMcqs.push(mcq)));
-                    setMCQs(tempMcqs);
-                }
-            }
+        if(data.status === 'success'){
+            // let tempMcqs = Object.keys(data.data?.mcqs).map(difficulty => data.data?.mcqs[difficulty].map(mcq_per_ => mcq_per_));
+            let tempMcqs = [];
+            Object.keys(data.data.mcqs).forEach(difficulty => data.data?.mcqs[difficulty].forEach(mcq => tempMcqs.push(mcq)));
+            setMCQs(tempMcqs);
+        }
         }
 
-        fetchMCQsAndCreateOrEditTest();
+        fetchMCQs();
     }, []);
 
     return (
@@ -104,7 +66,7 @@ const CustomTestMakerStep4 = ({selectedTest, isTestCreated}) => {
 
                 <section className="flex-1 space-y-5" aria-label="MCQ list">
                     {
-                        mcqs?.map((mcq, i)=> <MCQCard key={i} mcq={mcq} mcqNo={i+1} isSearched={Number(searchedMCQ) === mcq.mcq_id} testID={testID}/>)
+                        mcqs?.map((mcq, i)=> <MCQCard key={i} mcq={mcq} mcqNo={i+1} isSearched={Number(searchedMCQ) === mcq.mcq_id} testID={selectedTest?.id}/>)
                     }
                 </section>
             </div>
