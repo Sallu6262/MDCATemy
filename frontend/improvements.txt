@@ -1,4 +1,7 @@
 1. In signup form, correct matric and fsc percentage needed according to total marks depending on province
-2. UI adjustment in admin payments percentage
-3. if no pending payments users, then on admin panel, a nice UI screen needed to tell admin that no pending users
+2. UI adjustment in admin payments percentage   (done)
+3. if no pending payments users, then on admin panel, a nice UI screen needed to tell admin that no pending users   (done)
 4. fix the number automatically changing when typing in signup form for student
+5. Add to test button not visible for already added mcqs for better error handling
+6. animation of reviews shown in signup / login form
+7. search bar to be absolute in custom test maker step 4

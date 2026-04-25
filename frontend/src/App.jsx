@@ -12,6 +12,10 @@ import LoginPage from '../pages/LoginPage';
 import SignUpPage from '../pages/SignUpPage';
 import getUserLoader from '../utils/getUserLoader';
 import PaymentErrorPage from '../pages/PaymentErrorPage';
+import UserDashboardLayout from '../layout/UserDashboardLayout';
+import UserPreviousTestsPage from '../pages/UserPreviousTestsPage';
+import UserDashboardPage from '../pages/UserDashboardPage';
+import UserTestSeriesPage from '../pages/UserTestSeriesPage';
 
 const App = () => {
   const router = createBrowserRouter(
@@ -19,16 +23,25 @@ const App = () => {
       <>
         <Route element={<MainLayout />} id='root' loader={getUserLoader}>
 
+          <Route element={<RegistrationLayout />}>
+            <Route path='/login' element={<LoginPage />}/>
+            <Route path='/signup' element={<SignUpPage />}/>
+          </Route>
+
+          <Route element={<UserDashboardLayout />}>
+            <Route path='/dashboard' element={<UserDashboardPage />}/>
+
+            <Route path='/test-series' element={<UserTestSeriesPage />}>
+              <Route path='/test-series/previous-tests' element={<UserPreviousTestsPage />}/> 
+            </Route>
+            
+          </Route>
+
           <Route element={<AdminDashboardLayout />}>
             <Route path='/admin' element={<AdminDefaultPage />}/>
             <Route path='/admin/payments' element={<AdminPaymentsPage />}/>
             <Route path='/admin/upload-mcqs' element={<AdminUploadMcqsPage />}/>
             <Route path='/admin/custom-test-maker' element={<AdminCustomTestMakerPage />}/>
-          </Route>
-
-          <Route element={<RegistrationLayout />}>
-            <Route path='/login' element={<LoginPage />}/>
-            <Route path='/signup' element={<SignUpPage />}/>
           </Route>
 
           <Route path='/payment-status' element={<PaymentErrorPage />}/>
