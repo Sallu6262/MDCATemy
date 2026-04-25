@@ -14,14 +14,15 @@ const Navbar = ({user, setUser}) => {
       credentials: 'include'
     });
 
+    // console.log(res);
     if(res?.status === 200){
-      setUser(null);
       navigate('/');
+      setUser(null);
     }
   }
 
   return (
-    <nav className="sticky top-0 left-0 right-0 z-50" style={{ background: "rgba(18,18,18,0.88)", backdropFilter: "blur(24px) saturate(180%)", borderBottom: "1px solid rgba(255,255,255,0.08)", boxShadow: "0 4px 24px rgba(0,0,0,0.25)" }}>
+    <nav className="sticky top-0 left-0 right-0 z-100" style={{ background: "rgba(18,18,18,0.88)", backdropFilter: "blur(24px) saturate(180%)", borderBottom: "1px solid rgba(255,255,255,0.08)", boxShadow: "0 4px 24px rgba(0,0,0,0.25)" }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between gap-3" style={{ minHeight: "72px" }}>
           <Link onClick={() => window.scrollTo({top: 0, behavior: 'smooth'})} className="flex h-full items-center flex-shrink-0">

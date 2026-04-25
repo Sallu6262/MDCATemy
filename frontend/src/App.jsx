@@ -16,6 +16,8 @@ import UserDashboardLayout from '../layout/UserDashboardLayout';
 import UserPreviousTestsPage from '../pages/UserPreviousTestsPage';
 import UserDashboardPage from '../pages/UserDashboardPage';
 import UserTestSeriesPage from '../pages/UserTestSeriesPage';
+import UserTestSeriesLayout from '../layout/UserTestSeriesLayout';
+import { AllUpcomingTestsPage } from '../pages/AllUpcomingTestsPage';
 
 const App = () => {
   const router = createBrowserRouter(
@@ -31,17 +33,19 @@ const App = () => {
           <Route element={<UserDashboardLayout />}>
             <Route path='/dashboard' element={<UserDashboardPage />}/>
 
-            <Route path='/test-series' element={<UserTestSeriesPage />}>
-              <Route path='/test-series/previous-tests' element={<UserPreviousTestsPage />}/> 
+            <Route path='/test-series' element={<UserTestSeriesLayout />}>
+              <Route index element={<UserTestSeriesPage />}/>
+              <Route path='previous-tests' element={<UserPreviousTestsPage />}/> 
+              <Route path='all-upcoming-tests' element={<AllUpcomingTestsPage />}/>
             </Route>
             
           </Route>
 
-          <Route element={<AdminDashboardLayout />}>
-            <Route path='/admin' element={<AdminDefaultPage />}/>
-            <Route path='/admin/payments' element={<AdminPaymentsPage />}/>
-            <Route path='/admin/upload-mcqs' element={<AdminUploadMcqsPage />}/>
-            <Route path='/admin/custom-test-maker' element={<AdminCustomTestMakerPage />}/>
+          <Route path='/admin' element={<AdminDashboardLayout />}>
+            <Route index element={<AdminDefaultPage />}/>
+            <Route path='payments' element={<AdminPaymentsPage />}/>
+            <Route path='upload-mcqs' element={<AdminUploadMcqsPage />}/>
+            <Route path='custom-test-maker' element={<AdminCustomTestMakerPage />}/>
           </Route>
 
           <Route path='/payment-status' element={<PaymentErrorPage />}/>

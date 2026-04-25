@@ -7,8 +7,9 @@ const UserDashboardLayout = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
+        // console.log('here in dashboard');
         if(!student){
-            navigate('/login');
+            navigate('/');
             return;
         } 
 

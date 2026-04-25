@@ -12,11 +12,6 @@ const CustomTestMakerStep4 = ({selectedTest, isTestCreated}) => {
     const [searchedMCQ, setSearchedMCQ] = useState("");
 
     useEffect(() => {
-        if(!student && !admin){
-            navigate('/login');
-            return;
-        }
-
         const fetchMCQs = async () => {
             const res = await fetch(`${API_URL}/quizzes/generate`, {
             method: 'POST',
