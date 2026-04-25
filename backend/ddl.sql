@@ -130,7 +130,7 @@ CREATE TABLE mcq_bank(
     explanation VARCHAR(300),
     attempt_count INT DEFAULT 0,
     correct_count INT DEFAULT 0,
-    difficulty VARCHAR(6) NOT NULL DEFAULT 'Easy',
+    difficulty DIFFICULTY_TYPE NOT NULL,
     chapter_id INT NOT NULL,
     topic_id INT NOT NULL,
     subject_id INT NOT NULL,
@@ -155,11 +155,10 @@ CREATE TABLE bookmarks(
 CREATE TABLE attempted_mcqs(
     student_id INT NOT NULL,
     mcq_id INT NOT NULL,
-    selected_option CHAR(1),
+    selected_option CHAR(1) NOT NULL,
     quiz_id INT,
     test_id INT,
     saved_date DATE NOT NULL DEFAULT CURRENT_DATE, 
-    -- What should happen when a user corrects the previously wronged mcq or vice versa? 
 
     CONSTRAINT check_mcq_belonging CHECK ((quiz_id IS NOT NULL AND test_id IS NULL) OR (quiz_id IS NULL AND test_id IS NOT NULL)),
     CONSTRAINT fkey_attemptedmcqs_quizzes FOREIGN KEY(quiz_id) REFERENCES quizzes(quiz_id) ON UPDATE CASCADE ON DELETE CASCADE,

@@ -14,10 +14,10 @@ router.post("/add-mcq", protect, /* restrictTo("admin"), */ addToTest);
 
 
 // Student functions
-router.get("/:test_id", protect, isPaymentVerified, /* restrictTo("student"), */ getTestInfo);
 router.get("/previous", protect, isPaymentVerified, /* restrictTo("student"), */ getAllPreviousTests);
 router.get("/upcoming", protect, isPaymentVerified, /* restrictTo("student"), */ getAllUpcomingTests);
 router.post("/record-answer", protect, isPaymentVerified, verifyTestAccess, /* restrictTo("student"), */ recordAnswer);
+router.get("/:test_id", protect, isPaymentVerified, /* restrictTo("student"), */ getTestInfo);
 
 
 export default router;
