@@ -67,9 +67,10 @@ export const getAllUpcomingTests = handleAsyncError(async (req, res, next) => {
 });
 
 export const getAllTests = handleAsyncError(async (req, res, next) => {
-    let data = (await pool.query(`SELECT tests.test_id AS id, test_name AS name, test_date::TEXT AS date, mcq_count, test_time AS time, STRING_AGG(topic_name, ',') AS topics FROM tests LEFT JOIN test_topics ON test_topics.test_id=tests.test_id LEFT JOIN topics ON topics.topic_id=test_topics.topic_id GROUP BY tests.test_id, test_name, test_date, mcq_count, test_time`)).rows;
+    let data = (await pool.query("SELECT id, name, date, mcq_count, time, topics, STRING_AGG(test_mcqs.mcq_id::TEXT, ',') AS mcq_ids FROM (SELECT tests.test_id AS id, test_name AS name, test_date::TEXT AS date, mcq_count, test_time AS time, STRING_AGG(topic_name, ',') AS topics FROM tests LEFT JOIN test_topics ON test_topics.test_id=tests.test_id LEFT JOIN topics ON topics.topic_id=test_topics.topic_id GROUP BY tests.test_id, test_name, test_date, mcq_count, test_time) LEFT JOIN test_mcqs ON test_mcqs.test_id = id GROUP BY id, name, date, mcq_count, time, topics")).rows;
     data = data.map(elem => {
         elem.topics = elem.topics ? elem.topics.split(",") : [];
+        elem.mcq_ids = elem.mcq_ids ? elem.mcq_ids.split(",").map(id => +id) : [];
         return elem;        
     });
     res.status(200).json({

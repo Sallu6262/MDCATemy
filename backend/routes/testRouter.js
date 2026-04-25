@@ -18,6 +18,7 @@ router.get("/previous", protect, isPaymentVerified, /* restrictTo("student"), */
 router.get("/upcoming", protect, isPaymentVerified, /* restrictTo("student"), */ getAllUpcomingTests);
 router.get("/:test_id", protect, isPaymentVerified, /* restrictTo("student"), */ getTestInfo);
 router.post("/record-answer", protect, isPaymentVerified, verifyTestAccess, /* restrictTo("student"), */ recordAnswer);
+router.get("/:test_id", protect, isPaymentVerified, /* restrictTo("student"), */ getTestInfo);
 
 
 export default router;

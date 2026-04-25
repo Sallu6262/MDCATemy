@@ -1,7 +1,7 @@
 import express from "express";
 import multer from "multer";
 import { signup, login, logout, protect, restrictTo, isPaymentVerified } from "../controllers/auth.js";
-import { getMe, getDashboardStats, getSavedMCQs, getWrongMCQs, deleteSavedMCQ, deleteWrongMCQ, uploadPaymentReceipt, bookmarkMCQ } from "../controllers/user.js";
+import { getMe, getDashboardStats, getSavedMCQs, getWrongMCQs, deleteSavedMCQ, deleteWrongMCQ, uploadPaymentReceipt, bookmarkMCQ, getPredictedScore } from "../controllers/user.js";
 
 const router = express.Router();
 
@@ -27,6 +27,7 @@ const upload = multer({storage: multer.diskStorage({
 // Student functions
 router.get("/me", protect, getMe);
 router.get("/stats", protect, isPaymentVerified, /* restrictTo("student"), */ getDashboardStats);
+router.get("/predicted-score", protect, isPaymentVerified, /* restrictTo("student"), */ getPredictedScore);
 router.get("/bookmarks", protect, isPaymentVerified, /* restrictTo("student"), */ getSavedMCQs);
 router.post("/bookmarks/:mcq_id", protect, isPaymentVerified, /* restrictTo("student"), */ bookmarkMCQ);
 router.delete("/bookmarks/:mcq_id", protect, isPaymentVerified, /* restrictTo("student"), */ deleteSavedMCQ);

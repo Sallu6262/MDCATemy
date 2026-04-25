@@ -38,14 +38,17 @@ function sendProductionError(error, res) {
                 status: "error",
                 message: "This user's payment is already verified."
             });
-        } 
-        else if (error.code === "23505") {
+        } else if (error.code === "23505" && error.constraint === "pkey_testmcqs") {
+            res.status(400).json({
+                status: "error",
+                message: "This MCQ has already been added in this test."
+            });
+        } else if (error.code === "23505") {
             res.status(400).json({
                 status: "error",
                 message: "You can't perform this operation again."
             });
-        }
-         else if (error.code === "LIMIT_FILE_SIZE") {
+        } else if (error.code === "LIMIT_FILE_SIZE") {
             res.status(400).json({
                 status: "error",
                 message: "Your image size is more than 100KB. Please upload an image of size under 100KB"

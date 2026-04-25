@@ -137,6 +137,18 @@ export const getDashboardStats = handleAsyncError(async (req, res, next) => {
     });
 });
 
+export const getPredictedScore = handleAsyncError(async (req, res, next) => {
+    let predicted_score = (await pool.query("SELECT SUM((0.25 + 0.70*(sms_table.sms/100)) * subjects.mcqs_in_mdcat) AS score FROM (SELECT cms_table.subject_id, SUM(cms_table.cms * chapters.chapter_weight) / SUM(chapters.chapter_weight) AS sms FROM (SELECT tmi_table.subject_id, tmi_table.chapter_id, SUM(tmi_table.tmi * topics.topic_weight) / SUM(topics.topic_weight) AS cms FROM (SELECT mcq_bank.subject_id, mcq_bank.chapter_id, mcq_bank.topic_id, LEAST(GREATEST(SUM(CASE WHEN attempted_mcqs.selected_option = mcq_bank.correct_option THEN CASE WHEN mcq_bank.difficulty = 'EASY' THEN 3 WHEN mcq_bank.difficulty = 'MEDIUM' THEN 6 WHEN mcq_bank.difficulty = 'HARD' THEN 10 END ELSE CASE WHEN mcq_bank.difficulty = 'EASY' THEN -5 WHEN mcq_bank.difficulty = 'MEDIUM' THEN -4 WHEN mcq_bank.difficulty = 'HARD' THEN -2 END END) + 40, 0), 100) AS tmi FROM attempted_mcqs INNER JOIN mcq_bank ON mcq_bank.mcq_id=attempted_mcqs.mcq_id WHERE student_id=$1 GROUP BY mcq_bank.subject_id, mcq_bank.chapter_id, mcq_bank.topic_id) AS tmi_table INNER JOIN topics ON topics.topic_id=tmi_table.topic_id GROUP BY tmi_table.subject_id, tmi_table.chapter_id) AS cms_table INNER JOIN chapters ON chapters.chapter_id=cms_table.chapter_id GROUP BY cms_table.subject_id) AS sms_table INNER JOIN subjects ON subjects.subject_id=sms_table.subject_id", [req.user.student_id])).rows;
+    predicted_score = predicted_score ? Math.ceil(predicted_score[0].score) : 0;
+
+    res.status(200).json({
+        status: "success",
+        data: {
+            predicted_score
+        }
+    })
+});
+
 const getMCQsForUser = async (req, res, next, query) => {
     let {page, biology, physics, chemistry, english, logical_reasoning} = req.query;
     let search = req.query.search ?? "";
@@ -166,18 +178,19 @@ const getMCQsForUser = async (req, res, next, query) => {
     });
 };
 
-export const getSavedMCQs = handleAsyncError(async (req, res, next) => {
-    // /saved-mcqs?page=1&biology=1&physics=1&chemistry=1&english=1&logical_reasoning=1&search=umair,anwar
-    const query = "SELECT mcq_bank.mcq_id, subject_name, chapter_name, question, option_a, option_b, option_c, option_d, correct_option, explanation, saved_date::TEXT FROM bookmarks INNER JOIN mcq_bank ON mcq_bank.mcq_id = bookmarks.mcq_id INNER JOIN subjects ON mcq_bank.subject_id = subjects.subject_id INNER JOIN chapters ON mcq_bank.chapter_id = chapters.chapter_id WHERE student_id=$1 AND subjects.subject_name = ANY ($4) AND mcq_bank.question ILIKE ANY($5) ORDER BY saved_date DESC LIMIT $2 OFFSET $3";
-    return await getMCQsForUser(req, res, next, query); 
-});
-
 export const bookmarkMCQ = handleAsyncError(async (req, res, next) => {
     await pool.query("INSERT INTO bookmarks (student_id, mcq_id) VALUES ($1, $2)", [+req.user.student_id, +req.params.mcq_id]);
     res.status(200).json({
         status: "success"
     });
 });
+
+export const getSavedMCQs = handleAsyncError(async (req, res, next) => {
+    // /saved-mcqs?page=1&biology=1&physics=1&chemistry=1&english=1&logical_reasoning=1&search=umair,anwar
+    const query = "SELECT mcq_bank.mcq_id, subject_name, chapter_name, question, option_a, option_b, option_c, option_d, correct_option, explanation, saved_date::TEXT FROM bookmarks INNER JOIN mcq_bank ON mcq_bank.mcq_id = bookmarks.mcq_id INNER JOIN subjects ON mcq_bank.subject_id = subjects.subject_id INNER JOIN chapters ON mcq_bank.chapter_id = chapters.chapter_id WHERE student_id=$1 AND subjects.subject_name = ANY ($4) AND mcq_bank.question ILIKE ANY($5) ORDER BY saved_date DESC LIMIT $2 OFFSET $3";
+    return await getMCQsForUser(req, res, next, query); 
+});
+
 
 export const getWrongMCQs = handleAsyncError(async (req, res, next) => {
     // /wrong-mcqs?page=1&biology=1&physics=1&chemistry=1&english=1&logical_reasoning=1&search=umair,anwar&sort=(newest|oldest|hardest|most_attempted)
