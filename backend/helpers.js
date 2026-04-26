@@ -7,8 +7,6 @@ export const wait = (seconds) => new Promise((res) => setTimeout(res, seconds*10
 
 export const isString = (str) => Object.prototype.toString.call(str) === '[object String]' && (str instanceof String || typeof str === 'string');
 
-export const getSlug = (str) => str.toLowerCase().split(" ").join("-");
-
 export const initialize = () => {
     process.env.MODE = process.env.MODE.trim();
     process.env.DATABASE_USERNAME = process.env.DATABASE_USERNAME.trim();
@@ -46,35 +44,21 @@ export const gracefulShutdown = (server) => {
 
 export const convertSubjectsChapterTopicsIntoNestedObject = (data) => {
     const subjects = ["Biology", "Chemistry", "Physics", "Logical Reasoning", "English"];
-    const syllabus = [];    
+    const syllabus = {};    
 
-    subjects.forEach(subject => {
-        syllabus.push({
-            subject,
-            chapters: []
-        });
-        const chapters_found = [];
+    data.forEach((obj) => {
+        const subject = formatColumnName(obj.subject_name);
+        const chapter = formatColumnName(obj.chapter_name);
+        const topic = obj.topic_name;
+        const topic_id = obj.topic_id;
 
-        data.forEach(elem => {
-            if (elem.subject_name === subject && !chapters_found.includes(elem.chapter_name)) {
-                syllabus.at(-1).chapters.push({
-                        name: elem.chapter_name,
-                        topics: []
-                });
-                data.forEach(inner_elem => {
-                    if (inner_elem.chapter_name === elem.chapter_name) {
-                        syllabus.at(-1).chapters.at(-1).topics.push({
-                            id: inner_elem.topic_id,
-                            name: inner_elem.topic_name
-                        });
-                    }
-                });
-                chapters_found.push(elem.chapter_name);
-            }
+        syllabus[subject] = syllabus[subject] ?? {};
+        syllabus[subject][chapter] = syllabus[subject][chapter] ?? [];
+
+        syllabus[subject][chapter].push({
+            id: topic_id,
+            name: topic
         });
-        if (syllabus.at(-1).chapters.length === 0) {
-            syllabus.pop();
-        }
     });
     return syllabus;
 }

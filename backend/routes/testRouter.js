@@ -1,6 +1,6 @@
 import express from "express";
 import { isPaymentVerified, protect, restrictTo, verifyTestAccess } from "../controllers/auth.js";
-import { getAllTests, createTest, editTest, getAllUpcomingTests, addToTest, getTestInfo, getAllPreviousTests } from "../controllers/test.js";
+import { getAllTests, createTest, editTest, getAllUpcomingTests, addToTest, getTestInfo, getAllPreviousTests, discardTest } from "../controllers/test.js";
 import { recordAnswer } from "../controllers/quiz.js";
 import { excelFileUpload } from "../helpers.js";
 
@@ -17,6 +17,7 @@ router.post("/add-mcq", protect, /* restrictTo("admin"), */ addToTest);
 router.get("/previous", protect, isPaymentVerified, /* restrictTo("student"), */ getAllPreviousTests);
 router.get("/upcoming", protect, isPaymentVerified, /* restrictTo("student"), */ getAllUpcomingTests);
 router.post("/record-answer", protect, isPaymentVerified, verifyTestAccess, /* restrictTo("student"), */ recordAnswer);
+router.post("/discard", protect, isPaymentVerified, verifyTestAccess, discardTest)
 router.get("/:test_id", protect, isPaymentVerified, /* restrictTo("student"), */ getTestInfo);
 
 

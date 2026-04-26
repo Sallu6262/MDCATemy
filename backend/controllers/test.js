@@ -105,6 +105,10 @@ export const createTest = handleAsyncError(async (req, res, next) => {
     });
 });
 
+export const discardTest = handleAsyncError(async (req, res, next) => {
+    
+});
+
 
 export const addToTest = handleAsyncError(async (req, res, next) => {
     const { test_id, mcq_id } = req.body;
