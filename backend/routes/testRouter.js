@@ -16,6 +16,7 @@ router.post("/add-mcq", protect, /* restrictTo("admin"), */ addToTest);
 // Student functions
 router.get("/previous", protect, isPaymentVerified, /* restrictTo("student"), */ getAllPreviousTests);
 router.get("/upcoming", protect, isPaymentVerified, /* restrictTo("student"), */ getAllUpcomingTests);
+router.get("/:test_id", protect, isPaymentVerified, /* restrictTo("student"), */ getTestInfo);
 router.post("/record-answer", protect, isPaymentVerified, verifyTestAccess, /* restrictTo("student"), */ recordAnswer);
 router.post("/discard", protect, isPaymentVerified, verifyTestAccess, discardTest)
 router.get("/:test_id", protect, isPaymentVerified, /* restrictTo("student"), */ getTestInfo);

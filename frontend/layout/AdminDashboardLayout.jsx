@@ -9,7 +9,7 @@ const AdminDashboardLayout = () => {
 
     useEffect(() => {
         if(!admin){
-            navigate('/');
+            navigate('/login');
             return;
         }
     },[]);

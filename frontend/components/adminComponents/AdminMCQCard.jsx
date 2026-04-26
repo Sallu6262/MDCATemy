@@ -79,11 +79,11 @@ const MCQCard = ({mcq, isSearched, mcqNo, testID}) => {
             </div>
             <div className="flex shrink-0 items-center gap-4 md:flex-row flex-col">
                 <p className={`text-base ${error ? 'text-red-500' : 'text-green-500'}`}>{message}</p>
-                {isAdded || <button onClick={addMCQToTest} disabled={addedLoading} type="button" className={`${addedLoading ? 'cursor-not-allowed' : 'cursor-pointer'} rounded-xl border border-[#FFC600]/35 bg-[#FFC600]/10 px-4 py-2 text-xs font-black uppercase tracking-wider text-[#FFC600] transition hover:bg-[#FFC600]/20`}>{addedLoading ? 'Processing....' : 'Add to test'}</button>}
+                {!isAdded ? <button onClick={addMCQToTest} disabled={addedLoading} type="button" className={`${addedLoading ? 'cursor-not-allowed' : 'cursor-pointer'} rounded-xl border border-[#FFC600]/35 bg-[#FFC600]/10 px-4 py-2 text-xs font-black uppercase tracking-wider text-[#FFC600] transition hover:bg-[#FFC600]/20`}>{addedLoading ? 'Processing....' : 'Add to test'}</button> : ''}
                 {
-                    isDeleted || <button type="button" onClick={deleteMCQFromBank} disabled={deleteLoading} className={`${deleteLoading ? 'cursor-not-allowed' : 'cursor-pointer'} rounded-xl border border-red-500/35 bg-red-500/10 px-4 py-2 text-xs font-black uppercase tracking-wider text-red-400 transition hover:bg-red-500/20`}>
+                    !isDeleted ? <button type="button" onClick={deleteMCQFromBank} disabled={deleteLoading} className={`${deleteLoading ? 'cursor-not-allowed' : 'cursor-pointer'} rounded-xl border border-red-500/35 bg-red-500/10 px-4 py-2 text-xs font-black uppercase tracking-wider text-red-400 transition hover:bg-red-500/20`}>
                                     {deleteLoading ? 'Processing....' : 'Delete from bank'}
-                                </button>
+                                </button> : ''
                 }
             </div>
             </div>

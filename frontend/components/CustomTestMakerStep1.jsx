@@ -76,7 +76,7 @@ const CustomTestMakerStep1 = ({nextStage, setIsTestCreated, selectedTestID, setS
 
                     <div className="mt-8 flex flex-col gap-3 border-t border-white/[0.06] pt-6 sm:flex-row sm:justify-end sm:gap-4">
                         {
-                            !selectedTestID || 
+                            selectedTestID ?
                             <button
                                 type="button"
                                 onClick={resumeTest}
@@ -84,6 +84,7 @@ const CustomTestMakerStep1 = ({nextStage, setIsTestCreated, selectedTestID, setS
                             >
                                 Resume Selected Test
                             </button>
+                            : ''
                         }
                         <button
                             type="button"
