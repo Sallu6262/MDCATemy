@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "5000:5000" # Maps local port 5000 to container port 5000
+    environment:
+      - NODE_ENV=production
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "8080:80" # Maps local port 8080 to Nginx container port 80
+    depends_on:
+      - backend
