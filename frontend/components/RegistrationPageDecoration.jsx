@@ -1,4 +1,5 @@
 import React from 'react'
+import {useEffect, useState} from 'react'
 
 const REVIEWS = [
   {
@@ -20,7 +21,7 @@ const REVIEWS = [
     quote:
       'Mocks + analytics showed exactly where I was leaking marks. Two months later my bio section flipped.',
     name: 'Fatima Noor',
-    meta: 'MDCAT 2023 — Repeater · 181/200',
+    meta: 'MDCAT 2023 — 181/200',
   },
   {
     id: 'bilal',
@@ -31,10 +32,50 @@ const REVIEWS = [
 ]
 
 const RegistrationPageDecoration = () => {
-  const review = REVIEWS[0]
+  const [reviewNumber, setReviewNumber] = useState(0);
+  const review = REVIEWS[reviewNumber];
+  
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setReviewNumber(prev => (prev + 1) %  REVIEWS.length);
+    }, 3000);
+
+    () => clearInterval(interval);
+  },[]);
 
   return (
     <aside className="relative flex flex-1 flex-col border-b border-white/[0.06] px-6 py-10 lg:max-w-[46%] lg:border-b-0 lg:border-r lg:px-12 lg:py-14">
+      <style>
+        {`
+          [data-reviews-root] {
+            isolation: isolate;
+          }
+
+          [data-review-panel] {
+            will-change: opacity, transform;
+            animation: reviewSwap 3s ease-in-out infinite;
+          }
+
+          @keyframes reviewSwap {
+            0% {
+              opacity: 0;
+              transform: translateY(8px);
+            }
+            12% {
+              opacity: 1;
+              transform: translateY(0);
+            }
+            78% {
+              opacity: 1;
+              transform: translateY(0);
+            }
+            100% {
+              opacity: 0;
+              transform: translateY(-6px);
+            }
+          }
+        `}
+      </style>
       <div>
         <div className="relative mx-auto mt-10 max-w-md">
           <div className="mx-auto w-full max-w-[min(300px,78vw)]">

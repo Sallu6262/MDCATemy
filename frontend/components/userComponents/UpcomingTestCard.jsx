@@ -35,7 +35,7 @@ const UpcomingTestCard = ({upcomingTest}) => {
                     <div className="bg-[#FFC600] border-b-2 border-[#181A18] px-4 py-2 flex items-center justify-between gap-2">
                     <span className="flex items-center gap-1.5 text-[12px] font-[Poppins] font-black uppercase tracking-[0.14em] text-[#181A18] min-w-0">
                         <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="shrink-0">
-                        <path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/>
+                            <path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/>
                         </svg>
                     </span>
                     <span className="flex items-center gap-1 text-[9px] font-[Poppins] font-black uppercase tracking-[0.12em] text-[#181A18] bg-[#181A18]/10 rounded-full px-2 py-0.5 border border-[#181A18]/20 shrink-0">

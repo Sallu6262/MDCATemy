@@ -5,7 +5,7 @@ const UpcomingTestsList = ({upcomingTests}) => {
     return (
         <>
             {
-                upcomingTests?.length - 1 ?
+                upcomingTests?.length - 1 > 0 ?
                 <section>
                     <div className="flex items-center gap-2 mb-2.5">
                         <div className="w-1 h-4 bg-[#FFC600] rounded-full"></div>

@@ -3,5 +3,9 @@
 3. if no pending payments users, then on admin panel, a nice UI screen needed to tell admin that no pending users   (done)
 4. fix the number automatically changing when typing in signup form for student
 5. Add to test button not visible for already added mcqs for better error handling
-6. animation of reviews shown in signup / login form
+6. animation of reviews shown in signup / login form    (done)
 7. search bar to be absolute in custom test maker step 4
+8. when checking if student is null, also check if student.payment_status === 'VERIFIED' when navigating to dashboard etc.
+9. back to test-series button in all upcoming tests page    (done)
+10. download as PDF feature in previous tests.
+11. review mcqs in previous tests feature.

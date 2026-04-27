@@ -5,17 +5,41 @@ const TestSyllabusPopUp = ({test, setSyllabusHidden}) => {
     // console.log(test?.syllabus);
     const testRef = useRef(null);
 
-    const subjectToColor = (rawClass, subject) => {
+    const subjectToColor = (type, subject) => {
         const colors = {
-            'biology' : '#10B981',
-            'chemistry' : '#F59E0B',
-            'physics' : '#38BDF8',
-            'english' : '#A78BFA',
-            'logical reasoning' : '#F472B6'
+            'biology' : {
+                'border' : 'border-[#10B981]',
+                'border-l' : 'border-l-[#10B981]',
+                'bg' : 'bg-[#10B981]',
+                'stroke' : '#10B981' 
+            },
+            'physics' : {
+                'border' : 'border-[#38BDF8]',
+                'border-l' : 'border-l-[#38BDF8]',
+                'bg' : 'bg-[#38BDF8]',
+                'stroke' : '#38BDF8' 
+            },
+            'chemistry' : {
+                'border' : 'border-[#F59E0B]',
+                'border-l' : 'border-l-[#F59E0B]',
+                'bg' : 'bg-[#F59E0B]',
+                'stroke' : '#F59E0B' 
+            },
+            'english' : {
+                'border' : 'border-[#A78BFA]',
+                'border-l' : 'border-l-[#A78BFA]',
+                'bg' : 'bg-[#A78BFA]',
+                'stroke' : '#A78BFA' 
+            },
+            'logical reasoning' : {
+                'border' : 'border-[#F472B6]',
+                'border-l' : 'border-l-[#F472B6]',
+                'bg' : 'bg-[#F472B6]',
+                'stroke' : '#F472B6' 
+            }
         }
 
-        // console.log(rawClass.replace('colour', colors[subject.toLowerCase()]))
-        return rawClass.replace('colour', colors[subject.toLowerCase()]);
+        return colors?.[subject]?.[type] || '';
     }
     // console.log(test);
 
@@ -63,14 +87,14 @@ const TestSyllabusPopUp = ({test, setSyllabusHidden}) => {
                     {
                         Object.keys(test?.syllabus).map((subject,i) => {
                             return <div key={i} 
-                                className={`bg-[#181A18]/60 border border-[#2E302E] rounded-xl overflow-hidden border-l-[3px] ${subjectToColor('border-l-[colour]', subject)}`}
+                                className={`bg-[#181A18]/60 border border-[#2E302E] rounded-xl overflow-hidden border-l-[3px] ${subjectToColor('border-l', subject)}`}
                             >
                                 <button className="w-full flex items-center justify-between px-3 py-2.5 text-left">
                                 <div className="flex items-center gap-2">
                                     <div 
-                                    className={`w-7 h-7 rounded-md flex items-center justify-center flex-shrink-0 border ${subjectToColor('border-[colour]/25', subject)}`}
+                                    className={`w-7 h-7 rounded-md flex items-center justify-center flex-shrink-0 border ${subjectToColor('border', subject)}`}
                                     >
-                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={`${subjectToColor('colour',subject)}`} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={`${subjectToColor('stroke',subject)}`} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
                                         <path d="M12 7v14" />
                                         <path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z" />
                                     </svg>
@@ -89,7 +113,7 @@ const TestSyllabusPopUp = ({test, setSyllabusHidden}) => {
                                                 {
                                                     test?.syllabus[subject][chapter]?.map((topic, i) => {
                                                         return (
-                                                            <span key={i} className="text-[12px] font-[Inter] font-bold px-2.5 py-1 rounded-full bg-[#2A2C2A]/25 border border-[#2E302E] text-[#A8ACA8]">{topic}</span>                                              
+                                                            <span key={i} className="text-[12px] font-[Inter] font-bold px-2.5 py-1 rounded-full bg-[#2A2C2A]/25 border border-[#2E302E] text-[#A8ACA8]">{topic.name || topic}</span>                                              
                                                         )
                                                     })
                                                 }

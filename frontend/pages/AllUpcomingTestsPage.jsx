@@ -1,14 +1,22 @@
 import React, { useState } from 'react'
-import { useOutletContext } from 'react-router-dom';
+import { useOutletContext, Link } from 'react-router-dom';
 import UpcomingTestCard from '../components/userComponents/UpcomingTestCard';
 
 export const AllUpcomingTestsPage = () => {
     const {upcomingTests} = useOutletContext();
+    // console.log(upcomingTests);
 
     return (
-        <main className="relative flex-1 overflow-hidden pb-[58px] lg:pb-0 w-full flex justify-center items-center">
-            <div className="h-full overflow-y-auto w-[80%]">
-                <div className="w-full px-4 pt-4 pb-6 space-y-5 lg:max-w-5xl lg:ml-0 lg:mr-auto lg:px-8">
+        <main className="relative flex-1 overflow-hidden pb-[58px] lg:pb-0 w-full">
+            <div className="h-full overflow-y-auto w-full">
+                <div className="w-full px-4 pt-4 pb-6 space-y-5 lg:max-w-5xl lg:mx-auto lg:px-8">
+                    <Link to="/test-series" className="inline-flex items-center gap-1.5 text-[#A8ACA8] text-[14px] font-[Inter] hover:text-white transition-colors">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                            <polyline points="15 18 9 12 15 6"/>
+                        </svg>
+                        Back to Test Series
+                    </Link>
+                    
                     <div>
                         <div className="flex items-center gap-2 mb-1">
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FFC600" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">

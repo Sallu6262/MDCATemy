@@ -10,7 +10,7 @@ import TestSyllabusPopUp from '../components/userComponents/TestSyllabusPopUp';
 const UserTestSeriesPage = () => {
     // const [recentUpcomingTest, setRecentUpcomingTest] = useState(null);
     const {upcomingTests, previousTests} = useOutletContext();
-    // console.log(upcomingTests);
+    // console.log("upcoming: ", upcomingTests);
 
     // const API_URL = import.meta.env.VITE_API_URL;
     const navigate = useNavigate();
@@ -28,10 +28,10 @@ const UserTestSeriesPage = () => {
                     `
                 }
             </style>
-            <main className="relative flex-1 overflow-hidden pb-[58px] lg:pb-0 w-full flex justify-center items-center">
+            <main className="relative flex-1 overflow-hidden pb-[58px] lg:pb-0 w-full">
                 
-                <div className="h-full overflow-y-auto w-[80%]">
-                <div className="w-full px-4 pt-4 pb-6 space-y-5 lg:max-w-5xl lg:ml-0 lg:mr-auto lg:px-8">
+                <div className="h-full overflow-y-auto">
+                <div className="w-full px-4 pt-4 pb-6 space-y-5 lg:max-w-5xl lg:mx-auto lg:px-8">
 
                     <div>
                     <div className="flex items-center gap-2 mb-1">

@@ -34,7 +34,7 @@ const LandingPage = () => {
             We have created a system that eliminates confusion, builds discipline, and pushes you forward every single day so you stop stressing, start executing and secure a seat in your favourite Medical College.
           </p>
 
-          <Link to="/" className="btn-primary animate-pulse-glow">Join the academy today</Link>
+          <Link to="/signup" className="btn-primary animate-pulse-glow">Join the academy today</Link>
 
           <div className="w-full mt-2">
             <div className="relative w-full rounded-2xl overflow-hidden" style={{ aspectRatio: "16 / 9", border: "1px solid rgba(255,198,0,0.35)", boxShadow: "0 0 0 1px rgba(255,198,0,0.08), 0 16px 60px rgba(0,0,0,0.6), 0 0 80px rgba(255,198,0,0.12)" }}>

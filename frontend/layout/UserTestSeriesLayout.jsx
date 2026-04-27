@@ -38,6 +38,18 @@ const UserTestSeriesLayout = () => {
 
     return (
         <>
+            <style>
+                {
+                `
+                    * { box-sizing: border-box; }
+                    ::-webkit-scrollbar { width: 6px; }
+                    ::-webkit-scrollbar-track { background: #181A18; }
+                    ::-webkit-scrollbar-thumb { background: #FFC600; border-radius: 3px; }
+                    ::selection { background: rgba(255,198,0,0.3); color: #fff; }
+                `
+                }
+            </style>
+            
             <Outlet context={{upcomingTests, previousTests}}/>
         </>
     )

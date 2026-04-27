@@ -13,11 +13,12 @@ import SignUpPage from '../pages/SignUpPage';
 import getUserLoader from '../utils/getUserLoader';
 import PaymentErrorPage from '../pages/PaymentErrorPage';
 import UserDashboardLayout from '../layout/UserDashboardLayout';
-import UserPreviousTestsPage from '../pages/UserPreviousTestsPage';
+import AllPreviousTestsPage from '../pages/AllPreviousTestsPage';
 import UserDashboardPage from '../pages/UserDashboardPage';
 import UserTestSeriesPage from '../pages/UserTestSeriesPage';
 import UserTestSeriesLayout from '../layout/UserTestSeriesLayout';
 import { AllUpcomingTestsPage } from '../pages/AllUpcomingTestsPage';
+import UserCopyPage from '../pages/UserCopyPage';
 
 const App = () => {
   const router = createBrowserRouter(
@@ -35,9 +36,11 @@ const App = () => {
 
             <Route path='/test-series' element={<UserTestSeriesLayout />}>
               <Route index element={<UserTestSeriesPage />}/>
-              <Route path='previous-tests' element={<UserPreviousTestsPage />}/> 
+              <Route path='previous-tests' element={<AllPreviousTestsPage />}/> 
               <Route path='all-upcoming-tests' element={<AllUpcomingTestsPage />}/>
             </Route>
+
+            <Route path='my-copy' element={<UserCopyPage />}/>
             
           </Route>
 
