@@ -205,7 +205,8 @@ export const getWrongMCQs = handleAsyncError(async (req, res, next) => {
         default:
             order_by = "saved_date DESC";
     }
-    const query = `SELECT mcq_bank.mcq_id, subject_name, chapter_name, topic_name, question, option_a, option_b, option_c, option_d, correct_option, selected_option, explanation, difficulty, attempted_mcqs.attempt_count, saved_date::text FROM attempted_mcqs INNER JOIN mcq_bank ON mcq_bank.mcq_id = attempted_mcqs.mcq_id INNER JOIN subjects ON mcq_bank.subject_id = subjects.subject_id INNER JOIN chapters ON mcq_bank.chapter_id = chapters.chapter_id INNER JOIN topics ON mcq_bank.topic_id = topics.topic_id WHERE student_id=$1 AND subjects.subject_name = ANY ($4) AND mcq_bank.question ILIKE ANY($5) AND attempted_mcqs.selected_option != mcq_bank.correct_option ORDER BY ${order_by} LIMIT $2 OFFSET $3`;
+
+    const query = `SELECT mcq_bank.mcq_id, subject_name, chapter_name, topic_name, question, option_a, option_b, option_c, option_d, correct_option, selected_option, explanation, difficulty, COUNT(mcq_bank.mcq_id)::INT AS attempt_count, saved_date::text FROM attempted_mcqs INNER JOIN mcq_bank ON mcq_bank.mcq_id = attempted_mcqs.mcq_id INNER JOIN subjects ON mcq_bank.subject_id = subjects.subject_id INNER JOIN chapters ON mcq_bank.chapter_id = chapters.chapter_id INNER JOIN topics ON mcq_bank.topic_id = topics.topic_id WHERE student_id=$1 AND subjects.subject_name = ANY ($4) AND mcq_bank.question ILIKE ANY($5) AND attempted_mcqs.selected_option != mcq_bank.correct_option GROUP BY mcq_bank.mcq_id, subject_name, chapter_name, topic_name, question, option_a, option_b, option_c, option_d, correct_option, selected_option, explanation, difficulty, saved_date ORDER BY ${order_by} LIMIT $2 OFFSET $3`;
     return await getMCQsForUser(req, res, next, query); 
 });
 
