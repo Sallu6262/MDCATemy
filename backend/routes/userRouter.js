@@ -1,7 +1,7 @@
 import express from "express";
 import multer from "multer";
 import { signup, login, logout, protect, restrictTo, isPaymentVerified } from "../controllers/auth.js";
-import { getMe, getDashboardStats, getSavedMCQs, getWrongMCQs, deleteSavedMCQ, deleteWrongMCQ, uploadPaymentReceipt, bookmarkMCQ, getPredictedScore, undoMasteredMCQ } from "../controllers/user.js";
+import { getMe, getDashboardStats, getSavedMCQs, getWrongMCQs, deleteSavedMCQ, deleteWrongMCQ, uploadPaymentReceipt, bookmarkMCQ, getPredictedScore } from "../controllers/user.js";
 
 const router = express.Router();
 

@@ -1,4 +1,3 @@
-import { allowedNodeEnvironmentFlags } from "node:process";
 import pool from "../database.js";
 import { AppError, handleAsyncError } from "../error.js";
 import { formatColumnName, isString } from "../helpers.js";
