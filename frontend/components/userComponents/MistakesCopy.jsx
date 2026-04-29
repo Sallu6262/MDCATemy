@@ -108,6 +108,12 @@ const MistakesCopy = ({wrongMcqs}) => {
                     <input type="text" placeholder="Search question, chapter or topic..."
                         className="w-full bg-[#222422] border border-[#2E302E] rounded-xl pl-9 pr-4 py-2.5 text-white font-[Inter] text-[13px] placeholder:text-[#A8ACA8]/50 focus:outline-none focus:border-[#FFC600]/50 transition-colors"/>
                 </div>
+                <button
+                    type="button"
+                    className="cursor-pointer rounded-xl border border-[#FFC600]/40 bg-[#FFC600] px-4 py-2.5 text-[13px] font-[Inter] font-bold text-[#181A18] transition-colors hover:bg-[#ffd84d]"
+                >
+                    Search
+                </button>
                 </div>
             </div>
 
