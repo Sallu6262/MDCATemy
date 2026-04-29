@@ -1,4 +1,7 @@
 {
   "name": "mdcatemy-root",
-  "private": true
+  "private": true,
+  "dependencies": {
+    "@react-pdf/renderer": "^4.5.1"
+  }
 }

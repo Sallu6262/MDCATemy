@@ -1,11 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react'
-import DownloadPDFComponent from '../DownloadPDFComponent';
-import html2canvas from 'html2canvas';
+import MCQPdf from '../MCQpdf';
+import { pdf } from '@react-pdf/renderer';
 import jsPDF from 'jspdf';
+import { createRoot } from 'react-dom/client';
 
 const TestReviewCard = ({test, setTestReviewHidden, attempted}) => {
+  // console.log(test);
   const reviewRef = useRef(null);
-  const downloadRef = useRef(null);
 
   const sum = test?.correct + test?.mistakes;
 
@@ -24,29 +25,16 @@ const TestReviewCard = ({test, setTestReviewHidden, attempted}) => {
   }
 
   const downloadTestAsPDF = async () => {
-    // const element = downloadRef.current;
-    // if(!element) return;
-    
-    // const canvas = await html2canvas(element, {
-    //   scale: 2
-    // });
+    const blob = await pdf(<MCQPdf test={test} mcqs={test?.mcqs}/>).toBlob();
 
-    // const data = canvas.toDataURL('image/png');
+    const url = URL.createObjectURL(blob);
 
-    // const pdf = new jsPDF({
-    //   orientation: "portrait",
-    //   unit: "px",
-    //   format: "a4"
-    // });
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `${test?.test_name}.pdf`;
+    a.click();
 
-    // const imgProperties = pdf.getImageProperties(data);
-
-    // const pdfWidth = pdf.internal.pageSize.getWidth();
-
-    // const pdfHeight = (imgProperties.height * pdfWidth) / imgProperties.width;
-
-    // pdf.addImage(data, 'PNG', 0, 0, pdfWidth, pdfHeight);
-    // pdf.save(`${test.test_name.replace(' ', '_')}.pdf`);
+    URL.revokeObjectURL(url);
   }
   
   useEffect(() => {
@@ -55,10 +43,12 @@ const TestReviewCard = ({test, setTestReviewHidden, attempted}) => {
   },[]);
 
     return (
-        <>
-          <div className="fixed top-0 left-0 -z-10 opacity-0 pointer-events-none">
-            <DownloadPDFComponent test={test} ref={downloadRef}/>
-          </div>
+      <>
+        {/* <div id='pdf-root' className="fixed -left-[10000px] top-0 w-[794px] min-h-[1123px] bg-white">
+        {
+          <DownloadPDFComponent test={test}/>
+        }
+        </div> */}
 
 
         <section tabIndex={-1} ref={reviewRef} onClick={() => setTestReviewHidden(true)} className="absolute inset-0 z-[60] flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm">

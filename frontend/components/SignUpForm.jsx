@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { Link, useOutletContext } from 'react-router-dom'
+import '../src/animation.css';
 
 const selectChevron =
   "url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 fill=%22none%22 viewBox=%220 0 24 24%22 stroke=%22%23FFC600%22%3E%3Cpath stroke-linecap=%22round%22 stroke-linejoin=%22round%22 stroke-width=%222%22 d=%22M19 9l-7 7-7-7%22/%3E%3C/svg%3E')"
@@ -85,7 +86,7 @@ const SignUpForm = ({setStep}) => {
     }
 
     return (
-        <main className="flex flex-1 flex-col justify-start px-6 pb-12 pt-8 sm:px-10 sm:pt-10 lg:px-16 lg:pt-12 xl:px-24">
+        <main className="fade-in flex flex-1 flex-col justify-start px-6 pb-12 pt-8 sm:px-10 sm:pt-10 lg:px-16 lg:pt-12 xl:px-24">
             <div className="mx-auto w-full max-w-lg">
                 <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#FFC600]">Join the tribe</p>
                 <h2 className="mt-2 text-3xl font-extrabold tracking-tight text-white sm:text-4xl">Warrior, enlist.</h2>

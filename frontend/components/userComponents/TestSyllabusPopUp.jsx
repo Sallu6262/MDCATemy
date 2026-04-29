@@ -1,4 +1,5 @@
 ﻿import React, { useEffect, useRef } from 'react'
+import '../../src/animation.css';
 
 const TestSyllabusPopUp = ({test, setSyllabusHidden}) => {
     // console.log(Object.keys(test.syllabus).forEach(subject => console.log(Object.keys(test.syllabus[subject]))));
@@ -50,11 +51,12 @@ const TestSyllabusPopUp = ({test, setSyllabusHidden}) => {
 
     useEffect(() => {
         testRef.current.focus();
+        testRef.current.scrollIntoView({block: 'center', behaviour: 'smooth'});
     },[])
 
     return (
         <>
-            <section ref={testRef} tabIndex={-1} className="absolute inset-0 z-[60] flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm">
+            <section ref={testRef} tabIndex={-1} className="fade-in absolute inset-0 z-[60] flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm">
                 <div className="w-[calc(100%-24px)] max-w-[980px] max-h-[88vh] bg-[#222422] border border-[#2E302E] rounded-2xl overflow-hidden flex flex-col shadow-2xl">
                     
                     {/* Header */}

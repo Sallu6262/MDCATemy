@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useOutletContext } from 'react-router-dom';
+import '../src/animation.css';
 
 const selectChevron =
   "url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 fill=%22none%22 viewBox=%220 0 24 24%22 stroke=%22%23FFC600%22%3E%3Cpath stroke-linecap=%22round%22 stroke-linejoin=%22round%22 stroke-width=%222%22 d=%22M19 9l-7 7-7-7%22/%3E%3C/svg%3E')"
@@ -88,7 +89,7 @@ const PaymentForm = () => {
     });
 
     return (
-        <main className="mx-auto w-full max-w-3xl px-5 py-10 sm:px-8 sm:py-14">
+        <main className="fade-in mx-auto w-full max-w-3xl px-5 py-10 sm:px-8 sm:py-14">
             <section className="rounded-2xl border border-white/[0.1] bg-[#181818] p-5 shadow-[0_20px_70px_rgba(0,0,0,0.35)] sm:p-8">
             <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#FFC600]">Payment Details</p>
             <h1 className="mt-2 text-3xl font-extrabold tracking-tight text-white sm:text-4xl">Complete your payment</h1>

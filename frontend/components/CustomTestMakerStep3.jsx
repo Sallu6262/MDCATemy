@@ -32,9 +32,9 @@ const CustomTestMakerStep3 = ({selectedTest, setSelectedTest, nextStage, isTestC
         setSubmitLoading(true);
 
         if(selectedTest?.topics?.length){
-            subjects.forEach(subject => {
-                subject.chapters.forEach(chapter => {
-                    chapter.topics.forEach(topic => {
+            Object.keys(subjects).forEach(subject => {
+                Object.keys(subjects[subject]).forEach(chapter => {
+                    subjects[subject][chapter].forEach(topic => {
                         selectedTest?.topics.forEach(prevTopic => {
                             if(prevTopic === topic.name){
                                 topicIDS.add(topic.id);
@@ -85,8 +85,9 @@ const CustomTestMakerStep3 = ({selectedTest, setSelectedTest, nextStage, isTestC
             const data = await res.json();
 
             if(data.status === 'success'){
+                // console.log(data.data);
                 const id = data.data?.test_id || selectedTest?.id; 
-                if(!isTestCreated) setSelectedTest(prev => ({...prev, id , topics: [...topicIDS]}));
+                if(isTestCreated) setSelectedTest(prev => ({...prev, id , topics: [...topicIDS]}));
                 else setSelectedTest(prev => ({...prev, topics: [...topicIDS]}));
                 nextStage();
             } else {
@@ -111,6 +112,7 @@ const CustomTestMakerStep3 = ({selectedTest, setSelectedTest, nextStage, isTestC
 
             // console.log(data.data);
             if(data.status === 'success'){
+                // console.log(data.data);
                 setSubjects(data.data);
             }
         }
@@ -145,7 +147,7 @@ const CustomTestMakerStep3 = ({selectedTest, setSelectedTest, nextStage, isTestC
                     <section className="flex-1 space-y-4">
 
                         {
-                            subjects?.map((subject, i) => <SubjectCard key={i} subject={subject.subject} chapters={subject.chapters} setSelectedTopics={handleTopics} selectedTopics={selectedTopics}/>)
+                            Object.keys(subjects)?.map((subject, i) => <SubjectCard key={i} subject={subject.slice(0,1).toUpperCase() + subject.slice(1)} chapters={subjects[subject]} setSelectedTopics={handleTopics} selectedTopics={selectedTopics}/>)
                         }
                         
                     </section>
