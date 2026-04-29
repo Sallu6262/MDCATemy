@@ -83,7 +83,7 @@ export const verifyTestAccess = handleAsyncError(async (req, res, next) => {
 
 export const isPaymentVerified = handleAsyncError(async (req, res, next) => {
     if (req.user.payment_status === 'PENDING') 
-        return next(new AppError("Your payment process is pending. Please wait until your payment is verified.", 100));
+        return next(new AppError("Your payment process is pending. Please wait until your payment is verified.", 400));
     if (req.user.payment_status === 'REJECTED') 
         return next(new AppError("Your payment has been rejected. Please upload your payment receipt again, or contact the admins to initiate verification process.", 300));
     next();
@@ -104,10 +104,7 @@ export const signup = handleAsyncError(async (req, res, next) => {
 
     password = await hashPassword(password);
 
-    await pool.query("INSERT INTO users (name, father_name, email, password, gender, role) VALUES ($1, $2, $3, $4, $5, $6)", [name, father_name, email, password, gender, role]);
-
-    const user = (await pool.query("SELECT user_id, role FROM users WHERE email=$1", [email])).rows[0];
-    
+    const user = (await pool.query("INSERT INTO users (name, father_name, email, password, gender, role) VALUES ($1, $2, $3, $4, $5, $6) RETURNING user_id, role", [name, father_name, email, password, gender, role])).rows[0];
     await pool.query("INSERT INTO students (student_id, phone, academic_status, province, city, matric_percentage, fsc_percentage, prev_mdcat_score, target_marks) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)", [user.user_id, phone, academic_status, province, city, matric_percentage, fsc_percentage, prev_mdcat_score, target_marks]);
     
     signTokenAndSetInCookie(email, user.role, res);
@@ -124,13 +121,12 @@ export const login = handleAsyncError(async (req, res, next) => {
     if (!input_email || !input_password) 
         return next(new AppError("Please provide complete credentials", 400));
 
-        const user = (await pool.query("SELECT name, email, password, role FROM users WHERE email=$1", [input_email])).rows[0];
+    const user = (await pool.query("SELECT name, email, password, role FROM users WHERE email=$1", [input_email])).rows[0];
 
     if (!user || !await verifyPassword(user.password, input_password))
         return next(new AppError("Incorrect email or password!", 401));
 
     signTokenAndSetInCookie(user.email, user.role, res);
-
     
     res.status(200).json({
         status: "success",

@@ -27,8 +27,7 @@ export const createQuiz = handleAsyncError(async (req, res, next) => {
     let {quiz_name, quiz_mode, mcq_count, subject_ids, quiz_count} = req.body;
     quiz_name = quiz_name ?? `Quiz ${quiz_count+1}`;
 
-    await pool.query("INSERT INTO quizzes (quiz_name, mcq_count, quiz_mode, student_id) VALUES ($1, $2, $3, $4)", [quiz_name, mcq_count, quiz_mode, req.user.student_id]);
-    const quiz_id = (await pool.query("SELECT quiz_id::INT FROM quizzes WHERE student_id=$1 ORDER BY quiz_id DESC LIMIT 1", [req.user.student_id])).rows[0].quiz_id;
+    const quiz_id = (await pool.query("INSERT INTO quizzes (quiz_name, mcq_count, quiz_mode, student_id) VALUES ($1, $2, $3, $4) RETURNING quiz_id", [quiz_name, mcq_count, quiz_mode, req.user.student_id])).rows[0]?.quiz_id;
     await pool.query("INSERT INTO quiz_subjects(quiz_id, subject_id) VALUES " + subject_ids.map(subject_id => `(${quiz_id}, ${subject_id})`));
 
     res.status(200).json({
@@ -68,17 +67,17 @@ export const generateQuiz = handleAsyncError(async (req, res, next) => {
 
     if (easy) {
         query = query.replace("<<diff>>", "EASY");
-        quiz.mcqs.easy = (await pool.query(query, [req.user.student_id ?? -1, easy, req.body.topic_ids])).rows;
+        quiz.mcqs.easy = (await pool.query(query, [req.user.student_id, easy, req.body.topic_ids])).rows;
         query = query.replace("EASY", "<<diff>>");
     }
     if (medium) {
         query = query.replace("<<diff>>", "MEDIUM");
-        quiz.mcqs.medium = (await pool.query(query, [req.user.student_id ?? -1, medium, req.body.topic_ids])).rows;
+        quiz.mcqs.medium = (await pool.query(query, [req.user.student_id, medium, req.body.topic_ids])).rows;
         query = query.replace("MEDIUM", "<<diff>>");
     }
     if (hard) {
         query = query.replace("<<diff>>", "Hard");
-        quiz.mcqs.hard = (await pool.query(query, [req.user.student_id ?? -1, hard, req.body.topic_ids])).rows;
+        quiz.mcqs.hard = (await pool.query(query, [req.user.student_id, hard, req.body.topic_ids])).rows;
     }
 
     quiz.count.easy = quiz.mcqs.easy.length;

@@ -55,7 +55,6 @@ export const createTest = handleAsyncError(async (req, res, next) => {
     //  Create test
     const data = await pool.query("INSERT INTO tests(test_name, mcq_count, test_time, test_date) VALUES ($1, $2, $3, $4::DATE) RETURNING test_id", [test_name, +mcq_count, +test_time, test_date]);
 
-
     //  Insert topics
     const test_id = data.rows[0]?.test_id;
     topics = topics.split(",").map(elem => +elem);
@@ -75,13 +74,11 @@ export const createTest = handleAsyncError(async (req, res, next) => {
 });
 
 export const discardTest = handleAsyncError(async (req, res, next) => {
-
-    const { test_id }= req.body;
-
+    const { test_id } = req.body;
     if (!test_id || !Number.isInteger(+test_id))
         return next(new AppError("Incorrect Query", 400));
 
-    (await pool.query("DELETE FROM attempted_mcqs WHERE student_id=$1 AND test_id=$2", [req.user.student_id, +test_id]));
+    await pool.query("DELETE FROM attempted_mcqs WHERE student_id=$1 AND test_id=$2", [req.user.student_id, +test_id]);
 
     res.status(200).json({
         status: "success"
@@ -92,6 +89,7 @@ export const discardTest = handleAsyncError(async (req, res, next) => {
 export const addToTest = handleAsyncError(async (req, res, next) => {
     const { test_id, mcq_id } = req.body;
     await pool.query("INSERT INTO test_mcqs (test_id, mcq_id) VALUES ($1, $2)", [test_id, mcq_id]);
+
     res.status(200).json({
         status: "success"
     });
@@ -99,6 +97,7 @@ export const addToTest = handleAsyncError(async (req, res, next) => {
 
 export const getAllPreviousTests = handleAsyncError(async (req, res, next) => {
     const result = (await pool.query("SELECT tests.test_id, tests.test_name, tests.test_date::TEXT, tests.mcq_count, SUM(CASE WHEN attempted_mcqs.selected_option = mcq_bank.correct_option THEN 1 ELSE 0 END)::INT AS correct, SUM(CASE WHEN attempted_mcqs.selected_option != mcq_bank.correct_option THEN 1 ELSE 0 END)::INT AS mistakes, SUM(CASE WHEN attempted_mcqs.selected_option IS NULL THEN 1 ELSE 0 END)::INT AS skipped FROM tests LEFT JOIN test_mcqs ON test_mcqs.test_id=tests.test_id LEFT JOIN mcq_bank ON mcq_bank.mcq_id = test_mcqs.mcq_id LEFT JOIN attempted_mcqs ON attempted_mcqs.mcq_id = mcq_bank.mcq_id AND attempted_mcqs.test_id = test_mcqs.test_id WHERE ((attempted_mcqs.student_id=$1 AND tests.test_date <= CURRENT_DATE) OR (attempted_mcqs.student_id IS NULL AND tests.test_date < CURRENT_DATE)) AND tests.test_id IN (SELECT test_id FROM test_enrollments WHERE student_id=$1) GROUP BY tests.test_id, tests.test_name, tests.test_date, tests.mcq_count ORDER BY test_date DESC", [req.user.student_id])).rows;
+
     res.status(200).json({
         status: "success",
         data: result
@@ -141,7 +140,7 @@ export const getTestInfo = handleAsyncError(async (req, res, next) => {
     const mcqs = (await pool.query("SELECT mcq_bank.mcq_id, question, option_a, option_b, option_c, option_d, selected_option, correct_option, explanation, subject_name FROM tests INNER JOIN test_mcqs ON test_mcqs.test_id = tests.test_id INNER JOIN mcq_bank ON mcq_bank.mcq_id = test_mcqs.mcq_id INNER JOIN subjects ON subjects.subject_id=mcq_bank.subject_id LEFT JOIN attempted_mcqs ON attempted_mcqs.mcq_id = mcq_bank.mcq_id AND attempted_mcqs.test_id = tests.test_id WHERE tests.test_id=$2 AND (attempted_mcqs.student_id=$1 OR attempted_mcqs.student_id IS NULL)", [req.user.student_id, req.params.test_id])).rows;
 
     let highest_score = (await pool.query("SELECT MAX(count)::INT AS max FROM ( SELECT SUM(CASE WHEN attempted_mcqs.selected_option = mcq_bank.correct_option THEN 1 ELSE 0 END) AS count FROM tests INNER JOIN test_mcqs ON test_mcqs.test_id = tests.test_id INNER JOIN mcq_bank ON mcq_bank.mcq_id = test_mcqs.mcq_id INNER JOIN attempted_mcqs ON attempted_mcqs.mcq_id = mcq_bank.mcq_id AND attempted_mcqs.test_id = tests.test_id WHERE tests.test_id= $1 GROUP BY attempted_mcqs.student_id )", [req.params.test_id])).rows;
-    highest_score = highest_score.length === 0 ? null : highest_score[0].max;
+    highest_score = highest_score.length === 0 ? undefined : highest_score[0].max;
 
     res.status(200).json({
         status: "success",

@@ -80,7 +80,7 @@ CREATE TABLE quizzes(
     student_id INT NOT NULL,
     quiz_mode QUIZ_MODE_TYPE NOT NULL,
 
-    FOREIGN KEY (student_id) REFERENCES students(student_id);
+    FOREIGN KEY (student_id) REFERENCES students(student_id) ON UPDATE CASCADE ON DELETE CASCADE;
 );
 
 CREATE TABLE quiz_subjects (
