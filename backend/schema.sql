@@ -40,7 +40,6 @@ CREATE TABLE students (
     student_id INT PRIMARY KEY,
     academic_status VARCHAR(50) NOT NULL DEFAULT 'Fresher',
     streak INT NOT NULL DEFAULT 0,
-    total_mistakes INT NOT NULL DEFAULT 0,
     new_student INT NOT NULL DEFAULT 1,
     phone VARCHAR(15) NOT NULL,
     province VARCHAR(30) NOT NULL,
@@ -159,6 +158,7 @@ CREATE TABLE attempted_mcqs(
     quiz_id INT,
     test_id INT,
     saved_date DATE NOT NULL DEFAULT CURRENT_DATE, 
+    is_mastered INT NOT NULL DEFAULT 0,
 
     CONSTRAINT check_mcq_belonging CHECK ((quiz_id IS NOT NULL AND test_id IS NULL) OR (quiz_id IS NULL AND test_id IS NOT NULL)),
     CONSTRAINT fkey_attemptedmcqs_quizzes FOREIGN KEY(quiz_id) REFERENCES quizzes(quiz_id) ON UPDATE CASCADE ON DELETE CASCADE,

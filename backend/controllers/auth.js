@@ -69,8 +69,13 @@ export const protect = handleAsyncError(async (req, res, next) => {
 });
 
 export const verifyTestAccess = handleAsyncError(async (req, res, next) => {
-    const { test_id } = req.body;    
+    const { test_id }  = req.body;
+
+    if (!test_id || !Number.isInteger(+test_id))
+        return next(new AppError("Incorrect Query", 400));    
+
     const result = (await pool.query("SELECT * FROM test_enrollments WHERE test_id=$1 AND student_id=$2", [test_id, req.user.student_id])).rows[0];
+
     if (!result)
         return next(new AppError("You don't have access to this Test.", 401));
     next();
