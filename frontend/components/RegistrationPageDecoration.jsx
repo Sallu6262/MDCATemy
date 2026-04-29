@@ -1,5 +1,6 @@
 import React from 'react'
 import {useEffect, useState} from 'react'
+import '../src/animation.css';
 
 const REVIEWS = [
   {
@@ -44,7 +45,7 @@ const RegistrationPageDecoration = () => {
   },[]);
 
   return (
-    <aside className="relative flex flex-1 flex-col border-b border-white/[0.06] px-6 py-10 lg:max-w-[46%] lg:border-b-0 lg:border-r lg:px-12 lg:py-14">
+    <aside className="fade-in relative flex flex-1 flex-col border-b border-white/[0.06] px-6 py-10 lg:max-w-[46%] lg:border-b-0 lg:border-r lg:px-12 lg:py-14">
       <style>
         {`
           [data-reviews-root] {

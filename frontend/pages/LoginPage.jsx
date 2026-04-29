@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useNavigate, useOutletContext } from 'react-router-dom'
+import '../src/animation.css';
 
 const LoginPage = () => {
     const [email, setEmail] = useState('');
@@ -71,7 +72,7 @@ const LoginPage = () => {
     });
 
     return (
-        <main className="flex flex-1 flex-col justify-start px-6 pb-12 pt-8 sm:px-10 sm:pt-10 lg:px-16 lg:pt-12 xl:px-24">
+        <main className="fade-in flex flex-1 flex-col justify-start px-6 pb-12 pt-8 sm:px-10 sm:pt-10 lg:px-16 lg:pt-12 xl:px-24">
             <div className="mx-auto w-full max-w-md">
                 <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#FFC600]">Welcome back</p>
                 <h2 className="mt-2 text-3xl font-extrabold tracking-tight text-white sm:text-4xl">Warrior, Login.</h2>

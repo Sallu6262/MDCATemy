@@ -3,13 +3,16 @@ import heroBg from "../assets/background.jpeg"
 import "../src/LandingPage.css"
 import Navbar from "../components/Navbar"
 import Footer from "../components/Footer"
+import Scroller from '../components/Scroller'
+import '../src/animation.css';
 
 const LandingPage = () => {
   return (
     <>
       <Navbar />
+      <Scroller />
 
-      <div className="landing-page min-h-screen" style={{ backgroundColor: "#121212" }}>
+      <div className="fade-in landing-page min-h-screen" style={{ backgroundColor: "#121212" }}>
       <section
         id="hero"
         className="relative min-h-screen flex flex-col items-center justify-center text-center overflow-hidden pt-[72px] hero-bg"

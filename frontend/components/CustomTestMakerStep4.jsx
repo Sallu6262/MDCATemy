@@ -14,27 +14,27 @@ const CustomTestMakerStep4 = ({selectedTest, isTestCreated}) => {
     useEffect(() => {
         const fetchMCQs = async () => {
             const res = await fetch(`${API_URL}/quizzes/generate`, {
-            method: 'POST',
-            credentials: 'include',
-            headers: {
-                'Content-Type' : 'application/json'
-            },
-            body: JSON.stringify({
-                topic_ids: selectedTest?.topics,
-                easy: 10000,
-                medium: 10000,
-                hard: 10000
-            })
-        });
+                method: 'POST',
+                credentials: 'include',
+                headers: {
+                    'Content-Type' : 'application/json'
+                },
+                body: JSON.stringify({
+                    topic_ids: selectedTest?.topics,
+                    easy: 10000,
+                    medium: 10000,
+                    hard: 10000
+                })
+            });
 
-        const data = await res.json();
+            const data = await res.json();
 
-        if(data.status === 'success'){
-            // let tempMcqs = Object.keys(data.data?.mcqs).map(difficulty => data.data?.mcqs[difficulty].map(mcq_per_ => mcq_per_));
-            let tempMcqs = [];
-            Object.keys(data.data.mcqs).forEach(difficulty => data.data?.mcqs[difficulty].forEach(mcq => tempMcqs.push(mcq)));
-            setMCQs(tempMcqs);
-        }
+            if(data.status === 'success'){
+                // let tempMcqs = Object.keys(data.data?.mcqs).map(difficulty => data.data?.mcqs[difficulty].map(mcq_per_ => mcq_per_));
+                let tempMcqs = [];
+                Object.keys(data.data.mcqs).forEach(difficulty => data.data?.mcqs[difficulty].forEach(mcq => tempMcqs.push(mcq)));
+                setMCQs(tempMcqs);
+            }
         }
 
         fetchMCQs();

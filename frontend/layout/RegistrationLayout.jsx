@@ -1,6 +1,7 @@
 import React from 'react'
 import RegistrationPageDecoration from '../components/RegistrationPageDecoration'
 import { Outlet, useOutletContext } from 'react-router-dom'
+import '../src/animation.css';
 
 const RegistrationLayout = () => {
     const {admin, setAdmin, student, setStudent} = useOutletContext();

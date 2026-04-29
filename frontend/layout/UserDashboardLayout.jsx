@@ -1,6 +1,7 @@
 ﻿import React, { useEffect } from 'react'
 import UserNavbar from '../components/userComponents/UserNavbar'
 import { Outlet, useNavigate, useOutletContext } from "react-router-dom"
+import '../src/animation.css';
 
 const UserDashboardLayout = () => {
     const {student, admin} = useOutletContext();
@@ -13,6 +14,10 @@ const UserDashboardLayout = () => {
             return;
         } 
 
+        if(student?.payment_status !== 'VERIFIED'){
+            navigate('/payment-status');
+        }
+
         if(admin){
             navigate('/admin');
             return;
@@ -20,7 +25,7 @@ const UserDashboardLayout = () => {
     });
 
     return (
-        <section className="min-h-screen bg-[#181A18] text-white font-[Inter,sans-serif] antialiased">
+        <section className="fade-in min-h-screen bg-[#181A18] text-white font-[Inter,sans-serif] antialiased">
             <div className="flex min-h-screen flex-col lg:flex-row">
                 <div className="order-1 flex min-h-0 min-w-0 flex-1 flex-col pb-[5.5rem] lg:order-2 lg:pb-0">
                     <Outlet />

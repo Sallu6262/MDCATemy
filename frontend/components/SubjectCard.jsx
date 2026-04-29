@@ -2,6 +2,7 @@ import React from 'react'
 import ChapterCard from './ChapterCard'
 
 const SubjectCard = ({subject, chapters, setSelectedTopics, selectedTopics}) => {
+  // console.log(chapters);
   return (
     <details className="subject-disclosure overflow-hidden rounded-2xl border border-white/10 bg-[#1A1A1A]/90 shadow-[0_20px_60px_rgba(0,0,0,0.4)]">
         <summary className="cursor-pointer border-b border-white/[0.06] bg-white/[0.04] px-5 py-4 transition hover:bg-white/[0.07]">
@@ -16,7 +17,7 @@ const SubjectCard = ({subject, chapters, setSelectedTopics, selectedTopics}) => 
         </summary>
         <div className="space-y-0 divide-y divide-white/[0.06] px-3 py-2 sm:px-4">
             {
-              chapters?.map((chapter, i) => <ChapterCard key={i} chapter={chapter.name} chapterNo={i+1} topics={chapter.topics} setSelectedTopics={setSelectedTopics} selectedTopics={selectedTopics}/>)
+              Object.keys(chapters)?.map((chapter, i) => <ChapterCard key={i} chapter={chapter.split('_').map(ch => ch.slice(0,1).toUpperCase() + ch.slice(1)).join(' ')} chapterNo={i+1} topics={chapters[chapter]} setSelectedTopics={setSelectedTopics} selectedTopics={selectedTopics}/>)
             }
         </div>
     </details>

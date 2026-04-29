@@ -5,7 +5,8 @@
 5. Add to test button not visible for already added mcqs for better error handling
 6. animation of reviews shown in signup / login form    (done)
 7. search bar to be absolute in custom test maker step 4
-8. when checking if student is null, also check if student.payment_status === 'VERIFIED' when navigating to dashboard etc.
+8. when checking if student is null, also check if student.payment_status === 'VERIFIED' when navigating to dashboard etc.  (done)
 9. back to test-series button in all upcoming tests page    (done)
-10. download as PDF feature in previous tests.
+10. download as PDF feature in previous tests.  (done)
 11. review mcqs in previous tests feature.
+12. search bar improvement in my copy.
