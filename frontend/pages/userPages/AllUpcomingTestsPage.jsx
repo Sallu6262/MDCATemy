@@ -4,7 +4,7 @@ import UpcomingTestCard from '../../components/userComponents/UpcomingTestCard';
 import '../../src/animation.css';
 
 const AllUpcomingTestsPage = () => {
-    const {upcomingTests, setStartTest} = useOutletContext();
+    const {upcomingTests} = useOutletContext();
     // console.log(typeof setStartTest);
 
     return (

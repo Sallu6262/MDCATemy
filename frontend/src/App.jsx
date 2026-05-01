@@ -21,6 +21,7 @@ import AllUpcomingTestsPage from '../pages/userPages/AllUpcomingTestsPage';
 import UserCopyPage from '../pages/userPages/UserCopyPage';
 import UserStartTestPage from '../pages/userPages/UserStartTestPage';
 import ScorePredictorPage from '../pages/userPages/ScorePredictorPage';
+import UserAnalyticsPage from '../pages/userPages/UserAnalyticsPage';
 
 const App = () => {
   const router = createBrowserRouter(
@@ -47,7 +48,7 @@ const App = () => {
             </Route>
 
             <Route path='my-copy' element={<UserCopyPage />}/>
-            
+            <Route path='analytics' element={<UserAnalyticsPage />}/>
           </Route>
 
           <Route path='/admin' element={<AdminDashboardLayout />}>

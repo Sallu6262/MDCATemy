@@ -22,7 +22,7 @@ const SubjectCircleButton = ({accuracy, color, subject}) => {
 }
 
 const UserDashboardPage = () => {
-    const {studentAnalytics} = useOutletContext();
+    const {studentAnalytics, predictedScore} = useOutletContext();
     // console.log(studentAnalytics);
     const initials = studentAnalytics?.name?.split(' ').map(n => n.slice(0,1).toUpperCase()).join(' ');
     // console.log(studentAnalytics);
@@ -81,14 +81,14 @@ const UserDashboardPage = () => {
                         <path d="M 39.21 39.21 A 86 86 0 0 1 100.00 14.00 L 100.00 33.00 A 67 67 0 0 0 52.62 52.62 Z" fill="#F97316"/>
                         <path d="M 100.00 14.00 A 86 86 0 0 1 160.79 39.21 L 147.38 52.62 A 67 67 0 0 0 100.00 33.00 Z" fill="#EAB308"/>
                         <path d="M 160.79 39.21 A 86 86 0 0 1 186.00 100.00 L 167.00 100.00 A 67 67 0 0 0 147.38 52.62 Z" fill="#22C55E"/>
-                        <g transform={`translate(100 100) rotate(${180 - 131})`}>
+                        <g transform={`translate(100 100) rotate(${180 - predictedScore})`}>
                             <path d="M 3,0 C 2.2,-28 1,-60 0,-62 C -1,-60 -2.2,-28 -3,0 C -1.5,3 1.5,3 3,0 Z" fill="rgba(255,255,255,0.85)"/>
                         </g>
                         <circle cx="100" cy="100" r="5.5" fill="rgba(255,255,255,0.85)"/>
                         <circle cx="100" cy="100" r="2.5" fill="#FFC600"/>
                         </svg>
                     </div>
-                    <span className="font-['Poppins'] font-medium text-[14px] leading-none" style={{ color: "#EAB308" }}>131</span>
+                    <span className="font-['Poppins'] font-medium text-[14px] leading-none" style={{ color: "#EAB308" }}>{predictedScore}</span>
                     </Link>
                     
                     <div className="flex items-center gap-1 bg-white/[0.05] border border-white/[0.08] rounded-lg px-2 py-1.5">
@@ -439,7 +439,7 @@ const UserDashboardPage = () => {
                     </div>
                     <div className="flex items-center gap-2 flex-1 min-h-0">
                         <div className="flex-shrink-0 w-[40%]">
-                        <span className="font-['Poppins'] font-medium leading-none block" style={{ color: "#EAB308", fontSize: "62px" }}>131</span>
+                        <span className="font-['Poppins'] font-medium leading-none block" style={{ color: "#EAB308", fontSize: "62px" }}>{predictedScore}</span>
                         <span className="font-['Inter'] text-[15px] text-white/40 mt-1 block">Your Predicted Score</span>
                         </div>
                         <div className="w-[60%] flex-shrink-0">
@@ -453,7 +453,7 @@ const UserDashboardPage = () => {
                             <text x="100" y="1" textAnchor="middle" dominantBaseline="middle" fontSize="8" fontFamily="Inter,sans-serif" fontWeight="500" fill="rgba(255,255,255,0.38)">90</text>
                             <text x="160.79" y="39.21" textAnchor="start" dominantBaseline="middle" fontSize="8" fontFamily="Inter,sans-serif" fontWeight="500" fill="rgba(255,255,255,0.38)">135</text>
                             <text x="186" y="100" textAnchor="start" dominantBaseline="middle" fontSize="8" fontFamily="Inter,sans-serif" fontWeight="500" fill="rgba(255,255,255,0.38)">180</text>
-                            <g transform="translate(100 100) rotate(41)">
+                            <g transform={`translate(100 100) rotate(${180 - predictedScore})`}>
                             <path d="M 3,0 C 2.2,-28 1,-60 0,-62 C -1,-60 -2.2,-28 -3,0 C -1.5,3 1.5,3 3,0 Z" fill="rgba(255,255,255,0.85)"/>
                             </g>
                             <circle cx="100" cy="100" r="6" fill="rgba(255,255,255,0.85)"/>

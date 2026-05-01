@@ -1,7 +1,29 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import '../../src/animation.css';
 import { Link } from 'react-router-dom';
 
 const ScorePredictorPage = () => {
+  const [predictedScore, setPredictedScore] = useState(0);
+
+  const API_URL = import.meta.env.VITE_API_URL;
+
+  useEffect(() => {
+    const fetchPredictedScore = async() => {
+      const res = await fetch(`${API_URL}/users/predicted-score`,{
+        method: 'GET',
+        credentials: 'include'
+      });
+
+      const data = await res.json();
+
+      if(data.status === 'success'){
+        setPredictedScore(data.data?.predicted_score);
+      }
+    }
+
+    fetchPredictedScore();
+  }, []);
+
   return (
     <main className="fade-in relative flex-1 overflow-y-auto pb-[58px] lg:pb-0 w-full bg-[#181A18]">
       <div className="w-full px-4 pt-4 pb-8 space-y-5 lg:max-w-5xl lg:mx-auto lg:px-8">
@@ -36,7 +58,7 @@ const ScorePredictorPage = () => {
               <text x="100" y="1" textAnchor="middle" dominantBaseline="middle" fontSize="9" fontFamily="Inter,sans-serif" fontWeight="500" fill="rgba(255,255,255,0.35)">90</text>
               <text x="160.79" y="39.21" textAnchor="start" dominantBaseline="middle" fontSize="9" fontFamily="Inter,sans-serif" fontWeight="500" fill="rgba(255,255,255,0.35)">135</text>
               <text x="186" y="100" textAnchor="start" dominantBaseline="middle" fontSize="9" fontFamily="Inter,sans-serif" fontWeight="500" fill="rgba(255,255,255,0.35)">180</text>
-              <g transform={`translate(100 100) rotate(${180 - 131})`}>
+              <g transform={`translate(100 100) rotate(${180 - predictedScore})`}>
                 <path d="M 3,0 C 2.2,-28 1,-60 0,-62 C -1,-60 -2.2,-28 -3,0 C -1.5,3 1.5,3 3,0 Z" fill="rgba(255,255,255,0.90)" />
               </g>
               <circle cx="100" cy="100" r="6" fill="rgba(255,255,255,0.90)" />
@@ -45,7 +67,7 @@ const ScorePredictorPage = () => {
 
             <div className="mt-3 bottom-1 left-0 right-0 flex justify-center pointer-events-none">
               <div className="text-center">
-                <span className="font-['Poppins'] font-black leading-none" style={{ color: '#EAB308', fontSize: '52px' }}>131</span>
+                <span className="font-['Poppins'] font-black leading-none" style={{ color: '#EAB308', fontSize: '52px' }}>{predictedScore}</span>
                 <span className="font-['Inter'] text-[16px] text-white/45 ml-1">/ 180</span>
               </div>
             </div>

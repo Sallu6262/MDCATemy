@@ -1,9 +1,52 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link, useOutletContext, useParams } from 'react-router-dom'
 import '../../src/animation.css';
 
+const TestModeButton = ({icon, name, desc, isSelected, modes, setTestMode}) => {
+  return (
+    <button onClick={() => setTestMode(modes[name])} className={`cursor-pointer flex flex-col items-center gap-2 p-4 rounded-xl border ${isSelected ? 'bg-[#FFC600]/10 border-[#FFC600]/40' : 'bg-[#222422] border-[#2E302E] hover:border-[#A8ACA8]/30'} transition-all duration-200`}>
+      <span className="text-2xl">{icon}</span>
+      <div className="text-center">
+        <p className="font-[Inter] font-bold text-[12px] text-[#A8ACA8]">{name}</p>
+        <p className="font-[Inter] text-[12px] text-[#A8ACA8]/60 mt-0.5 leading-tight">{desc}</p>
+      </div>
+    </button>
+  )
+}
+
 const UserStartTestPage = () => {
   const {testID} = useParams();
+  const {upcomingTests} = useOutletContext();
+  const API_URL = import.meta.env.VITE_API_URL;
+
+  const [testToBegin, setTestToBegin] = useState(null);
+  const [testMode, setTestMode] = useState(0);
+  const [blindMode, setBlindMode] = useState(false);
+  const [condition, setCondition] = useState(false);
+
+  const modes = {
+    'Silent' : 0,
+    'Exam Hall' : 1,
+    'Focus Rain' : 2,
+    'Full Chaos' : 3
+  }
+
+  useEffect(() => {
+    const fetchTestInfo = async () => {
+      const res = await fetch(`${API_URL}/tests/${testID}`, {
+        method: "GET",
+        credentials: 'include'
+      });
+
+      const data = await res.json();
+
+      if(data.status === 'success'){
+        console.log(data);
+      }
+    }
+
+    fetchTestInfo();
+  }, []);
 
   return (
     <main className="fade-in flex-1 overflow-hidden pb-[58px] lg:pb-0">
@@ -223,38 +266,11 @@ const UserStartTestPage = () => {
             </p>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
               
-              <button className="flex flex-col items-center gap-2 p-4 rounded-xl border bg-[#222422] border-[#2E302E] hover:border-[#A8ACA8]/30 transition-all duration-200">
-                <span className="text-2xl">🔇</span>
-                <div className="text-center">
-                  <p className="font-[Inter] font-bold text-[12px] text-[#A8ACA8]">Silent</p>
-                  <p className="font-[Inter] text-[12px] text-[#A8ACA8]/60 mt-0.5 leading-tight">Pure focus, no distractions</p>
-                </div>
-              </button>
-              
-              <button className="flex flex-col items-center gap-2 p-4 rounded-xl border bg-[#FFC600]/10 border-[#FFC600]/40 transition-all duration-200">
-                <span className="text-2xl">🏛️</span>
-                <div className="text-center">
-                  <p className="font-[Inter] font-bold text-[12px] text-white">Exam Hall</p>
-                  <p className="font-[Inter] text-[12px] text-[#A8ACA8]/60 mt-0.5 leading-tight">Chairs, rustling, writing sounds</p>
-                </div>
-                <div className="w-1.5 h-1.5 rounded-full bg-[#FFC600]"></div>
-              </button>
-              
-              <button className="flex flex-col items-center gap-2 p-4 rounded-xl border bg-[#222422] border-[#2E302E] hover:border-[#A8ACA8]/30 transition-all duration-200">
-                <span className="text-2xl">🌧️</span>
-                <div className="text-center">
-                  <p className="font-[Inter] font-bold text-[12px] text-[#A8ACA8]">Focus Rain</p>
-                  <p className="font-[Inter] text-[12px] text-[#A8ACA8]/60 mt-0.5 leading-tight">Soft white noise for concentration</p>
-                </div>
-              </button>
-              
-              <button className="flex flex-col items-center gap-2 p-4 rounded-xl border bg-[#222422] border-[#2E302E] hover:border-[#A8ACA8]/30 transition-all duration-200">
-                <span className="text-2xl">🔊</span>
-                <div className="text-center">
-                  <p className="font-[Inter] font-bold text-[12px] text-[#A8ACA8]">Full Chaos</p>
-                  <p className="font-[Inter] text-[12px] text-[#A8ACA8]/60 mt-0.5 leading-tight">Announcements, coughing, phones ringing</p>
-                </div>
-              </button>
+              <TestModeButton icon={'🔇'} name={'Silent'} desc={'Pure focus, no distractions'} isSelected={testMode === 0} modes={modes} setTestMode={setTestMode}/>
+              <TestModeButton icon={'🏛️'} name={'Exam Hall'} desc={'Chairs, rustling, writing sounds'} isSelected={testMode === 1} modes={modes} setTestMode={setTestMode}/>
+              <TestModeButton icon={'🌧️'} name={'Focus Rain'} desc={'Soft white noise for concentration'} isSelected={testMode === 2} modes={modes} setTestMode={setTestMode}/>
+              <TestModeButton icon={'🔊'} name={'Full Chaos'} desc={'Announcements, coughing, phones ringing'} isSelected={testMode === 3} modes={modes} setTestMode={setTestMode}/>
+
             </div>
           </div>
 
@@ -264,7 +280,7 @@ const UserStartTestPage = () => {
               🧠 Warrior Extras
             </p>
             <button className="w-full flex items-start gap-4 bg-[#222422] border border-[#2E302E] hover:border-[#A8ACA8]/30 rounded-xl px-5 py-4 text-left transition-all duration-200">
-              <div className="w-5 h-5 rounded border border-[#A8ACA8]/40 flex-shrink-0 flex items-center justify-center mt-0.5"></div>
+              <input type="checkbox" checked={blindMode} onChange={e => setBlindMode(e.target.checked)} className="cursor-pointer accent-black w-5 h-5 rounded border border-[#A8ACA8]/40 flex-shrink-0 flex items-center justify-center mt-0.5"/>
               <div>
                 <div className="flex items-center gap-2 flex-wrap">
                   <p className="font-[Inter] font-bold text-white text-[13px]">Blind Mode</p>
@@ -282,7 +298,7 @@ const UserStartTestPage = () => {
           
           <div>
             <button className="w-full flex items-start gap-4 rounded-xl px-5 py-4 text-left border-l-4 border-l-[#2E302E] bg-[#222422] border border-[#2E302E] transition-all duration-200">
-              <div className="w-5 h-5 rounded border border-[#A8ACA8]/40 flex-shrink-0 flex items-center justify-center mt-0.5"></div>
+            <input type="checkbox" checked={condition} onChange={e => setCondition(e.target.checked)} className="cursor-pointer accent-black w-5 h-5 rounded border border-[#A8ACA8]/40 flex-shrink-0 flex items-center justify-center mt-0.5"/>
               <p className="font-[Inter] text-[13px] leading-relaxed text-white/80">
                 I understand this is a full timed simulation. The clock runs continuously without pause. I will treat this as my real MDCAT.
                 <span className="text-[#FFC600] font-bold">I am ready to be a Warrior.</span>
@@ -292,7 +308,7 @@ const UserStartTestPage = () => {
 
           
           <div className="text-center pb-6">
-            <button className="inline-flex items-center gap-3 px-8 py-4 rounded-xl text-black text-[13px] font-[Inter] font-black uppercase tracking-[0.1em] shadow-lg shadow-[#FFC600]/30 opacity-25 cursor-not-allowed"
+            <button className={`${condition ? 'cursor-pointer opacity-100' : 'cursor-not-allowed opacity-25'} inline-flex items-center gap-3 px-8 py-4 rounded-xl text-black text-[13px] font-[Inter] font-black uppercase tracking-[0.1em] shadow-lg shadow-[#FFC600]/30`}
                     style={{ background: 'linear-gradient(135deg, #FFE27A 0%, #FFC600 45%, #E5B200 100%)' }}>
               <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
                 <polyline points="14.5 17.5 3 6 3 3 6 3 17.5 14.5"/>

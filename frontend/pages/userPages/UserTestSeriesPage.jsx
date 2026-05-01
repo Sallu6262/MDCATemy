@@ -10,7 +10,7 @@ import '../../src/animation.css';
 
 const UserTestSeriesPage = () => {
     // const [recentUpcomingTest, setRecentUpcomingTest] = useState(null);
-    const {upcomingTests, previousTests, setStartTest} = useOutletContext();
+    const {upcomingTests, previousTests} = useOutletContext();
     // console.log("upcoming: ", upcomingTests);
 
     // const API_URL = import.meta.env.VITE_API_URL;
