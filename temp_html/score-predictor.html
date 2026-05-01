@@ -1,0 +1,172 @@
+﻿<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MDCATEMY Â· Score Predictor</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    body { font-family: "Inter", sans-serif; -webkit-font-smoothing: antialiased; }
+  </style>
+</head>
+<!-- The bottom-sheet modal contents.
+     Page background mimics the dimmed dashboard behind the sheet. -->
+<body class="bg-[#181A18] min-h-screen flex items-end justify-center">
+
+  <!-- Backdrop (visual only) -->
+  <div class="fixed inset-0 bg-black/55 backdrop-blur-[2px] pointer-events-none"></div>
+
+  <!-- Bottom-sheet panel -->
+  <div class="relative w-full max-w-lg bg-[#1a1c1a] rounded-t-3xl px-5 pt-5 pb-8 max-h-[88vh] flex flex-col overflow-hidden border-t border-white/[0.06]">
+
+    <!-- Drag handle -->
+    <div class="w-10 h-1 bg-white/15 rounded-full mx-auto mb-4 flex-shrink-0"></div>
+
+    <!-- Header -->
+    <div class="flex items-start justify-between mb-2 flex-shrink-0">
+      <div>
+        <p class="font-['Inter'] font-bold text-[9.5px] uppercase tracking-[0.14em] text-white/40">Score Predictor</p>
+        <h3 class="font-['Poppins'] font-bold text-[17px] text-white/95 leading-tight">Your Predicted Score</h3>
+        <p class="font-['Inter'] text-[11px] text-white/45 mt-0.5">Accuracy Ã— MDCAT subject weights</p>
+      </div>
+      <div class="flex flex-col items-end gap-0.5">
+        <button class="w-8 h-8 rounded-full bg-white/[0.08] flex items-center justify-center">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.55)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+        <div class="mt-1 text-right">
+          <p class="font-['Inter'] text-[9px] uppercase tracking-wider text-white/35">Target</p>
+          <p class="font-['Poppins'] font-black text-[18px] leading-none text-white/90">175</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Gauge with score overlay -->
+    <div class="relative flex-shrink-0">
+      <svg viewBox="0 -10 200 115" class="w-[72%] mx-auto block">
+        <!-- Segments -->
+        <path d="M 14.00 100.00 A 86 86 0 0 1 39.21 39.21 L 52.62 52.62 A 67 67 0 0 0 33.00 100.00 Z" fill="#EF4444"/>
+        <path d="M 39.21 39.21 A 86 86 0 0 1 100.00 14.00 L 100.00 33.00 A 67 67 0 0 0 52.62 52.62 Z" fill="#F97316"/>
+        <path d="M 100.00 14.00 A 86 86 0 0 1 160.79 39.21 L 147.38 52.62 A 67 67 0 0 0 100.00 33.00 Z" fill="#EAB308"/>
+        <path d="M 160.79 39.21 A 86 86 0 0 1 186.00 100.00 L 167.00 100.00 A 67 67 0 0 0 147.38 52.62 Z" fill="#22C55E"/>
+
+        <!-- Tick labels -->
+        <text x="14" y="100" text-anchor="end"    dominant-baseline="middle" font-size="9" font-family="Inter,sans-serif" font-weight="500" fill="rgba(255,255,255,0.35)">0</text>
+        <text x="39.21" y="39.21" text-anchor="end" dominant-baseline="middle" font-size="9" font-family="Inter,sans-serif" font-weight="500" fill="rgba(255,255,255,0.35)">45</text>
+        <text x="100" y="1"  text-anchor="middle" dominant-baseline="middle" font-size="9" font-family="Inter,sans-serif" font-weight="500" fill="rgba(255,255,255,0.35)">90</text>
+        <text x="160.79" y="39.21" text-anchor="start" dominant-baseline="middle" font-size="9" font-family="Inter,sans-serif" font-weight="500" fill="rgba(255,255,255,0.35)">135</text>
+        <text x="186" y="100" text-anchor="start" dominant-baseline="middle" font-size="9" font-family="Inter,sans-serif" font-weight="500" fill="rgba(255,255,255,0.35)">180</text>
+
+        <!-- Needle (rotated 41Â° = score 131) -->
+        <g transform="translate(100 100) rotate(41)">
+          <path d="M 3,0 C 2.2,-28 1,-60 0,-62 C -1,-60 -2.2,-28 -3,0 C -1.5,3 1.5,3 3,0 Z" fill="rgba(255,255,255,0.90)"/>
+        </g>
+        <circle cx="100" cy="100" r="6"   fill="rgba(255,255,255,0.90)"/>
+        <circle cx="100" cy="100" r="2.8" fill="#FFC600"/>
+      </svg>
+
+      <!-- Score overlay beneath gauge centre -->
+      <div class="absolute bottom-1 left-0 right-0 flex justify-center pointer-events-none">
+        <div class="text-center">
+          <span class="font-['Poppins'] font-black leading-none" style="color:#EAB308; font-size:44px;">131</span>
+          <span class="font-['Inter'] text-[13px] text-white/40 ml-1">/ 210</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Algorithm link -->
+    <a href="#"
+       class="flex items-center justify-center gap-1.5 w-full mt-1 mb-4 py-2.5 rounded-xl border border-[#FFC600]/25 bg-[#FFC600]/[0.06] font-['Inter'] font-semibold text-[12px] text-[#E0A800] hover:bg-[#FFC600]/[0.12] transition-colors flex-shrink-0">
+      Understand Score Predictor Algorithm
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+    </a>
+
+    <!-- Leaderboard -->
+    <div class="flex-1 overflow-y-auto min-h-0">
+      <div class="flex items-center gap-2 mb-2">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#E0A800" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>
+        <p class="font-['Inter'] font-bold text-[10px] uppercase tracking-[0.12em] text-white/40">Leaderboard</p>
+      </div>
+
+      <div class="space-y-1">
+        <!-- 1 -->
+        <div class="flex items-center gap-2.5 px-3 py-2 rounded-xl">
+          <span class="font-['Poppins'] font-bold text-[11px] w-4 text-center text-white/35">ðŸ¥‡</span>
+          <div class="w-7 h-7 rounded-full flex items-center justify-center font-['Poppins'] font-bold text-[9px]" style="background:#10B98122; color:#10B981;">FN</div>
+          <span class="flex-1 font-['Inter'] text-[12px] truncate text-white/65">Fatima Noor</span>
+          <span class="font-['Poppins'] font-bold text-[13px]" style="color:#22C55E;">178</span>
+        </div>
+        <!-- 2 -->
+        <div class="flex items-center gap-2.5 px-3 py-2 rounded-xl">
+          <span class="font-['Poppins'] font-bold text-[11px] w-4 text-center text-white/35">ðŸ¥ˆ</span>
+          <div class="w-7 h-7 rounded-full flex items-center justify-center font-['Poppins'] font-bold text-[9px]" style="background:#38BDF822; color:#38BDF8;">AR</div>
+          <span class="flex-1 font-['Inter'] text-[12px] truncate text-white/65">Ahmed Raza</span>
+          <span class="font-['Poppins'] font-bold text-[13px]" style="color:#22C55E;">174</span>
+        </div>
+        <!-- 3 -->
+        <div class="flex items-center gap-2.5 px-3 py-2 rounded-xl">
+          <span class="font-['Poppins'] font-bold text-[11px] w-4 text-center text-white/35">ðŸ¥‰</span>
+          <div class="w-7 h-7 rounded-full flex items-center justify-center font-['Poppins'] font-bold text-[9px]" style="background:#A78BFA22; color:#A78BFA;">SM</div>
+          <span class="flex-1 font-['Inter'] text-[12px] truncate text-white/65">Sara Malik</span>
+          <span class="font-['Poppins'] font-bold text-[13px]" style="color:#22C55E;">169</span>
+        </div>
+        <!-- 4 -->
+        <div class="flex items-center gap-2.5 px-3 py-2 rounded-xl">
+          <span class="font-['Poppins'] font-bold text-[11px] w-4 text-center text-white/35">4</span>
+          <div class="w-7 h-7 rounded-full flex items-center justify-center font-['Poppins'] font-bold text-[9px]" style="background:#FB923C22; color:#FB923C;">OS</div>
+          <span class="flex-1 font-['Inter'] text-[12px] truncate text-white/65">Omar Sheikh</span>
+          <span class="font-['Poppins'] font-bold text-[13px]" style="color:#22C55E;">162</span>
+        </div>
+        <!-- 5 -->
+        <div class="flex items-center gap-2.5 px-3 py-2 rounded-xl">
+          <span class="font-['Poppins'] font-bold text-[11px] w-4 text-center text-white/35">5</span>
+          <div class="w-7 h-7 rounded-full flex items-center justify-center font-['Poppins'] font-bold text-[9px]" style="background:#2DD4BF22; color:#2DD4BF;">ZA</div>
+          <span class="flex-1 font-['Inter'] text-[12px] truncate text-white/65">Zainab Ali</span>
+          <span class="font-['Poppins'] font-bold text-[13px]" style="color:#22C55E;">155</span>
+        </div>
+        <!-- 6 -->
+        <div class="flex items-center gap-2.5 px-3 py-2 rounded-xl">
+          <span class="font-['Poppins'] font-bold text-[11px] w-4 text-center text-white/35">6</span>
+          <div class="w-7 h-7 rounded-full flex items-center justify-center font-['Poppins'] font-bold text-[9px]" style="background:#F59E0B22; color:#F59E0B;">BY</div>
+          <span class="flex-1 font-['Inter'] text-[12px] truncate text-white/65">Bilal Yousaf</span>
+          <span class="font-['Poppins'] font-bold text-[13px]" style="color:#22C55E;">148</span>
+        </div>
+        <!-- 7 (You) -->
+        <div class="flex items-center gap-2.5 px-3 py-2 rounded-xl bg-[#FFC600]/10 border border-[#FFC600]/25">
+          <span class="font-['Poppins'] font-bold text-[11px] w-4 text-center text-white/35">7</span>
+          <div class="w-7 h-7 rounded-full flex items-center justify-center font-['Poppins'] font-bold text-[9px]" style="background:#FFC60022; color:#FFC600;">HK</div>
+          <span class="flex-1 font-['Inter'] text-[12px] truncate font-bold text-white/95">Hayan Khan (You)</span>
+          <span class="font-['Poppins'] font-bold text-[13px]" style="color:#EAB308;">131</span>
+        </div>
+        <!-- 8 -->
+        <div class="flex items-center gap-2.5 px-3 py-2 rounded-xl">
+          <span class="font-['Poppins'] font-bold text-[11px] w-4 text-center text-white/35">8</span>
+          <div class="w-7 h-7 rounded-full flex items-center justify-center font-['Poppins'] font-bold text-[9px]" style="background:#8B5CF622; color:#8B5CF6;">AT</div>
+          <span class="flex-1 font-['Inter'] text-[12px] truncate text-white/65">Ayesha Tariq</span>
+          <span class="font-['Poppins'] font-bold text-[13px]" style="color:#EAB308;">124</span>
+        </div>
+        <!-- 9 -->
+        <div class="flex items-center gap-2.5 px-3 py-2 rounded-xl">
+          <span class="font-['Poppins'] font-bold text-[11px] w-4 text-center text-white/35">9</span>
+          <div class="w-7 h-7 rounded-full flex items-center justify-center font-['Poppins'] font-bold text-[9px]" style="background:#06B6D422; color:#06B6D4;">IQ</div>
+          <span class="flex-1 font-['Inter'] text-[12px] truncate text-white/65">Imran Qureshi</span>
+          <span class="font-['Poppins'] font-bold text-[13px]" style="color:#EAB308;">112</span>
+        </div>
+        <!-- 10 -->
+        <div class="flex items-center gap-2.5 px-3 py-2 rounded-xl">
+          <span class="font-['Poppins'] font-bold text-[11px] w-4 text-center text-white/35">10</span>
+          <div class="w-7 h-7 rounded-full flex items-center justify-center font-['Poppins'] font-bold text-[9px]" style="background:#EF444422; color:#EF4444;">NF</div>
+          <span class="flex-1 font-['Inter'] text-[12px] truncate text-white/65">Noor Fatima</span>
+          <span class="font-['Poppins'] font-bold text-[13px]" style="color:#F97316;">98</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</body>
+</html>
+

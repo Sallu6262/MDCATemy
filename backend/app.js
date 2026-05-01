@@ -32,15 +32,15 @@ app.use(morgan("tiny"));
 app.use([xss(), helmet(), hpp({ whitelist: ['attempts', 'topic_ids', 'subject_ids', 'topics'] })]);
 
 // Rate limiting
-app.use(rateLimit({
-	windowMs: 15 * 60 * 1000, // 15 minutes
-	limit: 1000,
-    message: {
-        status: "fail",
-        statusCode: 429,
-        message: "Too many requests, please try again later."
-    }
-}));
+// app.use(rateLimit({
+// 	windowMs: 15 * 60 * 1000, // 15 minutes
+// 	limit: 100,
+//     message: {
+//         status: "fail",
+//         statusCode: 429,
+//         message: "Too many requests, please try again later."
+//     }
+// }));
 
 
 // ROUTERS
