@@ -1,4 +1,7 @@
 {
   "name": "mdcatemy-root",
-  "private": true
+  "private": true,
+  "devDependencies": {
+    "tailwindcss": "^4.2.4"
+  }
 }

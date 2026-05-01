@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 
-const SavedMCQCard = ({mcq, mcqNo, isSearched}) => {
+const SavedMCQCard = ({mcq, mcqNo}) => {
     const savedRef = useRef(null);
     // console.log(mcq.question, isSearched);
     // console.log(mcqNo, isSearched);
@@ -54,14 +54,6 @@ const SavedMCQCard = ({mcq, mcqNo, isSearched}) => {
 
         setDeleteLoading(false);
     }
-
-    useEffect(() => {
-        if(isSearched){
-            console.log('here');
-            savedRef.current.focus();
-            savedRef.current.scrollIntoView({block: 'center', behaviour: 'smooth'});
-        }
-    }, [isSearched]);
 
     return (
         <div ref={savedRef} tabIndex={-1} className="bg-[#222422] border border-[#2E302E] rounded-xl overflow-hidden">

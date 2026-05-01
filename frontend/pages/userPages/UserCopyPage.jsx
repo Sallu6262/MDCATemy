@@ -4,9 +4,13 @@ import MistakesCopy from '../../components/userComponents/MistakesCopy';
 import '../../src/animation.css';
 
 const UserCopyPage = () => {
-    const [mistakeOrSave, setMistakeOrSave] = useState(true);
+    const sessionState = JSON.parse(sessionStorage.getItem("isSavedCopy"));
+    const [mistakeOrSave, setMistakeOrSave] = useState(sessionState ?? true);
     const [savedMcqs, setSavedMcqs] = useState([]);
     const [wrongMcqs, setWrongMcqs] = useState([]);
+    const [totalMistakes, setTotalMistakes] = useState(0);
+    const [pendingMistakes, setPendingMistakes] = useState(0);
+    const [totalSaved, setTotalSaved] = useState({});
 
     const API_URL = import.meta.env.VITE_API_URL;
 
@@ -27,9 +31,19 @@ const UserCopyPage = () => {
             const data2 = await res2.json();
 
             if(data1.status === 'success' && data2.status === 'success'){
-                // console.log(data2.data);
+                // console.log(data1);
                 setSavedMcqs(data1.data?.mcqs);
                 setWrongMcqs(data2.data?.mcqs);
+                setTotalMistakes(data2.data?.total_mistakes);
+                setPendingMistakes(data2.data?.pending_mistakes);
+                setTotalSaved({
+                    all: data1.data.biology + data1.data.physics + data1.data.chemistry + data1.data.english + data1.data.logical_reasoning,
+                    biology: data1.data.biology,
+                    physics: data1.data.physics,
+                    chemistry: data1.data.chemistry,
+                    english: data1.data.english,
+                    logical_reasoning: data1.data.logical_reasoning  
+                });
             }
         }
 
@@ -85,7 +99,9 @@ const UserCopyPage = () => {
                     </div>
 
                     {
-                        mistakeOrSave ? <SavedCopy savedMcqs={savedMcqs} /> : <MistakesCopy wrongMcqs={wrongMcqs}/>
+                        mistakeOrSave 
+                        ? <SavedCopy setSavedMcqs={setSavedMcqs} savedMcqs={savedMcqs} totalSaved={totalSaved}/> 
+                        : <MistakesCopy wrongMcqs={wrongMcqs} setPendingMistakes={setPendingMistakes} totalMistakes={totalMistakes} pendingMistakes={pendingMistakes} setWrongMcqs={setWrongMcqs}/>
                     }
 
                 </div>

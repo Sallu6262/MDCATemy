@@ -1,8 +1,12 @@
 import React, { useState } from 'react'
+import sendErrorSuccessMessage from '../../utils/sendErrorSuccessMessage'
 
-const WrongMCQCard = ({mcq}) => {
-    console.log(mcq);
+const WrongMCQCard = ({mcq, setNotMasteredMcqs, setPendingMistakes, setWrongMcqs}) => {
+    // console.log(mcq);
     const [showOptions, setShowOptions] = useState(false);
+    const [masterLoading, setMasterLoading] = useState(false);
+    const [error, setError] = useState(false);
+    const [message, setMessage] = useState("");
 
     const subjectToColor = {
         'Biology' : '#10B981',
@@ -25,7 +29,7 @@ const WrongMCQCard = ({mcq}) => {
         'D' : mcq?.option_d,
     }
 
-    const displayMCQ = (optionChar, optionValue) => {
+    const displayMCQOption = (optionChar, optionValue) => {
         if(mcq?.selected_option === optionChar){
             return <div className="flex items-center gap-3 px-3 py-2.5 rounded-xl border border-red-500/30 bg-red-500/5">
                 <div className="w-5 h-5 rounded-md flex items-center justify-center flex-shrink-0 text-[14px] font-mono font-bold bg-red-500 text-white">{optionChar}</div>
@@ -46,6 +50,27 @@ const WrongMCQCard = ({mcq}) => {
     }
 
     const API_URL = import.meta.env.VITE_API_URL;
+
+    const masterMCQ = async () => {
+        setMasterLoading(true);
+
+        const res = await fetch(`${API_URL}/users/mistakes/${mcq.mcq_id}`,{
+            method: "DELETE",
+            credentials: 'include'
+        });
+
+        if(res.status === 200){
+            sendErrorSuccessMessage('success', 'MCQ mastered!');
+            setNotMasteredMcqs(prev => prev.filter(mMcq => mMcq.mcq_id !== mcq.mcq_id));
+            setPendingMistakes(prev => prev - 1);
+            setWrongMcqs(prev => prev.map(wrongMcq => wrongMcq.mcq_id === mcq.mcq_id ? {...mcq, is_mastered: 1} : wrongMcq));
+        } else {
+            setError(true);
+            setMessage('Operation failed! Try again later.');
+        }
+
+        setMasterLoading(false);
+    }
 
     return (
         <div className="mistake-card bg-[#222422] border border-[#2E302E] rounded-2xl overflow-hidden">
@@ -88,10 +113,10 @@ const WrongMCQCard = ({mcq}) => {
                     <div className="mistake-expanded">
                         <div className="space-y-1.5 mb-3">
 
-                            {displayMCQ('A', mcq?.option_a)}
-                            {displayMCQ('B', mcq?.option_b)}
-                            {displayMCQ('C', mcq?.option_c)}
-                            {displayMCQ('D', mcq?.option_d)}
+                            {displayMCQOption('A', mcq?.option_a)}
+                            {displayMCQOption('B', mcq?.option_b)}
+                            {displayMCQOption('C', mcq?.option_c)}
+                            {displayMCQOption('D', mcq?.option_d)}
 
                         </div>
                         <div className="callout-yellow bg-[#181A18] rounded-r-xl p-3.5 mb-3">
@@ -117,19 +142,23 @@ const WrongMCQCard = ({mcq}) => {
                     <span className="label-default">{showOptions ? 'Hide' : 'Show'} options &amp; explanation</span>
                     <svg className="chev-down" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points={!showOptions ? "6 9 12 15 18 9" : "18 15 12 9 6 15"}/></svg>
                 </button>
-                <button className="cursor-pointer flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/25 text-emerald-400 text-[13px] font-[Inter] font-bold hover:bg-emerald-500/20 transition-all">
-                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/>
-                    <path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/>
-                    <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/>
-                    <path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/>
-                    </svg>
-                    Mark Mastered
-                </button>
+                <span className={`${error ? 'text-red-500' : 'text-green-500'}`}>{message}</span>
+                {
+                    !mcq?.is_mastered ?
+                    <button onClick={masterMCQ} className={`${masterLoading ? 'cursor-not-allowed' : 'cursor-pointer'} flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/25 text-emerald-400 text-[13px] font-[Inter] font-bold hover:bg-emerald-500/20 transition-all`}>
+                        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/>
+                        <path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/>
+                        <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/>
+                        <path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/>
+                        </svg>
+                        {masterLoading ? 'Processing....' : 'Mark Mastered'}
+                    </button> : '' 
+                }
                 </div>
             </div>
         </div>
     )
 }
 
-export default WrongMCQCard
+export default React.memo(WrongMCQCard)

@@ -3,6 +3,8 @@ import Footer from "../components/Footer"
 import { Outlet, useRouteLoaderData } from "react-router-dom"
 import ScrollToTop from "../components/Scroller"
 import { useState } from "react"
+import { ToastContainer } from "react-toastify"
+import 'react-toastify/dist/ReactToastify.css'
 
 const MainLayout = () => {
   const res = useRouteLoaderData('root');
@@ -16,6 +18,7 @@ const MainLayout = () => {
       <ScrollToTop />
       <Outlet context={{admin, setAdmin, student, setStudent}}/>
       <Footer />
+      <ToastContainer />
     </>
   )
 }

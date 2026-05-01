@@ -20,6 +20,7 @@ import UserTestSeriesLayout from '../layout/UserTestSeriesLayout';
 import AllUpcomingTestsPage from '../pages/userPages/AllUpcomingTestsPage';
 import UserCopyPage from '../pages/userPages/UserCopyPage';
 import UserStartTestPage from '../pages/userPages/UserStartTestPage';
+import ScorePredictorPage from '../pages/userPages/ScorePredictorPage';
 
 const App = () => {
   const router = createBrowserRouter(
@@ -36,6 +37,7 @@ const App = () => {
 
           <Route element={<UserDashboardLayout />}>
             <Route path='/dashboard' element={<UserDashboardPage />}/>
+            <Route path='/dashboard/score-predictor' element={<ScorePredictorPage />}/>
 
             <Route path='/test-series' element={<UserTestSeriesLayout />}>
               <Route index element={<UserTestSeriesPage />}/>
