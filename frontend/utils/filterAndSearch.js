@@ -19,7 +19,7 @@ export const subjectFilter = async (isMistake, url, setURL, subject, setPageNumb
 
     const data = await res.json();
 
-    console.log(data);
+    // console.log(data);
     if(data.status === 'success'){
         setPageNumber(1);
         setTotalPages(Math.ceil(total[subject] / 10));
