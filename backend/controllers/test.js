@@ -134,7 +134,7 @@ export const getAllUpcomingTests = handleAsyncError(async (req, res, next) => {
     });
 });
 
-export const getTestInfo = handleAsyncError(async (req, res, next) => {    
+export const getAttemptedTestInfo = handleAsyncError(async (req, res, next) => {    
     const data = (await pool.query("SELECT DISTINCT subject_name, chapter_name, topic_name, topics.topic_id FROM test_topics INNER JOIN topics ON test_topics.topic_id = topics.topic_id INNER JOIN chapters ON topics.chapter_id = chapters.chapter_id INNER JOIN subjects ON topics.subject_id = subjects.subject_id WHERE test_id=$1", [req.params.test_id])).rows;
     const syllabus = convertSubjectsChapterTopicsIntoNestedObject(data);
     const mcqs = (await pool.query("SELECT mcq_bank.mcq_id, question, option_a, option_b, option_c, option_d, selected_option, correct_option, explanation, subject_name FROM tests INNER JOIN test_mcqs ON test_mcqs.test_id = tests.test_id INNER JOIN mcq_bank ON mcq_bank.mcq_id = test_mcqs.mcq_id INNER JOIN subjects ON subjects.subject_id=mcq_bank.subject_id LEFT JOIN attempted_mcqs ON attempted_mcqs.mcq_id = mcq_bank.mcq_id AND attempted_mcqs.test_id = tests.test_id WHERE tests.test_id=$2 AND (attempted_mcqs.student_id=$1 OR attempted_mcqs.student_id IS NULL)", [req.user.student_id, req.params.test_id])).rows;
@@ -149,5 +149,35 @@ export const getTestInfo = handleAsyncError(async (req, res, next) => {
             syllabus, 
             mcqs
         }
+    });
+});
+
+export const getLiveTestInfo = handleAsyncError(async (req, res, next) => {
+    const { test_id } = req.params;
+    if (!test_id || !Number.isInteger(+test_id)) 
+        return next(new AppError("Please provide a valid Test ID", 400));        
+
+    let test = {};
+    let data = (await pool.query("SELECT tests.test_id, test_name, mcq_count, test_time, test_date::TEXT, COUNT(mcq_bank.mcq_id) OVER(PARTITION BY mcq_bank.subject_id)::INT AS subject_mcq_count, mcq_bank.mcq_id, question, option_a, option_b, option_c, option_d, correct_option, explanation, difficulty, subject_name, chapter_name, topic_name FROM tests INNER JOIN test_mcqs ON test_mcqs.test_id = tests.test_id INNER JOIN mcq_bank ON mcq_bank.mcq_id = test_mcqs.mcq_id INNER JOIN topics ON mcq_bank.topic_id = topics.topic_id INNER JOIN chapters ON mcq_bank.chapter_id = chapters.chapter_id INNER JOIN subjects ON mcq_bank.subject_id = subjects.subject_id WHERE tests.test_id = $1", [+test_id])).rows;
+
+    if (data[0]?.test_date !== new Intl.DateTimeFormat('en-CA').format(new Date())) 
+        data = [];
+
+    test.mcqs = data.map(obj => {
+        test.test_id = obj.test_id;
+        test.test_name = obj.test_name;
+        test.total_mcqs = obj.mcq_count;
+        test.test_time = obj.test_time;
+        test[formatColumnName(obj.subject_name)] = obj.subject_mcq_count;
+
+        obj.test_id = obj.test_name = obj.mcq_count = 
+        obj.test_time = obj.subject_mcq_count = obj.test_date = undefined;
+
+        return obj;
+    });
+
+    res.status(200).json({
+        status: "success",
+        data : test
     });
 });

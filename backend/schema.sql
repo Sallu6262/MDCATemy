@@ -5,20 +5,25 @@ CREATE TYPE DIFFICULTY_TYPE AS ENUM ('EASY', 'MEDIUM', 'HARD');
 
 CREATE TABLE subjects(
     subject_id SERIAL PRIMARY KEY,   
-    subject_name VARCHAR(50) NOT NULL
+    subject_name VARCHAR(50) NOT NULL,
+    mcqs_in_mdcat INT
 );
+
 CREATE TABLE chapters(
     chapter_id SERIAL PRIMARY KEY,  
     chapter_name VARCHAR(50) NOT NULL,
     subject_id INT NOT NULL,
+    chapter_weight NUMERIC(5,2)
 
     CONSTRAINT fkey_chapter_subject FOREIGN KEY (subject_id) REFERENCES subjects(subject_id) ON UPDATE CASCADE ON DELETE CASCADE
 );
+
 CREATE TABLE topics(
     topic_id SERIAL PRIMARY KEY,
     topic_name VARCHAR(50) NOT NULL,
     subject_id INT NOT NULL,
     chapter_id INT NOT NULL,
+    topic_weight NUMERIC(5,2),
 
     CONSTRAINT fkey_topic_subject FOREIGN KEY (subject_id) REFERENCES subjects(subject_id) ON UPDATE CASCADE ON DELETE CASCADE,
     CONSTRAINT fkey_topic_chapter FOREIGN KEY (chapter_id) REFERENCES chapters(chapter_id) ON UPDATE CASCADE ON DELETE CASCADE
