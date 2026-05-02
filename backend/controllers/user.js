@@ -1,3 +1,4 @@
+import PG from "pg";
 import pool from "../database.js";
 import { AppError, handleAsyncError } from "../error.js";
 import { formatColumnName, isString } from "../helpers.js";
@@ -105,17 +106,20 @@ export const getPredictedScore = handleAsyncError(async (req, res, next) => {
     })
 });
 
-const getMCQsForUser = async (req, next, query) => {
+const getMCQsAndSubjectWiseCountsForUser = async (req, next, mcq_query, subject_count_query) => {
     let {page, biology, physics, chemistry, english, logical_reasoning} = req.query;
     let search = req.query.search ?? "";
     let isError = false;
     const subjects = ["Biology", "Physics", "Chemistry", "English", "Logical Reasoning"];
     const selected_subjects = [];
+
     [page, biology, physics, chemistry, english, logical_reasoning] = 
     [page, biology, physics, chemistry, english, logical_reasoning].map(elem => elem ? +elem : 0);
 
-    if (!Number.isInteger(page) || page <= 0 || !isString(search))
-        return next(new AppError("Incorrect Query", 400));
+    if (!Number.isInteger(page) || page <= 0 || !isString(search)) {
+        next(new AppError("Incorrect Query", 400));
+        throw new Error("Incorrect Query");
+    }
 
     [biology, physics, chemistry, english, logical_reasoning]
     .forEach((flag, index) => {
@@ -123,7 +127,11 @@ const getMCQsForUser = async (req, next, query) => {
             selected_subjects.push(subjects[index]);
     });
     search = search.split(",").map(word => `%${word}%`);
-    return (await pool.query(query, [req.user.student_id, SAVED_MCQS_PER_PAGE, (+page-1)*SAVED_MCQS_PER_PAGE, selected_subjects, search])).rows;
+
+    const mcqs = (await pool.query(mcq_query, [req.user.student_id, SAVED_MCQS_PER_PAGE, (+page-1)*SAVED_MCQS_PER_PAGE, selected_subjects, search])).rows;
+    const subject_wise_counts = (await pool.query(subject_count_query, [req.user.student_id, selected_subjects, search])).rows;
+
+    return [subject_wise_counts, mcqs];
 };
 
 export const bookmarkMCQ = handleAsyncError(async (req, res, next) => {
@@ -135,40 +143,64 @@ export const bookmarkMCQ = handleAsyncError(async (req, res, next) => {
 
 export const getSavedMCQs = handleAsyncError(async (req, res, next) => {
     // /saved-mcqs?page=1&biology=1&physics=1&chemistry=1&english=1&logical_reasoning=1&search=umair,anwar
-    const query = "SELECT mcq_bank.mcq_id, subject_name, chapter_name, question, option_a, option_b, option_c, option_d, correct_option, explanation, saved_date::TEXT FROM bookmarks INNER JOIN mcq_bank ON mcq_bank.mcq_id = bookmarks.mcq_id INNER JOIN subjects ON mcq_bank.subject_id = subjects.subject_id INNER JOIN chapters ON mcq_bank.chapter_id = chapters.chapter_id WHERE student_id=$1 AND subjects.subject_name = ANY ($4) AND mcq_bank.question ILIKE ANY($5) ORDER BY saved_date DESC LIMIT $2 OFFSET $3";
-    const mcqs = await getMCQsForUser(req, next, query); 
-    const {biology, chemistry, physics, english, logical_reasoning } = 
-        (await pool.query("SELECT COALESCE(SUM(CASE WHEN mcq_bank.subject_id=1 THEN 1 ELSE 0 END )::INT, 0) AS biology, COALESCE(SUM(CASE WHEN mcq_bank.subject_id=2 THEN 1 ELSE 0 END )::INT, 0) AS chemistry, COALESCE(SUM(CASE WHEN mcq_bank.subject_id=3 THEN 1 ELSE 0 END )::INT, 0) AS physics, COALESCE(SUM(CASE WHEN mcq_bank.subject_id=4 THEN 1 ELSE 0 END )::INT, 0) AS english, COALESCE(SUM(CASE WHEN mcq_bank.subject_id=5 THEN 1 ELSE 0 END )::INT, 0) AS logical_reasoning FROM bookmarks INNER JOIN mcq_bank ON mcq_bank.mcq_id=bookmarks.mcq_id WHERE student_id=$1", [req.user.student_id])).rows[0];
+    let data = {
+        count: 0,
+        biology: 0,
+        physics: 0,
+        chemistry: 0,
+        english: 0,
+        logical_reasoning: 0
+    };
+
+    const mcq_query = "SELECT mcq_bank.mcq_id, subject_name, chapter_name, question, option_a, option_b, option_c, option_d, correct_option, explanation, saved_date::TEXT FROM bookmarks INNER JOIN mcq_bank ON mcq_bank.mcq_id = bookmarks.mcq_id INNER JOIN subjects ON mcq_bank.subject_id = subjects.subject_id INNER JOIN chapters ON mcq_bank.chapter_id = chapters.chapter_id WHERE student_id=$1 AND subjects.subject_name = ANY ($4) AND mcq_bank.question ILIKE ANY($5) ORDER BY saved_date DESC LIMIT $2 OFFSET $3";
+    const subject_count_query = "SELECT subject_name, COALESCE(COUNT(mcq_bank.mcq_id)::INT, 0) AS mcq_count FROM bookmarks INNER JOIN mcq_bank ON mcq_bank.mcq_id=bookmarks.mcq_id INNER JOIN subjects ON mcq_bank.subject_id=subjects.subject_id WHERE student_id=$1 AND subjects.subject_name = ANY ($2) AND mcq_bank.question ILIKE ANY($3) GROUP BY subject_name";
+
+    const [subject_wise_counts, mcqs] = await getMCQsAndSubjectWiseCountsForUser(req, next, mcq_query, subject_count_query);
+
+    subject_wise_counts.forEach(obj => {
+        data[formatColumnName(obj.subject_name)] += obj.mcq_count;
+    });
+
+    data.count = mcqs.length;
+    data.mcqs = mcqs;
 
     res.status(200).json({
         status: "success",
-        data: {
-            count: mcqs.length,
-            biology, 
-            chemistry,
-            physics,
-            english,
-            logical_reasoning,
-            mcqs
-        }
+        data
     });
 });
 
 
 export const getWrongMCQs = handleAsyncError(async (req, res, next) => {
     // /wrong-mcqs?page=1&biology=1&physics=1&chemistry=1&english=1&logical_reasoning=1&search=umair,anwar
-    const query = `SELECT DISTINCT mcq_bank.mcq_id, subject_name, chapter_name, question, option_a, option_b, option_c, option_d, correct_option, selected_option, explanation, difficulty, is_mastered FROM attempted_mcqs INNER JOIN mcq_bank ON mcq_bank.mcq_id = attempted_mcqs.mcq_id INNER JOIN subjects ON mcq_bank.subject_id = subjects.subject_id INNER JOIN chapters ON mcq_bank.chapter_id = chapters.chapter_id WHERE student_id=$1 AND subjects.subject_name = ANY ($4) AND mcq_bank.question ILIKE ANY($5) AND (attempted_mcqs.selected_option != mcq_bank.correct_option OR is_mastered = 1) LIMIT $2 OFFSET $3`;
-    const mcqs = await getMCQsForUser(req, next, query); 
-    const {total_mistakes, pending_mistakes} = (await pool.query("SELECT COUNT(attempted_mcqs.mcq_id)::INT AS total_mistakes, COALESCE(SUM(CASE WHEN attempted_mcqs.selected_option != mcq_bank.correct_option THEN 1 ELSE 0 END),0)::INT AS pending_mistakes FROM attempted_mcqs INNER JOIN mcq_bank ON mcq_bank.mcq_id = attempted_mcqs.mcq_id WHERE attempted_mcqs.student_id=$1 AND (attempted_mcqs.selected_option != mcq_bank.correct_option OR attempted_mcqs.is_mastered=1)", [req.user.student_id])).rows[0];
+
+    let data = {
+        count: 0,
+        biology: 0,
+        physics: 0,
+        chemistry: 0,
+        english: 0,
+        logical_reasoning: 0,
+        total_mistakes: 0,
+        pending_mistakes: 0
+    };
+
+    const mcq_query = "SELECT DISTINCT mcq_bank.mcq_id, subject_name, chapter_name, question, option_a, option_b, option_c, option_d, correct_option, selected_option, explanation, difficulty FROM attempted_mcqs INNER JOIN mcq_bank ON mcq_bank.mcq_id = attempted_mcqs.mcq_id INNER JOIN subjects ON mcq_bank.subject_id = subjects.subject_id INNER JOIN chapters ON mcq_bank.chapter_id = chapters.chapter_id WHERE student_id=$1 AND subjects.subject_name = ANY ($4) AND mcq_bank.question ILIKE ANY($5) AND attempted_mcqs.selected_option != mcq_bank.correct_option LIMIT $2 OFFSET $3";
+    const subject_count_query = "SELECT subject_name, COALESCE(COUNT(mcq_bank.mcq_id)::INT, 0) AS mcq_count FROM attempted_mcqs INNER JOIN mcq_bank ON mcq_bank.mcq_id=attempted_mcqs.mcq_id INNER JOIN subjects ON mcq_bank.subject_id=subjects.subject_id WHERE student_id=$1 AND subjects.subject_name = ANY ($2) AND mcq_bank.question ILIKE ANY($3) AND attempted_mcqs.selected_option != mcq_bank.correct_option GROUP BY subject_name";
+    
+    const [subject_wise_counts, mcqs] = await getMCQsAndSubjectWiseCountsForUser(req, next, mcq_query, subject_count_query); 
+
+    subject_wise_counts.forEach(obj => {
+        data[formatColumnName(obj.subject_name)] += obj.mcq_count;
+    });
+
+    [data.total_mistakes, data.pending_mistakes] = Object.values((await pool.query("SELECT COUNT(attempted_mcqs.mcq_id)::INT AS total_mistakes, COALESCE(SUM(CASE WHEN attempted_mcqs.selected_option != mcq_bank.correct_option THEN 1 ELSE 0 END),0)::INT AS pending_mistakes FROM attempted_mcqs INNER JOIN mcq_bank ON mcq_bank.mcq_id = attempted_mcqs.mcq_id WHERE attempted_mcqs.student_id=$1 AND (attempted_mcqs.selected_option != mcq_bank.correct_option OR attempted_mcqs.is_mastered=1)", [req.user.student_id])).rows[0]);
+    data.count = mcqs.length;
+    data.mcqs = mcqs;
     
     res.status(200).json({
         status: "success",
-        data: {
-            count: mcqs.length,
-            total_mistakes,
-            pending_mistakes,
-            mcqs
-        }
+        data
     });
 });
 
