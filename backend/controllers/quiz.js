@@ -76,7 +76,7 @@ export const generateQuiz = handleAsyncError(async (req, res, next) => {
         query = query.replace("MEDIUM", "<<diff>>");
     }
     if (hard) {
-        query = query.replace("<<diff>>", "Hard");
+        query = query.replace("<<diff>>", "HARD");
         quiz.mcqs.hard = (await pool.query(query, [req.user.student_id, hard, req.body.topic_ids])).rows;
     }
 
