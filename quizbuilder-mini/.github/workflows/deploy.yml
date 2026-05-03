@@ -3,7 +3,7 @@ name: Deploy QuizBuilder Mini
 on:
   push:
     branches:
-      - main
+      - quizbuilder-demo
 
 jobs:
   build-test:
