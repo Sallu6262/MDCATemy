@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Quiz Builder - Step 2: Chapters</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=Poppins:wght@600;700;900&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              inter: ["Inter", "sans-serif"],
+              poppins: ["Poppins", "sans-serif"],
+            },
+            colors: {
+              mdcat: "#FFC600",
+              warriorBlack: "#0E0F0E",
+              darkCharcoal: "#181A18",
+              warriorBorder: "#2D302D",
+              warriorText: "#8B8E8B",
+              bio: "#10B981",
+            },
+          },
+        },
+      };
+    </script>
+  </head>
+  <body class="min-h-screen bg-warriorBlack font-inter text-white">
+    <div class="mx-auto max-w-6xl px-4 py-6 lg:px-8">
+      <div class="mx-auto max-w-3xl space-y-4">
+        <header class="mb-3 flex items-center gap-3">
+          <div
+            class="flex h-9 w-9 items-center justify-center rounded-lg border border-mdcat/25 bg-mdcat/10 text-mdcat"
+          >
+            ?
+          </div>
+          <div>
+            <h1 class="font-poppins text-xl font-black">Quiz Builder</h1>
+            <p class="text-xs text-warriorText">
+              Pick subjects, chapters and settings - then generate.
+            </p>
+          </div>
+        </header>
+        <div
+          class="flex items-center gap-2 text-xs font-poppins font-black uppercase tracking-[0.1em]"
+        >
+          <a
+            href="builder.html"
+            class="flex h-7 w-7 items-center justify-center rounded-full border-2 border-warriorBlack bg-mdcat text-warriorBlack"
+            >1</a
+          ><span>Subjects</span>
+          <div class="h-[2px] flex-1 bg-mdcat"></div>
+          <div
+            class="flex h-7 w-7 items-center justify-center rounded-full border-2 border-warriorBlack bg-mdcat text-warriorBlack"
+          >
+            2
+          </div>
+          <span>Chapters</span>
+          <div class="h-[2px] flex-1 bg-warriorBorder"></div>
+          <div
+            class="flex h-7 w-7 items-center justify-center rounded-full border-2 border-warriorBorder text-warriorText"
+          >
+            3
+          </div>
+          <span class="text-warriorText">Topics</span>
+          <div class="h-[2px] flex-1 bg-warriorBorder"></div>
+          <div
+            class="flex h-7 w-7 items-center justify-center rounded-full border-2 border-warriorBorder text-warriorText"
+          >
+            4
+          </div>
+          <span class="text-warriorText">Settings</span>
+        </div>
+        <div class="flex items-center justify-between">
+          <span class="text-xs text-warriorText">Show accuracy</span
+          ><a
+            href="smart-select.html?from=builder-chapters.html"
+            class="rounded-lg border border-warriorBorder px-3 py-1.5 text-[11px] font-poppins font-black uppercase tracking-[0.06em] text-warriorText hover:text-white"
+            >Smart Select</a
+          >
+        </div>
+        <section
+          class="overflow-hidden rounded-2xl border-2 border-warriorBorder bg-darkCharcoal"
+        >
+          <div
+            class="border-b border-warriorBorder/60 px-4 py-3 text-[10px] text-warriorText"
+          >
+            Your Prep legend visible
+          </div>
+          <div class="p-4 lg:p-6">
+            <div class="mb-4 flex items-center justify-between">
+              <div class="flex items-center gap-2">
+                <span
+                  class="h-2.5 w-2.5 rounded-full border border-warriorBlack bg-bio"
+                ></span>
+                <p
+                  class="font-poppins text-sm font-black uppercase tracking-[0.1em]"
+                >
+                  Biology
+                </p>
+              </div>
+              <button class="text-[11px] font-poppins font-black text-mdcat">
+                Select all
+              </button>
+            </div>
+            <div class="grid gap-2 lg:grid-cols-2">
+              <button
+                class="flex items-center gap-3 rounded-xl border-2 border-mdcat/70 bg-mdcat/10 px-4 py-3 text-left"
+              >
+                <span
+                  class="flex h-4 w-4 items-center justify-center rounded border-2 border-mdcat bg-mdcat text-[10px] font-black text-warriorBlack"
+                  >?</span
+                ><span class="flex-1 font-poppins text-sm font-black"
+                  >Cell Biology</span
+                ><span
+                  class="rounded-full bg-emerald-400/10 px-2 py-0.5 text-[10px] font-black text-emerald-400"
+                  >76%</span
+                >
+              </button>
+              <button
+                class="flex items-center gap-3 rounded-xl border-2 border-warriorBorder px-4 py-3 text-left text-warriorText hover:border-mdcat/40"
+              >
+                <span
+                  class="h-4 w-4 rounded border-2 border-warriorBorder"
+                ></span
+                ><span class="flex-1 font-poppins text-sm font-black"
+                  >Biological Molecules</span
+                ><span
+                  class="rounded-full bg-amber-400/10 px-2 py-0.5 text-[10px] font-black text-amber-400"
+                  >71%</span
+                >
+              </button>
+              <button
+                class="flex items-center gap-3 rounded-xl border-2 border-warriorBorder px-4 py-3 text-left text-warriorText hover:border-mdcat/40"
+              >
+                <span
+                  class="h-4 w-4 rounded border-2 border-warriorBorder"
+                ></span
+                ><span class="flex-1 font-poppins text-sm font-black"
+                  >Bioenergetics</span
+                ><span
+                  class="rounded-full bg-emerald-400/10 px-2 py-0.5 text-[10px] font-black text-emerald-400"
+                  >76%</span
+                >
+              </button>
+              <button
+                class="flex items-center gap-3 rounded-xl border-2 border-mdcat/70 bg-mdcat/10 px-4 py-3 text-left"
+              >
+                <span
+                  class="flex h-4 w-4 items-center justify-center rounded border-2 border-mdcat bg-mdcat text-[10px] font-black text-warriorBlack"
+                  >?</span
+                ><span class="flex-1 font-poppins text-sm font-black"
+                  >Genetics &amp; Inheritance</span
+                ><span
+                  class="rounded-full bg-amber-400/10 px-2 py-0.5 text-[10px] font-black text-amber-400"
+                  >72%</span
+                >
+              </button>
+            </div>
+          </div>
+        </section>
+        <div class="flex gap-2">
+          <a
+            href="builder.html"
+            class="inline-flex items-center rounded-xl border-2 border-warriorBorder px-5 py-3 font-poppins text-[13px] font-black uppercase tracking-[0.08em]"
+            >Back</a
+          ><a
+            href="builder-topics.html"
+            class="flex flex-1 items-center justify-center rounded-xl border-2 border-warriorBlack bg-mdcat px-5 py-3 font-poppins text-[13px] font-black uppercase tracking-[0.1em] text-warriorBlack"
+            >Next</a
+          >
+        </div>
+        <p class="text-center">
+          <a href="index.html" class="text-xs text-warriorText"
+            >&larr; Back to mockup index</a
+          >
+        </p>
+      </div>
+    </div>
+  </body>
+</html>

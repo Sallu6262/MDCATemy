@@ -14,3 +14,22 @@
         transform: translateY(0);
     }
 }
+
+.dropdown-menu {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+
+  transform: translateY(-6px);
+
+  transition:
+    max-height 300ms ease,
+    opacity 180ms ease,
+    transform 200ms ease;
+}
+
+.dropdown-menu.open {
+  max-height: 500px; /* big enough for content */
+  opacity: 1;
+  transform: translateY(0);
+}

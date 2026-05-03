@@ -106,7 +106,7 @@ const UpcomingTestCard = ({upcomingTest}) => {
                         </button>
                         {
                             todayDate === testDate ?
-                            <button onClick={() => {navigate(`/test-series/start-test/${upcomingTest?.test_id}`)}} disabled={testDate !== todayDate} className={`cursor-pointer flex-1 flex items-center justify-center gap-1.5 px-4 py-3 rounded-xl text-[12px] font-[Poppins] font-black uppercase tracking-[0.08em] bg-[#FFC600] text-[#181A18] border-2 border-[#181A18] shadow-[3px_3px_0px_rgba(0,0,0,0.55)] transition-all duration-150`}>
+                            <button onClick={() => {navigate(`/dashboard/test-series/start-test/${upcomingTest?.test_id}`)}} disabled={testDate !== todayDate} className={`cursor-pointer flex-1 flex items-center justify-center gap-1.5 px-4 py-3 rounded-xl text-[12px] font-[Poppins] font-black uppercase tracking-[0.08em] bg-[#FFC600] text-[#181A18] border-2 border-[#181A18] shadow-[3px_3px_0px_rgba(0,0,0,0.55)] transition-all duration-150`}>
                                 <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                     <polygon points="6 3 20 12 6 21 6 3"/>
                                 </svg>

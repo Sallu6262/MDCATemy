@@ -21,7 +21,7 @@ const UserNavbar = () => {
             </div>
 
             <nav className="flex w-full flex-row items-stretch justify-center gap-0.5 overflow-x-auto px-0 [-ms-overflow-style:none] [scrollbar-width:none] lg:flex-col lg:gap-0.5 lg:overflow-y-auto lg:px-2 lg:py-3 [&::-webkit-scrollbar]:hidden">
-                <NavLink to='/dashboard' className={({ isActive }) => `${tabBase} ${isActive ? "bg-[#FFC600]/10 text-[#FFC600]" : "text-[#A8ACA8] hover:bg-[#2A2C2A]/40 hover:text-white"}`}>
+                <NavLink to='/dashboard' end className={({ isActive }) => `${tabBase} ${isActive ? "bg-[#FFC600]/10 text-[#FFC600]" : "text-[#A8ACA8] hover:bg-[#2A2C2A]/40 hover:text-white"}`}>
                     {({ isActive }) => (
                       <>
                         <div className={`hidden lg:block absolute left-0 top-1/2 h-5 w-[3px] -translate-y-1/2 rounded-full ${isActive ? 'bg-[#FFC600]' : 'bg-transparent'}`} />
@@ -35,7 +35,7 @@ const UserNavbar = () => {
                     )}
                 </NavLink>
 
-                <NavLink to='/quiz-builder' end className={({ isActive }) => `${tabBase} ${isActive ? "bg-[#FFC600]/10 text-[#FFC600]" : "text-[#A8ACA8] hover:bg-[#2A2C2A]/40 hover:text-white"}`}>
+                <NavLink to='/dashboard/quiz-builder' end className={({ isActive }) => `${tabBase} ${isActive ? "bg-[#FFC600]/10 text-[#FFC600]" : "text-[#A8ACA8] hover:bg-[#2A2C2A]/40 hover:text-white"}`}>
                     {({ isActive }) => (
                       <>
                         <div className={`hidden lg:block absolute left-0 top-1/2 h-5 w-[3px] -translate-y-1/2 rounded-full ${isActive ? 'bg-[#FFC600]' : 'bg-transparent'}`} />
@@ -48,7 +48,7 @@ const UserNavbar = () => {
                     )}
                 </NavLink>
 
-                <NavLink to='/test-series' className={({ isActive }) => `${tabBase} ${isActive ? "bg-[#FFC600]/10 text-[#FFC600]" : "text-[#A8ACA8] hover:bg-[#2A2C2A]/40 hover:text-white"}`}>
+                <NavLink to='/dashboard/test-series' className={({ isActive }) => `${tabBase} ${isActive ? "bg-[#FFC600]/10 text-[#FFC600]" : "text-[#A8ACA8] hover:bg-[#2A2C2A]/40 hover:text-white"}`}>
                     {({ isActive }) => (
                       <>
                         <div className={`hidden lg:block absolute left-0 top-1/2 h-5 w-[3px] -translate-y-1/2 rounded-full ${isActive ? 'bg-[#FFC600]' : 'bg-transparent'}`} />
@@ -63,7 +63,7 @@ const UserNavbar = () => {
                     )}
                 </NavLink>
 
-                <NavLink to='/my-copy' end className={({ isActive }) => `${tabBase} ${isActive ? "bg-[#FFC600]/10 text-[#FFC600]" : "text-[#A8ACA8] hover:bg-[#2A2C2A]/40 hover:text-white"}`}>
+                <NavLink to='/dashboard/my-copy' end className={({ isActive }) => `${tabBase} ${isActive ? "bg-[#FFC600]/10 text-[#FFC600]" : "text-[#A8ACA8] hover:bg-[#2A2C2A]/40 hover:text-white"}`}>
                     {({ isActive }) => (
                       <>
                         <div className={`hidden lg:block absolute left-0 top-1/2 h-5 w-[3px] -translate-y-1/2 rounded-full ${isActive ? 'bg-[#FFC600]' : 'bg-transparent'}`} />
@@ -78,7 +78,7 @@ const UserNavbar = () => {
                     )}
                 </NavLink>
 
-                <NavLink to='/analytics' end className={({ isActive }) => `${tabBase} ${isActive ? "bg-[#FFC600]/10 text-[#FFC600]" : "text-[#A8ACA8] hover:bg-[#2A2C2A]/40 hover:text-white"}`}>
+                <NavLink to='/dashboard/analytics' end className={({ isActive }) => `${tabBase} ${isActive ? "bg-[#FFC600]/10 text-[#FFC600]" : "text-[#A8ACA8] hover:bg-[#2A2C2A]/40 hover:text-white"}`}>
                     {({ isActive }) => (
                       <>
                         <div className={`hidden lg:block absolute left-0 top-1/2 h-5 w-[3px] -translate-y-1/2 rounded-full ${isActive ? 'bg-[#FFC600]' : 'bg-transparent'}`} />

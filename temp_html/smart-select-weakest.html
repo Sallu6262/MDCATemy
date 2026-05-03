@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Smart Select - Top N Weakest Topics</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=Poppins:wght@600;700;900&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config={theme:{extend:{fontFamily:{inter:['Inter','sans-serif'],poppins:['Poppins','sans-serif']},colors:{mdcat:'#FFC600',warriorBlack:'#0E0F0E',darkCharcoal:'#181A18',warriorBorder:'#2D302D',warriorText:'#8B8E8B'}}}}
+    </script>
+  </head>
+  <body
+    class="min-h-screen overflow-hidden bg-warriorBlack font-inter text-white"
+  >
+    <a
+      id="ss-backdrop"
+      href="builder.html"
+      class="fixed inset-0 z-40 bg-black/70 backdrop-blur-sm"
+    ></a>
+    <div
+      class="fixed inset-x-0 bottom-0 z-50 max-h-[90vh] rounded-t-2xl border-t-2 border-warriorBorder bg-darkCharcoal"
+    >
+      <div class="flex justify-center pt-3">
+        <div class="h-1 w-10 rounded-full bg-warriorBorder"></div>
+      </div>
+      <div
+        class="flex items-center justify-between border-b border-warriorBorder/60 px-5 py-3"
+      >
+        <div class="flex items-center gap-2">
+          <a
+            href="smart-select.html"
+            class="flex h-7 w-7 items-center justify-center rounded-lg bg-warriorBlack/40 text-warriorText"
+            >�</a
+          ><span class="font-poppins text-[15px] font-black"
+            >Top N Weakest Topics</span
+          >
+        </div>
+        <a
+          id="ss-close"
+          href="builder.html"
+          class="flex h-7 w-7 items-center justify-center rounded-lg bg-warriorBlack/40 text-warriorText"
+          >?</a
+        >
+      </div>
+      <div class="space-y-5 p-5">
+        <div>
+          <p
+            class="mb-2 text-[10px] font-poppins font-black uppercase tracking-[0.12em] text-warriorText"
+          >
+            How many weakest topics?
+          </p>
+          <div class="flex flex-wrap gap-2">
+            <button
+              class="rounded-lg border border-warriorBorder px-4 py-2 font-poppins text-[13px] font-black text-warriorText"
+            >
+              3</button
+            ><button
+              class="rounded-lg border border-mdcat bg-mdcat px-4 py-2 font-poppins text-[13px] font-black text-warriorBlack"
+            >
+              5</button
+            ><button
+              class="rounded-lg border border-warriorBorder px-4 py-2 font-poppins text-[13px] font-black text-warriorText"
+            >
+              10</button
+            ><button
+              class="rounded-lg border border-warriorBorder px-4 py-2 font-poppins text-[13px] font-black text-warriorText"
+            >
+              Custom
+            </button>
+          </div>
+        </div>
+        <div>
+          <p
+            class="mb-2 text-[10px] font-poppins font-black uppercase tracking-[0.12em] text-warriorText"
+          >
+            Preview - 5 topics
+          </p>
+          <div class="max-h-[36vh] space-y-1.5 overflow-y-auto pr-1">
+            <div
+              class="flex items-center gap-3 rounded-xl border border-warriorBorder/60 bg-warriorBlack/40 px-3.5 py-2.5"
+            >
+              <span
+                class="w-5 text-right font-poppins text-[10px] font-black text-warriorText/40"
+                >1</span
+              >
+              <div class="min-w-0 flex-1">
+                <p class="truncate font-poppins text-[12px] font-black">
+                  Transistors
+                </p>
+                <p class="truncate text-[10px] text-warriorText/60">
+                  Physics � Electronics
+                </p>
+              </div>
+              <span
+                class="rounded-full border border-red-400/25 bg-red-400/10 px-2 py-0.5 font-poppins text-[10px] font-black text-red-400"
+                >48%</span
+              >
+            </div>
+            <div
+              class="flex items-center gap-3 rounded-xl border border-warriorBorder/60 bg-warriorBlack/40 px-3.5 py-2.5"
+            >
+              <span
+                class="w-5 text-right font-poppins text-[10px] font-black text-warriorText/40"
+                >2</span
+              >
+              <div class="min-w-0 flex-1">
+                <p class="truncate font-poppins text-[12px] font-black">
+                  Paper Folding
+                </p>
+                <p class="truncate text-[10px] text-warriorText/60">
+                  Logical Reasoning � Spatial Reasoning
+                </p>
+              </div>
+              <span
+                class="rounded-full border border-red-400/25 bg-red-400/10 px-2 py-0.5 font-poppins text-[10px] font-black text-red-400"
+                >48%</span
+              >
+            </div>
+            <div
+              class="flex items-center gap-3 rounded-xl border border-warriorBorder/60 bg-warriorBlack/40 px-3.5 py-2.5"
+            >
+              <span
+                class="w-5 text-right font-poppins text-[10px] font-black text-warriorText/40"
+                >3</span
+              >
+              <div class="min-w-0 flex-1">
+                <p class="truncate font-poppins text-[12px] font-black">
+                  Gibbs Free Energy
+                </p>
+                <p class="truncate text-[10px] text-warriorText/60">
+                  Chemistry � Thermochemistry
+                </p>
+              </div>
+              <span
+                class="rounded-full border border-red-400/25 bg-red-400/10 px-2 py-0.5 font-poppins text-[10px] font-black text-red-400"
+                >44%</span
+              >
+            </div>
+            <div
+              class="flex items-center gap-3 rounded-xl border border-warriorBorder/60 bg-warriorBlack/40 px-3.5 py-2.5"
+            >
+              <span
+                class="w-5 text-right font-poppins text-[10px] font-black text-warriorText/40"
+                >4</span
+              >
+              <div class="min-w-0 flex-1">
+                <p class="truncate font-poppins text-[12px] font-black">
+                  Doppler Effect
+                </p>
+                <p class="truncate text-[10px] text-warriorText/60">
+                  Physics � Waves & Sound
+                </p>
+              </div>
+              <span
+                class="rounded-full border border-red-400/25 bg-red-400/10 px-2 py-0.5 font-poppins text-[10px] font-black text-red-400"
+                >55%</span
+              >
+            </div>
+            <div
+              class="flex items-center gap-3 rounded-xl border border-warriorBorder/60 bg-warriorBlack/40 px-3.5 py-2.5"
+            >
+              <span
+                class="w-5 text-right font-poppins text-[10px] font-black text-warriorText/40"
+                >5</span
+              >
+              <div class="min-w-0 flex-1">
+                <p class="truncate font-poppins text-[12px] font-black">
+                  Solvay Process
+                </p>
+                <p class="truncate text-[10px] text-warriorText/60">
+                  Chemistry � Industrial Chemistry
+                </p>
+              </div>
+              <span
+                class="rounded-full border border-red-400/25 bg-red-400/10 px-2 py-0.5 font-poppins text-[10px] font-black text-red-400"
+                >55%</span
+              >
+            </div>
+          </div>
+        </div>
+        <a
+          href="builder-topics.html"
+          class="block w-full rounded-xl border-2 border-warriorBlack bg-mdcat py-3 text-center font-poppins text-[13px] font-black text-warriorBlack shadow-[3px_3px_0px_rgba(0,0,0,0.4)]"
+          >Add 5 Topics to Test</a
+        >
+      </div>
+    </div>
+    <script>
+      (function () {
+        var p = new URLSearchParams(window.location.search);
+        var from = p.get("from") || "builder.html";
+        var ok = [
+          "builder.html",
+          "builder-chapters.html",
+          "builder-topics.html",
+          "builder-settings.html",
+        ];
+        if (ok.indexOf(from) === -1) from = "builder.html";
+        document.getElementById("ss-backdrop").setAttribute("href", from);
+        document.getElementById("ss-close").setAttribute("href", from);
+        document.addEventListener("keydown", function (e) {
+          if (e.key === "Escape") window.location.href = from;
+        });
+      })();
+    </script>
+  </body>
+</html>

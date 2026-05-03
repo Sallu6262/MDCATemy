@@ -11,7 +11,7 @@ const UserDashboardLayout = () => {
     const [predictedScore, setPredictedScore] = useState(0);
 
     const API_URL = import.meta.env.VITE_API_URL;
-
+    
     useEffect(() => {
         // console.log('here in dashboard');
         if(!student){

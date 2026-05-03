@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Quiz Builder - Step 4: Settings</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=Poppins:wght@600;700;900&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config={theme:{extend:{fontFamily:{inter:['Inter','sans-serif'],poppins:['Poppins','sans-serif']},colors:{mdcat:'#FFC600',warriorBlack:'#0E0F0E',darkCharcoal:'#181A18',warriorBorder:'#2D302D',warriorText:'#8B8E8B'}}}}
+    </script>
+  </head>
+  <body class="min-h-screen bg-warriorBlack font-inter text-white">
+    <div class="mx-auto max-w-6xl px-4 py-6 lg:px-8">
+      <div class="mx-auto max-w-3xl space-y-4">
+        <header>
+          <h1 class="font-poppins text-xl font-black">Quiz Builder</h1>
+          <p class="text-xs text-warriorText">Step 4 - Settings</p>
+        </header>
+        <section
+          class="rounded-2xl border-2 border-warriorBorder bg-darkCharcoal p-4 lg:p-6"
+        >
+          <p
+            class="mb-5 font-poppins text-[11px] font-black uppercase tracking-[0.14em] text-mdcat"
+          >
+            Test Settings
+          </p>
+          <div class="space-y-6">
+            <div>
+              <label
+                class="mb-3 block text-[10px] font-black uppercase tracking-[0.12em] text-warriorText"
+                >Number of MCQs</label
+              >
+              <div class="flex items-center gap-2">
+                <button
+                  class="h-10 w-10 rounded-xl border-2 border-warriorBorder bg-warriorBlack/30 text-xl"
+                >
+                  -</button
+                ><input
+                  class="h-10 flex-1 rounded-xl border-2 border-warriorBorder bg-warriorBlack text-center font-poppins text-xl font-black text-mdcat"
+                  type="number"
+                  value="20"
+                /><button
+                  class="h-10 w-10 rounded-xl border-2 border-warriorBorder bg-warriorBlack/30 text-xl"
+                >
+                  +
+                </button>
+              </div>
+            </div>
+            <div>
+              <label
+                class="mb-3 block text-[10px] font-black uppercase tracking-[0.12em] text-warriorText"
+                >Difficulty Level</label
+              >
+              <div class="flex flex-wrap gap-2">
+                <button
+                  class="rounded-lg border border-warriorBorder px-4 py-2 text-sm text-warriorText"
+                >
+                  Easy</button
+                ><button
+                  class="rounded-lg border border-warriorBorder px-4 py-2 text-sm text-warriorText"
+                >
+                  Medium</button
+                ><button
+                  class="rounded-lg border border-warriorBorder px-4 py-2 text-sm text-warriorText"
+                >
+                  Hard</button
+                ><button
+                  class="rounded-lg border border-mdcat bg-mdcat px-4 py-2 text-sm font-semibold text-warriorBlack"
+                >
+                  MDCAT Mix</button
+                ><button
+                  class="rounded-lg border border-warriorBorder px-4 py-2 text-sm text-warriorText"
+                >
+                  Custom
+                </button>
+              </div>
+            </div>
+            <div>
+              <div class="mb-2 flex items-center justify-between">
+                <label
+                  class="text-[10px] font-black uppercase tracking-[0.12em] text-warriorText"
+                  >Timer</label
+                ><span class="relative h-5 w-9 rounded-full bg-warriorBorder"
+                  ><span
+                    class="absolute left-[3px] top-[3px] h-3.5 w-3.5 rounded-full bg-white"
+                  ></span
+                ></span>
+              </div>
+              <p class="text-[11px] text-warriorText">Ascending timer shown</p>
+            </div>
+            <div>
+              <label
+                class="mb-2 block text-[10px] font-black uppercase tracking-[0.12em] text-warriorText"
+                >Show Answer</label
+              >
+              <div
+                class="flex overflow-hidden rounded-lg border border-warriorBorder"
+              >
+                <button class="flex-1 py-2 text-xs font-bold text-warriorText">
+                  After each</button
+                ><button
+                  class="flex-1 bg-mdcat py-2 text-xs font-bold text-warriorBlack"
+                >
+                  At the end
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+        <div class="flex gap-2">
+          <a
+            href="builder-topics.html"
+            class="rounded-xl border-2 border-warriorBorder px-5 py-3 font-poppins text-[13px] font-black uppercase tracking-[0.08em]"
+            >Back</a
+          ><a
+            href="taking.html"
+            class="flex flex-1 items-center justify-center rounded-xl border-2 border-warriorBlack bg-mdcat px-5 py-3 font-poppins text-[13px] font-black uppercase tracking-[0.1em] text-warriorBlack"
+            >Generate � 20 MCQs</a
+          >
+        </div>
+        <p class="text-center">
+          <a href="index.html" class="text-xs text-warriorText"
+            >&larr; Back to mockup index</a
+          >
+        </p>
+      </div>
+    </div>
+  </body>
+</html>

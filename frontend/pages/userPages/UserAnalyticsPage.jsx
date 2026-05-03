@@ -2,8 +2,33 @@ import { Link, useOutletContext } from 'react-router-dom';
 import '../../src/animation.css';
 import React from 'react'
 
+const subjectCircleLink = ({subject, color, accuracy, total}) => {
+    return (
+        <Link to={`/analytics/${subject.toLowerCase()}`} className="group block w-[30%] md:w-[17%]">
+            <div className="relative flex flex-col items-center gap-1.5 py-1 cursor-pointer transition-transform duration-200 hover:-translate-y-1">
+                <div className="relative rounded-full transition-all duration-200 group-hover:drop-shadow-[0_0_14px_rgba(255,198,0,0.45)]">
+                <svg width="74" height="74" className="-rotate-90">
+                    <circle cx="37" cy="37" r="34" stroke="#2E302E" strokeWidth="6" fill="none"/>
+                    <circle cx="37" cy="37" r="34" stroke="#38BDF8" strokeWidth="6" strokeLinecap="round" fill="none"
+                            strokeDasharray="213.628" strokeDashoffset="89.72"/>
+                </svg>
+                <div className="absolute inset-0 flex items-center justify-center">
+                    <span className="font-poppins font-black" style={{ color: `#38BDF8`, fontSize: "13px" }}>{accuracy}%</span>
+                </div>
+                <div className="absolute -bottom-0.5 -right-0.5 w-5 h-5 rounded-full bg-[#FFC600] border-2 border-[#181A18] flex items-center justify-center shadow-[1.5px_1.5px_0px_rgba(0,0,0,0.5)] pulse-chevron" style={{ animationDelay: "0.15s" }}>
+                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#181A18" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+                </div>
+                </div>
+                <p className="font-poppins font-black text-[13px] text-white text-center leading-tight group-hover:text-[#FFC600] transition-colors">Chemistry</p>
+                <span className="font-inter text-[13px] text-[#A8ACA8]">{total} MCQs</span>
+                <span className="inline-flex items-center gap-0.5 text-[13px] font-poppins font-black px-1.5 py-0.5 rounded-md border text-red-400 bg-red-400/10 border-red-400/30">-1%</span>
+            </div>
+        </Link>
+    )
+}
+
 const UserAnalyticsPage = () => {
-    const {studentAnalytics, predictedScore} = useOutletContext();
+    const {studentAnalytics : sa, predictedScore} = useOutletContext();
 
     const subjectToColor = {
         'Biology' : '#10B981',
@@ -13,7 +38,8 @@ const UserAnalyticsPage = () => {
         'Logical Reasoning' : '#F472B6',
     }
 
-    console.log(studentAnalytics);
+    console.log(sa);
+
 
     return (
         <>
@@ -71,7 +97,7 @@ const UserAnalyticsPage = () => {
                             </div>
                             </div>
                             <div>
-                            <p className="font-poppins font-black text-[20px] leading-none text-white">{studentAnalytics?.total_attempt}</p>
+                            <p className="font-poppins font-black text-[20px] leading-none text-white">{sa?.total_attempt}</p>
                             <p className="text-[#A8ACA8] text-[12px] font-inter mt-1 truncate">Lifetime</p>
                             </div>
                         </div>
@@ -86,7 +112,7 @@ const UserAnalyticsPage = () => {
                             </div>
                             </div>
                             <div>
-                            <p className="font-poppins font-black text-[20px] leading-none text-amber-400">{studentAnalytics?.total_attempt ? parseInt((studentAnalytics?.total_correct / studentAnalytics?.total_attempt) * 100) : 0}%</p>
+                            <p className="font-poppins font-black text-[20px] leading-none text-amber-400">{sa?.total_attempt ? parseInt((sa?.total_correct / sa?.total_attempt) * 100) : 0}%</p>
                             <p className="text-[#A8ACA8] text-[12px] font-inter mt-1 truncate">Correct rate</p>
                             </div>
                         </div>
@@ -101,8 +127,8 @@ const UserAnalyticsPage = () => {
                             </div>
                             </div>
                             <div>
-                            <p className="font-poppins font-black text-[20px] leading-none text-orange-400">{studentAnalytics?.streak}d</p>
-                            <p className="text-[#A8ACA8] text-[12px] font-inter mt-1 truncate">{studentAnalytics?.streak ? 'Keep it alive' : 'Begin your streak'}</p>
+                            <p className="font-poppins font-black text-[20px] leading-none text-orange-400">{sa?.streak}d</p>
+                            <p className="text-[#A8ACA8] text-[12px] font-inter mt-1 truncate">{sa?.streak ? 'Keep it alive' : 'Begin your streak'}</p>
                             </div>
                         </div>
 
@@ -116,8 +142,8 @@ const UserAnalyticsPage = () => {
                             </div>
                             </div>
                             <div>
-                            <p className="font-poppins font-black text-[20px] leading-none text-white">{studentAnalytics?.today_attempt} / 50</p>
-                            <p className="text-[#A8ACA8] text-[12px] font-inter mt-1 truncate">{studentAnalytics?.today_attempt * 2}% of goal</p>
+                            <p className="font-poppins font-black text-[20px] leading-none text-white">{sa?.today_attempt} / 50</p>
+                            <p className="text-[#A8ACA8] text-[12px] font-inter mt-1 truncate">{sa?.today_attempt * 2}% of goal</p>
                             </div>
                         </div>
 
@@ -255,7 +281,7 @@ const UserAnalyticsPage = () => {
                                 </div>
                                 </div>
                                 <p className="font-poppins font-black text-[13px] text-white text-center leading-tight group-hover:text-[#FFC600] transition-colors">Biology</p>
-                                <span className="font-inter text-[13px] text-[#A8ACA8]">450 MCQs</span>
+                                <span className="font-inter text-[13px] text-[#A8ACA8]">{sa?.subjects.biology?.attempt ?? 0} MCQs</span>
                                 <span className="inline-flex items-center gap-0.5 text-[13px] font-poppins font-black px-1.5 py-0.5 rounded-md border text-emerald-400 bg-emerald-400/10 border-emerald-400/30">+7%</span>
                             </div>
                             </a>
@@ -276,7 +302,7 @@ const UserAnalyticsPage = () => {
                                 </div>
                                 </div>
                                 <p className="font-poppins font-black text-[13px] text-white text-center leading-tight group-hover:text-[#FFC600] transition-colors">Chemistry</p>
-                                <span className="font-inter text-[13px] text-[#A8ACA8]">320 MCQs</span>
+                                <span className="font-inter text-[13px] text-[#A8ACA8]">{sa?.subjects.biology?.attempt ?? 0} MCQs</span>
                                 <span className="inline-flex items-center gap-0.5 text-[13px] font-poppins font-black px-1.5 py-0.5 rounded-md border text-red-400 bg-red-400/10 border-red-400/30">-1%</span>
                             </div>
                             </a>
@@ -392,7 +418,7 @@ const UserAnalyticsPage = () => {
                             <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                 <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/>
                             </svg>
-                            <span className="text-[13px] font-poppins font-black">{studentAnalytics?.streak}d streak</span>
+                            <span className="text-[13px] font-poppins font-black">{sa?.streak}d streak</span>
                             </div>
                         </div>
 
@@ -500,7 +526,7 @@ const UserAnalyticsPage = () => {
 
                         <div className="bg-[#222422] border-2 border-[#2E302E] rounded-2xl p-5 shadow-[4px_4px_0px_rgba(255,198,0,0.12)]">
                         
-                        <div className="flex items-end gap-2 h-[140px]">
+                        <div className="flex items-end gap-2 h-[200px]">
 
                             <div className="flex-1 flex flex-col items-center gap-1.5">
                             <span className="text-[12px] font-poppins font-black text-amber-400">61%</span>
@@ -583,7 +609,7 @@ const UserAnalyticsPage = () => {
 
 
                         {
-                            studentAnalytics?.weak_topics.map((topic, i) => {
+                            sa?.weak_topics.map((topic, i) => {
                                 return (
                                     <div key={i} className="flex items-center gap-4 px-5 py-3.5 hover:bg-[#2A2C2A]/20 transition-colors">
                                         <div className="w-1 h-8 rounded-full flex-shrink-0" style={{ backgroundColor: `${subjectToColor[topic.subject_name]}` }}></div>

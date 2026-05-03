@@ -12,7 +12,7 @@ const UpcomingTestsList = ({upcomingTests}) => {
                         <h2 className="font-[Poppins] font-black text-white text-[12px] uppercase tracking-[0.14em]">More Coming Up</h2>
                     </div>
 
-                    <Link to="/test-series/all-upcoming-tests" className="cursor-pointer group w-full bg-[#222422] border-2 border-[#2E302E] hover:border-[#FFC600] rounded-2xl px-4 py-3.5 flex flex-col gap-3 shadow-[4px_4px_0px_rgba(255,198,0,0.12)] transition-all duration-150">
+                    <Link to="/dashboard/test-series/all-upcoming-tests" className="cursor-pointer group w-full bg-[#222422] border-2 border-[#2E302E] hover:border-[#FFC600] rounded-2xl px-4 py-3.5 flex flex-col gap-3 shadow-[4px_4px_0px_rgba(255,198,0,0.12)] transition-all duration-150">
 
                         <div className="flex items-center gap-3.5 w-full">
                         <div className="w-11 h-11 bg-[#FFC600] border-2 border-[#181A18] rounded-xl flex items-center justify-center shrink-0">

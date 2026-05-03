@@ -56,17 +56,17 @@ const SavedCopy = ({savedMcqs, totalSaved, setSavedMcqs}) => {
                 <span className="text-[14px] font-[Inter] text-[#A8ACA8]">showing {savedMcqs?.length} results</span>
             </div>
 
-            <div onKeyDown={(e) => {if(e.key === 'Enter') {searchFilter(false, url, setURL, setPageNumber, setTotalPages, setSavedMcqs, search)}}} className="flex items-center gap-2">
-                <div className="relative flex-1">
+            <div className="flex items-center gap-2">
+                <div onKeyDown={async (e) => {if(e.key === 'Enter') {await searchFilter(false, url, setURL, setPageNumber, setTotalPages, setSavedMcqs, search)}}} className="relative flex-1">
                     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#A8ACA8] pointer-events-none">
                     <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
                     </svg>
-                    <input value={search} onChange={e => setSearch(e.target.value)} type="text" placeholder="Search questions, chapters, topics..."
+                    <input value={search} onChange={e => setSearch(e.target.value)} type="text" placeholder="Search a topic..."
                         className="w-full bg-[#222422] border border-[#2E302E] rounded-xl pl-9 pr-4 py-2.5 text-[13px] font-[Inter] text-white placeholder-[#A8ACA8] focus:outline-none focus:border-[#FFC600]/50 transition-colors"/>
                 </div>
                 <button
                     type="button"
-                    onClick={() => searchFilter(false, url, setURL, setPageNumber, setTotalPages, setSavedMcqs, search)}
+                    onClick={async () => {await searchFilter(false, url, setURL, setPageNumber, setTotalPages, setSavedMcqs, search)}}
                     className="cursor-pointer rounded-xl border border-[#FFC600]/40 bg-[#FFC600] px-4 py-2.5 text-[13px] font-[Inter] font-bold text-[#181A18] transition-colors hover:bg-[#ffd84d]"
                 >
                     Search
@@ -75,12 +75,12 @@ const SavedCopy = ({savedMcqs, totalSaved, setSavedMcqs}) => {
 
             <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-none">
 
-            {displaySubjectButton('All', subject, totalSaved?.all)}
-            {displaySubjectButton('Biology', subject, totalSaved?.biology)}
-            {displaySubjectButton('Chemistry', subject, totalSaved?.chemistry)}
-            {displaySubjectButton('Physics', subject, totalSaved?.physics)}
-            {displaySubjectButton('English', subject, totalSaved?.english)}
-            {displaySubjectButton('Logical Reasoning', subject, totalSaved?.logical_reasoning)}
+            {displaySubjectButton('All', subject, totalSaved?.all ?? 0)}
+            {displaySubjectButton('Biology', subject, totalSaved?.biology ?? 0)}
+            {displaySubjectButton('Chemistry', subject, totalSaved?.chemistry ?? 0)}
+            {displaySubjectButton('Physics', subject, totalSaved?.physics ?? 0)}
+            {displaySubjectButton('English', subject, totalSaved?.english ?? 0)}
+            {displaySubjectButton('Logical Reasoning', subject, totalSaved?.logical_reasoning ?? 0)}
 
             </div>
 

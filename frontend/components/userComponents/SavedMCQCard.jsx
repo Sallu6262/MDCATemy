@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
+import '../../src/animation.css'
 
 const SavedMCQCard = ({mcq, mcqNo}) => {
     const savedRef = useRef(null);
@@ -47,12 +48,13 @@ const SavedMCQCard = ({mcq, mcqNo}) => {
         if(res.status === 200){
             setMessage("MCQ removed from Saved Copy");
             setError(false);
+            setDeleteLoading(true);
         } else {
             setMessage("Something went wrong!");
             setError(true);
+            setDeleteLoading(false);
         }
 
-        setDeleteLoading(false);
     }
 
     return (
@@ -86,24 +88,21 @@ const SavedMCQCard = ({mcq, mcqNo}) => {
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points={!answerHidden ? "18 15 12 9 6 15" : "18 9 12 15 6 9"}/></svg>
             </button>
 
-            {
-                !answerHidden ?
-                <div className="px-4 pb-4 pt-1 space-y-3">
-                    <div className="space-y-2">
-                        {showMCQOption(mcq.correct_option, 'A', mcq.option_a)}
-                        {showMCQOption(mcq.correct_option, 'B', mcq.option_b)}
-                        {showMCQOption(mcq.correct_option, 'C', mcq.option_c)}
-                        {showMCQOption(mcq.correct_option, 'D', mcq.option_d)}
-                    </div>
+            <div className={`dropdown-menu ${!answerHidden ? 'open' : ''} px-4 pb-4 pt-1 space-y-3`}>
+                <div className="space-y-2">
+                    {showMCQOption(mcq.correct_option, 'A', mcq.option_a)}
+                    {showMCQOption(mcq.correct_option, 'B', mcq.option_b)}
+                    {showMCQOption(mcq.correct_option, 'C', mcq.option_c)}
+                    {showMCQOption(mcq.correct_option, 'D', mcq.option_d)}
+                </div>
 
-                    <div className="callout-yellow rounded-r-lg py-3 px-4 bg-[#181A18]">
-                    <p className="text-[13px] font-[Inter] font-bold text-[#FFC600] uppercase tracking-wide mb-1.5">Explanation</p>
-                    <p className="font-[Inter] text-[13px] text-[#CCCCCC] leading-relaxed">
-                        {mcq.explanation}
-                    </p>
-                    </div>
-                </div> : '' 
-            }
+                <div className="callout-yellow rounded-r-lg py-3 px-4 bg-[#181A18]">
+                <p className="text-[13px] font-[Inter] font-bold text-[#FFC600] uppercase tracking-wide mb-1.5">Explanation</p>
+                <p className="font-[Inter] text-[13px] text-[#CCCCCC] leading-relaxed">
+                    {mcq.explanation}
+                </p>
+                </div>
+            </div>
         </div>
     )
 }

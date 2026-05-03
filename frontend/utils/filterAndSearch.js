@@ -60,9 +60,9 @@ export const searchFilter = async (isMistake, url, setURL, setPageNumber, setTot
 
     // console.log(url);
     if(data.status === 'success'){
-        // console.log(data);
         setPageNumber(1);
-        // setMcqs(data.data?.mcqs);
-        // setURL(url);
+        setTotalPages(Math.ceil((data.data.biology + data.data.physics + data.data.chemistry + data.data.english + data.data.logical_reasoning) / 10));
+        setMcqs(data.data?.mcqs);
+        setURL(url);
     }
 } 

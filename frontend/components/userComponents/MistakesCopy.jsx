@@ -2,10 +2,10 @@ import React, { useState } from 'react'
 import WrongMCQCard from './WrongMCQCard';
 import '../../src/animation.css'
 import { useEffect } from 'react';
-import { subjectFilter } from '../../utils/filterAndSearch';
+import { pageFilter, subjectFilter, searchFilter } from '../../utils/filterAndSearch';
 // import filterAndSearchMCQ from '../../utils/filterAndSearch';
 
-const MistakesCopy = ({wrongMcqs, totalMistakes, pendingMistakes, setPendingMistakes, setWrongMcqs}) => {
+const MistakesCopy = ({wrongMcqs, totalMistakes, pendingMistakes, setPendingMistakes, setWrongMcqs, totalWrong}) => {
     const API_URL = import.meta.env.VITE_API_URL;
     // console.log(wrongMcqs);
     const [subject, setSubject] = useState(0);
@@ -17,15 +17,8 @@ const MistakesCopy = ({wrongMcqs, totalMistakes, pendingMistakes, setPendingMist
     
     const [pageNumber, setPageNumber] = useState(1);
     const [totalPages, setTotalPages] = useState(Math.ceil(pendingMistakes?.length / 10));
-
-    const [totalWrong, setTotalWrong] = useState({
-        all: wrongMcqs?.length,
-        biology: wrongMcqs?.filter(mcq => mcq.subject_name === 'biology').length,
-        physics: wrongMcqs?.filter(mcq => mcq.subject_name === 'physics').length,
-        chemistry: wrongMcqs?.filter(mcq => mcq.subject_name === 'chemistry').length,
-        english: wrongMcqs?.filter(mcq => mcq.subject_name === 'english').length,
-        logical_reasoning: wrongMcqs?.filter(mcq => mcq.subject_name === 'logical_reasoning').length,
-    });
+    const [search, setSearch] = useState('');
+    // console.log(notMasteredMcqs?.filter(mcq => mcq.subject_name === 'Chemistry'));
 
     const filterBySubject = {
         0 : 'All',
@@ -54,6 +47,8 @@ const MistakesCopy = ({wrongMcqs, totalMistakes, pendingMistakes, setPendingMist
             <span className={`px-1.5 py-0.5 rounded-full text-[14px] font-bold ${subjectName === filterBySubject[subjectNumber] ? 'bg-[#181A18]/20 text-[#181A18]' : 'bg-[#2A2C2A]/30 text-[#A8ACA8]'}`}>{count}</span>
         </button>
     }
+
+    // console.log(notMasteredMcqs);
 
     useEffect(() => {
         setTotalPages(Math.ceil(pendingMistakes / 10));
@@ -135,15 +130,16 @@ const MistakesCopy = ({wrongMcqs, totalMistakes, pendingMistakes, setPendingMist
 
             <div className="space-y-3">
                 <div className="flex gap-2">
-                <div className="flex-1 relative">
+                <div onKeyDown={async (e) => {if(e.key === 'Enter') {await searchFilter(true, url, setURL, setPageNumber, setTotalPages, setWrongMcqs, search)}}} className="flex-1 relative">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="absolute left-3 top-1/2 -translate-y-1/2 text-[#A8ACA8] pointer-events-none">
                     <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
                     </svg>
-                    <input type="text" placeholder="Search question, chapter or topic..."
+                    <input type="text" value={search} onChange={e => setSearch(e.target.value)} placeholder="Search a topic..."
                         className="w-full bg-[#222422] border border-[#2E302E] rounded-xl pl-9 pr-4 py-2.5 text-white font-[Inter] text-[13px] placeholder:text-[#A8ACA8]/50 focus:outline-none focus:border-[#FFC600]/50 transition-colors"/>
                 </div>
                 <button
                     type="button"
+                    onClick={async () => {await searchFilter(true, url, setURL, setPageNumber, setTotalPages, setWrongMcqs, search)}} 
                     className="cursor-pointer rounded-xl border border-[#FFC600]/40 bg-[#FFC600] px-4 py-2.5 text-[13px] font-[Inter] font-bold text-[#181A18] transition-colors hover:bg-[#ffd84d]"
                 >
                     Search
@@ -153,12 +149,12 @@ const MistakesCopy = ({wrongMcqs, totalMistakes, pendingMistakes, setPendingMist
 
             <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-none">
 
-            {displaySubjectButton('All', subject, notMasteredMcqs?.length)}
-            {displaySubjectButton('Biology', subject, notMasteredMcqs?.filter(mcq => mcq.subject_name === 'Biology').length)}
-            {displaySubjectButton('Chemistry', subject, notMasteredMcqs?.filter(mcq => mcq.subject_name === 'Chemistry').length)}
-            {displaySubjectButton('Physics', subject, notMasteredMcqs?.filter(mcq => mcq.subject_name === 'Physics').length)}
-            {displaySubjectButton('English', subject, notMasteredMcqs?.filter(mcq => mcq.subject_name === 'English').length)}
-            {displaySubjectButton('Logical Reasoning', subject, notMasteredMcqs?.filter(mcq => mcq.subject_name === 'Logical Reasoning').length)}
+            {displaySubjectButton('All', subject, pendingMistakes)}
+            {displaySubjectButton('Biology', subject, totalWrong?.biology ?? 0)}
+            {displaySubjectButton('Chemistry', subject, totalWrong?.chemistry ?? 0)}
+            {displaySubjectButton('Physics', subject, totalWrong?.physics ?? 0)}
+            {displaySubjectButton('English', subject, totalWrong?.english ?? 0)}
+            {displaySubjectButton('Logical Reasoning', subject, totalWrong?.logical_reasoning ?? 0)}
 
             </div>
 
@@ -175,6 +171,7 @@ const MistakesCopy = ({wrongMcqs, totalMistakes, pendingMistakes, setPendingMist
                         pageNumber > 1 ?
                         <button
                             type="button"
+                            onClick={async() => {await pageFilter(true, url, setURL, false, pageNumber, setPageNumber, setWrongMcqs)}}
                             className="cursor-pointer inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border border-[#2E302E] bg-[#222422] text-[#A8ACA8] text-[13px] font-[Inter] font-bold hover:text-white hover:border-[#A8ACA8]/40 transition-all"
                         >
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
@@ -188,6 +185,7 @@ const MistakesCopy = ({wrongMcqs, totalMistakes, pendingMistakes, setPendingMist
                         pageNumber < totalPages ?
                         <button
                             type="button"
+                            onClick={async() => {await pageFilter(true, url, setURL, true, pageNumber, setPageNumber, setWrongMcqs)}}
                             className="cursor-pointer inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border border-[#FFC600]/40 bg-[#FFC600]/10 text-[#FFC600] text-[13px] font-[Inter] font-bold hover:bg-[#FFC600]/15 transition-all"
                         >
                             Page {pageNumber+1}

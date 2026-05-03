@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Quiz - Taking</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=Poppins:wght@600;700;900&family=JetBrains+Mono:wght@500;700&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config={theme:{extend:{fontFamily:{inter:['Inter','sans-serif'],poppins:['Poppins','sans-serif'],mono:['JetBrains Mono','monospace']},colors:{mdcat:'#FFC600',warriorBlack:'#0E0F0E',darkCharcoal:'#181A18',warriorBorder:'#2D302D',warriorText:'#8B8E8B'}}}}
+    </script>
+  </head>
+  <body class="h-screen overflow-hidden bg-warriorBlack font-inter text-white">
+    <div class="flex h-full flex-col bg-warriorBlack">
+      <header
+        class="flex items-center justify-between border-b border-warriorBorder bg-darkCharcoal px-4 py-3 lg:px-6"
+      >
+        <div>
+          <p class="text-[13px] font-bold">Biology, Chemistry</p>
+          <p class="text-[10px] text-warriorText">20 MCQs</p>
+        </div>
+        <div
+          class="inline-flex items-center gap-1.5 rounded-lg border border-warriorBorder bg-warriorBlack px-3 py-1.5"
+        >
+          <span class="text-warriorText">??</span
+          ><span class="font-mono text-[13px] font-bold">24:18</span>
+        </div>
+        <div class="text-[12px] font-bold text-warriorText">
+          Q
+          <span class="font-poppins text-[15px] font-black text-white">5</span>
+          <span class="text-warriorText/60">/ 20</span>
+        </div>
+      </header>
+      <div class="flex flex-1 overflow-hidden">
+        <main class="flex-1 overflow-y-auto">
+          <div class="mx-auto max-w-2xl px-4 py-5 lg:px-6">
+            <div class="mb-5 flex items-center gap-2">
+              <span
+                class="rounded-full border border-amber-500/30 bg-amber-500/10 px-2.5 py-1 text-[9px] font-black uppercase tracking-[0.14em] text-amber-400"
+                >Medium</span
+              ><span
+                class="text-[9px] font-bold uppercase tracking-[0.1em] text-warriorText"
+                >Chemistry � Chemical Bonding</span
+              >
+            </div>
+            <p class="mb-7 text-base leading-relaxed">
+              The hybridisation of carbon in ethene (C2H4) is:
+            </p>
+            <div class="mb-6 space-y-3">
+              <button
+                class="flex w-full items-center gap-4 rounded-xl border border-warriorBorder bg-darkCharcoal p-4 text-left"
+              >
+                <span
+                  class="flex h-7 w-7 items-center justify-center rounded-md bg-[#252725] font-mono text-[12px] font-bold text-warriorText"
+                  >A</span
+                ><span class="flex-1 text-[14px]">sp�</span></button
+              ><button
+                class="flex w-full items-center gap-4 rounded-xl border border-mdcat/60 bg-mdcat/10 p-4 text-left"
+              >
+                <span
+                  class="flex h-7 w-7 items-center justify-center rounded-md bg-mdcat font-mono text-[12px] font-bold text-warriorBlack"
+                  >B</span
+                ><span class="flex-1 text-[14px]">sp�</span></button
+              ><button
+                class="flex w-full items-center gap-4 rounded-xl border border-warriorBorder bg-darkCharcoal p-4 text-left"
+              >
+                <span
+                  class="flex h-7 w-7 items-center justify-center rounded-md bg-[#252725] font-mono text-[12px] font-bold text-warriorText"
+                  >C</span
+                ><span class="flex-1 text-[14px]">sp</span></button
+              ><button
+                class="flex w-full items-center gap-4 rounded-xl border border-warriorBorder bg-darkCharcoal p-4 text-left"
+              >
+                <span
+                  class="flex h-7 w-7 items-center justify-center rounded-md bg-[#252725] font-mono text-[12px] font-bold text-warriorText"
+                  >D</span
+                ><span class="flex-1 text-[14px]">sp�d</span>
+              </button>
+            </div>
+            <p class="text-center text-[10px] text-warriorText">
+              You can change your answer any time before final submission.
+            </p>
+          </div>
+        </main>
+        <aside
+          class="hidden w-[220px] flex-col border-l border-warriorBorder bg-darkCharcoal lg:flex"
+        >
+          <div class="border-b border-warriorBorder px-4 py-3">
+            <p
+              class="text-[10px] font-black uppercase tracking-[0.12em] text-warriorText"
+            >
+              Questions
+            </p>
+            <p class="mt-0.5 text-[10px] text-warriorText">
+              7/20 answered � <span class="text-orange-400">2 flagged</span>
+            </p>
+          </div>
+          <div
+            class="grid flex-1 grid-cols-5 content-start gap-1.5 overflow-y-auto p-3 text-[11px] font-bold"
+          >
+            <button class="h-8 rounded-md bg-mdcat/80 text-warriorBlack">
+              1</button
+            ><button class="h-8 rounded-md bg-mdcat/80 text-warriorBlack">
+              2</button
+            ><button class="h-8 rounded-md bg-warriorText/30 text-warriorText">
+              3</button
+            ><button class="h-8 rounded-md bg-mdcat/80 text-warriorBlack">
+              4</button
+            ><button
+              class="h-8 rounded-md bg-mdcat/80 text-warriorBlack ring-2 ring-mdcat"
+            >
+              5</button
+            ><button
+              class="h-8 rounded-md border border-warriorBorder bg-warriorBlack text-warriorText"
+            >
+              6</button
+            ><button
+              class="h-8 rounded-md border border-orange-400/60 bg-orange-500/35 text-orange-300"
+            >
+              7
+            </button>
+          </div>
+        </aside>
+      </div>
+      <footer class="border-t border-warriorBorder bg-darkCharcoal">
+        <div class="flex items-center justify-center gap-2 px-3 pb-1.5 pt-2.5">
+          <button
+            class="flex w-full max-w-[90px] flex-col items-center gap-0.5 rounded-xl border border-warriorBorder bg-[#252725]/25 py-2 text-warriorText"
+          >
+            <span>=</span
+            ><span class="text-[9px] font-black uppercase tracking-[0.08em]"
+              >5/20</span
+            ></button
+          ><button
+            class="flex w-full max-w-[90px] flex-col items-center gap-0.5 rounded-xl border border-warriorBorder bg-[#252725]/25 py-2 text-warriorText"
+          >
+            <span>?</span
+            ><span class="text-[9px] font-black uppercase tracking-[0.08em]"
+              >Flag</span
+            ></button
+          ><button
+            class="flex w-full max-w-[90px] flex-col items-center gap-0.5 rounded-xl border border-warriorBorder bg-[#252725]/25 py-2 text-warriorText"
+          >
+            <span>??</span
+            ><span class="text-[9px] font-black uppercase tracking-[0.08em]"
+              >Save</span
+            ></button
+          ><button
+            class="flex w-full max-w-[90px] flex-col items-center gap-0.5 rounded-xl border border-amber-500/50 bg-amber-500/15 py-2 text-amber-300"
+          >
+            <span>?</span
+            ><span class="text-[9px] font-black uppercase tracking-[0.08em]"
+              >Submit</span
+            >
+          </button>
+        </div>
+        <div
+          class="flex items-center gap-2 border-t border-warriorBorder/60 px-3 py-2.5"
+        >
+          <button
+            class="inline-flex items-center gap-1.5 rounded-xl border border-warriorBorder bg-[#252725]/30 px-4 py-3 text-[13px] font-black uppercase tracking-[0.06em]"
+          >
+            Prev
+          </button>
+          <div class="min-w-0 flex-1">
+            <div
+              class="h-1.5 w-full overflow-hidden rounded-full border border-warriorBorder bg-warriorBlack"
+            >
+              <div class="h-full w-1/4 bg-mdcat"></div>
+            </div>
+            <p
+              class="mt-1 text-center text-[9px] font-black uppercase tracking-[0.1em] text-warriorText"
+            >
+              7 of 20 answered
+            </p>
+          </div>
+          <a
+            href="results.html"
+            class="inline-flex items-center gap-1.5 rounded-xl bg-mdcat px-4 py-3 text-[13px] font-black uppercase tracking-[0.06em] text-warriorBlack"
+            >Next</a
+          >
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>

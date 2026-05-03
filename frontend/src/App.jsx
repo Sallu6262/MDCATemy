@@ -22,6 +22,7 @@ import UserCopyPage from '../pages/userPages/UserCopyPage';
 import UserStartTestPage from '../pages/userPages/UserStartTestPage';
 import ScorePredictorPage from '../pages/userPages/ScorePredictorPage';
 import UserAnalyticsPage from '../pages/userPages/UserAnalyticsPage';
+import QuizMakingPage from '../pages/userPages/QuizBuilder/QuizMakingPage';
 
 const App = () => {
   const router = createBrowserRouter(
@@ -36,11 +37,13 @@ const App = () => {
             <Route path='/signup' element={<SignUpPage />}/>
           </Route>
 
-          <Route element={<UserDashboardLayout />}>
-            <Route path='/dashboard' element={<UserDashboardPage />}/>
+          <Route path='/dashboard' element={<UserDashboardLayout />}>
+            <Route index element={<UserDashboardPage />}/>
             <Route path='/dashboard/score-predictor' element={<ScorePredictorPage />}/>
 
-            <Route path='/test-series' element={<UserTestSeriesLayout />}>
+            <Route path='/dashboard/quiz-builder' element={<QuizMakingPage />}/>
+
+            <Route path='test-series' element={<UserTestSeriesLayout />}>
               <Route index element={<UserTestSeriesPage />}/>
               <Route path='previous-tests' element={<AllPreviousTestsPage />}/> 
               <Route path='all-upcoming-tests' element={<AllUpcomingTestsPage />}/>

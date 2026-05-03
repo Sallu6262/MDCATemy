@@ -222,7 +222,7 @@ const UserDashboardPage = () => {
                     <h3 className="font-['Poppins'] font-medium text-white/80 text-[15px]">My Copy</h3>
                 </div>
                 <div className="grid grid-cols-2 gap-2">
-                    <Link to="/my-copy" onClick={() => JSON.stringify(sessionStorage.setItem("isSavedCopy", false))} className="block">
+                    <Link to="/dashboard/my-copy" onClick={() => JSON.stringify(sessionStorage.setItem("isSavedCopy", false))} className="block">
                     <div className="relative inner-tile rounded-xl p-3 flex flex-col items-center gap-1.5 active:scale-[0.97] transition-transform">
                         <svg className="absolute top-2.5 right-2.5" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.30)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
                         <div className="w-9 h-9 rounded-xl flex items-center justify-center" style={{ background: "#EF444418" }}>
@@ -232,7 +232,7 @@ const UserDashboardPage = () => {
                         <span className="font-['Inter'] text-[15px] text-white/40 uppercase tracking-wide text-center">My Mistakes</span>
                     </div>
                     </Link>
-                    <Link to="/my-copy" onClick={() => JSON.stringify(sessionStorage.setItem("isSavedCopy", true))} className="block">
+                    <Link to="/dashboard/my-copy" onClick={() => JSON.stringify(sessionStorage.setItem("isSavedCopy", true))} className="block">
                     <div className="relative inner-tile rounded-xl p-3 flex flex-col items-center gap-1.5 active:scale-[0.97] transition-transform">
                         <svg className="absolute top-2.5 right-2.5" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.30)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
                         <div className="w-9 h-9 rounded-xl flex items-center justify-center" style={{ background: "#38BDF818" }}>
@@ -399,7 +399,7 @@ const UserDashboardPage = () => {
                         <h3 className="font-['Poppins'] font-medium text-white/80 text-[15px]">My Copy</h3>
                     </div>
                     <div className="grid grid-cols-2 gap-3 flex-1 min-h-0">
-                        <Link to="/my-copy" onClick={() => JSON.stringify(sessionStorage.setItem("isSavedCopy", false))} className="flex">
+                        <Link to="/dashboard/my-copy" onClick={() => JSON.stringify(sessionStorage.setItem("isSavedCopy", false))} className="flex">
                         <div className="relative flex-1 inner-tile rounded-xl flex flex-col items-center justify-center gap-1.5 py-3 px-2">
                             <div className="w-9 h-9 rounded-xl flex items-center justify-center" style={{ background: "#EF444418" }}>
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#EF4444" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5z"/><line x1="9.5" y1="12.5" x2="14.5" y2="17.5"/><line x1="14.5" y1="12.5" x2="9.5" y2="17.5"/></svg>
@@ -410,7 +410,7 @@ const UserDashboardPage = () => {
                             </span>
                         </div>
                         </Link>
-                        <Link to="/my-copy" onClick={() => JSON.stringify(sessionStorage.setItem("isSavedCopy", true))} className="flex">
+                        <Link to="/dashboard/my-copy" onClick={() => JSON.stringify(sessionStorage.setItem("isSavedCopy", true))} className="flex">
                         <div className="relative flex-1 inner-tile rounded-xl flex flex-col items-center justify-center gap-1.5 py-3 px-2">
                             <div className="w-9 h-9 rounded-xl flex items-center justify-center" style={{ background: "#38BDF818" }}>
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#38BDF8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>

@@ -11,6 +11,7 @@ const UserCopyPage = () => {
     const [totalMistakes, setTotalMistakes] = useState(0);
     const [pendingMistakes, setPendingMistakes] = useState(0);
     const [totalSaved, setTotalSaved] = useState({});
+    const [totalWrong, setTotalWrong] = useState({});
 
     const API_URL = import.meta.env.VITE_API_URL;
 
@@ -43,6 +44,14 @@ const UserCopyPage = () => {
                     chemistry: data1.data.chemistry,
                     english: data1.data.english,
                     logical_reasoning: data1.data.logical_reasoning  
+                });
+                setTotalWrong({
+                    all: data2.data.biology + data2.data.physics + data2.data.chemistry + data2.data.english + data2.data.logical_reasoning,
+                    biology: data2.data.biology,
+                    physics: data2.data.physics,
+                    chemistry: data2.data.chemistry,
+                    english: data2.data.english,
+                    logical_reasoning: data2.data.logical_reasoning  
                 });
             }
         }
@@ -101,7 +110,7 @@ const UserCopyPage = () => {
                     {
                         mistakeOrSave 
                         ? <SavedCopy setSavedMcqs={setSavedMcqs} savedMcqs={savedMcqs} totalSaved={totalSaved}/> 
-                        : <MistakesCopy wrongMcqs={wrongMcqs} setPendingMistakes={setPendingMistakes} totalMistakes={totalMistakes} pendingMistakes={pendingMistakes} setWrongMcqs={setWrongMcqs}/>
+                        : <MistakesCopy totalWrong={totalWrong} wrongMcqs={wrongMcqs} setPendingMistakes={setPendingMistakes} totalMistakes={totalMistakes} pendingMistakes={pendingMistakes} setWrongMcqs={setWrongMcqs}/>
                     }
 
                 </div>
