@@ -1,6 +1,7 @@
 import { AppError, handleAsyncError } from "../error.js";
 import pool from "../database.js";
 import { convertSubjectsChapterTopicsIntoNestedObject, formatColumnName, readDataFromExcelFile } from "../helpers.js";
+import { updateTopicMasteryTableTMI } from "./user.js";
 
 export const editTest = handleAsyncError(async (req, res, next) => {
     /*
@@ -179,5 +180,12 @@ export const getLiveTestInfo = handleAsyncError(async (req, res, next) => {
     res.status(200).json({
         status: "success",
         data : test
+    });
+});
+
+export const submitTest = handleAsyncError(async (req, res, next) => {
+    await updateTopicMasteryTableTMI(req.user.student_id);
+    res.status(200).json({
+        status: "success"
     });
 });

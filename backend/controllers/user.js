@@ -1,4 +1,3 @@
-import PG from "pg";
 import pool from "../database.js";
 import { AppError, handleAsyncError } from "../error.js";
 import { formatColumnName, isString } from "../helpers.js";
@@ -49,7 +48,7 @@ export const getDashboardStats = handleAsyncError(async (req, res, next) => {
     let user = {
         name: req.user.name,
         email: req.user.email,
-        streak: 0,
+        streak: req.user.streak,
         tests_attempted: 0,
         today_attempt: 0,
         total_attempt: 0,
@@ -59,33 +58,35 @@ export const getDashboardStats = handleAsyncError(async (req, res, next) => {
         topics: {}
     };
     
-
-    const yesterday = new Date(Date.now()-1*MILLISECONDS_IN_DAY).toISOString().split('T')[0];
+    const yesterday = new Date(Date.now()-1*MILLISECONDS_IN_DAY);
     let yesterday_activity = (await pool.query(`SELECT streak, attempt_count, activity_date::text FROM activity WHERE student_id=$1 AND activity_date=$2::DATE`, [req.user.student_id, yesterday])).rows[0];
 
     if ((!yesterday_activity || yesterday_activity.attempt_count < 50) && req.user.streak != 0) {
+
+        user.streak = 0;
         await pool.query("UPDATE students SET streak=0 WHERE student_id=$1", [req.user.student_id]);
+
     } else if (yesterday_activity && yesterday_activity.attempt_count >= 50 && +yesterday_activity.streak === req.user.streak) {
+
         user.streak = req.user.streak+1;
         await pool.query("UPDATE students SET streak=$1 WHERE student_id=$2", [req.user.streak+1, req.user.student_id]);
-    } else if (yesterday_activity && yesterday_activity.attempt_count >= 50) {
-        user.streak = req.user.streak;
+        
     }
 
-    const today_acitivity = (await pool.query(`SELECT attempt_count FROM activity WHERE student_id=$1 AND activity_date=$2::DATE`, [req.user.student_id, new Date()])).rows[0];
+    await captureSubjectMasterySnapshot();
+
+    const today_acitivity = (await pool.query(`SELECT attempt_count FROM activity WHERE student_id=$1 AND activity_date=CURRENT_DATE`, [req.user.student_id])).rows[0];
     if (today_acitivity) {
         user.today_attempt = +today_acitivity.attempt_count;
-    }    
+    }
 
-    [user.subjects, user.chapters, user.topics] = await getUsersSubjectChapterTopicWiseAccuracy(req.user.student_id);
+    [user.subjects, user.chapters, user.topics] = await getUsersSubjectChapterTopicWisePerformance(req.user.student_id);
 
-    Object.values(user.subjects).forEach(val => {
-        user.total_attempt += val.attempt;
-        user.total_correct += val.correct;
-    });
+    [user.total_attempt, user.total_correct] = Object.values((await pool.query("SELECT COALESCE(COUNT(attempted_mcqs.student_id),0)::INT  AS total_attempt_count, COALESCE(SUM(CASE WHEN attempted_mcqs.selected_option=mcq_bank.correct_option THEN 1 ELSE 0 END),0)::INT AS total_correct_count FROM attempted_mcqs INNER JOIN mcq_bank ON mcq_bank.mcq_id=attempted_mcqs.mcq_id WHERE attempted_mcqs.student_id=$1", [req.user.student_id])).rows[0]);
+
     user.accuracy = !user.total_attempt ? 0 : Math.round((user.total_correct/user.total_attempt)*100);
     user.tests_attempted = (await pool.query("SELECT COUNT(DISTINCT test_id)::INT FROM attempted_mcqs WHERE test_id IS NOT NULL AND student_id=$1", [req.user.student_id])).rows[0].count;
-    user.activity = (await pool.query(`SELECT attempt_count, correct_count, activity_date::text FROM activity WHERE student_id=$1 AND activity_date >= $2::DATE`, [req.user.student_id, new Date(Date.now()-7*MILLISECONDS_IN_DAY)])).rows;
+    user.activity = (await pool.query(`SELECT attempt_count, correct_count, activity_date::text FROM activity WHERE student_id=$1 AND activity_date >= $2::DATE`, [req.user.student_id, new Date(Date.now()-6*MILLISECONDS_IN_DAY)])).rows;
     user.weak_topics = (await pool.query(`SELECT topics.topic_name, chapters.chapter_name, subjects.subject_name, ROUND(SUM(CASE WHEN outer_attempted_mcqs.selected_option=outer_mcq_bank.correct_option THEN 1 ELSE 0 END)*100 / (COUNT(*))) AS accuracy FROM attempted_mcqs outer_attempted_mcqs INNER JOIN mcq_bank outer_mcq_bank ON outer_mcq_bank.mcq_id=outer_attempted_mcqs.mcq_id INNER JOIN topics ON outer_mcq_bank.topic_id=topics.topic_id INNER JOIN chapters ON outer_mcq_bank.chapter_id=chapters.chapter_id INNER JOIN subjects ON outer_mcq_bank.subject_id=subjects.subject_id WHERE outer_attempted_mcqs.student_id=$1 GROUP BY outer_mcq_bank.topic_id, topic_name, chapter_name, subject_name ORDER BY accuracy ASC LIMIT 4`, [req.user.student_id])).rows;
 
     res.status(200).json({
@@ -95,9 +96,7 @@ export const getDashboardStats = handleAsyncError(async (req, res, next) => {
 });
 
 export const getPredictedScore = handleAsyncError(async (req, res, next) => {
-    let predicted_score = (await pool.query("SELECT SUM((0.25 + 0.70*(sms_table.sms/100)) * subjects.mcqs_in_mdcat) AS score FROM (SELECT cms_table.subject_id, SUM(cms_table.cms * chapters.chapter_weight) / SUM(chapters.chapter_weight) AS sms FROM (SELECT tmi_table.subject_id, tmi_table.chapter_id, SUM(tmi_table.tmi * topics.topic_weight) / SUM(topics.topic_weight) AS cms FROM (SELECT mcq_bank.subject_id, mcq_bank.chapter_id, mcq_bank.topic_id, LEAST(GREATEST(SUM(CASE WHEN attempted_mcqs.selected_option = mcq_bank.correct_option THEN CASE WHEN mcq_bank.difficulty = 'EASY' THEN 3 WHEN mcq_bank.difficulty = 'MEDIUM' THEN 6 WHEN mcq_bank.difficulty = 'HARD' THEN 10 END ELSE CASE WHEN mcq_bank.difficulty = 'EASY' THEN -5 WHEN mcq_bank.difficulty = 'MEDIUM' THEN -4 WHEN mcq_bank.difficulty = 'HARD' THEN -2 END END) + 40, 0), 100) AS tmi FROM attempted_mcqs INNER JOIN mcq_bank ON mcq_bank.mcq_id=attempted_mcqs.mcq_id WHERE student_id=$1 GROUP BY mcq_bank.subject_id, mcq_bank.chapter_id, mcq_bank.topic_id) AS tmi_table INNER JOIN topics ON topics.topic_id=tmi_table.topic_id GROUP BY tmi_table.subject_id, tmi_table.chapter_id) AS cms_table INNER JOIN chapters ON chapters.chapter_id=cms_table.chapter_id GROUP BY cms_table.subject_id) AS sms_table INNER JOIN subjects ON subjects.subject_id=sms_table.subject_id", [req.user.student_id])).rows;
-    predicted_score = predicted_score ? Math.ceil(predicted_score[0].score) : 0;
-
+    const predicted_score = (await pool.query("SELECT COALESCE(ROUND(SUM((0.25 + 0.70*(subject_mastery.sms/100)) * subjects.mcqs_in_mdcat)),0)::INT AS predicted_score FROM subject_mastery INNER JOIN subjects ON subjects.subject_id=subject_mastery.subject_id WHERE student_id=$1 AND snapshot_date=CURRENT_DATE", [req.user.student_id])).rows[0]?.predicted_score;
     res.status(200).json({
         status: "success",
         data: {
@@ -257,27 +256,49 @@ export const uploadPaymentReceipt = handleAsyncError(async (req, res, next) => {
 });
 
 
-const getUsersSubjectChapterTopicWiseAccuracy = async (student_id) => {
+const getUsersSubjectChapterTopicWisePerformance = async (student_id) => {
     const subjects = {}, chapters = {}, topics = {};
-    const attempt_and_correct_counts = (await pool.query("SELECT DISTINCT subject_name, chapter_name, topic_name, COUNT(attempted_mcqs.student_id) OVER()::INT AS total_attempt_count, SUM(CASE WHEN attempted_mcqs.selected_option=mcq_bank.correct_option THEN 1 ELSE 0 END) OVER()::INT AS total_correct_count, SUM(CASE WHEN attempted_mcqs.selected_option != mcq_bank.correct_option OR is_mastered=1 THEN 1 ELSE 0 END) OVER()::INT AS total_mistakes, COUNT(attempted_mcqs.student_id) OVER(PARTITION BY mcq_bank.subject_id)::INT AS subject_attempt_count, SUM(CASE WHEN attempted_mcqs.selected_option=mcq_bank.correct_option THEN 1 ELSE 0 END) OVER(PARTITION BY mcq_bank.subject_id)::INT AS subject_correct_count, COUNT(attempted_mcqs.student_id) OVER(PARTITION BY mcq_bank.chapter_id)::INT AS chapter_attempt_count, SUM(CASE WHEN attempted_mcqs.selected_option=mcq_bank.correct_option THEN 1 ELSE 0 END) OVER(PARTITION BY mcq_bank.chapter_id)::INT AS chapter_correct_count, COUNT(attempted_mcqs.student_id) OVER(PARTITION BY mcq_bank.topic_id)::INT AS topic_attempt_count, SUM(CASE WHEN attempted_mcqs.selected_option=mcq_bank.correct_option THEN 1 ELSE 0 END) OVER(PARTITION BY mcq_bank.topic_id)::INT AS topic_correct_count FROM attempted_mcqs INNER JOIN mcq_bank ON mcq_bank.mcq_id=attempted_mcqs.mcq_id INNER JOIN subjects ON subjects.subject_id=mcq_bank.subject_id INNER JOIN chapters ON chapters.chapter_id=mcq_bank.chapter_id INNER JOIN topics ON topics.topic_id=mcq_bank.topic_id WHERE attempted_mcqs.student_id=$1", [student_id])).rows;
+    const chapters_and_topics_prep_score = (await pool.query("SELECT subject_name, chapter_name, topic_name, chapter_weight, topic_weight, tmi FROM topic_mastery INNER JOIN topics ON topics.topic_id = topic_mastery.topic_id INNER JOIN chapters ON chapters.chapter_id = topic_mastery.chapter_id INNER JOIN subjects ON subjects.subject_id = topic_mastery.subject_id WHERE student_id=$1", [student_id])).rows;
+    const chapter_detail = {};
 
-    attempt_and_correct_counts.forEach(element => {
-        if (!subjects[formatColumnName(element.subject_name)]) {
-            subjects[formatColumnName(element.subject_name)] = {
-                attempt: element.subject_attempt_count,
-                correct: element.subject_correct_count
-            }
+    chapters_and_topics_prep_score.forEach(element => {
+        const chap = formatColumnName(element.chapter_name); 
+        const topic = formatColumnName(element.topic_name); 
+
+        if (!chapters[chap]) 
+            chapters[chap] = 0;
+
+        chapters[chap] += element.topic_weight * +element.tmi;
+
+        chapter_detail[chap] = {
+            subject: element.subject_name,
+            cmi: chapters[chap],
+            weight: +element.chapter_weight
         }
-        if (!chapters[formatColumnName(element.chapter_name)]) {
-            chapters[formatColumnName(element.chapter_name)] = {
-                attempt: element.chapter_attempt_count,
-                correct: element.chapter_correct_count
-            }
-        }
-        topics[formatColumnName(element.topic_name)] = {
-            attempt: element.topic_attempt_count,
-            correct: element.topic_correct_count
-        }
+
+        topics[topic] = Math.round(+element.tmi);
     });
+
+    Object.entries(chapter_detail).forEach(([chap, info]) => {
+        chapters[chap] = Math.round(chapters[chap]);
+
+        if (!subjects[info.subject]) 
+            subjects[info.subject] = 0;        
+
+        subjects[info.subject] += info.cmi * info.weight;
+    });
+
+    Object.entries(subjects).forEach(([subject, sms]) => {
+        subjects[subject] = Math.round(sms);
+    });
+
     return [subjects, chapters, topics];
 };
+
+export const updateTopicMasteryTableTMI = async (student_id) => {
+    await pool.query("UPDATE topic_mastery SET tmi = tmi_table.tmi FROM (SELECT topic_id, LEAST(GREATEST(SUM(CASE WHEN attempted_mcqs.selected_option = mcq_bank.correct_option THEN CASE WHEN mcq_bank.difficulty = 'EASY' THEN 3 WHEN mcq_bank.difficulty = 'MEDIUM' THEN 6 WHEN mcq_bank.difficulty = 'HARD' THEN 10 END ELSE CASE WHEN mcq_bank.difficulty = 'EASY' THEN -5 WHEN mcq_bank.difficulty = 'MEDIUM' THEN -4 WHEN mcq_bank.difficulty = 'HARD' THEN -2 END END) + 40, 0), 100) AS tmi FROM attempted_mcqs INNER JOIN mcq_bank ON mcq_bank.mcq_id=attempted_mcqs.mcq_id WHERE student_id=$1 GROUP BY topic_id) AS tmi_table WHERE topic_mastery.topic_id = tmi_table.topic_id", [student_id]);
+}
+
+const captureSubjectMasterySnapshot = async (student_id) => {
+    await pool.query("INSERT INTO subject_mastery (student_id, subject_id, sms) SELECT $1 AS student_id, cms_table.subject_id, SUM(cms_table.cms * chapters.chapter_weight) / SUM(chapters.chapter_weight) AS sms FROM (SELECT topic_mastery.subject_id, topic_mastery.chapter_id, SUM(tmi * topic_weight) / SUM(topic_weight) AS cms FROM topic_mastery INNER JOIN topics ON topics.topic_id = topic_mastery.topic_id WHERE student_id=$1 GROUP BY topic_mastery.subject_id, topic_mastery.chapter_id) AS cms_table INNER JOIN chapters ON chapters.chapter_id=cms_table.chapter_id WHERE NOT EXISTS (SELECT 1 FROM subject_mastery WHERE student_id=$1 AND snapshot_date=CURRENT_DATE) GROUP BY cms_table.subject_id", [student_id]);
+}

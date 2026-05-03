@@ -1,6 +1,6 @@
 import express from "express";
 import { isPaymentVerified, protect, restrictTo, verifyTestAccess } from "../controllers/auth.js";
-import { getAllTests, createTest, editTest, getAllUpcomingTests, addToTest, getAllPreviousTests, discardTest, getAttemptedTestInfo, getLiveTestInfo  } from "../controllers/test.js";
+import { getAllTests, createTest, editTest, getAllUpcomingTests, addToTest, getAllPreviousTests, discardTest, getAttemptedTestInfo, getLiveTestInfo, submitTest  } from "../controllers/test.js";
 import { recordAnswer } from "../controllers/quiz.js";
 import { excelFileUpload } from "../helpers.js";
 
@@ -18,6 +18,7 @@ router.get("/previous", protect, isPaymentVerified, /* restrictTo("student"), */
 router.get("/upcoming", protect, isPaymentVerified, /* restrictTo("student"), */ getAllUpcomingTests);
 router.post("/record-answer", protect, isPaymentVerified, verifyTestAccess, /* restrictTo("student"), */ recordAnswer);
 router.post("/discard", protect, isPaymentVerified, verifyTestAccess, discardTest)
+router.post("/submit", protect, isPaymentVerified, verifyTestAccess, /* restrictTo("student"), */ submitTest);
 router.get("/attempted/:test_id", protect, isPaymentVerified, /* restrictTo("student"), */ getAttemptedTestInfo);
 router.get("/live/:test_id", protect, isPaymentVerified, /* restrictTo("student"), */ getLiveTestInfo);
 

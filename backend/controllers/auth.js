@@ -106,6 +106,7 @@ export const signup = handleAsyncError(async (req, res, next) => {
 
     const user = (await pool.query("INSERT INTO users (name, father_name, email, password, gender, role) VALUES ($1, $2, $3, $4, $5, $6) RETURNING user_id, role", [name, father_name, email, password, gender, role])).rows[0];
     await pool.query("INSERT INTO students (student_id, phone, academic_status, province, city, matric_percentage, fsc_percentage, prev_mdcat_score, target_marks) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)", [user.user_id, phone, academic_status, province, city, matric_percentage, fsc_percentage, prev_mdcat_score, target_marks]);
+    await insertTopicsInTopicMasteryTable(user.user_id);
     
     signTokenAndSetInCookie(email, user.role, res);
 
@@ -148,3 +149,7 @@ export const logout = (req, res, next) => {
         message: "Logged out!"
     });
 };
+
+const insertTopicsInTopicMasteryTable = async (student_id) => {
+    await pool.query("INSERT INTO topic_mastery (student_id, topic_id, chapter_id, subject_id, tmi) SELECT $1 AS student_id, topic_id, chapter_id, subject_id, 40 AS tmi FROM topics", [student_id]);
+}

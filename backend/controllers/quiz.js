@@ -1,6 +1,7 @@
 import { readDataFromExcelFile } from "../helpers.js";
 import { AppError, handleAsyncError } from "../error.js";
 import pool from "../database.js";
+import { updateTopicMasteryTableTMI } from "./user.js";
 
 export const getAllUserQuizzesDetails = handleAsyncError(async (req, res, next) => {
     let data = (await pool.query("SELECT quizzes.quiz_id, quiz_name, correct_count, mcq_count, attempt_date::TEXT, quiz_mode, STRING_AGG(subjects.subject_id::TEXT, ',') AS subject_ids, STRING_AGG(subject_name, ',') AS subject_names FROM quizzes INNER JOIN quiz_subjects ON quizzes.quiz_id=quiz_subjects.quiz_id INNER JOIN subjects ON subjects.subject_id=quiz_subjects.subject_id WHERE student_id=$1 GROUP BY quizzes.quiz_id, quiz_name, correct_count, mcq_count, attempt_date, quiz_mode ORDER BY quizzes.quiz_id DESC", [req.user.student_id])).rows;
@@ -127,6 +128,7 @@ export const submitQuizResult = handleAsyncError(async (req, res, next) => {
         return next("Please provide both quiz_id and correct_count", 400);
 
     await pool.query("UPDATE quizzes SET correct_count=$2 WHERE quiz_id=$1", [quiz_id, correct_count]);
+    await updateTopicMasteryTableTMI(req.user.student_id);
 
     res.status(200).json({
         status: "success"

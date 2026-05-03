@@ -185,6 +185,31 @@ CREATE TABLE test_mcqs(
     CONSTRAINT fkey_testmcqs_mcqbank FOREIGN KEY (mcq_id) REFERENCES mcq_bank(mcq_id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
+CREATE TABLE subject_mastery (
+    student_id INT NOT NULL,
+    subject_id INT NOT NULL,
+    sms NUMERIC(10,5) NOT NULL,
+    snapshot_date DATE NOT NULL DEFAULT CURRENT_DATE,
+    
+    CONSTRAINT pkey_smshistory PRIMARY KEY (student_id, subject_id, snapshot_date),
+    CONSTRAINT fkey_smshistory_students FOREIGN KEY (student_id) REFERENCES students(student_id) ON UPDATE CASCADE ON DELETE CASCADE,
+    CONSTRAINT fkey_smshistory_subjects FOREIGN KEY (subject_id) REFERENCES subjects(subject_id) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+CREATE TABLE topic_mastery (
+    student_id INT NOT NULL,
+    topic_id INT NOT NULL,
+    chapter_id INT NOT NULL,
+    subject_id INT NOT NULL,
+    tmi NUMERIC(10,5) NOT NULL DEFAULT 40.00,
+    
+    CONSTRAINT pkey_tmicache PRIMARY KEY (student_id, topic_id),
+    CONSTRAINT fkey_tmicache_students FOREIGN KEY (student_id) REFERENCES students(student_id) ON UPDATE CASCADE ON DELETE CASCADE,
+    CONSTRAINT fkey_tmicache_topics FOREIGN KEY (topic_id) REFERENCES topics(topic_id) ON UPDATE CASCADE ON DELETE CASCADE,
+    CONSTRAINT fkey_tmicache_chapters FOREIGN KEY (chapter_id) REFERENCES chapters(chapter_id) ON UPDATE CASCADE ON DELETE CASCADE,
+    CONSTRAINT fkey_tmicache_subjects FOREIGN KEY (subject_id) REFERENCES subjects(subject_id) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
 CREATE TABLE coupons (
     code VARCHAR(10) NOT NULL UNIQUE
 );
