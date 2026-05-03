@@ -6,25 +6,22 @@ on:
       - quizbuilder-demo
 
 jobs:
-  build-test:
+  deploy:
     runs-on: ubuntu-latest
 
-    defaults:
-      run:
-        working-directory: ./quizbuilder-mini
-
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - name: Deploy on EC2 using SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            cd ~/MDCATemy
+            git checkout quizbuilder-demo
+            git pull origin quizbuilder-demo
 
-      - name: Build Docker Compose services
-        run: docker compose build
-
-      - name: Start Docker Compose services
-        run: docker compose up -d
-
-      - name: Check running containers
-        run: docker ps
-
-      - name: Stop Docker Compose services
-        run: docker compose down
+            cd quizbuilder-mini
+            docker-compose down
+            docker-compose up --build -d
+            docker ps
