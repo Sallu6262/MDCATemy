@@ -1,0 +1,26 @@
+name: Deploy QuizBuilder Mini
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build Docker Compose services
+        run: docker compose build
+
+      - name: Start Docker Compose services
+        run: docker compose up -d
+
+      - name: Check running containers
+        run: docker ps
+
+      - name: Stop Docker Compose services
+        run: docker compose down
