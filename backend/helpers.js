@@ -42,7 +42,7 @@ export const gracefulShutdown = (server) => {
     }
 }    
 
-export const convertSubjectsChapterTopicsIntoNestedObject = (data) => {
+export const convertSyllabusQueryResultIntoSyllabusObject = (data) => {
     const subjects = ["Biology", "Chemistry", "Physics", "Logical Reasoning", "English"];
     const syllabus = {};    
 

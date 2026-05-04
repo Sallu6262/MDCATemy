@@ -53,6 +53,8 @@ export const getDashboardStats = handleAsyncError(async (req, res, next) => {
         today_attempt: 0,
         total_attempt: 0,
         total_correct: 0,
+        target_score: req.user.target_score,
+        predicted_score: req.user.predicted_score,
         subjects: {},
         chapters: {},
         topics: {}
@@ -73,7 +75,7 @@ export const getDashboardStats = handleAsyncError(async (req, res, next) => {
         
     }
 
-    await captureSubjectMasterySnapshot();
+    await captureSubjectMasterySnapshot(req.user.student_id);
 
     const today_acitivity = (await pool.query(`SELECT attempt_count FROM activity WHERE student_id=$1 AND activity_date=CURRENT_DATE`, [req.user.student_id])).rows[0];
     if (today_acitivity) {
@@ -83,26 +85,16 @@ export const getDashboardStats = handleAsyncError(async (req, res, next) => {
     [user.subjects, user.chapters, user.topics] = await getUsersSubjectChapterTopicWisePerformance(req.user.student_id);
 
     [user.total_attempt, user.total_correct] = Object.values((await pool.query("SELECT COALESCE(COUNT(attempted_mcqs.student_id),0)::INT  AS total_attempt_count, COALESCE(SUM(CASE WHEN attempted_mcqs.selected_option=mcq_bank.correct_option THEN 1 ELSE 0 END),0)::INT AS total_correct_count FROM attempted_mcqs INNER JOIN mcq_bank ON mcq_bank.mcq_id=attempted_mcqs.mcq_id WHERE attempted_mcqs.student_id=$1", [req.user.student_id])).rows[0]);
-
     user.accuracy = !user.total_attempt ? 0 : Math.round((user.total_correct/user.total_attempt)*100);
-    user.tests_attempted = (await pool.query("SELECT COUNT(DISTINCT test_id)::INT FROM attempted_mcqs WHERE test_id IS NOT NULL AND student_id=$1", [req.user.student_id])).rows[0].count;
+
+    user.tests_attempted = (await pool.query("SELECT COALESCE(COUNT(DISTINCT test_id),0)::INT AS count FROM attempted_mcqs WHERE test_id IS NOT NULL AND student_id=$1", [req.user.student_id])).rows[0].count;
     user.activity = (await pool.query(`SELECT attempt_count, correct_count, activity_date::text FROM activity WHERE student_id=$1 AND activity_date >= $2::DATE`, [req.user.student_id, new Date(Date.now()-6*MILLISECONDS_IN_DAY)])).rows;
-    user.weak_topics = (await pool.query(`SELECT topics.topic_name, chapters.chapter_name, subjects.subject_name, ROUND(SUM(CASE WHEN outer_attempted_mcqs.selected_option=outer_mcq_bank.correct_option THEN 1 ELSE 0 END)*100 / (COUNT(*))) AS accuracy FROM attempted_mcqs outer_attempted_mcqs INNER JOIN mcq_bank outer_mcq_bank ON outer_mcq_bank.mcq_id=outer_attempted_mcqs.mcq_id INNER JOIN topics ON outer_mcq_bank.topic_id=topics.topic_id INNER JOIN chapters ON outer_mcq_bank.chapter_id=chapters.chapter_id INNER JOIN subjects ON outer_mcq_bank.subject_id=subjects.subject_id WHERE outer_attempted_mcqs.student_id=$1 GROUP BY outer_mcq_bank.topic_id, topic_name, chapter_name, subject_name ORDER BY accuracy ASC LIMIT 4`, [req.user.student_id])).rows;
+    user.weak_topics = await getWeakestNTopics(req.user.student_id, 4);
 
     res.status(200).json({
         status: "success",
         data: user 
     });
-});
-
-export const getPredictedScore = handleAsyncError(async (req, res, next) => {
-    const predicted_score = (await pool.query("SELECT COALESCE(ROUND(SUM((0.25 + 0.70*(subject_mastery.sms/100)) * subjects.mcqs_in_mdcat)),0)::INT AS predicted_score FROM subject_mastery INNER JOIN subjects ON subjects.subject_id=subject_mastery.subject_id WHERE student_id=$1 AND snapshot_date=CURRENT_DATE", [req.user.student_id])).rows[0]?.predicted_score;
-    res.status(200).json({
-        status: "success",
-        data: {
-            predicted_score
-        }
-    })
 });
 
 const getMCQsAndSubjectWiseCountsForUser = async (req, next, mcq_query, subject_count_query) => {
@@ -255,6 +247,29 @@ export const uploadPaymentReceipt = handleAsyncError(async (req, res, next) => {
     });
 });
 
+export const getWeakestTopics = handleAsyncError(async (req, res, next) => {
+    const count  = +req.params.count;
+
+    if (!Number.isInteger(count) || count <= 0) 
+        return next("Please provide correct query!", 400);
+
+    const data = await getWeakestNTopics(req.user.student_id, count);
+
+    res.status(200).json({
+        status: "success",
+        data
+    });
+});
+
+export const getPredictedScoreLeaderboard = handleAsyncError(async (req, res, next) => {
+    const data = (await pool.query("SELECT student_id AS id, name, father_name, predicted_score FROM users INNER JOIN students ON users.user_id=students.student_id ORDER BY predicted_score DESC")).rows;
+
+    res.status(200).json({
+        status: "success",
+        data
+    }); 
+});
+
 
 const getUsersSubjectChapterTopicWisePerformance = async (student_id) => {
     const subjects = {}, chapters = {}, topics = {};
@@ -295,10 +310,10 @@ const getUsersSubjectChapterTopicWisePerformance = async (student_id) => {
     return [subjects, chapters, topics];
 };
 
-export const updateTopicMasteryTableTMI = async (student_id) => {
-    await pool.query("UPDATE topic_mastery SET tmi = tmi_table.tmi FROM (SELECT topic_id, LEAST(GREATEST(SUM(CASE WHEN attempted_mcqs.selected_option = mcq_bank.correct_option THEN CASE WHEN mcq_bank.difficulty = 'EASY' THEN 3 WHEN mcq_bank.difficulty = 'MEDIUM' THEN 6 WHEN mcq_bank.difficulty = 'HARD' THEN 10 END ELSE CASE WHEN mcq_bank.difficulty = 'EASY' THEN -5 WHEN mcq_bank.difficulty = 'MEDIUM' THEN -4 WHEN mcq_bank.difficulty = 'HARD' THEN -2 END END) + 40, 0), 100) AS tmi FROM attempted_mcqs INNER JOIN mcq_bank ON mcq_bank.mcq_id=attempted_mcqs.mcq_id WHERE student_id=$1 GROUP BY topic_id) AS tmi_table WHERE topic_mastery.topic_id = tmi_table.topic_id", [student_id]);
+const captureSubjectMasterySnapshot = async (student_id) => {
+    const res = await pool.query("INSERT INTO subject_mastery (student_id, subject_id, sms) SELECT $1 AS student_id, cms_table.subject_id, SUM(cms_table.cms * chapters.chapter_weight) / SUM(chapters.chapter_weight) AS sms FROM (SELECT topic_mastery.subject_id, topic_mastery.chapter_id, SUM(tmi * topic_weight) / SUM(topic_weight) AS cms FROM topic_mastery INNER JOIN topics ON topics.topic_id = topic_mastery.topic_id WHERE student_id=$1 GROUP BY topic_mastery.subject_id, topic_mastery.chapter_id) AS cms_table INNER JOIN chapters ON chapters.chapter_id=cms_table.chapter_id WHERE NOT EXISTS (SELECT 1 FROM subject_mastery WHERE student_id=$1 AND snapshot_date=CURRENT_DATE) GROUP BY cms_table.subject_id", [student_id]);
 }
 
-const captureSubjectMasterySnapshot = async (student_id) => {
-    await pool.query("INSERT INTO subject_mastery (student_id, subject_id, sms) SELECT $1 AS student_id, cms_table.subject_id, SUM(cms_table.cms * chapters.chapter_weight) / SUM(chapters.chapter_weight) AS sms FROM (SELECT topic_mastery.subject_id, topic_mastery.chapter_id, SUM(tmi * topic_weight) / SUM(topic_weight) AS cms FROM topic_mastery INNER JOIN topics ON topics.topic_id = topic_mastery.topic_id WHERE student_id=$1 GROUP BY topic_mastery.subject_id, topic_mastery.chapter_id) AS cms_table INNER JOIN chapters ON chapters.chapter_id=cms_table.chapter_id WHERE NOT EXISTS (SELECT 1 FROM subject_mastery WHERE student_id=$1 AND snapshot_date=CURRENT_DATE) GROUP BY cms_table.subject_id", [student_id]);
+const getWeakestNTopics = async (student_id, n) => {
+    return (await pool.query("SELECT topic_name, chapter_name, subject_name, ROUND(SUM(CASE WHEN attempted_mcqs.selected_option=mcq_bank.correct_option THEN 1 ELSE 0 END)*100 / (COUNT(*))) AS accuracy FROM attempted_mcqs INNER JOIN mcq_bank ON mcq_bank.mcq_id=attempted_mcqs.mcq_id INNER JOIN topics ON mcq_bank.topic_id=topics.topic_id INNER JOIN chapters ON mcq_bank.chapter_id=chapters.chapter_id INNER JOIN subjects ON mcq_bank.subject_id=subjects.subject_id WHERE attempted_mcqs.student_id=$1 GROUP BY mcq_bank.topic_id, topic_name, chapter_name, subject_name ORDER BY accuracy ASC LIMIT $2", [student_id, n])).rows;
 }

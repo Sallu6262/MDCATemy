@@ -1,7 +1,6 @@
 import { AppError, handleAsyncError } from "../error.js";
 import pool from "../database.js";
-import { convertSubjectsChapterTopicsIntoNestedObject, formatColumnName, readDataFromExcelFile } from "../helpers.js";
-import { updateTopicMasteryTableTMI } from "./user.js";
+import { convertSyllabusQueryResultIntoSyllabusObject, formatColumnName, readDataFromExcelFile } from "../helpers.js";
 
 export const editTest = handleAsyncError(async (req, res, next) => {
     /*
@@ -137,7 +136,7 @@ export const getAllUpcomingTests = handleAsyncError(async (req, res, next) => {
 
 export const getAttemptedTestInfo = handleAsyncError(async (req, res, next) => {    
     const data = (await pool.query("SELECT DISTINCT subject_name, chapter_name, topic_name, topics.topic_id FROM test_topics INNER JOIN topics ON test_topics.topic_id = topics.topic_id INNER JOIN chapters ON topics.chapter_id = chapters.chapter_id INNER JOIN subjects ON topics.subject_id = subjects.subject_id WHERE test_id=$1", [req.params.test_id])).rows;
-    const syllabus = convertSubjectsChapterTopicsIntoNestedObject(data);
+    const syllabus = convertSyllabusQueryResultIntoSyllabusObject(data);
     const mcqs = (await pool.query("SELECT mcq_bank.mcq_id, question, option_a, option_b, option_c, option_d, selected_option, correct_option, explanation, subject_name FROM tests INNER JOIN test_mcqs ON test_mcqs.test_id = tests.test_id INNER JOIN mcq_bank ON mcq_bank.mcq_id = test_mcqs.mcq_id INNER JOIN subjects ON subjects.subject_id=mcq_bank.subject_id LEFT JOIN attempted_mcqs ON attempted_mcqs.mcq_id = mcq_bank.mcq_id AND attempted_mcqs.test_id = tests.test_id WHERE tests.test_id=$2 AND (attempted_mcqs.student_id=$1 OR attempted_mcqs.student_id IS NULL)", [req.user.student_id, req.params.test_id])).rows;
 
     let highest_score = (await pool.query("SELECT MAX(count)::INT AS max FROM ( SELECT SUM(CASE WHEN attempted_mcqs.selected_option = mcq_bank.correct_option THEN 1 ELSE 0 END) AS count FROM tests INNER JOIN test_mcqs ON test_mcqs.test_id = tests.test_id INNER JOIN mcq_bank ON mcq_bank.mcq_id = test_mcqs.mcq_id INNER JOIN attempted_mcqs ON attempted_mcqs.mcq_id = mcq_bank.mcq_id AND attempted_mcqs.test_id = tests.test_id WHERE tests.test_id= $1 GROUP BY attempted_mcqs.student_id )", [req.params.test_id])).rows;
@@ -159,10 +158,7 @@ export const getLiveTestInfo = handleAsyncError(async (req, res, next) => {
         return next(new AppError("Please provide a valid Test ID", 400));        
 
     let test = {};
-    let data = (await pool.query("SELECT tests.test_id, test_name, mcq_count, test_time, test_date::TEXT, COUNT(mcq_bank.mcq_id) OVER(PARTITION BY mcq_bank.subject_id)::INT AS subject_mcq_count, mcq_bank.mcq_id, question, option_a, option_b, option_c, option_d, correct_option, explanation, difficulty, subject_name, chapter_name, topic_name FROM tests INNER JOIN test_mcqs ON test_mcqs.test_id = tests.test_id INNER JOIN mcq_bank ON mcq_bank.mcq_id = test_mcqs.mcq_id INNER JOIN topics ON mcq_bank.topic_id = topics.topic_id INNER JOIN chapters ON mcq_bank.chapter_id = chapters.chapter_id INNER JOIN subjects ON mcq_bank.subject_id = subjects.subject_id WHERE tests.test_id = $1", [+test_id])).rows;
-
-    if (data[0]?.test_date !== new Intl.DateTimeFormat('en-CA').format(new Date())) 
-        data = [];
+    let data = (await pool.query("SELECT tests.test_id, test_name, mcq_count, test_time, test_date::TEXT, COUNT(mcq_bank.mcq_id) OVER(PARTITION BY mcq_bank.subject_id)::INT AS subject_mcq_count, mcq_bank.mcq_id, question, option_a, option_b, option_c, option_d, correct_option, explanation, difficulty, subject_name, chapter_name, topic_name FROM tests INNER JOIN test_mcqs ON test_mcqs.test_id = tests.test_id INNER JOIN mcq_bank ON mcq_bank.mcq_id = test_mcqs.mcq_id INNER JOIN topics ON mcq_bank.topic_id = topics.topic_id INNER JOIN chapters ON mcq_bank.chapter_id = chapters.chapter_id INNER JOIN subjects ON mcq_bank.subject_id = subjects.subject_id WHERE tests.test_id = $1 AND tests.test_date=CURRENT_DATE", [+test_id])).rows;
 
     test.mcqs = data.map(obj => {
         test.test_id = obj.test_id;
@@ -184,7 +180,7 @@ export const getLiveTestInfo = handleAsyncError(async (req, res, next) => {
 });
 
 export const submitTest = handleAsyncError(async (req, res, next) => {
-    await updateTopicMasteryTableTMI(req.user.student_id);
+    await pool.query("SELECT update_student_tmi_and_predicted_score($1)", [req.user.student_id]);
     res.status(200).json({
         status: "success"
     });

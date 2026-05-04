@@ -213,3 +213,78 @@ CREATE TABLE topic_mastery (
 CREATE TABLE coupons (
     code VARCHAR(10) NOT NULL UNIQUE
 );
+
+
+CREATE OR REPLACE FUNCTION update_predicted_score(p_student_id INT)
+RETURNS VOID AS $$
+BEGIN
+    UPDATE students 
+    SET predicted_score = score_table.predicted_score
+    FROM (
+        SELECT ROUND(SUM((0.25 + 0.70 * (sms_table.sms / 100.0)) * subjects.mcqs_in_mdcat)) AS predicted_score
+        FROM (
+            SELECT cms_table.subject_id, 
+                   SUM(cms_table.cms * chapters.chapter_weight) / NULLIF(SUM(chapters.chapter_weight), 0) AS sms 
+            FROM (
+                SELECT 
+                    topic_mastery.subject_id, 
+                    topic_mastery.chapter_id, 
+                    SUM(tmi * topic_weight) / NULLIF(SUM(topic_weight), 0) AS cms 
+                FROM topic_mastery 
+                INNER JOIN topics ON topics.topic_id = topic_mastery.topic_id 
+                WHERE student_id = p_student_id 
+                GROUP BY topic_mastery.subject_id, topic_mastery.chapter_id
+            ) AS cms_table 
+            INNER JOIN chapters ON chapters.chapter_id = cms_table.chapter_id 
+            GROUP BY cms_table.subject_id
+        ) AS sms_table
+        INNER JOIN subjects ON subjects.subject_id = sms_table.subject_id
+    ) AS score_table
+    WHERE students.student_id = p_student_id;
+END;
+$$ LANGUAGE plpgsql;
+
+
+CREATE OR REPLACE FUNCTION update_student_tmi(p_student_id INT)
+RETURNS VOID AS $$
+BEGIN
+    UPDATE topic_mastery 
+    SET tmi = tmi_table.calculated_tmi 
+    FROM (
+        SELECT 
+            mcq_bank.topic_id, 
+            LEAST(GREATEST(
+                SUM(
+                    CASE 
+                        WHEN attempted_mcqs.selected_option = mcq_bank.correct_option THEN 
+                            CASE 
+                                WHEN mcq_bank.difficulty = 'EASY'   THEN 3 
+                                WHEN mcq_bank.difficulty = 'MEDIUM' THEN 6 
+                                WHEN mcq_bank.difficulty = 'HARD'   THEN 10 
+                            END
+                        ELSE 
+                            CASE 
+                                WHEN mcq_bank.difficulty = 'EASY'   THEN -5 
+                                WHEN mcq_bank.difficulty = 'MEDIUM' THEN -4 
+                                WHEN mcq_bank.difficulty = 'HARD'   THEN -2 
+                            END 
+                    END
+                ) + 40,
+            0), 100) AS calculated_tmi 
+        FROM attempted_mcqs 
+        INNER JOIN mcq_bank ON mcq_bank.mcq_id = attempted_mcqs.mcq_id 
+        WHERE attempted_mcqs.student_id = p_student_id 
+        GROUP BY mcq_bank.topic_id
+    ) AS tmi_table 
+    WHERE topic_mastery.topic_id = tmi_table.topic_id 
+    AND topic_mastery.student_id = p_student_id;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION update_student_tmi_and_predicted_score(p_student_id INT)
+RETURNS VOID AS $$
+BEGIN
+    PERFORM update_student_tmi(p_student_id);
+    PERFORM update_predicted_score(p_student_id);
+END;
+$$ LANGUAGE plpgsql;

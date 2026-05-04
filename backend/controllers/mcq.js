@@ -1,11 +1,10 @@
 import pool from "../database.js";
-import { readDataFromExcelFile } from "../helpers.js";
+import { formatColumnName, readDataFromExcelFile } from "../helpers.js";
 import { AppError, handleAsyncError } from "../error.js";
-import { convertSubjectsChapterTopicsIntoNestedObject } from "../helpers.js";
+import { convertSyllabusQueryResultIntoSyllabusObject } from "../helpers.js";
 
 export const getMcqDistributionPerTopic = handleAsyncError(async (req, res, next) => {
     const data = (await pool.query("SELECT topics.topic_id, topic_name, COUNT(mcq_bank.mcq_id)::INT FROM mcq_bank RIGHT JOIN topics ON mcq_bank.topic_id = topics.topic_id GROUP BY topics.topic_id, topics.topic_name")).rows;
-
     res.status(200).json({
         status: "success",
         data
@@ -28,11 +27,20 @@ export const uploadMCQs = handleAsyncError(async (req, res, next) => {
 
 
 export const getAllTopics = handleAsyncError(async (req, res, next) => {
-    let data = (await pool.query("SELECT DISTINCT subject_name, chapter_name, topic_name, mcq_bank.topic_id FROM mcq_bank INNER JOIN subjects ON subjects.subject_id=mcq_bank.subject_id INNER JOIN chapters ON chapters.chapter_id=mcq_bank.chapter_id INNER JOIN topics ON topics.topic_id=mcq_bank.topic_id")).rows;
-    data = convertSubjectsChapterTopicsIntoNestedObject(data);
+    let data = (await pool.query("SELECT DISTINCT subject_name, chapter_name, topic_name, subjects.subject_id, topics.topic_id FROM mcq_bank INNER JOIN subjects ON subjects.subject_id=mcq_bank.subject_id INNER JOIN chapters ON chapters.chapter_id=mcq_bank.chapter_id INNER JOIN topics ON topics.topic_id=mcq_bank.topic_id")).rows;
+    let syllabus = convertSyllabusQueryResultIntoSyllabusObject(data);
+    let subject_ids = {};
+
+    data.forEach(obj => {
+        subject_ids[formatColumnName(obj.subject_name)] = obj.subject_id;
+    });
+
     res.status(200).json({
         status: "success",
-        data
+        data: {
+            subject_ids,
+            syllabus,
+        }
     });
 });
 
