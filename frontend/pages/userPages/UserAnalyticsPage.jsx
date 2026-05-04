@@ -28,7 +28,7 @@ const subjectCircleLink = ({subject, color, accuracy, total}) => {
 }
 
 const UserAnalyticsPage = () => {
-    const {studentAnalytics : sa, predictedScore} = useOutletContext();
+    const {studentAnalytics : sa} = useOutletContext();
 
     const subjectToColor = {
         'Biology' : '#10B981',
@@ -184,7 +184,7 @@ const UserAnalyticsPage = () => {
 
                                 <path d="M 32 140 A 108 108 0 0 1 248 140" fill="none" stroke="url(#gauge-grad)"
                                         strokeWidth="18" strokeLinecap="round"
-                                        strokeDasharray="339.292" strokeDashoffset={339.292 * (1 - predictedScore / 180)}/>
+                                        strokeDasharray="339.292" strokeDashoffset={339.292 * (1 - sa?.predicted_score ?? 0 / 180)}/>
 
                                 {/* <circle cx="233.53" cy="86" r="6" fill="#FFC600" stroke="#222422" strokeWidth="3"/>
 
@@ -197,10 +197,10 @@ const UserAnalyticsPage = () => {
 
                             <div className="absolute inset-x-0 top-[44%] -translate-y-1/2 flex flex-col items-center pointer-events-none">
                             <div className="flex items-baseline gap-1.5">
-                                <span className="font-poppins font-black text-4xl text-[#FFC600] leading-none">{predictedScore}</span>
+                                <span className="font-poppins font-black text-4xl text-[#FFC600] leading-none">{sa?.predicted_score ?? 0}</span>
                                 <span className="font-inter text-[#A8ACA8] text-sm">/ 180</span>
                             </div>
-                            <span className="text-[13px] font-poppins font-black mt-1 text-amber-400">{parseInt((predictedScore / 180) * 100)}%</span>
+                            <span className="text-[13px] font-poppins font-black mt-1 text-amber-400">{parseInt((sa?.predicted_score ?? 0 / 180) * 100)}%</span>
                             </div>
                         </div>
 

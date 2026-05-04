@@ -93,8 +93,9 @@ const ExamTakingScreen = ({isQuiz, exam, isExamHappening}) => {
     const [submitted, setSubmitted] = useState(() => new Set());
 
     const [saveLoading, setSaveLoading] = useState(false);
-
-    window.scrollTo({top: 0, behavior: 'smooth'});
+    const [submitLoading, setSubmitLoading] = useState(false);
+    const [selectedOption, setSelectedOption] = useState(null);
+    const API_URL = import.meta.env.VITE_API_URL;
 
     const flagMCQ = () => {
         if(submitted.has(mcqNumber)) return;
@@ -128,13 +129,48 @@ const ExamTakingScreen = ({isQuiz, exam, isExamHappening}) => {
 
     const submitMCQ = async () => {
         if(submitted.has(mcqNumber)) return;
+        if(!selectedOption) return;
+        setSubmitLoading(true);
 
-        setMcqStatus(2);
+        const currentMcq = mcqs[mcqNumber-1];
+        const res = await fetch(`${API_URL}/${isQuiz ? 'quizzes' : 'tests'}/record-answer`, {
+            method: 'POST',
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                [isQuiz ? 'quiz_id' : 'test_id']: isQuiz ? exam?.quiz_id : exam?.test_id,
+                attempts: [
+                    {
+                        id: currentMcq?.mcq_id,
+                        selected_option: selectedOption,
+                        correct_option: currentMcq?.correct_option
+                    }
+                ]
+            })
+        });
+
+        const data = await res.json();
+
+        if(data.status === 'success'){
+            setSubmitted(prev => {
+                const newSet = new Set(prev);
+                newSet.add(mcqNumber);
+                return newSet;
+            });
+        }
+
+        setSubmitLoading(false);
     }
 
     const moveToNextMcq = () => {
         setMcqNumber(prev => prev < exam?.total_mcqs ? prev + 1 : prev);
     }
+
+    useEffect(() => {
+        setSelectedOption(null);
+    }, [mcqNumber]);
 
     const formatTime = (minutes) => {
         const hrs = Math.floor(minutes / 60);
@@ -213,6 +249,15 @@ const ExamTakingScreen = ({isQuiz, exam, isExamHappening}) => {
           align-items: center;
           gap: 18px;
           padding: 16px 18px;
+        }
+        .ets-option-card.ets-option-selected {
+          border-color: #FFC600;
+          background: rgba(255, 198, 0, 0.12);
+          box-shadow: 0 0 0 1px rgba(255, 198, 0, 0.28);
+        }
+        .ets-option-card.ets-option-selected .ets-option-key {
+          background: #FFC600;
+          color: #181A18;
         }
         .ets-option-key {
           width: 36px;
@@ -297,26 +342,42 @@ const ExamTakingScreen = ({isQuiz, exam, isExamHappening}) => {
               </div> */}
 
               <p className="mb-5 flex-shrink-0 text-lg font-medium leading-relaxed text-white lg:mb-7 lg:text-xl">
-                Q. {mcqs[mcqNumber].question}
+                Q. {mcqs[mcqNumber-1].question}
               </p>
 
               <div className="flex min-h-0 flex-shrink-0 flex-col gap-3 lg:gap-4">
-                <div className="ets-option-card">
+                <button
+                  type="button"
+                  onClick={() => setSelectedOption('A')}
+                  className={`cursor-pointer ets-option-card ${selectedOption === 'A' ? 'ets-option-selected' : ''}`}
+                >
                   <span className="ets-option-key">A</span>
-                  <span className="text-lg font-bold">{mcqs[mcqNumber].option_a}</span>
-                </div>
-                <div className="ets-option-card">
+                  <span className="text-lg font-bold">{mcqs[mcqNumber-1].option_a}</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setSelectedOption('B')}
+                  className={`cursor-pointer ets-option-card ${selectedOption === 'B' ? 'ets-option-selected' : ''}`}
+                >
                   <span className="ets-option-key">B</span>
-                  <span className="text-lg font-bold">{mcqs[mcqNumber].option_b}</span>
-                </div>
-                <div className="ets-option-card">
+                  <span className="text-lg font-bold">{mcqs[mcqNumber-1].option_b}</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setSelectedOption('C')}
+                  className={`cursor-pointer ets-option-card ${selectedOption === 'C' ? 'ets-option-selected' : ''}`}
+                >
                   <span className="ets-option-key">C</span>
-                  <span className="text-lg font-bold">{mcqs[mcqNumber].option_c}</span>
-                </div>
-                <div className="ets-option-card">
+                  <span className="text-lg font-bold">{mcqs[mcqNumber-1].option_c}</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setSelectedOption('D')}
+                  className={`cursor-pointer ets-option-card ${selectedOption === 'D' ? 'ets-option-selected' : ''}`}
+                >
                   <span className="ets-option-key">D</span>
-                  <span className="text-lg font-bold">{mcqs[mcqNumber].option_d}</span>
-                </div>
+                  <span className="text-lg font-bold">{mcqs[mcqNumber-1].option_d}</span>
+                </button>
               </div>
             </div>
           </section>
@@ -345,12 +406,12 @@ const ExamTakingScreen = ({isQuiz, exam, isExamHappening}) => {
               </svg>
               {saveLoading ? 'Processing....' : `${bookmarks.has(mcqNumber) ? 'Saved' : 'Save'}`}
             </button>
-            <button onClick={submitMCQ} className="cursor-pointer ets-action-chip ets-submit">
+            <button onClick={submitMCQ} disabled={submitLoading || submitted.has(mcqNumber) || !selectedOption} className={`${submitLoading || submitted.has(mcqNumber) || !selectedOption ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'} ets-action-chip ets-submit`}>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <line x1="22" y1="2" x2="11" y2="13" />
                 <polygon points="22 2 15 22 11 13 2 9 22 2" />
               </svg>
-              {submitted.has(mcqNumber) ? 'Submitted' : 'Submit'}
+              {submitLoading ? 'Processing....' : `${submitted.has(mcqNumber) ? 'Submitted' : 'Submit'}`}
             </button>
           </div>
           <div className="flex items-center gap-2 border-t border-[#2E302E] px-3 py-3 sm:gap-4 sm:px-4 lg:px-7">
@@ -377,7 +438,7 @@ const ExamTakingScreen = ({isQuiz, exam, isExamHappening}) => {
               onClick={moveToNextMcq}
               className="cursor-pointer flex shrink-0 items-center gap-1.5 rounded-xl bg-[#FFC600] px-4 py-2.5 text-xs font-black uppercase tracking-wide text-[#181A18] shadow-lg sm:gap-2 sm:px-6 sm:py-3 sm:text-sm"
             >
-              {submitted.size === exam.total_mcqs ? 'Finish' : 'Next'}
+              {submitted.size === exam.total_mcqs ? 'Finish' : "Next"}
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <polyline points="9 18 15 12 9 6" />
               </svg>
