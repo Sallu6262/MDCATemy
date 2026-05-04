@@ -11,6 +11,7 @@ const AllPreviousTestsPage = () => {
   useEffect(() => {
     let count = 0;
     previousTests?.forEach(test => count = test.correct === 0 && test.mistakes === 0 ? count : count + 1);
+    // console.log(previousTests);
     setMissed(count);
   }, []);
 

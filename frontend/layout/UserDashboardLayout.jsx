@@ -47,16 +47,16 @@ const UserDashboardLayout = () => {
 
     useEffect(() => {
         const fetchPredictedScore = async() => {
-            const res = await fetch(`${API_URL}/users/predicted-score`,{
-                method: 'GET',
-                credentials: 'include'
-            });
+            // const res = await fetch(`${API_URL}/users/predicted-score`,{
+            //     method: 'GET',
+            //     credentials: 'include'
+            // });
         
-            const data = await res.json();
+            // const data = await res.json();
         
-            if(data.status === 'success'){
-                setPredictedScore(data.data?.predicted_score);
-            }
+            // if(data.status === 'success'){
+            //     setPredictedScore(data.data?.predicted_score);
+            // }
         }
     
         fetchPredictedScore();

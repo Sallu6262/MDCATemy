@@ -6,7 +6,7 @@ import QuizMakingStep4 from '../../../components/userComponents/QuizBuilderCompo
 import ExamTakingScreen from '../../../components/userComponents/ExamTakingScreen';
 
 const QuizMakingPage = () => {
-    const [step, setStep] = useState(4);
+    const [step, setStep] = useState(1);
     const [selectedSubjects, setSelectedSubjects] = useState(() => new Set());
     const [selectedChapters, setSelectedChapters] = useState(() => new Set());
     const [selectedTopics, setSelectedTopics] = useState(() => new Set());
@@ -35,7 +35,7 @@ const QuizMakingPage = () => {
 
             if(data.status === 'success'){
                 // console.log(data.data);
-                setSyllabus(data.data);
+                setSyllabus(data.data.syllabus);
             }
         }
 
