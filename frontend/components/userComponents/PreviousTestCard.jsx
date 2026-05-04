@@ -23,7 +23,7 @@ const PreviousTestCard = ({previousTest}) => {
 
     useEffect(() => {
         const fetchSyllabus = async() => {
-            const res = await fetch(`${API_URL}/tests/${previousTest?.test_id}`,{
+            const res = await fetch(`${API_URL}/tests/attempted/${previousTest?.test_id}`,{
                 method: 'GET',
                 credentials: 'include'
             });

@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import sendErrorSuccessMessage from '../../utils/sendErrorSuccessMessage'
+import '../../src/animation.css'
 
 const WrongMCQCard = ({mcq, setNotMasteredMcqs, setPendingMistakes, setWrongMcqs}) => {
     // console.log(mcq);
@@ -87,46 +88,43 @@ const WrongMCQCard = ({mcq, setNotMasteredMcqs, setPendingMistakes, setWrongMcqs
                 {mcq?.question}
                 </p>
 
-                {
-                    !showOptions ? 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-4">
-                        <div className="flex items-start gap-2.5 px-3 py-2.5 rounded-xl bg-red-500/8 border border-red-500/25">
-                            <div className="w-6 h-6 rounded-md bg-red-500 flex items-center justify-center flex-shrink-0 mt-0.5">
-                            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-                            </div>
-                            <div>
-                            <p className="text-[13px] font-[Inter] font-black uppercase tracking-[0.1em] text-red-400 mb-0.5">Your Answer</p>
-                            <p className="text-red-300 font-[Inter] text-[14px] leading-snug">{mcq?.selected_option}. {optionToName[mcq?.selected_option]}</p>
-                            </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-4">
+                    <div className="flex items-start gap-2.5 px-3 py-2.5 rounded-xl bg-red-500/8 border border-red-500/25">
+                        <div className="w-6 h-6 rounded-md bg-red-500 flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
                         </div>
-                        <div className="flex items-start gap-2.5 px-3 py-2.5 rounded-xl bg-emerald-500/8 border border-emerald-500/25">
-                            <div className="w-6 h-6 rounded-md bg-emerald-500 flex items-center justify-center flex-shrink-0 mt-0.5">
-                            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                            </div>
-                            <div>
-                            <p className="text-[13px] font-[Inter] font-black uppercase tracking-[0.1em] text-emerald-400 mb-0.5">Correct Answer</p>
-                            <p className="text-emerald-300 font-[Inter] text-[14px] leading-snug">{mcq?.correct_option}. {optionToName[mcq?.correct_option]}</p>
-                            </div>
-                        </div>
-                    </div> :
-
-                    <div className="mistake-expanded">
-                        <div className="space-y-1.5 mb-3">
-
-                            {displayMCQOption('A', mcq?.option_a)}
-                            {displayMCQOption('B', mcq?.option_b)}
-                            {displayMCQOption('C', mcq?.option_c)}
-                            {displayMCQOption('D', mcq?.option_d)}
-
-                        </div>
-                        <div className="callout-yellow bg-[#181A18] rounded-r-xl p-3.5 mb-3">
-                            <p className="text-[13px] font-[Inter] font-black uppercase tracking-[0.12em] text-[#FFC600] mb-1.5">Explanation</p>
-                            <p className="text-white/85 font-[Inter] text-[13px] leading-relaxed">
-                            {mcq?.explanation}
-                            </p>
+                        <div>
+                        <p className="text-[13px] font-[Inter] font-black uppercase tracking-[0.1em] text-red-400 mb-0.5">Your Answer</p>
+                        <p className="text-red-300 font-[Inter] text-[14px] leading-snug">{mcq?.selected_option}. {optionToName[mcq?.selected_option]}</p>
                         </div>
                     </div>
-                }
+                    <div className="flex items-start gap-2.5 px-3 py-2.5 rounded-xl bg-emerald-500/8 border border-emerald-500/25">
+                        <div className="w-6 h-6 rounded-md bg-emerald-500 flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                        </div>
+                        <div>
+                        <p className="text-[13px] font-[Inter] font-black uppercase tracking-[0.1em] text-emerald-400 mb-0.5">Correct Answer</p>
+                        <p className="text-emerald-300 font-[Inter] text-[14px] leading-snug">{mcq?.correct_option}. {optionToName[mcq?.correct_option]}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div className={`dropdown-menu mistake-expanded ${showOptions ? 'open' : ''}`}>
+                    <div className="space-y-1.5 mb-3">
+
+                        {displayMCQOption('A', mcq?.option_a)}
+                        {displayMCQOption('B', mcq?.option_b)}
+                        {displayMCQOption('C', mcq?.option_c)}
+                        {displayMCQOption('D', mcq?.option_d)}
+
+                    </div>
+                    <div className="callout-yellow bg-[#181A18] rounded-r-xl p-3.5 mb-3">
+                        <p className="text-[13px] font-[Inter] font-black uppercase tracking-[0.12em] text-[#FFC600] mb-1.5">Explanation</p>
+                        <p className="text-white/85 font-[Inter] text-[13px] leading-relaxed">
+                        {mcq?.explanation}
+                        </p>
+                    </div>
+                </div>
 
                 <div className="flex items-center justify-between flex-wrap gap-2">
                 <button onClick={() => setShowOptions(prev => !prev)} className="cursor-pointer mistake-toggle flex items-center gap-1.5 text-[13px] font-[Inter] font-bold text-[#FFC600] hover:underline">

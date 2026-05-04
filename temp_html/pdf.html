@@ -2,126 +2,79 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Skeleton UI Demo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tailwind Slider Demo</title>
+
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #0f0f0f;
-      color: white;
-      display: flex;
-      justify-content: center;
-      padding: 40px;
+    /* Remove default appearance */
+    input[type="range"] {
+      -webkit-appearance: none;
+      appearance: none;
     }
 
-    .card {
-      width: 400px;
-      background: #1c1c1c;
-      padding: 20px;
-      border-radius: 16px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    /* Track */
+    input[type="range"]::-webkit-slider-runnable-track {
+      height: 8px;
+      background: #374151; /* gray-700 */
+      border-radius: 9999px;
     }
 
-    /* Skeleton base */
-    .skeleton {
-      position: relative;
-      overflow: hidden;
-      background: #2a2a2a;
-      border-radius: 8px;
+    input[type="range"]::-moz-range-track {
+      height: 8px;
+      background: #374151;
+      border-radius: 9999px;
     }
 
-    /* Shimmer effect */
-    .skeleton::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      transform: translateX(-100%);
-      background: linear-gradient(
-        90deg,
-        transparent,
-        rgba(255,255,255,0.2),
-        transparent
-      );
-      animation: shimmer 1.2s infinite;
-    }
-
-    @keyframes shimmer {
-      100% {
-        transform: translateX(100%);
-      }
-    }
-
-    .line {
-      height: 14px;
-      margin-bottom: 10px;
-    }
-
-    .title {
+    /* Thumb */
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 20px;
       height: 20px;
-      width: 70%;
-      margin-bottom: 15px;
-    }
-
-    .option {
-      height: 16px;
-      margin-bottom: 8px;
-    }
-
-    /* Real content (hidden initially) */
-    .hidden {
-      display: none;
-    }
-
-    button {
-      margin-top: 20px;
-      padding: 10px 16px;
-      border: none;
-      border-radius: 8px;
-      background: #4f46e5;
-      color: white;
+      background: #FFC600;
+      border-radius: 50%;
       cursor: pointer;
+      margin-top: -6px; /* center thumb */
+    }
+
+    input[type="range"]::-moz-range-thumb {
+      width: 20px;
+      height: 20px;
+      background: #FFC600;
+      border-radius: 50%;
+      cursor: pointer;
+      border: none;
     }
   </style>
 </head>
-<body>
 
-  <div class="card">
-    
-    <!-- Skeleton -->
-    <div id="skeleton">
-      <div class="skeleton title"></div>
-      <div class="skeleton line"></div>
-      <div class="skeleton line"></div>
+<body class="bg-[#0E0F0E] text-white flex items-center justify-center min-h-screen">
 
-      <div class="skeleton option"></div>
-      <div class="skeleton option"></div>
-      <div class="skeleton option"></div>
-      <div class="skeleton option"></div>
+  <div class="w-96 p-6 rounded-2xl bg-[#1A1B1A] shadow-xl">
+
+    <h1 class="text-lg font-bold mb-6 text-center">
+      Drag Slider (HTML + Tailwind)
+    </h1>
+
+    <!-- Slider -->
+    <input 
+      type="range" 
+      min="0" 
+      max="100" 
+      value="50"
+      class="w-full cursor-pointer"
+    />
+
+    <!-- Labels -->
+    <div class="flex justify-between text-sm mt-3 text-gray-400">
+      <span>0</span>
+      <span>50</span>
+      <span>100</span>
     </div>
 
-    <!-- Real Content -->
-    <div id="content" class="hidden">
-      <h3>What is the unit of acceleration?</h3>
-      <p>A. m/s</p>
-      <p>B. m/s²</p>
-      <p>C. kg</p>
-      <p>D. N</p>
-    </div>
-
-    <button onclick="loadContent()">Load Data</button>
   </div>
-
-  <script>
-    function loadContent() {
-      const skeleton = document.getElementById("skeleton");
-      const content = document.getElementById("content");
-
-      // simulate API delay
-      setTimeout(() => {
-        skeleton.style.display = "none";
-        content.classList.remove("hidden");
-      }, 1500);
-    }
-  </script>
 
 </body>
 </html>

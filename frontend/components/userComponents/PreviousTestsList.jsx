@@ -13,7 +13,7 @@ const PreviousTestsList = ({previousTests}) => {
                     <h2 className="font-[Poppins] font-black text-white text-[12px] uppercase tracking-[0.14em]">Previous Tests</h2>
                 </div>
 
-                <Link to="/test-series/previous-tests" className="cursor-pointer group w-full bg-[#222422] border-2 border-[#2E302E] hover:border-[#FFC600] rounded-2xl px-4 py-3.5 flex items-center gap-3.5 shadow-[4px_4px_0px_rgba(255,198,0,0.12)] transition-all duration-150">
+                <Link to="/dashboard/test-series/previous-tests" className="cursor-pointer group w-full bg-[#222422] border-2 border-[#2E302E] hover:border-[#FFC600] rounded-2xl px-4 py-3.5 flex items-center gap-3.5 shadow-[4px_4px_0px_rgba(255,198,0,0.12)] transition-all duration-150">
                     <div className="w-11 h-11 bg-[#FFC600] border-2 border-[#181A18] rounded-xl flex items-center justify-center shrink-0">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#181A18" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round">
                         <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/>
