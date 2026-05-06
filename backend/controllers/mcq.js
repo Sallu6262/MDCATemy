@@ -27,18 +27,23 @@ export const uploadMCQs = handleAsyncError(async (req, res, next) => {
 
 
 export const getAllTopics = handleAsyncError(async (req, res, next) => {
-    let data = (await pool.query("SELECT DISTINCT subject_name, chapter_name, topic_name, subjects.subject_id, topics.topic_id FROM mcq_bank INNER JOIN subjects ON subjects.subject_id=mcq_bank.subject_id INNER JOIN chapters ON chapters.chapter_id=mcq_bank.chapter_id INNER JOIN topics ON topics.topic_id=mcq_bank.topic_id")).rows;
+    let data = (await pool.query("SELECT DISTINCT subject_name, chapter_name, topic_name, subjects.subject_id, chapters.chapter_id, topics.topic_id FROM mcq_bank INNER JOIN subjects ON subjects.subject_id=mcq_bank.subject_id INNER JOIN chapters ON chapters.chapter_id=mcq_bank.chapter_id INNER JOIN topics ON topics.topic_id=mcq_bank.topic_id")).rows;
     let syllabus = convertSyllabusQueryResultIntoSyllabusObject(data);
     let subject_ids = {};
+    let chapter_ids = {};
 
     data.forEach(obj => {
         subject_ids[formatColumnName(obj.subject_name)] = obj.subject_id;
+    });
+    data.forEach(obj => {
+        chapter_ids[formatColumnName(obj.chapter_name)] = obj.chapter_id;
     });
 
     res.status(200).json({
         status: "success",
         data: {
             subject_ids,
+            chapter_ids,
             syllabus,
         }
     });

@@ -61,7 +61,7 @@ export const getDashboardStats = handleAsyncError(async (req, res, next) => {
     };
     
     const yesterday = new Date(Date.now()-1*MILLISECONDS_IN_DAY);
-    let yesterday_activity = (await pool.query(`SELECT streak, attempt_count, activity_date::text FROM activity WHERE student_id=$1 AND activity_date=$2::DATE`, [req.user.student_id, yesterday])).rows[0];
+    let yesterday_activity = (await pool.query(`SELECT streak, attempt_count, activity_date::TEXT FROM activity WHERE student_id=$1 AND activity_date=$2::DATE`, [req.user.student_id, yesterday])).rows[0];
 
     if ((!yesterday_activity || yesterday_activity.attempt_count < 50) && req.user.streak != 0) {
 
@@ -88,7 +88,7 @@ export const getDashboardStats = handleAsyncError(async (req, res, next) => {
     user.accuracy = !user.total_attempt ? 0 : Math.round((user.total_correct/user.total_attempt)*100);
 
     user.tests_attempted = (await pool.query("SELECT COALESCE(COUNT(DISTINCT test_id),0)::INT AS count FROM attempted_mcqs WHERE test_id IS NOT NULL AND student_id=$1", [req.user.student_id])).rows[0].count;
-    user.activity = (await pool.query(`SELECT attempt_count, correct_count, activity_date::text FROM activity WHERE student_id=$1 AND activity_date >= $2::DATE`, [req.user.student_id, new Date(Date.now()-6*MILLISECONDS_IN_DAY)])).rows;
+    user.activity = (await pool.query(`SELECT attempt_count, correct_count, activity_date::TEXT FROM activity WHERE student_id=$1 AND activity_date >= $2::DATE ORDER BY activity_date`, [req.user.student_id, new Date(Date.now()-6*MILLISECONDS_IN_DAY)])).rows;
     user.weak_topics = await getWeakestNTopics(req.user.student_id, 4);
 
     res.status(200).json({
@@ -248,12 +248,47 @@ export const uploadPaymentReceipt = handleAsyncError(async (req, res, next) => {
 });
 
 export const getWeakestTopics = handleAsyncError(async (req, res, next) => {
-    const count  = +req.params.count;
 
-    if (!Number.isInteger(count) || count <= 0) 
-        return next("Please provide correct query!", 400);
+    /*
+        {
+            "limit": 20,
+            "chapter_ids": [1,2,6,7,8]
+        }
+    */
 
-    const data = await getWeakestNTopics(req.user.student_id, count);
+
+    const limit  = +req.body.limit;
+    const subject_ids = req.body.subject_ids;
+    const chapter_ids = req.body.chapter_ids;
+    let data;
+
+    if (!limit || !Number.isInteger(limit) || limit <= 0) 
+        return next("Please specify the number of weakest topics", 400);
+            
+    if (!subject_ids && !chapter_ids) 
+        data = await getWeakestNTopics(req.user.student_id, limit);
+    else 
+        data = (await pool.query(`SELECT topics.topic_id, topic_name, chapter_name, subject_name, ROUND(tmi)::INT AS tmi FROM topic_mastery INNER JOIN topics ON topic_mastery.topic_id=topics.topic_id INNER JOIN chapters ON topic_mastery.chapter_id=chapters.chapter_id INNER JOIN subjects ON topic_mastery.subject_id=subjects.subject_id WHERE student_id=$1 AND ${subject_ids ? "subjects.subject_id" : "chapters.chapter_id"} = ANY ($3) ORDER BY tmi ASC LIMIT $2`, [req.user.student_id, limit, subject_ids ?? chapter_ids])).rows;
+
+    res.status(200).json({
+        status: "success",
+        data
+    });
+});
+
+export const getUserActivity = handleAsyncError(async (req, res, next) => {
+
+    // /users/activity?start_date=2026-04-26&end_date=2026-04-29
+
+    const start_date = req.query.start_date; 
+    const end_date = req.query.end_date; 
+
+    console.log(start_date, end_date);
+
+    if (!start_date || !end_date) 
+        return next(new AppError("Please provide Start of the Week, and End of the Week", 400));
+
+    const data = (await pool.query(`SELECT attempt_count, correct_count, activity_date::TEXT FROM activity WHERE student_id=$1 AND activity_date >= $2::DATE AND activity_date <= $3::DATE ORDER BY activity_date`, [req.user.student_id, start_date, end_date])).rows
 
     res.status(200).json({
         status: "success",
@@ -315,5 +350,5 @@ const captureSubjectMasterySnapshot = async (student_id) => {
 }
 
 const getWeakestNTopics = async (student_id, n) => {
-    return (await pool.query("SELECT topic_name, chapter_name, subject_name, ROUND(SUM(CASE WHEN attempted_mcqs.selected_option=mcq_bank.correct_option THEN 1 ELSE 0 END)*100 / (COUNT(*))) AS accuracy FROM attempted_mcqs INNER JOIN mcq_bank ON mcq_bank.mcq_id=attempted_mcqs.mcq_id INNER JOIN topics ON mcq_bank.topic_id=topics.topic_id INNER JOIN chapters ON mcq_bank.chapter_id=chapters.chapter_id INNER JOIN subjects ON mcq_bank.subject_id=subjects.subject_id WHERE attempted_mcqs.student_id=$1 GROUP BY mcq_bank.topic_id, topic_name, chapter_name, subject_name ORDER BY accuracy ASC LIMIT $2", [student_id, n])).rows;
+    return (await pool.query("SELECT subject_name, chapter_name, topic_name, ROUND(tmi)::INT AS tmi FROM topic_mastery INNER JOIN topics ON topic_mastery.topic_id=topics.topic_id INNER JOIN chapters ON topic_mastery.chapter_id=chapters.chapter_id INNER JOIN subjects ON topic_mastery.subject_id=subjects.subject_id WHERE student_id=$1 ORDER BY tmi ASC LIMIT $2", [student_id, n])).rows;
 }
