@@ -44,7 +44,6 @@ export const getMe = handleAsyncError(async (req, res, next) => {
 });
 
 export const getDashboardStats = handleAsyncError(async (req, res, next) => {
-
     let user = {
         name: req.user.name,
         email: req.user.email,
@@ -74,7 +73,6 @@ export const getDashboardStats = handleAsyncError(async (req, res, next) => {
         await pool.query("UPDATE students SET streak=$1 WHERE student_id=$2", [req.user.streak+1, req.user.student_id]);
         
     }
-
     await captureSubjectMasterySnapshot(req.user.student_id);
 
     const today_acitivity = (await pool.query(`SELECT attempt_count FROM activity WHERE student_id=$1 AND activity_date=CURRENT_DATE`, [req.user.student_id])).rows[0];
@@ -88,8 +86,9 @@ export const getDashboardStats = handleAsyncError(async (req, res, next) => {
     user.accuracy = !user.total_attempt ? 0 : Math.round((user.total_correct/user.total_attempt)*100);
 
     user.tests_attempted = (await pool.query("SELECT COALESCE(COUNT(DISTINCT test_id),0)::INT AS count FROM attempted_mcqs WHERE test_id IS NOT NULL AND student_id=$1", [req.user.student_id])).rows[0].count;
-    user.activity = (await pool.query(`SELECT attempt_count, correct_count, activity_date::TEXT FROM activity WHERE student_id=$1 AND activity_date >= $2::DATE ORDER BY activity_date`, [req.user.student_id, new Date(Date.now()-6*MILLISECONDS_IN_DAY)])).rows;
-    user.weak_topics = await getWeakestNTopics(req.user.student_id, 4);
+    user.activity = await fetchUserActivity(req.user.student_id, new Date(Date.now()-6*MILLISECONDS_IN_DAY), new Date());
+    user.weak_topics = await fetchWeakestNTopics(req.user.student_id, 4);
+    user.performance = await calculateUserPerformanceJump(req.user.student_id);
 
     res.status(200).json({
         status: "success",
@@ -266,7 +265,7 @@ export const getWeakestTopics = handleAsyncError(async (req, res, next) => {
         return next("Please specify the number of weakest topics", 400);
             
     if (!subject_ids && !chapter_ids) 
-        data = await getWeakestNTopics(req.user.student_id, limit);
+        data = await fetchWeakestNTopics(req.user.student_id, limit);
     else 
         data = (await pool.query(`SELECT topics.topic_id, topic_name, chapter_name, subject_name, ROUND(tmi)::INT AS tmi FROM topic_mastery INNER JOIN topics ON topic_mastery.topic_id=topics.topic_id INNER JOIN chapters ON topic_mastery.chapter_id=chapters.chapter_id INNER JOIN subjects ON topic_mastery.subject_id=subjects.subject_id WHERE student_id=$1 AND ${subject_ids ? "subjects.subject_id" : "chapters.chapter_id"} = ANY ($3) ORDER BY tmi ASC LIMIT $2`, [req.user.student_id, limit, subject_ids ?? chapter_ids])).rows;
 
@@ -283,12 +282,10 @@ export const getUserActivity = handleAsyncError(async (req, res, next) => {
     const start_date = req.query.start_date; 
     const end_date = req.query.end_date; 
 
-    console.log(start_date, end_date);
-
     if (!start_date || !end_date) 
         return next(new AppError("Please provide Start of the Week, and End of the Week", 400));
 
-    const data = (await pool.query(`SELECT attempt_count, correct_count, activity_date::TEXT FROM activity WHERE student_id=$1 AND activity_date >= $2::DATE AND activity_date <= $3::DATE ORDER BY activity_date`, [req.user.student_id, start_date, end_date])).rows
+    const data = await fetchUserActivity(req.user.student_id, start_date, end_date);
 
     res.status(200).json({
         status: "success",
@@ -330,16 +327,17 @@ const getUsersSubjectChapterTopicWisePerformance = async (student_id) => {
     });
 
     Object.entries(chapter_detail).forEach(([chap, info]) => {
+        const subject = formatColumnName(info.subject);
         chapters[chap] = Math.round(chapters[chap]);
 
-        if (!subjects[info.subject]) 
-            subjects[info.subject] = 0;        
+        if (!subjects[subject]) 
+            subjects[subject] = 0;        
 
-        subjects[info.subject] += info.cmi * info.weight;
+        subjects[subject] += info.cmi * info.weight;
     });
 
     Object.entries(subjects).forEach(([subject, sms]) => {
-        subjects[subject] = Math.round(sms);
+        subjects[formatColumnName(subject)] = Math.round(sms);
     });
 
     return [subjects, chapters, topics];
@@ -349,6 +347,14 @@ const captureSubjectMasterySnapshot = async (student_id) => {
     const res = await pool.query("INSERT INTO subject_mastery (student_id, subject_id, sms) SELECT $1 AS student_id, cms_table.subject_id, SUM(cms_table.cms * chapters.chapter_weight) / SUM(chapters.chapter_weight) AS sms FROM (SELECT topic_mastery.subject_id, topic_mastery.chapter_id, SUM(tmi * topic_weight) / SUM(topic_weight) AS cms FROM topic_mastery INNER JOIN topics ON topics.topic_id = topic_mastery.topic_id WHERE student_id=$1 GROUP BY topic_mastery.subject_id, topic_mastery.chapter_id) AS cms_table INNER JOIN chapters ON chapters.chapter_id=cms_table.chapter_id WHERE NOT EXISTS (SELECT 1 FROM subject_mastery WHERE student_id=$1 AND snapshot_date=CURRENT_DATE) GROUP BY cms_table.subject_id", [student_id]);
 }
 
-const getWeakestNTopics = async (student_id, n) => {
+const fetchWeakestNTopics = async (student_id, n) => {
     return (await pool.query("SELECT subject_name, chapter_name, topic_name, ROUND(tmi)::INT AS tmi FROM topic_mastery INNER JOIN topics ON topic_mastery.topic_id=topics.topic_id INNER JOIN chapters ON topic_mastery.chapter_id=chapters.chapter_id INNER JOIN subjects ON topic_mastery.subject_id=subjects.subject_id WHERE student_id=$1 ORDER BY tmi ASC LIMIT $2", [student_id, n])).rows;
+}
+
+const calculateUserPerformanceJump = async (student_id) => {
+    return (await pool.query("SELECT subject_name, ROUND(subject_mastery.sms - COALESCE((SELECT sms FROM subject_mastery inr_sub_mast WHERE student_id=$1 AND inr_sub_mast.subject_id=subject_mastery.subject_id AND snapshot_date <= CURRENT_DATE - INTERVAL '30 days' ORDER BY snapshot_date DESC LIMIT 1), 0))::INT AS prev_month_increase, ROUND(subject_mastery.sms - COALESCE((SELECT sms FROM subject_mastery inr_sub_mast WHERE student_id=$1 AND inr_sub_mast.subject_id=subject_mastery.subject_id AND snapshot_date <= CURRENT_DATE - INTERVAL '7 days' ORDER BY snapshot_date DESC LIMIT 1), 0))::INT AS prev_week_increase, ROUND(subject_mastery.sms - COALESCE((SELECT sms FROM subject_mastery inr_sub_mast WHERE student_id=$1 AND inr_sub_mast.subject_id=subject_mastery.subject_id AND snapshot_date <= CURRENT_DATE - INTERVAL '1 day' ORDER BY snapshot_date DESC LIMIT 1), 0))::INT AS prev_day_increase FROM subject_mastery INNER JOIN subjects ON subjects.subject_id=subject_mastery.subject_id WHERE student_id=$1 AND subject_mastery.snapshot_date=CURRENT_DATE", [student_id])).rows;
+}
+
+const fetchUserActivity = async (student_id, start_date, end_date) => {
+    return (await pool.query(`SELECT attempt_count, correct_count, activity_date::TEXT FROM activity WHERE student_id=$1 AND activity_date >= $2::DATE AND activity_date <= $3::DATE ORDER BY activity_date`, [student_id, start_date, end_date])).rows;
 }
