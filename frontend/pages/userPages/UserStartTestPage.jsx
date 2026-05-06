@@ -369,6 +369,7 @@ const UserStartTestPage = () => {
           blind_mode: blindMode,
           test_id: testID
         }}
+        isExamHappening={true}
       />
     }
     </>

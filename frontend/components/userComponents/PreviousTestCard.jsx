@@ -3,6 +3,7 @@ import TestSyllabusPopUp from './TestSyllabusPopUp';
 import TestReviewCard from './TestReviewCard'
 
 const PreviousTestCard = ({previousTest}) => {
+    // console.log(previousTest);
     const testDate = new Date(previousTest?.test_date).toLocaleDateString("en-GB", {
         day: "2-digit",
         month: "short",
@@ -17,7 +18,7 @@ const PreviousTestCard = ({previousTest}) => {
     const sum = previousTest?.correct + previousTest?.wrong;
 
     // console.log(previousTest);
-    const [attempted, setAttempted] = useState(previousTest?.correct !== 0 && previousTest?.mistakes !== 0);
+    const [attempted, setAttempted] = useState(previousTest?.correct !== 0 || previousTest?.mistakes !== 0);
 
     const API_URL = import.meta.env.VITE_API_URL;
 
