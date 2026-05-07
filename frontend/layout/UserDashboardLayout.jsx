@@ -8,6 +8,7 @@ const UserDashboardLayout = () => {
     const navigate = useNavigate();
 
     const [studentAnalytics, setStudentAnalytics] = useState(null);
+    const [leaderboard, setLeaderboard] = useState([]);
 
     const API_URL = import.meta.env.VITE_API_URL;
     
@@ -46,16 +47,16 @@ const UserDashboardLayout = () => {
 
     useEffect(() => {
         const fetchLeaderBoard = async() => {
-            // const res = await fetch(`${API_URL}/users/predicted-score`,{
-            //     method: 'GET',
-            //     credentials: 'include'
-            // });
+            const res = await fetch(`${API_URL}/users/leaderboard`,{
+                method: 'GET',
+                credentials: 'include'
+            });
         
-            // const data = await res.json();
+            const data = await res.json();
         
-            // if(data.status === 'success'){
-            //     setPredictedScore(data.data?.predicted_score);
-            // }
+            if(data.status === 'success'){
+                setLeaderboard(data.data);
+            }
         }
     
         fetchLeaderBoard();
@@ -65,7 +66,7 @@ const UserDashboardLayout = () => {
         <section className="fade-in min-h-screen bg-[#181A18] text-white font-[Inter,sans-serif] antialiased">
             <div className="flex min-h-screen flex-col lg:flex-row">
                 <div className="order-1 flex min-h-0 min-w-0 flex-1 flex-col pb-[5.5rem] lg:order-2 lg:pb-0">
-                    <Outlet context={{studentAnalytics, setStudentAnalytics}}/>
+                    <Outlet context={{studentAnalytics, setStudentAnalytics, leaderboard}}/>
                 </div>
                 <UserNavbar />
             </div>

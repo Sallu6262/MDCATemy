@@ -1,6 +1,9 @@
 import { Link, useOutletContext } from 'react-router-dom';
 import '../../src/animation.css';
-import React from 'react'
+import React, { use, useEffect, useState } from 'react'
+import { subjectToColor } from '../../utils/HelperObjects';
+
+//weekly activity remaining + all other things
 
 const subjectCircleLink = ({subject, color, accuracy, total}) => {
     return (
@@ -30,16 +33,138 @@ const subjectCircleLink = ({subject, color, accuracy, total}) => {
 const UserAnalyticsPage = () => {
     const {studentAnalytics : sa} = useOutletContext();
 
-    const subjectToColor = {
-        'Biology' : '#10B981',
-        'Chemistry' : '#A78BFA',
-        'Physics' : '#38BDF8',
-        'English' : '#F59E0B',
-        'Logical Reasoning' : '#F472B6',
+    const isSameCalendarDay = (a, b) => {
+        const d1 = new Date(a)
+        const d2 = new Date(b)
+        return (
+            d1.getFullYear() === d2.getFullYear() &&
+            d1.getMonth() === d2.getMonth() &&
+            d1.getDate() === d2.getDate()
+        )
     }
 
-    console.log(sa);
+    const attemptCountToTier = (count) => {
+        const n = Number(count) || 0
+        if (n === 0) return 0
+        if (n < 10) return 1
+        if (n < 30) return 2
+        if (n < 60) return 3
+        return 4
+    }
 
+    const attemptCountToColor = {
+        0: {
+            card: 'border-2 bg-[#181A18] border-[#2E302E]',
+            day: 'text-[13px] font-poppins font-black uppercase tracking-[0.08em] text-[#A8ACA8]/55',
+            date: 'text-[13px] font-inter text-[#A8ACA8]/55',
+            count: 'font-poppins font-black text-[16px] leading-none mt-1 text-[#2E302E]',
+            label: 'text-[10px] font-inter font-bold uppercase tracking-wider text-[#A8ACA8]/40',
+        },
+        1: {
+            card: 'border-2 bg-[#FFC600]/15 border-[#FFC600]/25',
+            day: 'text-[13px] font-poppins font-black uppercase tracking-[0.08em] text-[#A8ACA8]',
+            date: 'text-[13px] font-inter text-[#A8ACA8]',
+            count: 'font-poppins font-black text-[16px] leading-none mt-1 text-white',
+            label: 'text-[10px] font-inter font-bold uppercase tracking-wider text-[#A8ACA8]',
+        },
+        2: {
+            card: 'border-2 bg-[#FFC600]/35 border-[#FFC600]/45',
+            day: 'text-[13px] font-poppins font-black uppercase tracking-[0.08em] text-white/75',
+            date: 'text-[13px] font-inter text-white/75',
+            count: 'font-poppins font-black text-[16px] leading-none mt-1 text-white',
+            label: 'text-[10px] font-inter font-bold uppercase tracking-wider text-white/60',
+        },
+        3: {
+            card: 'border-2 bg-[#FFC600]/70 border-[#FFC600]/80',
+            day: 'text-[13px] font-poppins font-black uppercase tracking-[0.08em] text-[#181A18]/70',
+            date: 'text-[13px] font-inter text-[#181A18]/70',
+            count: 'font-poppins font-black text-[16px] leading-none mt-1 text-[#181A18]',
+            label: 'text-[10px] font-inter font-bold uppercase tracking-wider text-[#181A18]/65',
+        },
+        4: {
+            card: 'border-2 bg-[#FFC600] border-[#FFC600]',
+            day: 'text-[13px] font-poppins font-black uppercase tracking-[0.08em] text-[#181A18]/75',
+            date: 'text-[13px] font-inter text-[#181A18]/75',
+            count: 'font-poppins font-black text-[16px] leading-none mt-1 text-[#181A18]',
+            label: 'text-[10px] font-inter font-bold uppercase tracking-wider text-[#181A18]/65',
+        },
+    }
+
+    const [weekActivity, setWeekActivity] = useState([]);
+    const [performanceActivity, setPerformanceActivity] = useState([]);
+    const [totalWeekMcqs, setTotalWeekMcqs] = useState(0);
+    const [frequency, setFrequency] = useState(0);
+
+    const frequencyToWord = {
+        0 : 'Daily',
+        1 : 'Weekly',
+        2 : 'Monthly'
+    }
+    
+    const numberToDay = {0:'SUN',1:'MON',2:'TUE',3:'WED',4:'THU',5:'FRI',6:'SAT'};
+
+    const API_URL = import.meta.env.VITE_API_URL;
+
+    const formatActivityDate = (index) => {
+        return new Date(sa?.activity[index]?.activity_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+    }
+
+    const formatDate = (date) => {
+        const d = new Date(date);
+        return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+    }
+
+    const fillMissingDates = (data) => {
+        if(!data) return;
+
+        let dates = [];
+        let date = new Date(data[data.length - 1].activity_date);
+        for(let i=0 ; i<7 ; i++){
+            dates.push(formatDate(date));
+            date.setDate(date.getDate()-1);
+        }
+
+        dates.forEach(date => {
+            if(!data.some(activity => activity.activity_date === date)){
+                data.push({attempt_count: 0, correct_count: 0, activity_date: date});
+            }
+        });
+
+        // console.log(data);
+        data.sort((a, b) => new Date(a.activity_date) - new Date(b.activity_date));
+        return data;
+    }
+
+    const updateActivity = async (isNext, isActivity) => {
+        let startDate = isActivity ? new Date(weekActivity[0]?.activity_date) : new Date(performanceActivity[0]?.activity_date);
+        startDate.setDate(startDate.getDate() + (isNext ? 1 : -1));
+        
+        let endDate = isActivity ? new Date(weekActivity[weekActivity?.length-1]?.activity_date) : new Date(performanceActivity[performanceActivity?.length-1]?.activity_date);;
+        endDate.setDate(endDate.getDate() + (isNext ? 1 : -1));
+        
+        startDate = `${startDate.getFullYear()}-${String(startDate.getMonth()+1).padStart(2,'0')}-${String(startDate.getDate()).padStart(2,'0')}`;
+        endDate = `${endDate.getFullYear()}-${String(endDate.getMonth()+1).padStart(2,'0')}-${String(endDate.getDate()).padStart(2,'0')}`;
+        
+        const res = await fetch(`${API_URL}/users/activity?start_date=${startDate}&end_date=${endDate}`, {credentials: 'include'});
+        
+        const data = await res.json();
+        
+        if(data.status === 'success'){
+            if(isActivity){ 
+                setWeekActivity(fillMissingDates(data.data));
+                setTotalWeekMcqs(data.data.reduce((acc, val) => acc + val.attempt_count, 0));
+            }
+            else setPerformanceActivity(fillMissingDates(data.data));
+        }
+    }
+
+    useEffect(() => {
+        setWeekActivity(fillMissingDates(sa?.activity));
+        setPerformanceActivity(fillMissingDates(sa?.activity));
+        setTotalWeekMcqs(sa?.activity.reduce((acc, val) => acc + val.attempt_count, 0));
+    }, [sa]);
+
+    console.log(sa);
 
     return (
         <>
@@ -163,7 +288,7 @@ const UserAnalyticsPage = () => {
                             </div>
                             <div className="text-right">
                             <p className="text-[12px] font-poppins font-black uppercase tracking-[0.1em] text-[#A8ACA8]">Target</p>
-                            <p className="font-poppins font-black text-white text-lg leading-none">175</p>
+                            <p className="font-poppins font-black text-white text-lg leading-none">{sa?.target_score}</p>
                             </div>
                         </div>
 
@@ -184,7 +309,7 @@ const UserAnalyticsPage = () => {
 
                                 <path d="M 32 140 A 108 108 0 0 1 248 140" fill="none" stroke="url(#gauge-grad)"
                                         strokeWidth="18" strokeLinecap="round"
-                                        strokeDasharray="339.292" strokeDashoffset={339.292 * (1 - sa?.predicted_score ?? 0 / 180)}/>
+                                        strokeDasharray="339.292" strokeDashoffset={339.292 * (1 - (sa?.predicted_score ?? 0) / 180)}/>
 
                                 {/* <circle cx="233.53" cy="86" r="6" fill="#FFC600" stroke="#222422" strokeWidth="3"/>
 
@@ -197,10 +322,10 @@ const UserAnalyticsPage = () => {
 
                             <div className="absolute inset-x-0 top-[44%] -translate-y-1/2 flex flex-col items-center pointer-events-none">
                             <div className="flex items-baseline gap-1.5">
-                                <span className="font-poppins font-black text-4xl text-[#FFC600] leading-none">{sa?.predicted_score ?? 0}</span>
+                                <span className="mt-6 ml-2 font-poppins font-black text-4xl text-[#FFC600] leading-none">{(sa?.predicted_score ?? 0)}</span>
                                 <span className="font-inter text-[#A8ACA8] text-sm">/ 180</span>
                             </div>
-                            <span className="text-[13px] font-poppins font-black mt-1 text-amber-400">{parseInt((sa?.predicted_score ?? 0 / 180) * 100)}%</span>
+                            <span className="text-[13px] font-poppins font-black mt-1 text-amber-400">{parseInt(((sa?.predicted_score ?? 0) / 180) * 100)}%</span>
                             </div>
                         </div>
 
@@ -244,18 +369,16 @@ const UserAnalyticsPage = () => {
                         <h2 className="font-poppins font-black text-white text-[15px] uppercase tracking-[0.04em]">Subjects Preparation</h2>
 
                         <div className="flex items-center gap-1 bg-[#181A18] border-2 border-[#2E302E] rounded-xl p-0.5" data-trend-filter>
-                            <button data-period="daily"
-                                    className="px-2.5 py-1 rounded-lg text-[12px] font-poppins font-black uppercase tracking-[0.08em] transition-all text-[#A8ACA8] hover:text-white">
-                            Daily
-                            </button>
-                            <button data-period="weekly"
-                                    className="px-2.5 py-1 rounded-lg text-[12px] font-poppins font-black uppercase tracking-[0.08em] transition-all bg-[#FFC600] text-[#181A18] shadow-[1.5px_1.5px_0px_rgba(0,0,0,0.4)]">
-                            Weekly
-                            </button>
-                            <button data-period="monthly"
-                                    className="px-2.5 py-1 rounded-lg text-[12px] font-poppins font-black uppercase tracking-[0.08em] transition-all text-[#A8ACA8] hover:text-white">
-                            Monthly
-                            </button>
+                            {
+                                [0,1,2].map(freq => {
+                                    return (
+                                        <button key={freq} onClick={() => setFrequency(freq)}
+                                                className={`cursor-pointer px-2.5 py-1 rounded-lg text-[12px] font-poppins font-black uppercase tracking-[0.08em] transition-all ${frequency === freq ? 'bg-[#FFC600] text-[#181A18] shadow-[1.5px_1.5px_0px_rgba(0,0,0,0.4)]' : 'text-[#A8ACA8] hover:text-white'}`}>
+                                        {frequencyToWord[freq]}
+                                        </button>
+                                    )
+                                })
+                            }
                         </div>
                         </div>
                         <p className="text-[#A8ACA8] font-inter text-[12px] mb-4">
@@ -265,110 +388,41 @@ const UserAnalyticsPage = () => {
                         <div className="bg-[#222422] border-2 border-[#2E302E] rounded-2xl p-4 shadow-[4px_4px_0px_rgba(255,198,0,0.1)]">
                         <div className="flex flex-wrap justify-center gap-y-4 gap-x-3 md:gap-x-4">
 
-                            <a href="#" className="group block w-[30%] md:w-[17%]">
-                            <div className="relative flex flex-col items-center gap-1.5 py-1 cursor-pointer transition-transform duration-200 hover:-translate-y-1">
-                                <div className="relative rounded-full transition-all duration-200 group-hover:drop-shadow-[0_0_14px_rgba(255,198,0,0.45)]">
-                                <svg width="74" height="74" className="-rotate-90">
-                                    <circle cx="37" cy="37" r="34" stroke="#2E302E" strokeWidth="6" fill="none"/>
-                                    <circle cx="37" cy="37" r="34" stroke="#10B981" strokeWidth="6" strokeLinecap="round" fill="none"
-                                            strokeDasharray="213.628" strokeDashoffset="59.82"/>
-                                </svg>
-                                <div className="absolute inset-0 flex items-center justify-center">
-                                    <span className="font-poppins font-black" style={{ color: "#10B981", fontSize: "13px" }}>72%</span>
-                                </div>
-                                <div className="absolute -bottom-0.5 -right-0.5 w-5 h-5 rounded-full bg-[#FFC600] border-2 border-[#181A18] flex items-center justify-center shadow-[1.5px_1.5px_0px_rgba(0,0,0,0.5)] pulse-chevron" style={{ animationDelay: "0s" }}>
-                                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#181A18" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
-                                </div>
-                                </div>
-                                <p className="font-poppins font-black text-[13px] text-white text-center leading-tight group-hover:text-[#FFC600] transition-colors">Biology</p>
-                                <span className="font-inter text-[13px] text-[#A8ACA8]">{sa?.subjects.biology?.attempt ?? 0} MCQs</span>
-                                <span className="inline-flex items-center gap-0.5 text-[13px] font-poppins font-black px-1.5 py-0.5 rounded-md border text-emerald-400 bg-emerald-400/10 border-emerald-400/30">+7%</span>
-                            </div>
-                            </a>
+                            {
+                                sa?.performance.map((perf, i) => {
+                                    let freqToAccess = perf.prev_day_increase;
+                                    if(frequency === 1){
+                                        freqToAccess = perf.prev_week_increase;
+                                    } else if(frequency === 2){
+                                        freqToAccess = perf.prev_month_increase;
+                                    }
 
-                            <a href="#" className="group block w-[30%] md:w-[17%]">
-                            <div className="relative flex flex-col items-center gap-1.5 py-1 cursor-pointer transition-transform duration-200 hover:-translate-y-1">
-                                <div className="relative rounded-full transition-all duration-200 group-hover:drop-shadow-[0_0_14px_rgba(255,198,0,0.45)]">
-                                <svg width="74" height="74" className="-rotate-90">
-                                    <circle cx="37" cy="37" r="34" stroke="#2E302E" strokeWidth="6" fill="none"/>
-                                    <circle cx="37" cy="37" r="34" stroke="#38BDF8" strokeWidth="6" strokeLinecap="round" fill="none"
-                                            strokeDasharray="213.628" strokeDashoffset="89.72"/>
-                                </svg>
-                                <div className="absolute inset-0 flex items-center justify-center">
-                                    <span className="font-poppins font-black" style={{ color: "#38BDF8", fontSize: "13px" }}>58%</span>
-                                </div>
-                                <div className="absolute -bottom-0.5 -right-0.5 w-5 h-5 rounded-full bg-[#FFC600] border-2 border-[#181A18] flex items-center justify-center shadow-[1.5px_1.5px_0px_rgba(0,0,0,0.5)] pulse-chevron" style={{ animationDelay: "0.15s" }}>
-                                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#181A18" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
-                                </div>
-                                </div>
-                                <p className="font-poppins font-black text-[13px] text-white text-center leading-tight group-hover:text-[#FFC600] transition-colors">Chemistry</p>
-                                <span className="font-inter text-[13px] text-[#A8ACA8]">{sa?.subjects.biology?.attempt ?? 0} MCQs</span>
-                                <span className="inline-flex items-center gap-0.5 text-[13px] font-poppins font-black px-1.5 py-0.5 rounded-md border text-red-400 bg-red-400/10 border-red-400/30">-1%</span>
-                            </div>
-                            </a>
+                                    const percentage = sa?.subjects[perf.subject_name.replace(' ', '_').toLowerCase()];
 
-                            <a href="#" className="group block w-[30%] md:w-[17%]">
-                            <div className="relative flex flex-col items-center gap-1.5 py-1 cursor-pointer transition-transform duration-200 hover:-translate-y-1">
-                                <div className="relative rounded-full transition-all duration-200 group-hover:drop-shadow-[0_0_14px_rgba(255,198,0,0.45)]">
-                                <svg width="74" height="74" className="-rotate-90">
-                                    <circle cx="37" cy="37" r="34" stroke="#2E302E" strokeWidth="6" fill="none"/>
-                                    <circle cx="37" cy="37" r="34" stroke="#A78BFA" strokeWidth="6" strokeLinecap="round" fill="none"
-                                            strokeDasharray="213.628" strokeDashoffset="83.31"/>
-                                </svg>
-                                <div className="absolute inset-0 flex items-center justify-center">
-                                    <span className="font-poppins font-black" style={{ color: "#A78BFA", fontSize: "13px" }}>61%</span>
-                                </div>
-                                <div className="absolute -bottom-0.5 -right-0.5 w-5 h-5 rounded-full bg-[#FFC600] border-2 border-[#181A18] flex items-center justify-center shadow-[1.5px_1.5px_0px_rgba(0,0,0,0.5)] pulse-chevron" style={{ animationDelay: "0.3s" }}>
-                                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#181A18" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
-                                </div>
-                                </div>
-                                <p className="font-poppins font-black text-[13px] text-white text-center leading-tight group-hover:text-[#FFC600] transition-colors">Physics</p>
-                                <span className="font-inter text-[13px] text-[#A8ACA8]">280 MCQs</span>
-                                <span className="inline-flex items-center gap-0.5 text-[13px] font-poppins font-black px-1.5 py-0.5 rounded-md border text-emerald-400 bg-emerald-400/10 border-emerald-400/30">+6%</span>
-                            </div>
-                            </a>
-
-                            <a href="#" className="group block w-[30%] md:w-[17%]">
-                            <div className="relative flex flex-col items-center gap-1.5 py-1 cursor-pointer transition-transform duration-200 hover:-translate-y-1">
-                                <div className="relative rounded-full transition-all duration-200 group-hover:drop-shadow-[0_0_14px_rgba(255,198,0,0.45)]">
-                                <svg width="74" height="74" className="-rotate-90">
-                                    <circle cx="37" cy="37" r="34" stroke="#2E302E" strokeWidth="6" fill="none"/>
-                                    <circle cx="37" cy="37" r="34" stroke="#2DD4BF" strokeWidth="6" strokeLinecap="round" fill="none"
-                                            strokeDasharray="213.628" strokeDashoffset="34.18"/>
-                                </svg>
-                                <div className="absolute inset-0 flex items-center justify-center">
-                                    <span className="font-poppins font-black" style={{ color: "#2DD4BF", fontSize: "13px" }}>84%</span>
-                                </div>
-                                <div className="absolute -bottom-0.5 -right-0.5 w-5 h-5 rounded-full bg-[#FFC600] border-2 border-[#181A18] flex items-center justify-center shadow-[1.5px_1.5px_0px_rgba(0,0,0,0.5)] pulse-chevron" style={{ animationDelay: "0.45s" }}>
-                                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#181A18" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
-                                </div>
-                                </div>
-                                <p className="font-poppins font-black text-[13px] text-white text-center leading-tight group-hover:text-[#FFC600] transition-colors">English</p>
-                                <span className="font-inter text-[13px] text-[#A8ACA8]">120 MCQs</span>
-                                <span className="inline-flex items-center gap-0.5 text-[13px] font-poppins font-black px-1.5 py-0.5 rounded-md border text-emerald-400 bg-emerald-400/10 border-emerald-400/30">+3%</span>
-                            </div>
-                            </a>
-
-                            <a href="#" className="group block w-[30%] md:w-[17%]">
-                            <div className="relative flex flex-col items-center gap-1.5 py-1 cursor-pointer transition-transform duration-200 hover:-translate-y-1">
-                                <div className="relative rounded-full transition-all duration-200 group-hover:drop-shadow-[0_0_14px_rgba(255,198,0,0.45)]">
-                                <svg width="74" height="74" className="-rotate-90">
-                                    <circle cx="37" cy="37" r="34" stroke="#2E302E" strokeWidth="6" fill="none"/>
-                                    <circle cx="37" cy="37" r="34" stroke="#FB923C" strokeWidth="6" strokeLinecap="round" fill="none"
-                                            strokeDasharray="213.628" strokeDashoffset="113.22"/>
-                                </svg>
-                                <div className="absolute inset-0 flex items-center justify-center">
-                                    <span className="font-poppins font-black" style={{ color: "#FB923C", fontSize: "13px" }}>47%</span>
-                                </div>
-                                <div className="absolute -bottom-0.5 -right-0.5 w-5 h-5 rounded-full bg-[#FFC600] border-2 border-[#181A18] flex items-center justify-center shadow-[1.5px_1.5px_0px_rgba(0,0,0,0.5)] pulse-chevron" style={{ animationDelay: "0.6s" }}>
-                                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#181A18" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
-                                </div>
-                                </div>
-                                <p className="font-poppins font-black text-[13px] text-white text-center leading-tight group-hover:text-[#FFC600] transition-colors">Logical Reasoning</p>
-                                <span className="font-inter text-[13px] text-[#A8ACA8]">77 MCQs</span>
-                                <span className="inline-flex items-center gap-0.5 text-[13px] font-poppins font-black px-1.5 py-0.5 rounded-md border text-red-400 bg-red-400/10 border-red-400/30">-5%</span>
-                            </div>
-                            </a>
+                                    return (
+                                        <Link key={i} to={`/analytics/${perf.subject_name.toLowerCase()}`} className="group block w-[30%] md:w-[17%]">
+                                            <div className="relative flex flex-col items-center gap-1.5 py-1 cursor-pointer transition-transform duration-200 hover:-translate-y-1">
+                                                <div className="relative rounded-full transition-all duration-200 group-hover:drop-shadow-[0_0_14px_rgba(255,198,0,0.45)]">
+                                                <svg width="74" height="74" className="-rotate-90">
+                                                    <circle cx="37" cy="37" r="34" stroke="#2E302E" strokeWidth="6" fill="none"/>
+                                                    <circle cx="37" cy="37" r="34" stroke={subjectToColor[perf.subject_name]} strokeWidth="6" strokeLinecap="round" fill="none"
+                                                            strokeDasharray="213.628" strokeDashoffset={213.628 - percentage}/>
+                                                </svg>
+                                                <div className="absolute inset-0 flex items-center justify-center">
+                                                    <span className="font-poppins font-black" style={{ color: `${subjectToColor[perf.subject_name]}`, fontSize: "13px" }}>{percentage}%</span>
+                                                </div>
+                                                <div className="absolute -bottom-0.5 -right-0.5 w-5 h-5 rounded-full bg-[#FFC600] border-2 border-[#181A18] flex items-center justify-center shadow-[1.5px_1.5px_0px_rgba(0,0,0,0.5)] pulse-chevron" style={{ animationDelay: "0s" }}>
+                                                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#181A18" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+                                                </div>
+                                                </div>
+                                                <p className="font-poppins font-black text-[13px] text-white text-center leading-tight group-hover:text-[#FFC600] transition-colors">{perf.subject_name}</p>
+                                                <span className="font-inter text-[13px] text-[#A8ACA8]">{sa?.subjects.biology?.attempt ?? 0} MCQs</span>
+                                                <span className="inline-flex items-center gap-0.5 text-[13px] font-poppins font-black px-1.5 py-0.5 rounded-md border text-emerald-400 bg-emerald-400/10 border-emerald-400/30">+{freqToAccess}%</span>
+                                            </div>
+                                        </Link>
+                                    )
+                                })
+                            }
 
                         </div>
                         </div>
@@ -378,17 +432,17 @@ const UserAnalyticsPage = () => {
                         <div className="flex items-center justify-between mb-4 gap-3">
                         <div className="flex items-baseline gap-3 min-w-0">
                             <h2 className="font-poppins font-black text-white text-[14px] uppercase tracking-[0.08em] flex-shrink-0">Recent Activity</h2>
-                            <span className="text-[#A8ACA8] font-inter text-[13px] tracking-wide truncate">Apr 25 – May 1</span>
+                            <span className="text-[#A8ACA8] font-inter text-[13px] tracking-wide truncate">{formatActivityDate(0)} – {formatActivityDate(6)}</span>
                         </div>
                         <div className="flex items-center gap-1.5 flex-shrink-0">
-                            <button aria-label="Previous week"
-                                    className="w-8 h-8 rounded-lg border-2 flex items-center justify-center transition-all bg-[#222422] border-[#2E302E] text-white hover:border-[#FFC600] hover:text-[#FFC600] hover:shadow-[2px_2px_0px_rgba(255,198,0,0.25)] cursor-pointer">
+                            <button onClick={() => updateActivity(false, true)} aria-label="Previous week"
+                                    className={`w-8 h-8 rounded-lg border-2 flex items-center justify-center  ${weekActivity?.length === 7 || true? 'transition-all bg-[#222422] border-[#2E302E] text-white hover:border-[#FFC600] hover:text-[#FFC600] hover:shadow-[2px_2px_0px_rgba(255,198,0,0.25)] cursor-pointer' : 'bg-[#181A18]/40 border-[#2E302E]/50 text-[#2E302E] cursor-not-allowed opacity-50'}`}>
                             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round">
                                 <polyline points="15 18 9 12 15 6"/>
                             </svg>
                             </button>
-                            <button aria-label="Next week" disabled
-                                    className="w-8 h-8 rounded-lg border-2 flex items-center justify-center bg-[#181A18]/40 border-[#2E302E]/50 text-[#2E302E] cursor-not-allowed opacity-50">
+                            <button onClick={() => updateActivity(true, true)} aria-label="Next week"
+                                    className={`w-8 h-8 rounded-lg border-2 flex items-center justify-center ${weekActivity?.length === 7 || true? 'transition-all bg-[#222422] border-[#2E302E] text-white hover:border-[#FFC600] hover:text-[#FFC600] hover:shadow-[2px_2px_0px_rgba(255,198,0,0.25)] cursor-pointer' : 'bg-[#181A18]/40 border-[#2E302E]/50 text-[#2E302E] cursor-not-allowed opacity-50'}`}>
                             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round">
                                 <polyline points="9 18 15 12 9 6"/>
                             </svg>
@@ -403,14 +457,14 @@ const UserAnalyticsPage = () => {
                             <div>
                                 <p className="text-[13px] font-poppins font-black uppercase tracking-[0.14em] text-[#A8ACA8]">Total</p>
                                 <p className="font-poppins font-black text-white text-[18px] leading-none mt-0.5">
-                                190 <span className="text-[#A8ACA8] text-[13px] font-inter font-normal">MCQs</span>
+                                {totalWeekMcqs} <span className="text-[#A8ACA8] text-[13px] font-inter font-normal">MCQs</span>
                                 </p>
                             </div>
                             <div className="w-px h-8 bg-[#2E302E]"></div>
                             <div>
                                 <p className="text-[13px] font-poppins font-black uppercase tracking-[0.14em] text-[#A8ACA8]">Active</p>
                                 <p className="font-poppins font-black text-white text-[18px] leading-none mt-0.5">
-                                6<span className="text-[#A8ACA8] text-[13px] font-inter font-normal">/7 days</span>
+                                {weekActivity?.reduce((acc, val) => val.attempt_count ? acc + 1 : acc, 0)}<span className="text-[#A8ACA8] text-[13px] font-inter font-normal">/7 days</span>
                                 </p>
                             </div>
                             </div>
@@ -424,55 +478,29 @@ const UserAnalyticsPage = () => {
 
                         <div className="grid grid-cols-7 gap-1.5">
 
-                            <div className="relative rounded-xl py-2.5 px-1 flex flex-col items-center gap-0.5 border-2 bg-[#181A18] border-[#2E302E]">
-                            <span className="text-[13px] font-poppins font-black uppercase tracking-[0.08em] text-[#A8ACA8]/55">Sat</span>
-                            <span className="text-[13px] font-inter text-[#A8ACA8]/55">25</span>
-                            <span className="font-poppins font-black text-[16px] leading-none mt-1 text-[#2E302E]">0</span>
-                            <span className="text-[10px] font-inter font-bold uppercase tracking-wider text-[#A8ACA8]/40">MCQs</span>
-                            </div>
-
-                            <div className="relative rounded-xl py-2.5 px-1 flex flex-col items-center gap-0.5 border-2 bg-[#FFC600]/35 border-[#FFC600]/45">
-                            <span className="text-[13px] font-poppins font-black uppercase tracking-[0.08em] text-white/75">Sun</span>
-                            <span className="text-[13px] font-inter text-white/75">26</span>
-                            <span className="font-poppins font-black text-[16px] leading-none mt-1 text-white">12</span>
-                            <span className="text-[10px] font-inter font-bold uppercase tracking-wider text-white/60">MCQs</span>
-                            </div>
-
-                            <div className="relative rounded-xl py-2.5 px-1 flex flex-col items-center gap-0.5 border-2 bg-[#FFC600]/70 border-[#FFC600]/80">
-                            <span className="text-[13px] font-poppins font-black uppercase tracking-[0.08em] text-[#181A18]/70">Mon</span>
-                            <span className="text-[13px] font-inter text-[#181A18]/70">27</span>
-                            <span className="font-poppins font-black text-[16px] leading-none mt-1 text-[#181A18]">35</span>
-                            <span className="text-[10px] font-inter font-bold uppercase tracking-wider text-[#181A18]/65">MCQs</span>
-                            </div>
-
-                            <div className="relative rounded-xl py-2.5 px-1 flex flex-col items-center gap-0.5 border-2 bg-[#FFC600] border-[#FFC600]">
-                            <span className="text-[13px] font-poppins font-black uppercase tracking-[0.08em] text-[#181A18]/75">Tue</span>
-                            <span className="text-[13px] font-inter text-[#181A18]/75">28</span>
-                            <span className="font-poppins font-black text-[16px] leading-none mt-1 text-[#181A18]">67</span>
-                            <span className="text-[10px] font-inter font-bold uppercase tracking-wider text-[#181A18]/65">MCQs</span>
-                            </div>
-
-                            <div className="relative rounded-xl py-2.5 px-1 flex flex-col items-center gap-0.5 border-2 bg-[#FFC600]/15 border-[#FFC600]/25">
-                            <span className="text-[13px] font-poppins font-black uppercase tracking-[0.08em] text-[#A8ACA8]">Wed</span>
-                            <span className="text-[13px] font-inter text-[#A8ACA8]">29</span>
-                            <span className="font-poppins font-black text-[16px] leading-none mt-1 text-white">8</span>
-                            <span className="text-[10px] font-inter font-bold uppercase tracking-wider text-[#A8ACA8]">MCQs</span>
-                            </div>
-
-                            <div className="relative rounded-xl py-2.5 px-1 flex flex-col items-center gap-0.5 border-2 bg-[#FFC600]/70 border-[#FFC600]/80">
-                            <span className="text-[13px] font-poppins font-black uppercase tracking-[0.08em] text-[#181A18]/70">Thu</span>
-                            <span className="text-[13px] font-inter text-[#181A18]/70">30</span>
-                            <span className="font-poppins font-black text-[16px] leading-none mt-1 text-[#181A18]">45</span>
-                            <span className="text-[10px] font-inter font-bold uppercase tracking-wider text-[#181A18]/65">MCQs</span>
-                            </div>
-
-                            <div className="relative rounded-xl py-2.5 px-1 flex flex-col items-center gap-0.5 border-2 bg-[#FFC600]/35 border-[#FFC600] ring-2 ring-[#FFC600]/30">
-                            <span className="absolute -top-1.5 left-1/2 -translate-x-1/2 px-1.5 py-px rounded-full bg-[#FFC600] text-[#181A18] text-[7px] font-poppins font-black uppercase tracking-wider border border-[#181A18]">Today</span>
-                            <span className="text-[13px] font-poppins font-black uppercase tracking-[0.08em] text-white/75">Fri</span>
-                            <span className="text-[13px] font-inter text-white/75">1</span>
-                            <span className="font-poppins font-black text-[16px] leading-none mt-1 text-white">23</span>
-                            <span className="text-[10px] font-inter font-bold uppercase tracking-wider text-white/60">MCQs</span>
-                            </div>
+                            {
+                                weekActivity?.map((activity, i) => {
+                                    const tier = attemptCountToTier(activity?.attempt_count)
+                                    const styles = attemptCountToColor[tier]
+                                    const isToday = activity?.activity_date && isSameCalendarDay(activity.activity_date, new Date())
+                                    return (
+                                        <div
+                                            key={i}
+                                            className={`relative rounded-xl py-2.5 px-1 flex flex-col items-center gap-0.5 ${styles.card} ${isToday ? 'ring-2 ring-[#FFC600]/30 border-[#FFC600]' : ''}`}
+                                        >
+                                            {isToday ? (
+                                                <span className="absolute -top-1.5 left-1/2 -translate-x-1/2 px-1.5 py-px rounded-full bg-[#FFC600] text-[#181A18] text-[7px] font-poppins font-black uppercase tracking-wider border border-[#181A18]">
+                                                    Today
+                                                </span>
+                                            ) : null}
+                                            <span className={styles.day}>{numberToDay[new Date(activity?.activity_date).getDay()]}</span>
+                                            <span className={styles.date}>{new Date(activity?.activity_date).getDate()}</span>
+                                            <span className={styles.count}>{activity?.attempt_count ?? 0}</span>
+                                            <span className={styles.label}>MCQs</span>
+                                        </div>
+                                    )
+                                })
+                            }
 
                         </div>
 
@@ -506,17 +534,17 @@ const UserAnalyticsPage = () => {
                         <div className="flex items-center justify-between mb-4 gap-3">
                         <div className="flex items-baseline gap-3 min-w-0">
                             <h2 className="font-poppins font-black text-white text-[14px] uppercase tracking-[0.08em] flex-shrink-0">Performance — Last 7 Days</h2>
-                            <span className="text-[#A8ACA8] font-inter text-[13px] tracking-wide truncate">Apr 25 – May 1</span>
+                            <span className="text-[#A8ACA8] font-inter text-[13px] tracking-wide truncate">{formatActivityDate(0)} – {formatActivityDate(6)}</span>
                         </div>
                         <div className="flex items-center gap-1.5 flex-shrink-0">
-                            <button aria-label="Previous week"
-                                    className="w-8 h-8 rounded-lg border-2 flex items-center justify-center transition-all bg-[#222422] border-[#2E302E] text-white hover:border-[#FFC600] hover:text-[#FFC600] hover:shadow-[2px_2px_0px_rgba(255,198,0,0.25)] cursor-pointer">
+                            <button onClick={() => updateActivity(false, false)} aria-label="Previous week"
+                                    className={`w-8 h-8 rounded-lg border-2 flex items-center justify-center  ${performanceActivity?.length === 7 || true? 'transition-all bg-[#222422] border-[#2E302E] text-white hover:border-[#FFC600] hover:text-[#FFC600] hover:shadow-[2px_2px_0px_rgba(255,198,0,0.25)] cursor-pointer' : 'bg-[#181A18]/40 border-[#2E302E]/50 text-[#2E302E] cursor-not-allowed opacity-50'}`}>
                             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round">
                                 <polyline points="15 18 9 12 15 6"/>
                             </svg>
                             </button>
-                            <button aria-label="Next week" disabled
-                                    className="w-8 h-8 rounded-lg border-2 flex items-center justify-center bg-[#181A18]/40 border-[#2E302E]/50 text-[#2E302E] cursor-not-allowed opacity-50">
+                            <button onClick={() => updateActivity(true, false)} aria-label="Next week"
+                                    className={`w-8 h-8 rounded-lg border-2 flex items-center justify-center  ${performanceActivity?.length === 7 || true? 'transition-all bg-[#222422] border-[#2E302E] text-white hover:border-[#FFC600] hover:text-[#FFC600] hover:shadow-[2px_2px_0px_rgba(255,198,0,0.25)] cursor-pointer' : 'bg-[#181A18]/40 border-[#2E302E]/50 text-[#2E302E] cursor-not-allowed opacity-50'}`}>
                             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round">
                                 <polyline points="9 18 15 12 9 6"/>
                             </svg>
@@ -528,54 +556,30 @@ const UserAnalyticsPage = () => {
                         
                         <div className="flex items-end gap-2 h-[200px]">
 
-                            <div className="flex-1 flex flex-col items-center gap-1.5">
-                            <span className="text-[12px] font-poppins font-black text-amber-400">61%</span>
-                            <div className="w-full rounded-t-md" style={{ height: "74px", background: "#FFA500", opacity: "0.65" }}></div>
-                            <span className="text-[12px] font-poppins font-black text-[#A8ACA8]">S</span>
-                            <span className="text-[13px] font-inter text-[#A8ACA8]/70">25</span>
-                            </div>
+                            {
+                                performanceActivity?.map((activity, i) => {
+                                    let bgColor = '#FFA500';
+                                    let textColor = 'text-amber-400';
+                                    let height = parseInt((activity.correct_count / (activity.attempt_count || 1)) * 100);
 
-                            <div className="flex-1 flex flex-col items-center gap-1.5">
-                            <span className="text-[12px] font-poppins font-black text-amber-400">55%</span>
-                            <div className="w-full rounded-t-md" style={{ height: "67px", background: "#FFA500", opacity: "0.65" }}></div>
-                            <span className="text-[12px] font-poppins font-black text-[#A8ACA8]">S</span>
-                            <span className="text-[13px] font-inter text-[#A8ACA8]/70">26</span>
-                            </div>
-
-                            <div className="flex-1 flex flex-col items-center gap-1.5">
-                            <span className="text-[12px] font-poppins font-black text-amber-400">68%</span>
-                            <div className="w-full rounded-t-md" style={{ height: "83px", background: "#FFA500", opacity: "0.65" }}></div>
-                            <span className="text-[12px] font-poppins font-black text-[#A8ACA8]">M</span>
-                            <span className="text-[13px] font-inter text-[#A8ACA8]/70">27</span>
-                            </div>
-
-                            <div className="flex-1 flex flex-col items-center gap-1.5">
-                            <span className="text-[12px] font-poppins font-black text-emerald-400">72%</span>
-                            <div className="w-full rounded-t-md" style={{ height: "88px", background: "#10B981", opacity: "0.65" }}></div>
-                            <span className="text-[12px] font-poppins font-black text-[#A8ACA8]">T</span>
-                            <span className="text-[13px] font-inter text-[#A8ACA8]/70">28</span>
-                            </div>
-
-                            <div className="flex-1 flex flex-col items-center gap-1.5">
-                            <span className="text-[12px] font-poppins font-black text-amber-400">65%</span>
-                            <div className="w-full rounded-t-md" style={{ height: "79px", background: "#FFA500", opacity: "0.65" }}></div>
-                            <span className="text-[12px] font-poppins font-black text-[#A8ACA8]">W</span>
-                            <span className="text-[13px] font-inter text-[#A8ACA8]/70">29</span>
-                            </div>
-
-                            <div className="flex-1 flex flex-col items-center gap-1.5">
-                            <span className="text-[12px] font-poppins font-black text-emerald-400">78%</span>
-                            <div className="w-full rounded-t-md" style={{ height: "95px", background: "#10B981", opacity: "0.65" }}></div>
-                            <span className="text-[12px] font-poppins font-black text-[#A8ACA8]">T</span>
-                            <span className="text-[13px] font-inter text-[#A8ACA8]/70">30</span>
-                            </div>
-
-                            <div className="flex-1 flex flex-col items-center gap-1.5">
-                            <span className="text-[12px] font-poppins font-black text-amber-400">67%</span>
-                            <div className="w-full rounded-t-md" style={{ height: "82px", background: "#FFA500", opacity: "1" }}></div>
-                            <span className="text-[12px] font-poppins font-black text-[#FFC600]">F</span>
-                            <span className="text-[13px] font-inter text-[#A8ACA8]/70">1</span>
-                            </div>
+                                    if(height > 75){
+                                        bgColor = '#10B981';
+                                        textColor = 'text-emerald-400';
+                                    }
+                                    else if(height < 50){
+                                        bgColor = '#FF0000';
+                                        textColor = 'text-red-400';
+                                    }
+                                    return (
+                                        <div key={i} className="flex-1 flex flex-col items-center justify-end gap-1.5 h-full">
+                                            <span className={`text-[12px] font-poppins font-black ${textColor}`}>{height}%</span>
+                                            <div className="w-full rounded-t-md" style={{height: `${height / 2}%` , background: `${bgColor}`, opacity: "0.65" }}></div>
+                                            <span className="text-[12px] font-poppins font-black text-[#A8ACA8]">{numberToDay[new Date(activity.activity_date).getDay()]}</span>
+                                            <span className="text-[13px] font-inter text-[#A8ACA8]/70">{new Date(activity.activity_date).getDate()}</span>
+                                        </div>
+                                    )
+                                })
+                            }
 
                         </div>
 
@@ -588,7 +592,7 @@ const UserAnalyticsPage = () => {
                             </div>
                             <div className="flex items-center gap-1.5">
                             <span className="text-[12px] font-poppins font-black uppercase tracking-[0.1em] text-[#A8ACA8]">Avg</span>
-                            <span className="font-poppins font-black text-[15px] text-amber-400">66%</span>
+                            <span className="font-poppins font-black text-[15px] text-amber-400">{weekActivity?.reduce((acc, activity) => acc + parseInt(((activity.correct_count / (activity.attempt_count || 1)) * 100) / 7), 0)}%</span>
                             </div>
                         </div>
                         </div>
@@ -618,7 +622,7 @@ const UserAnalyticsPage = () => {
                                         <p className="text-[#A8ACA8] text-[13px] font-inter">{topic.subject_name} · {topic.chapter_name}</p>
                                         </div>
                                         <div className="text-right flex-shrink-0">
-                                        <p className="font-poppins font-black text-red-400 text-base">{topic.accuracy}%</p>
+                                        <p className="font-poppins font-black text-red-400 text-base">{topic.tmi}%</p>
                                         <p className="text-[#A8ACA8] text-[12px] font-inter">correct</p>
                                         </div>
                                         <a href="quiz.html" className="w-7 h-7 bg-[#FFC600]/10 border border-[#FFC600]/20 rounded-md flex items-center justify-center text-[#FFC600] hover:bg-[#FFC600]/20 transition-colors">

@@ -17,7 +17,6 @@ const MainLayout = () => {
       <Navbar user={student || admin} setUser={student ? setStudent : setAdmin}/>
       <ScrollToTop />
       <Outlet context={{admin, setAdmin, student, setStudent}}/>
-      <Footer />
       <ToastContainer />
     </>
   )

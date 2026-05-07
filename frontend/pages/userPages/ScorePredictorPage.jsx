@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import '../../src/animation.css';
-import { Link } from 'react-router-dom';
+import { Link, useOutletContext } from 'react-router-dom';
 
 const ScorePredictorPage = () => {
-  const [predictedScore, setPredictedScore] = useState(0);
+  const [leaderboard, setLeaderboard] = useState([]);
+  const {studentAnalytics} = useOutletContext();
 
   const API_URL = import.meta.env.VITE_API_URL;
 
   useEffect(() => {
-    const fetchPredictedScore = async() => {
-      const res = await fetch(`${API_URL}/users/predicted-score`,{
+    const fetchLeaderBoard = async() => {
+      const res = await fetch(`${API_URL}/users/leaderboard`,{
         method: 'GET',
         credentials: 'include'
       });
@@ -17,11 +18,11 @@ const ScorePredictorPage = () => {
       const data = await res.json();
 
       if(data.status === 'success'){
-        setPredictedScore(data.data?.predicted_score);
+        setLeaderboard(data.data);
       }
     }
 
-    fetchPredictedScore();
+    fetchLeaderBoard();
   }, []);
 
   return (
@@ -58,7 +59,7 @@ const ScorePredictorPage = () => {
               <text x="100" y="1" textAnchor="middle" dominantBaseline="middle" fontSize="9" fontFamily="Inter,sans-serif" fontWeight="500" fill="rgba(255,255,255,0.35)">90</text>
               <text x="160.79" y="39.21" textAnchor="start" dominantBaseline="middle" fontSize="9" fontFamily="Inter,sans-serif" fontWeight="500" fill="rgba(255,255,255,0.35)">135</text>
               <text x="186" y="100" textAnchor="start" dominantBaseline="middle" fontSize="9" fontFamily="Inter,sans-serif" fontWeight="500" fill="rgba(255,255,255,0.35)">180</text>
-              <g transform={`translate(100 100) rotate(${180 - predictedScore})`}>
+              <g transform={`translate(100 100) rotate(${180 - (studentAnalytics?.predicted_score ?? 0)})`}>
                 <path d="M 3,0 C 2.2,-28 1,-60 0,-62 C -1,-60 -2.2,-28 -3,0 C -1.5,3 1.5,3 3,0 Z" fill="rgba(255,255,255,0.90)" />
               </g>
               <circle cx="100" cy="100" r="6" fill="rgba(255,255,255,0.90)" />
@@ -67,7 +68,7 @@ const ScorePredictorPage = () => {
 
             <div className="mt-3 bottom-1 left-0 right-0 flex justify-center pointer-events-none">
               <div className="text-center">
-                <span className="font-['Poppins'] font-black leading-none" style={{ color: '#EAB308', fontSize: '52px' }}>{predictedScore}</span>
+                <span className="font-['Poppins'] font-black leading-none" style={{ color: '#EAB308', fontSize: '52px' }}>{(studentAnalytics?.predicted_score ?? 0)}</span>
                 <span className="font-['Inter'] text-[16px] text-white/45 ml-1">/ 180</span>
               </div>
             </div>
@@ -88,66 +89,29 @@ const ScorePredictorPage = () => {
             </div>
 
             <div className="space-y-1.5">
-              <div className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl">
+              {/* <div className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl">
                 <span className="font-['Poppins'] font-bold text-[13px] w-5 text-center text-white/40">🥇</span>
                 <div className="w-8 h-8 rounded-full flex items-center justify-center font-['Poppins'] font-bold text-[10px]" style={{ background: '#10B98122', color: '#10B981' }}>FN</div>
                 <span className="flex-1 font-['Inter'] text-[14px] truncate text-white/70">Fatima Noor</span>
                 <span className="font-['Poppins'] font-bold text-[15px]" style={{ color: '#22C55E' }}>178</span>
-              </div>
-              <div className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl">
-                <span className="font-['Poppins'] font-bold text-[13px] w-5 text-center text-white/40">🥈</span>
-                <div className="w-8 h-8 rounded-full flex items-center justify-center font-['Poppins'] font-bold text-[10px]" style={{ background: '#38BDF822', color: '#38BDF8' }}>AR</div>
-                <span className="flex-1 font-['Inter'] text-[14px] truncate text-white/70">Ahmed Raza</span>
-                <span className="font-['Poppins'] font-bold text-[15px]" style={{ color: '#22C55E' }}>174</span>
-              </div>
-              <div className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl">
-                <span className="font-['Poppins'] font-bold text-[13px] w-5 text-center text-white/40">🥉</span>
-                <div className="w-8 h-8 rounded-full flex items-center justify-center font-['Poppins'] font-bold text-[10px]" style={{ background: '#A78BFA22', color: '#A78BFA' }}>SM</div>
-                <span className="flex-1 font-['Inter'] text-[14px] truncate text-white/70">Sara Malik</span>
-                <span className="font-['Poppins'] font-bold text-[15px]" style={{ color: '#22C55E' }}>169</span>
-              </div>
-              <div className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl">
-                <span className="font-['Poppins'] font-bold text-[13px] w-5 text-center text-white/40">4</span>
-                <div className="w-8 h-8 rounded-full flex items-center justify-center font-['Poppins'] font-bold text-[10px]" style={{ background: '#FB923C22', color: '#FB923C' }}>OS</div>
-                <span className="flex-1 font-['Inter'] text-[14px] truncate text-white/70">Omar Sheikh</span>
-                <span className="font-['Poppins'] font-bold text-[15px]" style={{ color: '#22C55E' }}>162</span>
-              </div>
-              <div className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl">
-                <span className="font-['Poppins'] font-bold text-[13px] w-5 text-center text-white/40">5</span>
-                <div className="w-8 h-8 rounded-full flex items-center justify-center font-['Poppins'] font-bold text-[10px]" style={{ background: '#2DD4BF22', color: '#2DD4BF' }}>ZA</div>
-                <span className="flex-1 font-['Inter'] text-[14px] truncate text-white/70">Zainab Ali</span>
-                <span className="font-['Poppins'] font-bold text-[15px]" style={{ color: '#22C55E' }}>155</span>
-              </div>
-              <div className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl">
-                <span className="font-['Poppins'] font-bold text-[13px] w-5 text-center text-white/40">6</span>
-                <div className="w-8 h-8 rounded-full flex items-center justify-center font-['Poppins'] font-bold text-[10px]" style={{ background: '#F59E0B22', color: '#F59E0B' }}>BY</div>
-                <span className="flex-1 font-['Inter'] text-[14px] truncate text-white/70">Bilal Yousaf</span>
-                <span className="font-['Poppins'] font-bold text-[15px]" style={{ color: '#22C55E' }}>148</span>
-              </div>
-              <div className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl bg-[#FFC600]/10 border border-[#FFC600]/25">
-                <span className="font-['Poppins'] font-bold text-[13px] w-5 text-center text-white/40">7</span>
-                <div className="w-8 h-8 rounded-full flex items-center justify-center font-['Poppins'] font-bold text-[10px]" style={{ background: '#FFC60022', color: '#FFC600' }}>HK</div>
-                <span className="flex-1 font-['Inter'] text-[14px] truncate font-bold text-white/95">Hayan Khan (You)</span>
-                <span className="font-['Poppins'] font-bold text-[15px]" style={{ color: '#EAB308' }}>131</span>
-              </div>
-              <div className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl">
-                <span className="font-['Poppins'] font-bold text-[13px] w-5 text-center text-white/40">8</span>
-                <div className="w-8 h-8 rounded-full flex items-center justify-center font-['Poppins'] font-bold text-[10px]" style={{ background: '#8B5CF622', color: '#8B5CF6' }}>AT</div>
-                <span className="flex-1 font-['Inter'] text-[14px] truncate text-white/70">Ayesha Tariq</span>
-                <span className="font-['Poppins'] font-bold text-[15px]" style={{ color: '#EAB308' }}>124</span>
-              </div>
-              <div className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl">
-                <span className="font-['Poppins'] font-bold text-[13px] w-5 text-center text-white/40">9</span>
-                <div className="w-8 h-8 rounded-full flex items-center justify-center font-['Poppins'] font-bold text-[10px]" style={{ background: '#06B6D422', color: '#06B6D4' }}>IQ</div>
-                <span className="flex-1 font-['Inter'] text-[14px] truncate text-white/70">Imran Qureshi</span>
-                <span className="font-['Poppins'] font-bold text-[15px]" style={{ color: '#EAB308' }}>112</span>
-              </div>
-              <div className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl">
-                <span className="font-['Poppins'] font-bold text-[13px] w-5 text-center text-white/40">10</span>
-                <div className="w-8 h-8 rounded-full flex items-center justify-center font-['Poppins'] font-bold text-[10px]" style={{ background: '#EF444422', color: '#EF4444' }}>NF</div>
-                <span className="flex-1 font-['Inter'] text-[14px] truncate text-white/70">Noor Fatima</span>
-                <span className="font-['Poppins'] font-bold text-[15px]" style={{ color: '#F97316' }}>98</span>
-              </div>
+              </div> */}
+              {
+                leaderboard?.map((score, i) => {
+                  let icon = i + 1;
+                  if(i === 0) icon = '🥇';
+                  else if(i === 1) icon = '🥈';
+                  else if(i === 2) icon = '🥉';
+
+                  return (
+                    <div key={i} className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl">
+                      <span className="font-['Poppins'] font-bold text-[13px] w-5 text-center text-white/40">{icon}</span>
+                      <div className="w-8 h-8 rounded-full flex items-center justify-center font-['Poppins'] font-bold text-[10px]" style={{ background: '#10B98122', color: '#10B981' }}>{score?.name.split(' ').map(n => n[0].toUpperCase()).join('')}</div>
+                      <span className="flex-1 font-['Inter'] text-[14px] truncate text-white/70">{score?.name}</span>
+                      <span className="font-['Poppins'] font-bold text-[15px]" style={{ color: '#22C55E' }}>{score?.predicted_score ?? 0}</span>
+                    </div>
+                  )
+                })
+              }
             </div>
           </div>
         </section>
