@@ -241,14 +241,14 @@ const ExamTakingScreen = ({isQuiz, exam, isExamHappening}) => {
           border: 1px solid #222422;
         }
         .ets-option-card {
-          min-height: 72px;
+          min-height: 64px;
           border: 1px solid #2E302E;
           background: #222422;
-          border-radius: 12px;
+          border-radius: 10px;
           display: flex;
           align-items: center;
-          gap: 18px;
-          padding: 16px 18px;
+          gap: 14px;
+          padding: 12px 14px;
         }
         .ets-option-card.ets-option-selected {
           border-color: #FFC600;
@@ -260,9 +260,9 @@ const ExamTakingScreen = ({isQuiz, exam, isExamHappening}) => {
           color: #181A18;
         }
         .ets-option-key {
-          width: 36px;
-          height: 36px;
-          border-radius: 8px;
+          width: 32px;
+          height: 32px;
+          border-radius: 7px;
           background: #2A2C2A;
           color: #A8ACA8;
           display: flex;
@@ -273,10 +273,31 @@ const ExamTakingScreen = ({isQuiz, exam, isExamHappening}) => {
           font-weight: 900;
           flex-shrink: 0;
         }
-        .ets-action-chip {
-          width: 108px;
-          height: 56px;
+        .ets-mcq-card {
+          height: 100%;
+          min-height: 0;
+          border: 1px solid #2E302E;
           border-radius: 14px;
+          background: #1E201E;
+          padding: 14px;
+          display: flex;
+          flex-direction: column;
+          overflow: hidden;
+        }
+        .ets-mcq-scroll {
+          min-height: 0;
+          flex: 1;
+          overflow-y: auto;
+          overscroll-behavior: contain;
+          padding-right: 4px;
+        }
+        .ets-mcq-scroll::-webkit-scrollbar { width: 6px; }
+        .ets-mcq-scroll::-webkit-scrollbar-track { background: #181A18; }
+        .ets-mcq-scroll::-webkit-scrollbar-thumb { background: #3A3D3A; border-radius: 999px; }
+        .ets-action-chip {
+          width: 100px;
+          height: 50px;
+          border-radius: 12px;
           border: 1px solid #2E302E;
           background: rgba(42, 44, 42, 0.25);
           color: #A8ACA8;
@@ -295,16 +316,50 @@ const ExamTakingScreen = ({isQuiz, exam, isExamHappening}) => {
           background: rgba(255, 198, 0, 0.11);
           border-color: rgba(255, 198, 0, 0.46);
         }
+        .ets-solution-card {
+          margin-top: 8px;
+          border: 1px solid #2E302E;
+          background: #222422;
+          border-radius: 12px;
+          padding: 14px 16px;
+          display: flex;
+          flex-direction: column;
+          gap: 12px;
+        }
+        .ets-solution-row {
+          display: flex;
+          flex-direction: column;
+          gap: 4px;
+        }
+        .ets-solution-label {
+          font-size: 11px;
+          font-weight: 900;
+          text-transform: uppercase;
+          letter-spacing: 0.08em;
+          color: #A8ACA8;
+        }
+        .ets-solution-value {
+          font-size: 15px;
+          line-height: 1.6;
+          color: #FFFFFF;
+          font-weight: 600;
+        }
+        .ets-solution-value.ets-correct-answer {
+          color: #34D399;
+        }
         @media (max-width: 1023px) {
-          .ets-option-card { min-height: 58px; padding: 12px 16px; border-radius: 10px; gap: 14px; background: #111411; }
+          .ets-option-card { min-height: 54px; padding: 10px 12px; border-radius: 9px; gap: 12px; background: #111411; }
           .ets-option-key { width: 30px; height: 30px; font-size: 12px; }
-          .ets-action-chip { width: auto; min-width: 0; flex: 1 1 0%; height: 44px; border-radius: 10px; font-size: 11px; }
+          .ets-action-chip { width: auto; min-width: 0; flex: 1 1 0%; height: 40px; border-radius: 10px; font-size: 10px; }
           .ets-q-chip { height: 36px; font-size: 12px; }
+          .ets-mcq-card { border-radius: 12px; padding: 10px; }
+          .ets-solution-card { border-radius: 10px; padding: 12px 14px; gap: 10px; }
+          .ets-solution-value { font-size: 14px; }
         }
       `}</style>
 
       <main ref={examRef} className="fade-in flex h-[100dvh] min-h-0 w-full min-w-0 flex-col bg-[#181A18] text-white antialiased [font-family:Inter,sans-serif]">
-        <section className="grid h-auto min-h-14 flex-shrink-0 grid-cols-[1fr_auto_1fr] items-center gap-x-2 gap-y-1 border-b border-[#2E302E] bg-[#222422] px-4 py-2.5 lg:h-[76px] lg:min-h-0 lg:px-7 lg:py-0">
+        <section className="grid h-auto min-h-14 flex-shrink-0 grid-cols-[1fr_auto_1fr] items-center gap-x-2 gap-y-1 border-b border-[#2E302E] bg-[#222422] px-4 py-2 lg:h-[68px] lg:min-h-0 lg:px-6 lg:py-0">
           <div className="min-w-0 justify-self-start">
             <p className="truncate text-base font-bold leading-tight text-white lg:text-lg">Mixed Subjects</p>
             <p className="mt-0.5 text-sm text-[#A8ACA8]">{exam.total_mcqs} MCQs</p>
@@ -324,7 +379,7 @@ const ExamTakingScreen = ({isQuiz, exam, isExamHappening}) => {
 
         <div className="flex min-h-0 flex-1 overflow-hidden">
           <section className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden bg-[#181A18]">
-            <div className="mx-auto flex min-h-0 w-full max-w-[748px] flex-1 flex-col justify-center overflow-hidden px-4 py-4 lg:px-6 lg:py-5">
+            <div className="mx-auto flex min-h-0 w-full flex-1 flex-col overflow-hidden px-3 py-3 lg:px-5 lg:py-4">
               {/* <div className="mb-4 flex flex-shrink-0 flex-wrap items-center gap-2 lg:mb-6">
                 <span
                   className="rounded-full border px-3 py-1.5 text-xs font-black uppercase tracking-widest"
@@ -341,43 +396,69 @@ const ExamTakingScreen = ({isQuiz, exam, isExamHappening}) => {
                 </span>
               </div> */}
 
-              <p className="mb-5 flex-shrink-0 text-lg font-medium leading-relaxed text-white lg:mb-7 lg:text-xl">
-                Q. {mcqs[mcqNumber-1].question}
-              </p>
+              <div className="ets-mcq-card">
+                <div className="ets-mcq-scroll">
+                  <p className="mb-4 flex-shrink-0 text-base font-medium leading-relaxed text-white lg:mb-5 lg:text-lg">
+                    Q. {mcqs[mcqNumber-1].question}
+                  </p>
 
-              <div className="flex min-h-0 flex-shrink-0 flex-col gap-3 lg:gap-4">
-                <button
-                  type="button"
-                  onClick={() => setSelectedOption('A')}
-                  className={`cursor-pointer ets-option-card ${selectedOption === 'A' ? 'ets-option-selected' : ''}`}
-                >
-                  <span className="ets-option-key">A</span>
-                  <span className="text-lg font-bold">{mcqs[mcqNumber-1].option_a}</span>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setSelectedOption('B')}
-                  className={`cursor-pointer ets-option-card ${selectedOption === 'B' ? 'ets-option-selected' : ''}`}
-                >
-                  <span className="ets-option-key">B</span>
-                  <span className="text-lg font-bold">{mcqs[mcqNumber-1].option_b}</span>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setSelectedOption('C')}
-                  className={`cursor-pointer ets-option-card ${selectedOption === 'C' ? 'ets-option-selected' : ''}`}
-                >
-                  <span className="ets-option-key">C</span>
-                  <span className="text-lg font-bold">{mcqs[mcqNumber-1].option_c}</span>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setSelectedOption('D')}
-                  className={`cursor-pointer ets-option-card ${selectedOption === 'D' ? 'ets-option-selected' : ''}`}
-                >
-                  <span className="ets-option-key">D</span>
-                  <span className="text-lg font-bold">{mcqs[mcqNumber-1].option_d}</span>
-                </button>
+                  <div className="flex min-h-0 flex-shrink-0 flex-col gap-2.5 lg:gap-3">
+                    <button
+                      type="button"
+                      onClick={() => setSelectedOption('A')}
+                      className={`cursor-pointer ets-option-card ${selectedOption === 'A' ? 'ets-option-selected' : ''}`}
+                    >
+                      <span className="ets-option-key">A</span>
+                      <span className="text-base font-bold lg:text-lg">{mcqs[mcqNumber-1].option_a}</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setSelectedOption('B')}
+                      className={`cursor-pointer ets-option-card ${selectedOption === 'B' ? 'ets-option-selected' : ''}`}
+                    >
+                      <span className="ets-option-key">B</span>
+                      <span className="text-base font-bold lg:text-lg">{mcqs[mcqNumber-1].option_b}</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setSelectedOption('C')}
+                      className={`cursor-pointer ets-option-card ${selectedOption === 'C' ? 'ets-option-selected' : ''}`}
+                    >
+                      <span className="ets-option-key">C</span>
+                      <span className="text-base font-bold lg:text-lg">{mcqs[mcqNumber-1].option_c}</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setSelectedOption('D')}
+                      className={`cursor-pointer ets-option-card ${selectedOption === 'D' ? 'ets-option-selected' : ''}`}
+                    >
+                      <span className="ets-option-key">D</span>
+                      <span className="text-base font-bold lg:text-lg">{mcqs[mcqNumber-1].option_d}</span>
+                    </button>
+                  </div>
+
+                  {
+                    !isExamHappening || (exam.answerAfterEach && submitted.has(mcqNumber)) ?
+                    <div className="ets-solution-card">
+                      <div className="ets-solution-row">
+                        <p className="ets-solution-label">Correct Answer</p>
+                        <p className="ets-solution-value ets-correct-answer">
+                          {mcqs[mcqNumber-1].correct_option}
+                          {mcqs[mcqNumber-1][`option_${mcqs[mcqNumber-1].correct_option?.toLowerCase?.()}`]
+                            ? ` - ${mcqs[mcqNumber-1][`option_${mcqs[mcqNumber-1].correct_option.toLowerCase()}`]}`
+                            : ''}
+                        </p>
+                      </div>
+                      <div className="ets-solution-row">
+                        <p className="ets-solution-label">Explanation</p>
+                        <p className="ets-solution-value">
+                          {mcqs[mcqNumber-1].explanation || 'No explanation available for this MCQ.'}
+                        </p>
+                      </div>
+                    </div> : ''
+                  }
+
+                </div>
               </div>
             </div>
           </section>
@@ -386,7 +467,7 @@ const ExamTakingScreen = ({isQuiz, exam, isExamHappening}) => {
         </div>
 
         <footer className="flex-shrink-0 border-t border-[#2E302E] bg-[#222422]">
-          <div className="flex flex-wrap items-stretch justify-center gap-2 px-3 py-3 sm:flex-nowrap sm:items-center lg:px-6">
+          <div className="flex flex-wrap items-stretch justify-center gap-2 px-3 py-2 sm:flex-nowrap sm:items-center lg:px-6">
             <div className="ets-action-chip lg:hidden">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" />
@@ -414,7 +495,7 @@ const ExamTakingScreen = ({isQuiz, exam, isExamHappening}) => {
               {submitLoading ? 'Processing....' : `${submitted.has(mcqNumber) ? 'Submitted' : 'Submit'}`}
             </button>
           </div>
-          <div className="flex items-center gap-2 border-t border-[#2E302E] px-3 py-3 sm:gap-4 sm:px-4 lg:px-7">
+          <div className="flex items-center gap-2 border-t border-[#2E302E] px-3 py-2 sm:gap-3 sm:px-4 lg:px-6">
             <button
               type="button"
               onClick={() => setMcqNumber(prev => prev > 1 ? prev - 1 : prev)}

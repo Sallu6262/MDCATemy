@@ -12,14 +12,15 @@ const ChapterSelectButton = ({chapters, subject, colorClass, setSelectedChapters
     return (
         <>
             <div className="mb-2 flex items-center justify-between">
-              <div className="flex items-center gap-2">
+              {/* <div className="flex items-center gap-2">
                 <span className={`h-3 w-3 rounded-full border-2 border-[#0E0F0E] ${colorClass}`}></span>
                 <p
                   className="[font-family:Poppins,sans-serif] text-sm font-black uppercase tracking-[0.1em]"
                 >
                   {subject}
                 </p>
-              </div>
+              </div> */}
+              <div></div>
               <button onClick={() => {
                     const newValue = !selectAll;
                     setSelectAll(newValue);

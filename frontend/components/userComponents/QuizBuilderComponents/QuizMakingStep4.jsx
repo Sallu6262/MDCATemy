@@ -31,6 +31,7 @@ const QuizMakingStep4 = ({mcqDistributionPerTopic, selectedTopics, setQuizInfo, 
     const [difficulty, setDifficulty] = useState(3);
     const [answerAfterEach, setAnswerAfterEach] = useState(true);
     const [difficultyRatio, setDifficultyRatio] = useState({eas: 33, medium: 34, hard: 33});
+    const [time, setTime] = useState(30);
 
     const [hidden, setHidden] = useState(true);
 
@@ -112,7 +113,18 @@ const QuizMakingStep4 = ({mcqDistributionPerTopic, selectedTopics, setQuizInfo, 
                         >
                         <button onClick={() => setShowTimer(prev => !prev)} className={`cursor-pointer relative h-5 w-9 rounded-full ${showTimer ? 'bg-[#FFC600]' : 'bg-gray-800'}`}><span className={`absolute ${showTimer ? 'left-[18px]' : 'left-[0px]'} top-[3px] h-3.5 w-3.5 rounded-full bg-white`}></span></button>
                     </div>
-                    <p className="text-sm text-[#8B8E8B]">Ascending timer shown</p>
+                    
+                    {
+                        showTimer ? 
+                        <div className="overflow-hidden">
+                            <div className="flex items-center gap-2 mt-1">
+                                <input type="number" min="5" max="180" value={time} onChange={e => setTime(e.target.value)}
+                                    className="w-16 h-9 bg-[#181A18] border border-[#2E302E] rounded-lg px-3 text-white font-inter text-sm text-center focus:outline-none focus:border-[#FFC600]" />
+                                <span className="text-[#A8ACA8] text-[12px] font-inter">minutes</span>
+                            </div>
+                        </div> : ''
+                    }
+
                     </div>
                     <div>
                     <label
@@ -122,10 +134,10 @@ const QuizMakingStep4 = ({mcqDistributionPerTopic, selectedTopics, setQuizInfo, 
                     <div
                         className="flex overflow-hidden rounded-lg border border-[#2D302D]"
                     >
-                        <button onClick={() => setAnswerAfterEach(prev => !prev)} className={`cursor-pointer flex-1 py-2 text-sm font-bold ${answerAfterEach ? 'bg-[#FFC600] font-semibold text-[#0E0F0E]' : 'text-[#8B8E8B]'}`}>
+                        <button onClick={() => setAnswerAfterEach(true)} className={`cursor-pointer flex-1 py-2 text-sm font-bold ${answerAfterEach ? 'bg-[#FFC600] font-semibold text-[#0E0F0E]' : 'text-[#8B8E8B]'}`}>
                         After each</button
                         ><button
-                        onClick={() => setAnswerAfterEach(prev => !prev)}
+                        onClick={() => setAnswerAfterEach(false)}
                         className={`cursor-pointer flex-1 py-2 text-sm ${!answerAfterEach ? 'bg-[#FFC600] font-semibold text-[#0E0F0E]' : 'text-[#8B8E8B]'}`}
                         >
                         At the end

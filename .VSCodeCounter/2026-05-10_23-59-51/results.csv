@@ -1,0 +1,145 @@
+"filename", "language", "JSON", "HTML", "JavaScript", "MS SQL", "JavaScript JSX", "PostCSS", "Markdown", "Dotenv", "XML", "comment", "blank", "total"
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\backend\admin-register-script.js", "JavaScript", 0, 0, 54, 0, 0, 0, 0, 0, 0, 0, 7, 61
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\backend\app.js", "JavaScript", 0, 0, 30, 0, 0, 0, 0, 0, 0, 15, 10, 55
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\backend\config.env", "Dotenv", 0, 0, 0, 0, 0, 0, 0, 9, 0, 5, 6, 20
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\backend\controllers\auth.js", "JavaScript", 0, 0, 123, 0, 0, 0, 0, 0, 0, 0, 32, 155
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\backend\controllers\mcq.js", "JavaScript", 0, 0, 47, 0, 0, 0, 0, 0, 0, 0, 10, 57
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\backend\controllers\payment.js", "JavaScript", 0, 0, 53, 0, 0, 0, 0, 0, 0, 0, 7, 60
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\backend\controllers\quiz.js", "JavaScript", 0, 0, 100, 0, 0, 0, 0, 0, 0, 12, 22, 134
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\backend\controllers\test.js", "JavaScript", 0, 0, 137, 0, 0, 0, 0, 0, 0, 11, 39, 187
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\backend\controllers\user.js", "JavaScript", 0, 0, 273, 0, 0, 0, 0, 0, 0, 9, 78, 360
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\backend\database.js", "JavaScript", 0, 0, 12, 0, 0, 0, 0, 0, 0, 0, 4, 16
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\backend\error.js", "JavaScript", 0, 0, 82, 0, 0, 0, 0, 0, 0, 0, 0, 82
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\backend\helpers.js", "JavaScript", 0, 0, 58, 0, 0, 0, 0, 0, 0, 0, 12, 70
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\backend\index.js", "JavaScript", 0, 0, 11, 0, 0, 0, 0, 0, 0, 0, 5, 16
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\backend\package-lock.json", "JSON", 1931, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1932
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\backend\package.json", "JSON", 33, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 34
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\backend\routes\mcqRouter.js", "JavaScript", 0, 0, 10, 0, 0, 0, 0, 0, 0, 2, 5, 17
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\backend\routes\paymentRouter.js", "JavaScript", 0, 0, 13, 0, 0, 0, 0, 0, 0, 2, 5, 20
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\backend\routes\quizRouter.js", "JavaScript", 0, 0, 11, 0, 0, 0, 0, 0, 0, 1, 3, 15
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\backend\routes\testRouter.js", "JavaScript", 0, 0, 18, 0, 0, 0, 0, 0, 0, 2, 6, 26
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\backend\routes\userRouter.js", "JavaScript", 0, 0, 37, 0, 0, 0, 0, 0, 0, 2, 9, 48
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\backend\schema.sql", "MS SQL", 0, 0, 0, 252, 0, 0, 0, 0, 0, 0, 38, 290
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\frontend\.env", "Dotenv", 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 1, 3
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\frontend\README.md", "Markdown", 0, 0, 0, 0, 0, 0, 9, 0, 0, 0, 8, 17
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\frontend\assets\mdcat.svg", "XML", 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\frontend\assets\tribal-bg.svg", "XML", 0, 0, 0, 0, 0, 0, 0, 0, 20, 4, 1, 25
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\frontend\components\ChapterCard.jsx", "JavaScript JSX", 0, 0, 0, 0, 27, 0, 0, 0, 0, 1, 2, 30
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\frontend\components\CustomTestMakerStep1.jsx", "JavaScript JSX", 0, 0, 0, 0, 88, 0, 0, 0, 0, 2, 13, 103
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\frontend\components\CustomTestMakerStep2.jsx", "JavaScript JSX", 0, 0, 0, 0, 83, 0, 0, 0, 0, 1, 9, 93
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\frontend\components\CustomTestMakerStep3.jsx", "JavaScript JSX", 0, 0, 0, 0, 126, 0, 0, 0, 0, 9, 31, 166
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\frontend\components\CustomTestMakerStep4.jsx", "JavaScript JSX", 0, 0, 0, 0, 60, 0, 0, 0, 0, 2, 10, 72
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\frontend\components\ErrorComponent.jsx", "JavaScript JSX", 0, 0, 0, 0, 23, 0, 0, 0, 0, 0, 2, 25
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\frontend\components\Footer.jsx", "JavaScript JSX", 0, 0, 0, 0, 60, 0, 0, 0, 0, 0, 9, 69
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\frontend\components\MCQPdf.jsx", "JavaScript JSX", 0, 0, 0, 0, 87, 0, 0, 0, 0, 11, 24, 122
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\frontend\components\Navbar.jsx", "JavaScript JSX", 0, 0, 0, 0, 93, 0, 0, 0, 0, 1, 8, 102
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\frontend\components\PaymentForm.jsx", "JavaScript JSX", 0, 0, 0, 0, 188, 0, 0, 0, 0, 0, 28, 216
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\frontend\components\RegistrationPageDecoration.jsx", "JavaScript JSX", 0, 0, 0, 0, 191, 0, 0, 0, 0, 0, 9, 200
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\frontend\components\Scroller.jsx", "JavaScript JSX", 0, 0, 0, 0, 10, 0, 0, 0, 0, 0, 4, 14
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\frontend\components\SignUpForm.jsx", "JavaScript JSX", 0, 0, 0, 0, 440, 0, 0, 0, 0, 0, 34, 474
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\frontend\components\SubjectCard.jsx", "JavaScript JSX", 0, 0, 0, 0, 24, 0, 0, 0, 0, 1, 2, 27
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\frontend\components\TopicCard.jsx", "JavaScript JSX", 0, 0, 0, 0, 10, 0, 0, 0, 0, 2, 2, 14
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\frontend\components\adminComponents\AdminDashboardHeader.jsx", "JavaScript JSX", 0, 0, 0, 0, 16, 0, 0, 0, 0, 0, 2, 18
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\frontend\components\adminComponents\AdminMCQCard.jsx", "JavaScript JSX", 0, 0, 0, 0, 88, 0, 0, 0, 0, 1, 14, 103
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\frontend\components\adminComponents\AdminNavbar.jsx", "JavaScript JSX", 0, 0, 0, 0, 71, 0, 0, 0, 0, 0, 9, 80
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\frontend\components\adminComponents\ExistingTestCard.jsx", "JavaScript JSX", 0, 0, 0, 0, 31, 0, 0, 0, 0, 1, 3, 35
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\frontend\components\userComponents\ExamTakingScreen.jsx", "JavaScript JSX", 0, 0, 0, 0, 473, 0, 0, 0, 0, 22, 40, 535
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\frontend\components\userComponents\MistakesCopy.jsx", "JavaScript JSX", 0, 0, 0, 0, 179, 0, 0, 0, 0, 4, 27, 210
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\frontend\components\userComponents\PreviousTestCard.jsx", "JavaScript JSX", 0, 0, 0, 0, 102, 0, 0, 0, 0, 3, 11, 116
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\frontend\components\userComponents\PreviousTestsList.jsx", "JavaScript JSX", 0, 0, 0, 0, 44, 0, 0, 0, 0, 1, 3, 48
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\frontend\components\userComponents\QuizBuilderComponents\ChapterSelectButton.jsx", "JavaScript JSX", 0, 0, 0, 0, 48, 0, 0, 0, 0, 9, 7, 64
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\frontend\components\userComponents\QuizBuilderComponents\CustomMixTestPopUp.jsx", "JavaScript JSX", 0, 0, 0, 0, 98, 0, 0, 0, 0, 3, 20, 121
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\frontend\components\userComponents\QuizBuilderComponents\QuizMakingStep1.jsx", "JavaScript JSX", 0, 0, 0, 0, 52, 0, 0, 0, 0, 0, 7, 59
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\frontend\components\userComponents\QuizBuilderComponents\QuizMakingStep2.jsx", "JavaScript JSX", 0, 0, 0, 0, 40, 0, 0, 0, 0, 8, 4, 52
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\frontend\components\userComponents\QuizBuilderComponents\QuizMakingStep3.jsx", "JavaScript JSX", 0, 0, 0, 0, 18, 0, 0, 0, 0, 1, 3, 22
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\frontend\components\userComponents\QuizBuilderComponents\QuizMakingStep4.jsx", "JavaScript JSX", 0, 0, 0, 0, 152, 0, 0, 0, 0, 0, 10, 162
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\frontend\components\userComponents\QuizBuilderComponents\TopicSelectButton.jsx", "JavaScript JSX", 0, 0, 0, 0, 48, 0, 0, 0, 0, 0, 9, 57
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\frontend\components\userComponents\SavedCopy.jsx", "JavaScript JSX", 0, 0, 0, 0, 115, 0, 0, 0, 0, 4, 16, 135
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\frontend\components\userComponents\SavedMCQCard.jsx", "JavaScript JSX", 0, 0, 0, 0, 94, 0, 0, 0, 0, 2, 14, 110
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\frontend\components\userComponents\TestReviewCard.jsx", "JavaScript JSX", 0, 0, 0, 0, 174, 0, 0, 0, 0, 6, 25, 205
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\frontend\components\userComponents\TestSyllabusPopUp.jsx", "JavaScript JSX", 0, 0, 0, 0, 127, 0, 0, 0, 0, 6, 15, 148
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\frontend\components\userComponents\UpcomingTestCard.jsx", "JavaScript JSX", 0, 0, 0, 0, 117, 0, 0, 0, 0, 0, 12, 129
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\frontend\components\userComponents\UpcomingTestsList.jsx", "JavaScript JSX", 0, 0, 0, 0, 90, 0, 0, 0, 0, 0, 7, 97
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\frontend\components\userComponents\UserNavbar.jsx", "JavaScript JSX", 0, 0, 0, 0, 97, 0, 0, 0, 0, 0, 11, 108
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\frontend\components\userComponents\UserScheduleCard.jsx", "JavaScript JSX", 0, 0, 0, 0, 35, 0, 0, 0, 0, 0, 3, 38
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\frontend\components\userComponents\WrongMCQCard.jsx", "JavaScript JSX", 0, 0, 0, 0, 143, 0, 0, 0, 0, 1, 18, 162
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\frontend\eslint.config.js", "JavaScript", 0, 0, 28, 0, 0, 0, 0, 0, 0, 0, 2, 30
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\frontend\index.html", "HTML", 0, 19, 0, 0, 0, 0, 0, 0, 0, 1, 3, 23
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\frontend\layout\AdminDashboardLayout.jsx", "JavaScript JSX", 0, 0, 0, 0, 24, 0, 0, 0, 0, 0, 5, 29
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\frontend\layout\MainLayout.jsx", "JavaScript JSX", 0, 0, 0, 0, 21, 0, 0, 0, 0, 0, 4, 25
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\frontend\layout\RegistrationLayout.jsx", "JavaScript JSX", 0, 0, 0, 0, 16, 0, 0, 0, 0, 0, 3, 19
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\frontend\layout\UserDashboardLayout.jsx", "JavaScript JSX", 0, 0, 0, 0, 59, 0, 0, 0, 0, 2, 16, 77
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\frontend\layout\UserTestSeriesLayout.jsx", "JavaScript JSX", 0, 0, 0, 0, 46, 0, 0, 0, 0, 1, 11, 58
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\frontend\package-lock.json", "JSON", 3829, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 3830
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\frontend\package.json", "JSON", 32, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 33
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\frontend\pages\LandingPage.jsx", "JavaScript JSX", 0, 0, 0, 0, 353, 0, 0, 0, 0, 0, 53, 406
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\frontend\pages\LoginPage.jsx", "JavaScript JSX", 0, 0, 0, 0, 107, 0, 0, 0, 0, 0, 20, 127
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\frontend\pages\NotFoundPage.jsx", "JavaScript JSX", 0, 0, 0, 0, 9, 0, 0, 0, 0, 0, 2, 11
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\frontend\pages\PaymentErrorPage.jsx", "JavaScript JSX", 0, 0, 0, 0, 21, 0, 0, 0, 0, 0, 5, 26
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\frontend\pages\SignUpPage.jsx", "JavaScript JSX", 0, 0, 0, 0, 27, 0, 0, 0, 0, 0, 6, 33
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\frontend\pages\adminPages\AdminCustomTestMakerPage.jsx", "JavaScript JSX", 0, 0, 0, 0, 36, 0, 0, 0, 0, 2, 10, 48
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\frontend\pages\adminPages\AdminDefaultPage.jsx", "JavaScript JSX", 0, 0, 0, 0, 41, 0, 0, 0, 0, 0, 7, 48
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\frontend\pages\adminPages\AdminPaymentsPage.jsx", "JavaScript JSX", 0, 0, 0, 0, 192, 0, 0, 0, 0, 0, 33, 225
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\frontend\pages\adminPages\AdminUploadMcqsPage.jsx", "JavaScript JSX", 0, 0, 0, 0, 105, 0, 0, 0, 0, 0, 20, 125
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\frontend\pages\userPages\AllPreviousTestsPage.jsx", "JavaScript JSX", 0, 0, 0, 0, 33, 0, 0, 0, 0, 2, 6, 41
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\frontend\pages\userPages\AllUpcomingTestsPage.jsx", "JavaScript JSX", 0, 0, 0, 0, 50, 0, 0, 0, 0, 1, 6, 57
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\frontend\pages\userPages\QuizBuilder\QuizMakingPage.jsx", "JavaScript JSX", 0, 0, 0, 0, 175, 0, 0, 0, 0, 5, 25, 205
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\frontend\pages\userPages\ReviewPreviousTextMcqsPage.jsx", "JavaScript JSX", 0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 3, 10
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\frontend\pages\userPages\ScorePredictorPage.jsx", "JavaScript JSX", 0, 0, 0, 0, 102, 0, 0, 0, 0, 6, 15, 123
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\frontend\pages\userPages\UserAnalyticsPage.jsx", "JavaScript JSX", 0, 0, 0, 0, 573, 0, 0, 0, 0, 6, 73, 652
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\frontend\pages\userPages\UserCopyPage.jsx", "JavaScript JSX", 0, 0, 0, 0, 107, 0, 0, 0, 0, 1, 16, 124
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\frontend\pages\userPages\UserDashboardPage.jsx", "JavaScript JSX", 0, 0, 0, 0, 447, 0, 0, 0, 0, 3, 47, 497
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\frontend\pages\userPages\UserStartTestPage.jsx", "JavaScript JSX", 0, 0, 0, 0, 323, 0, 0, 0, 0, 1, 58, 382
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\frontend\pages\userPages\UserTestSeriesPage.jsx", "JavaScript JSX", 0, 0, 0, 0, 58, 0, 0, 0, 0, 3, 11, 72
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\frontend\public\vite.svg", "XML", 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\frontend\src\App.css", "PostCSS", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\frontend\src\App.jsx", "JavaScript JSX", 0, 0, 0, 0, 65, 0, 0, 0, 0, 0, 12, 77
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\frontend\src\LandingPage.css", "PostCSS", 0, 0, 0, 0, 0, 98, 0, 0, 0, 0, 20, 118
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\frontend\src\animation.css", "PostCSS", 0, 0, 0, 0, 0, 30, 0, 0, 0, 0, 5, 35
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\frontend\src\assets\react.svg", "XML", 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\frontend\src\index.css", "PostCSS", 0, 0, 0, 0, 0, 19, 0, 0, 0, 0, 5, 24
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\frontend\src\main.jsx", "JavaScript JSX", 0, 0, 0, 0, 10, 0, 0, 0, 0, 0, 2, 12
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\frontend\utils\HelperObjects.js", "JavaScript", 0, 0, 10, 0, 0, 0, 0, 0, 0, 0, 1, 11
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\frontend\utils\filterAndSearch.js", "JavaScript", 0, 0, 49, 0, 0, 0, 0, 0, 0, 6, 13, 68
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\frontend\utils\getUserLoader.js", "JavaScript", 0, 0, 13, 0, 0, 0, 0, 0, 0, 0, 3, 16
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\frontend\utils\sendErrorSuccessMessage.js", "JavaScript", 0, 0, 24, 0, 0, 0, 0, 0, 0, 0, 2, 26
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\frontend\vite.config.js", "JavaScript", 0, 0, 9, 0, 0, 0, 0, 0, 0, 1, 2, 12
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\package-lock.json", "JSON", 20, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 21
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\package.json", "JSON", 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\temp_html\404.html", "HTML", 0, 30, 0, 0, 0, 0, 0, 0, 0, 0, 1, 31
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\temp_html\admin-dashboard.html", "HTML", 0, 84, 0, 0, 0, 0, 0, 0, 0, 0, 11, 95
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\temp_html\analytics-biology.html", "HTML", 0, 650, 0, 0, 0, 0, 0, 0, 0, 40, 53, 743
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\temp_html\analytics.html", "HTML", 0, 736, 0, 0, 0, 0, 0, 0, 0, 58, 86, 880
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\temp_html\builder-chapters.html", "HTML", 0, 188, 0, 0, 0, 0, 0, 0, 0, 0, 1, 189
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\temp_html\builder-settings.html", "HTML", 0, 135, 0, 0, 0, 0, 0, 0, 0, 0, 1, 136
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\temp_html\builder-topics.html", "HTML", 0, 154, 0, 0, 0, 0, 0, 0, 0, 0, 1, 155
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\temp_html\builder.html", "HTML", 0, 130, 0, 0, 0, 0, 0, 0, 0, 0, 9, 139
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\temp_html\custom-mix-popup.html", "HTML", 0, 79, 0, 0, 0, 0, 0, 0, 0, 0, 9, 88
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\temp_html\dashboard.html", "HTML", 0, 507, 0, 0, 0, 0, 0, 0, 0, 38, 28, 573
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\temp_html\landing.html", "HTML", 0, 472, 0, 0, 0, 0, 0, 0, 0, 61, 68, 601
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\temp_html\login.html", "HTML", 0, 195, 0, 0, 0, 0, 0, 0, 0, 5, 9, 209
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\temp_html\my-copy.html", "HTML", 0, 928, 0, 0, 0, 0, 0, 0, 0, 59, 91, 1078
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\temp_html\payment_form.html", "HTML", 0, 84, 0, 0, 0, 0, 0, 0, 0, 0, 6, 90
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\temp_html\payments.html", "HTML", 0, 142, 0, 0, 0, 0, 0, 0, 0, 0, 20, 162
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\temp_html\pdf.html", "HTML", 0, 64, 0, 0, 0, 0, 0, 0, 0, 3, 13, 80
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\temp_html\previous-tests.html", "HTML", 0, 355, 0, 0, 0, 0, 0, 0, 0, 35, 37, 427
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\temp_html\quiz-results.html", "HTML", 0, 278, 0, 0, 0, 0, 0, 0, 0, 30, 37, 345
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\temp_html\quiz-submit.html", "HTML", 0, 310, 0, 0, 0, 0, 0, 0, 0, 29, 47, 386
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\temp_html\quiz-taking-screen.html", "HTML", 0, 377, 0, 0, 0, 0, 0, 0, 0, 0, 23, 400
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\temp_html\quiz.html", "HTML", 0, 310, 0, 0, 0, 0, 0, 0, 0, 29, 47, 386
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\temp_html\results.html", "HTML", 0, 9, 0, 0, 0, 0, 0, 0, 0, 0, 1, 10
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\temp_html\score-predictor.html", "HTML", 0, 134, 0, 0, 0, 0, 0, 0, 0, 23, 16, 173
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\temp_html\signup.html", "HTML", 0, 258, 0, 0, 0, 0, 0, 0, 0, 0, 17, 275
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\temp_html\smart-select-weakest.html", "HTML", 0, 213, 0, 0, 0, 0, 0, 0, 0, 0, 1, 214
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\temp_html\smart-select.html", "HTML", 0, 14, 0, 0, 0, 0, 0, 0, 0, 0, 1, 15
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\temp_html\start-test.html", "HTML", 0, 477, 0, 0, 0, 0, 0, 0, 0, 41, 39, 557
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\temp_html\step1.html", "HTML", 0, 167, 0, 0, 0, 0, 0, 0, 0, 1, 9, 177
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\temp_html\step2.html", "HTML", 0, 68, 0, 0, 0, 0, 0, 0, 0, 0, 7, 75
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\temp_html\step3.html", "HTML", 0, 200, 0, 0, 0, 0, 0, 0, 0, 1, 5, 206
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\temp_html\step4.html", "HTML", 0, 206, 0, 0, 0, 0, 0, 0, 0, 6, 11, 223
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\temp_html\syllabus.html", "HTML", 0, 250, 0, 0, 0, 0, 0, 0, 0, 24, 19, 293
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\temp_html\taking.html", "HTML", 0, 191, 0, 0, 0, 0, 0, 0, 0, 0, 1, 192
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\temp_html\test-review.html", "HTML", 0, 293, 0, 0, 0, 0, 0, 0, 0, 22, 38, 353
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\temp_html\test-series.html", "HTML", 0, 417, 0, 0, 0, 0, 0, 0, 0, 60, 47, 524
+"c:\Users\rayya\OneDrive - Higher Education Commission\Mdcatemy\MDCATemy\temp_html\upload-mcqs.html", "HTML", 0, 91, 0, 0, 0, 0, 0, 0, 0, 6, 9, 106
+"Total", "-", 5849, 9215, 1202, 252, 6969, 147, 9, 11, 23, 779, 2136, 26592

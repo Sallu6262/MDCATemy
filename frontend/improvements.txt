@@ -15,3 +15,4 @@ improvements:
 4. search bar improvement in my copy.
 5. remove objects like subjectToColor etc from every file and import them from single file
 6. make button enabled / disabled in Analytics Page for activity, performance
+7. in quiz builder, when going back from in any step and deselecting any chapter / subject, it's relevant data should also disappear

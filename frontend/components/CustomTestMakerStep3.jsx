@@ -113,7 +113,7 @@ const CustomTestMakerStep3 = ({selectedTest, setSelectedTest, nextStage, isTestC
             // console.log(data.data);
             if(data.status === 'success'){
                 // console.log(data.data);
-                setSubjects(data.data);
+                setSubjects(data.data.syllabus);
             }
         }
 

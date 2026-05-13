@@ -9,6 +9,9 @@ const CustomTestMakerStep4 = ({selectedTest, isTestCreated}) => {
     const navigate = useNavigate();
 
     const [mcqs, setMCQs] = useState([]);
+    const [mcqsPerPage, setMCQsPerPage] = useState([]);
+    const [pageNumber, setPageNumber] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
     const [searchedMCQ, setSearchedMCQ] = useState("");
 
     useEffect(() => {
@@ -34,6 +37,8 @@ const CustomTestMakerStep4 = ({selectedTest, isTestCreated}) => {
                 let tempMcqs = [];
                 Object.keys(data.data.mcqs).forEach(difficulty => data.data?.mcqs[difficulty].forEach(mcq => tempMcqs.push(mcq)));
                 setMCQs(tempMcqs);
+                setMCQsPerPage(tempMcqs.slice(0, 10));
+                setTotalPages(Math.ceil(tempMcqs.length / 10));
             }
         }
 
@@ -61,7 +66,7 @@ const CustomTestMakerStep4 = ({selectedTest, isTestCreated}) => {
 
                 <section className="flex-1 space-y-5" aria-label="MCQ list">
                     {
-                        mcqs?.map((mcq, i)=> <MCQCard key={i} mcq={mcq} mcqNo={i+1} isSearched={Number(searchedMCQ) === mcq.mcq_id} testID={selectedTest?.id}/>)
+                        mcqsPerPage?.map((mcq, i)=> <MCQCard key={i} mcq={mcq} mcqNo={i+1} isSearched={Number(searchedMCQ) === mcq.mcq_id} testID={selectedTest?.id}/>)
                     }
                 </section>
             </div>

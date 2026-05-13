@@ -367,7 +367,8 @@ const UserStartTestPage = () => {
           logical_reasoning: testToBegin?.logical_reasoning ?? 0,
           test_mode: numberToModes[testMode],
           blind_mode: blindMode,
-          test_id: testID
+          test_id: testID,
+          answerAfterEach: false
         }}
         isExamHappening={true}
       />

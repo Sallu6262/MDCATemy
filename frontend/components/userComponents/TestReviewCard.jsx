@@ -3,10 +3,13 @@ import MCQPdf from '../MCQpdf';
 import { pdf } from '@react-pdf/renderer';
 import jsPDF from 'jspdf';
 import { createRoot } from 'react-dom/client';
+import { useNavigate } from 'react-router-dom';
 
 const TestReviewCard = ({test, setTestReviewHidden, attempted}) => {
   // console.log(test);
   const reviewRef = useRef(null);
+
+  const navigate = useNavigate();
 
   const sum = test?.correct + test?.mistakes;
 
@@ -35,6 +38,26 @@ const TestReviewCard = ({test, setTestReviewHidden, attempted}) => {
     a.click();
 
     URL.revokeObjectURL(url);
+  }
+
+  const reviewPreviousTestMCQs = () => {
+    localStorage.setItem("previous-test-mcqs", JSON.stringify({
+      test_name: test.test_name,
+      total_mcqs: test.total_mcqs,
+      test_time: test.test_time,
+      mcqs: test.mcqs,
+      biology: test.biology ?? 0,
+      chemistry: test.chemistry ?? 0,
+      physics: test.physics ?? 0,
+      english: test.english ?? 0,
+      logical_reasoning: test.logical_reasoning ?? 0,
+      test_mode: "Silent",
+      blind_mode: 0,
+      test_id: test?.test_id,
+      answerAfterEach: false
+    }));
+
+    navigate(`${test?.test_id}`);
   }
   
   useEffect(() => {
@@ -147,7 +170,7 @@ const TestReviewCard = ({test, setTestReviewHidden, attempted}) => {
                 Download Test as PDF
               </button>
 
-              <button className="cursor-pointer w-full flex items-center justify-between gap-3 px-4 py-4 rounded-xl bg-[#FFC600] text-[#181A18] border-2 border-[#181A18] shadow-[3px_3px_0px_rgba(0,0,0,0.55)] hover:shadow-[5px_5px_0px_rgba(0,0,0,0.55)] active:scale-[0.98] transition-all duration-150">
+              <button onClick={reviewPreviousTestMCQs} className="cursor-pointer w-full flex items-center justify-between gap-3 px-4 py-4 rounded-xl bg-[#FFC600] text-[#181A18] border-2 border-[#181A18] shadow-[3px_3px_0px_rgba(0,0,0,0.55)] hover:shadow-[5px_5px_0px_rgba(0,0,0,0.55)] active:scale-[0.98] transition-all duration-150">
                 <div className="flex items-center gap-3 min-w-0 text-left">
                   <div className="w-10 h-10 bg-[#181A18] rounded-lg flex items-center justify-center flex-shrink-0">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FFC600" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">

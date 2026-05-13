@@ -5,3 +5,7 @@ export const subjectToColor = {
     'Logical Reasoning' : '#F59E0B',
     'English' : '#2DD4BF',
 }
+
+export const formatName = (name) => {
+    return name.split('_').map(n => n[0].toUpperCase() + n.slice(1)).join(' ');
+}

@@ -104,19 +104,22 @@ const QuizMakingPage = () => {
                             </div>
                         </div>
 
-                        <div className="flex flex-col items-start justify-between gap-3 sm:flex-row sm:items-center">
-                            <div className="flex items-center gap-2 px-1">
-                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" className="text-[#FFC600]"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
-                            <span className="text-sm font-semibold text-[#8B8E8B]/70">Show accuracy</span>
-                            <button onClick={() => setShowAccuracy(prev => !prev)} className={`cursor-pointer relative h-5 w-9 rounded-full ${showAccuracy ? 'bg-[#FFC600]' : 'bg-gray-800'}`}><span className={`absolute ${showAccuracy ? 'left-[18px]' : 'left-[0px]'} top-[3px] h-3.5 w-3.5 rounded-full bg-white`}></span></button>
-                            </div>
+                        {
+                            step < 4 ? 
+                            <div className="flex flex-col items-start justify-between gap-3 sm:flex-row sm:items-center">
+                                <div className="flex items-center gap-2 px-1">
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" className="text-[#FFC600]"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+                                <span className="text-sm font-semibold text-[#8B8E8B]/70">Show accuracy</span>
+                                <button onClick={() => setShowAccuracy(prev => !prev)} className={`cursor-pointer relative h-5 w-9 rounded-full ${showAccuracy ? 'bg-[#FFC600]' : 'bg-gray-800'}`}><span className={`absolute ${showAccuracy ? 'left-[18px]' : 'left-[0px]'} top-[3px] h-3.5 w-3.5 rounded-full bg-white`}></span></button>
+                                </div>
 
-                            <a href="smart-select.html?from=builder.html" className="inline-flex w-full items-center justify-center gap-1.5 rounded-lg border border-[#2D302D] bg-[#0E0F0E]/30 px-3 py-1.5 [font-family:Poppins,sans-serif] text-xs font-black uppercase tracking-[0.06em] text-[#8B8E8B] transition hover:border-[#FFC600]/60 hover:bg-[#FFC600]/5 hover:text-white sm:w-auto">
-                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" className="text-[#FFC600]"><path d="M12 3l1.9 5.6L19.5 10l-4.6 2.4L13 18l-1-5.6L7.5 10l5.6-1.4L12 3z"/></svg>
-                            Smart Select
-                            <span className="rounded-full bg-[#FFC600]/20 px-1.5 py-0.5 text-[10px] text-[#FFC600]">NEW</span>
-                            </a>
-                        </div>
+                                <a href="smart-select.html?from=builder.html" className="inline-flex w-full items-center justify-center gap-1.5 rounded-lg border border-[#2D302D] bg-[#0E0F0E]/30 px-3 py-1.5 [font-family:Poppins,sans-serif] text-xs font-black uppercase tracking-[0.06em] text-[#8B8E8B] transition hover:border-[#FFC600]/60 hover:bg-[#FFC600]/5 hover:text-white sm:w-auto">
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" className="text-[#FFC600]"><path d="M12 3l1.9 5.6L19.5 10l-4.6 2.4L13 18l-1-5.6L7.5 10l5.6-1.4L12 3z"/></svg>
+                                Smart Select
+                                <span className="rounded-full bg-[#FFC600]/20 px-1.5 py-0.5 text-[10px] text-[#FFC600]">NEW</span>
+                                </a>
+                            </div> : ''
+                        }
 
                         {step === 1 ? <QuizMakingStep1 selectedSubjects={selectedSubjects} setSelectedSubjects={setSelectedSubjects}/> : ''}
                         {step === 2 ? <QuizMakingStep2 filteredSyllabus={filteredSubjects} selectedChapters={selectedChapters} setSelectedChapters={setSelectedChapters}/> : ''}

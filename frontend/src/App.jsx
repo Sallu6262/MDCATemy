@@ -23,6 +23,7 @@ import UserStartTestPage from '../pages/userPages/UserStartTestPage';
 import ScorePredictorPage from '../pages/userPages/ScorePredictorPage';
 import UserAnalyticsPage from '../pages/userPages/UserAnalyticsPage';
 import QuizMakingPage from '../pages/userPages/QuizBuilder/QuizMakingPage';
+import ReviewPreviousTextMcqsPage from '../pages/userPages/ReviewPreviousTextMcqsPage';
 
 const App = () => {
   const router = createBrowserRouter(
@@ -39,13 +40,15 @@ const App = () => {
 
           <Route path='/dashboard' element={<UserDashboardLayout />}>
             <Route index element={<UserDashboardPage />}/>
-            <Route path='/dashboard/score-predictor' element={<ScorePredictorPage />}/>
+            <Route path='score-predictor' element={<ScorePredictorPage />}/>
 
-            <Route path='/dashboard/quiz-builder' element={<QuizMakingPage />}/>
+            <Route path='quiz-builder' element={<QuizMakingPage />}/>
+
 
             <Route path='test-series' element={<UserTestSeriesLayout />}>
               <Route index element={<UserTestSeriesPage />}/>
               <Route path='previous-tests' element={<AllPreviousTestsPage />}/> 
+              <Route path='previous-tests/:testID' element={<ReviewPreviousTextMcqsPage />}/>
               <Route path='all-upcoming-tests' element={<AllUpcomingTestsPage />}/>
               <Route path='start-test/:testID' element={<UserStartTestPage />}/>
             </Route>
