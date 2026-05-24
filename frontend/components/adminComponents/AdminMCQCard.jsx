@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from 'react'
 
 const MCQCard = ({mcq, isSearched, mcqNo, testID}) => {
     // console.log(testID);
-    const mcqRef = useRef(null);
     const [isAdded, setIsAdded] = useState(false);
     const [isDeleted, setIsDeleted] = useState(false);
     const [addedLoading, setAddedLoading] = useState(false);
@@ -11,13 +10,6 @@ const MCQCard = ({mcq, isSearched, mcqNo, testID}) => {
     const [error, setError] = useState(false);
 
     const API_URL = import.meta.env.VITE_API_URL;
-
-    useEffect(() => {
-        if (!isSearched) return;
-        const el = mcqRef.current;
-        if (!el) return;
-        el.focus({ preventScroll: false });
-    }, [isSearched]);
 
     const addMCQToTest = async () => {
         setAddedLoading(true);
@@ -69,7 +61,7 @@ const MCQCard = ({mcq, isSearched, mcqNo, testID}) => {
     }
 
     return (
-        <article ref={mcqRef} id={`mcq-${mcq.mcq_id}`} tabIndex="-1" className={`scroll-mt-36 rounded-2xl border border-white/10 bg-[#1A1A1A]/95 p-5 shadow-[0_16px_48px_rgba(0,0,0,0.35)] sm:p-6`}>
+        <article id={`mcq-${mcq.mcq_id}`} tabIndex="-1" className={`scroll-mt-36 rounded-2xl border border-white/10 bg-[#1A1A1A]/95 p-5 shadow-[0_16px_48px_rgba(0,0,0,0.35)] sm:p-6`}>
             <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
             <div className="flex items-start gap-3">
                 <div>
@@ -95,7 +87,7 @@ const MCQCard = ({mcq, isSearched, mcqNo, testID}) => {
             <div className="rounded-xl border border-white/10 bg-[#121212]/80 px-3 py-2.5 text-sm text-white/85"><span className="text-white/40">D.</span> {mcq.option_d}</div>
             </div>
             <p className="mt-4 text-sm text-white/75"><span className="font-semibold text-white/90">Difficulty:</span> {mcq.difficulty}</p>
-            <p className="mt-2 text-sm leading-relaxed text-white/75"><span className="font-semibold text-white/90">Explanation:</span> {mcq.explanation}</p>
+            <p className="mt-2 text-sm leading-relaxed text-white/75"><span className="font-semibold text-white/90">Explanation:</span> {mcq.explanation || 'No explanation for this question.'}</p>
         </article>
     )
 }

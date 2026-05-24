@@ -7,6 +7,7 @@ After Finals:
 6. review mcqs in previous tests feature.
 7. pagination in admin dashboard.
 8. smart select in quiz builder
+9. re test all mistakes in mistakes copy
 
 improvements:
 1. In signup form, correct matric and fsc percentage needed according to total marks depending on province
