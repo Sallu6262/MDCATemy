@@ -11,8 +11,6 @@ const TestReviewCard = ({test, setTestReviewHidden, attempted}) => {
 
   const navigate = useNavigate();
 
-  const sum = test?.correct + test?.mistakes;
-
   const testDate = new Date(test?.test_date).toLocaleDateString("en-GB", {
     day: "2-digit",
     month: "short",
@@ -41,16 +39,27 @@ const TestReviewCard = ({test, setTestReviewHidden, attempted}) => {
   }
 
   const reviewPreviousTestMCQs = () => {
+    let bioCount = 0, phyCount = 0, engCount = 0, lrCount = 0, chemCount = 0;
+    test?.mcqs?.forEach(mcq => {
+      const subject = mcq.subject_name.toLowerCase().replace('_',' ');
+      if(subject === 'biology') bioCount++;
+      else if(subject === 'physics') phyCount++;
+      else if(subject === 'english') engCount++;
+      else if(subject === 'chemstry') chemCount++;
+      else lrCount++;
+    });
+
     localStorage.setItem("previous-test-mcqs", JSON.stringify({
+      test_id: test.test_id,
       test_name: test.test_name,
-      total_mcqs: test.total_mcqs,
-      test_time: test.test_time,
+      total_mcqs: test.mcq_count,
+      test_time: test.test_time ?? 0,
       mcqs: test.mcqs,
-      biology: test.biology ?? 0,
-      chemistry: test.chemistry ?? 0,
-      physics: test.physics ?? 0,
-      english: test.english ?? 0,
-      logical_reasoning: test.logical_reasoning ?? 0,
+      biology: bioCount,
+      chemistry: chemCount,
+      physics: phyCount,
+      english: engCount,
+      logical_reasoning: lrCount,
       test_mode: "Silent",
       blind_mode: 0,
       test_id: test?.test_id,
@@ -62,7 +71,7 @@ const TestReviewCard = ({test, setTestReviewHidden, attempted}) => {
   
   useEffect(() => {
     reviewRef?.current?.focus();
-    showResult(parseInt((test?.correct / (sum ? sum : 1)) * 100));
+    showResult(parseInt((test?.correct / (test?.mcq_count || 1)) * 100));
   },[]);
 
     return (
@@ -109,7 +118,7 @@ const TestReviewCard = ({test, setTestReviewHidden, attempted}) => {
                         <circle cx="40" cy="40" r="36" fill="none" stroke="#2A2C2A" strokeWidth="6"/>
                         <circle cx="40" cy="40" r="36" fill="none"
                                 stroke={`${result.color}`} strokeWidth="6" strokeLinecap="round"
-                                strokeDasharray="176.43 226.19"/>
+                                strokeDasharray={`${(result.percentage / 100) * 226.19} 226.19`}/>
                       </svg>
                       <div className="absolute inset-0 flex flex-col items-center justify-center">
                         <span className="font-[Poppins] font-black text-white text-[20px] leading-none">{result.percentage}%</span>
@@ -155,7 +164,7 @@ const TestReviewCard = ({test, setTestReviewHidden, attempted}) => {
                     <p className="text-[#A8ACA8] text-[9px] font-[Inter] mt-1 uppercase tracking-[0.08em]">Skipped</p>
                   </div>
                   <div className="bg-[#181A18]/60 border border-sky-500/20 bg-sky-500/5 rounded-lg py-2 text-center">
-                    <p className="font-[Poppins] font-black text-[15px] leading-none text-sky-400">142m</p>
+                    <p className="font-[Poppins] font-black text-[15px] leading-none text-sky-400">{test?.test_tim ?? 60}m</p>
                     <p className="text-[#A8ACA8] text-[9px] font-[Inter] mt-1 uppercase tracking-[0.08em]">Time</p>
                   </div>
                 </div>

@@ -7,6 +7,8 @@ const UserTestSeriesLayout = () => {
     const [upcomingTests, setUpcomingTests] = useState([]);
     const [previousTests, setPreviousTests] = useState([]);
 
+    const {setIsExamHappening, isExamHappening} = useOutletContext();
+
     const API_URL = import.meta.env.VITE_API_URL;
     const navigate = useNavigate();
 
@@ -50,7 +52,7 @@ const UserTestSeriesLayout = () => {
                 }
             </style>
             
-            <Outlet context={{upcomingTests, previousTests}}/>
+            <Outlet context={{upcomingTests, previousTests, setIsExamHappening, isExamHappening}}/>
         </>
     )
 }

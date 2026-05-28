@@ -13,7 +13,7 @@ const UserNavbar = () => {
     name = name?.split(' ')?.map(n => n[0].toUpperCase()).slice(0,2);
 
     return (
-        <aside className="order-2 fixed bottom-0 left-0 right-0 z-40 w-full border-t border-[#2E302E] bg-[#222422] px-1 pb-[max(0.35rem,env(safe-area-inset-bottom))] pt-1.5 lg:static lg:order-1 lg:z-auto lg:h-screen lg:max-w-[240px] lg:flex-shrink-0 lg:overflow-hidden lg:border-r lg:border-t-0 lg:bg-[#181A18] lg:p-0">
+        <aside className="order-2 fixed bottom-0 left-0 right-0 z-40 w-full border-t border-[#2E302E] bg-[#222422] px-1 pb-[max(0.35rem,env(safe-area-inset-bottom))] pt-1.5 lg:static lg:order-1 lg:z-auto lg:max-w-[240px] lg:flex-shrink-0 lg:overflow-hidden lg:border-r lg:border-t-0 lg:bg-[#181A18] lg:p-0">
             <div className="mb-5 hidden border-b border-[#2E302E] px-4 pb-5 pt-6 lg:block">
                     <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#FFC600]">Student Panel</p>
                     <h1 className="mt-3 text-2xl font-black tracking-tight text-white">MDCATEMY</h1>

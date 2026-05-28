@@ -21,11 +21,23 @@ const Navbar = ({user, setUser}) => {
     }
   }
 
+  const examGoingChecker = (e) => {
+    const exists = document.querySelector('.exam-taking-screen');
+
+    if(exists){
+      e.preventDefault();
+      return;
+    }
+    window.scrollTo({top: 0, behavior: 'smooth'});
+  }
+
   return (
     <nav className="sticky top-0 left-0 right-0 z-100" style={{ background: "rgba(18,18,18,0.88)", backdropFilter: "blur(24px) saturate(180%)", borderBottom: "1px solid rgba(255,255,255,0.08)", boxShadow: "0 4px 24px rgba(0,0,0,0.25)" }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between gap-3" style={{ minHeight: "72px" }}>
-          <Link onClick={() => window.scrollTo({top: 0, behavior: 'smooth'})} className="flex h-full items-center flex-shrink-0">
+          <Link to="/" 
+            onClick={examGoingChecker} 
+            className="flex h-full items-center flex-shrink-0">
             <img
               src={logoImg}
               alt="MDCATEMY"
@@ -38,10 +50,10 @@ const Navbar = ({user, setUser}) => {
             />
           </Link>
           <div className="hidden lg:flex items-center gap-8 ml-auto">
-            <Link to="/books" className="text-sm font-medium hover:text-white transition-colors" style={{ color: "rgba(255,255,255,0.8)", textDecoration: "none" }}>Books</Link>
-            <Link to="/tests" className="text-sm font-medium hover:text-white transition-colors" style={{ color: "rgba(255,255,255,0.8)", textDecoration: "none" }}>Tests</Link>
-            <Link to="/pricing" className="text-sm font-medium hover:text-white transition-colors" style={{ color: "rgba(255,255,255,0.8)", textDecoration: "none" }}>Pricing</Link>
-            <Link to="/contact" className="text-sm font-medium hover:text-white transition-colors" style={{ color: "rgba(255,255,255,0.8)", textDecoration: "none" }}>About Us</Link>
+            <Link to="/books" onClick={examGoingChecker} className="text-sm font-medium hover:text-white transition-colors" style={{ color: "rgba(255,255,255,0.8)", textDecoration: "none" }}>Books</Link>
+            <Link to="/tests" onClick={examGoingChecker} className="text-sm font-medium hover:text-white transition-colors" style={{ color: "rgba(255,255,255,0.8)", textDecoration: "none" }}>Tests</Link>
+            <Link to="/pricing" onClick={examGoingChecker} className="text-sm font-medium hover:text-white transition-colors" style={{ color: "rgba(255,255,255,0.8)", textDecoration: "none" }}>Pricing</Link>
+            <Link to="/contact" onClick={examGoingChecker} className="text-sm font-medium hover:text-white transition-colors" style={{ color: "rgba(255,255,255,0.8)", textDecoration: "none" }}>About Us</Link>
           </div>
           <div className="hidden lg:flex items-center gap-3 ml-6">
             {
@@ -70,10 +82,10 @@ const Navbar = ({user, setUser}) => {
             </summary>
             <div className="absolute right-0 top-12 w-[min(18rem,90vw)] rounded-xl border border-white/10 bg-[#161616] p-3 shadow-[0_10px_30px_rgba(0,0,0,0.35)]">
               <div className="flex flex-col gap-1.5">
-                <Link to="/books" className="rounded-lg px-3 py-2 text-sm font-medium text-white/80 transition hover:bg-white/[0.06] hover:text-white">Books</Link>
-                <Link to="/tests" className="rounded-lg px-3 py-2 text-sm font-medium text-white/80 transition hover:bg-white/[0.06] hover:text-white">Tests</Link>
-                <Link to="/pricing" className="rounded-lg px-3 py-2 text-sm font-medium text-white/80 transition hover:bg-white/[0.06] hover:text-white">Pricing</Link>
-                <Link to="/contact" className="rounded-lg px-3 py-2 text-sm font-medium text-white/80 transition hover:bg-white/[0.06] hover:text-white">About Us</Link>
+                <Link to="/books" onClick={examGoingChecker} className="rounded-lg px-3 py-2 text-sm font-medium text-white/80 transition hover:bg-white/[0.06] hover:text-white">Books</Link>
+                <Link to="/tests" onClick={examGoingChecker} className="rounded-lg px-3 py-2 text-sm font-medium text-white/80 transition hover:bg-white/[0.06] hover:text-white">Tests</Link>
+                <Link to="/pricing" onClick={examGoingChecker} className="rounded-lg px-3 py-2 text-sm font-medium text-white/80 transition hover:bg-white/[0.06] hover:text-white">Pricing</Link>
+                <Link to="/contact" onClick={examGoingChecker} className="rounded-lg px-3 py-2 text-sm font-medium text-white/80 transition hover:bg-white/[0.06] hover:text-white">About Us</Link>
                 <div className="my-1 h-px bg-white/10"></div>
                 {
                   user?.payment_status === 'VERIFIED' ? 

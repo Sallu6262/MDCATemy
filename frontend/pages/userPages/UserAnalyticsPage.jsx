@@ -104,9 +104,10 @@ const UserAnalyticsPage = () => {
     const numberToDay = {0:'SUN',1:'MON',2:'TUE',3:'WED',4:'THU',5:'FRI',6:'SAT'};
 
     const API_URL = import.meta.env.VITE_API_URL;
+    const MDCATEMY_DATE = import.meta.env.VITE_MDCATEMY_DATE;
 
     const formatActivityDate = (index) => {
-        return new Date(sa?.activity[index]?.activity_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+        return new Date(sa?.activity?.[index]?.activity_date ?? Date.now()).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
     }
 
     const formatDate = (date) => {
@@ -118,20 +119,20 @@ const UserAnalyticsPage = () => {
         if(!data) return;
 
         let dates = [];
-        let date = new Date(data[data.length - 1].activity_date);
+        let date = new Date(data[data.length - 1]?.activity_date);
         for(let i=0 ; i<7 ; i++){
             dates.push(formatDate(date));
             date.setDate(date.getDate()-1);
         }
 
         dates.forEach(date => {
-            if(!data.some(activity => activity.activity_date === date)){
+            if(!data.some(activity => activity?.activity_date === date)){
                 data.push({attempt_count: 0, correct_count: 0, activity_date: date});
             }
         });
 
         // console.log(data);
-        data.sort((a, b) => new Date(a.activity_date) - new Date(b.activity_date));
+        data.sort((a, b) => new Date(a?.activity_date) - new Date(b?.activity_date));
         return data;
     }
 
@@ -436,13 +437,15 @@ const UserAnalyticsPage = () => {
                         </div>
                         <div className="flex items-center gap-1.5 flex-shrink-0">
                             <button onClick={() => updateActivity(false, true)} aria-label="Previous week"
-                                    className={`w-8 h-8 rounded-lg border-2 flex items-center justify-center  ${weekActivity?.length === 7 || true? 'transition-all bg-[#222422] border-[#2E302E] text-white hover:border-[#FFC600] hover:text-[#FFC600] hover:shadow-[2px_2px_0px_rgba(255,198,0,0.25)] cursor-pointer' : 'bg-[#181A18]/40 border-[#2E302E]/50 text-[#2E302E] cursor-not-allowed opacity-50'}`}>
+                                    disabled={weekActivity?.length && !isSameCalendarDay(weekActivity?.[0]?.activity_date, MDCATEMY_DATE)}
+                                    className={`w-8 h-8 rounded-lg border-2 flex items-center justify-center  ${weekActivity?.length && !isSameCalendarDay(weekActivity?.[0]?.activity_date, MDCATEMY_DATE) ? 'transition-all bg-[#222422] border-[#2E302E] text-white hover:border-[#FFC600] hover:text-[#FFC600] hover:shadow-[2px_2px_0px_rgba(255,198,0,0.25)] cursor-pointer' : 'bg-[#181A18]/40 border-[#2E302E]/50 text-[#2E302E] cursor-not-allowed opacity-50'}`}>
                             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round">
                                 <polyline points="15 18 9 12 15 6"/>
                             </svg>
                             </button>
                             <button onClick={() => updateActivity(true, true)} aria-label="Next week"
-                                    className={`w-8 h-8 rounded-lg border-2 flex items-center justify-center ${weekActivity?.length === 7 || true? 'transition-all bg-[#222422] border-[#2E302E] text-white hover:border-[#FFC600] hover:text-[#FFC600] hover:shadow-[2px_2px_0px_rgba(255,198,0,0.25)] cursor-pointer' : 'bg-[#181A18]/40 border-[#2E302E]/50 text-[#2E302E] cursor-not-allowed opacity-50'}`}>
+                                    disabled={weekActivity?.length && !isSameCalendarDay(weekActivity?.[weekActivity?.length-1]?.activity_date, Date.now())}
+                                    className={`w-8 h-8 rounded-lg border-2 flex items-center justify-center ${weekActivity?.length && !isSameCalendarDay(weekActivity?.[weekActivity?.length-1]?.activity_date, Date.now()) ? 'transition-all bg-[#222422] border-[#2E302E] text-white hover:border-[#FFC600] hover:text-[#FFC600] hover:shadow-[2px_2px_0px_rgba(255,198,0,0.25)] cursor-pointer' : 'bg-[#181A18]/40 border-[#2E302E]/50 text-[#2E302E] cursor-not-allowed opacity-50'}`}>
                             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round">
                                 <polyline points="9 18 15 12 9 6"/>
                             </svg>
@@ -482,7 +485,7 @@ const UserAnalyticsPage = () => {
                                 weekActivity?.map((activity, i) => {
                                     const tier = attemptCountToTier(activity?.attempt_count)
                                     const styles = attemptCountToColor[tier]
-                                    const isToday = activity?.activity_date && isSameCalendarDay(activity.activity_date, new Date())
+                                    const isToday = activity?.activity_date && isSameCalendarDay(activity?.activity_date, new Date())
                                     return (
                                         <div
                                             key={i}
@@ -538,13 +541,15 @@ const UserAnalyticsPage = () => {
                         </div>
                         <div className="flex items-center gap-1.5 flex-shrink-0">
                             <button onClick={() => updateActivity(false, false)} aria-label="Previous week"
-                                    className={`w-8 h-8 rounded-lg border-2 flex items-center justify-center  ${performanceActivity?.length === 7 || true? 'transition-all bg-[#222422] border-[#2E302E] text-white hover:border-[#FFC600] hover:text-[#FFC600] hover:shadow-[2px_2px_0px_rgba(255,198,0,0.25)] cursor-pointer' : 'bg-[#181A18]/40 border-[#2E302E]/50 text-[#2E302E] cursor-not-allowed opacity-50'}`}>
+                                    disabled={performanceActivity?.length && !isSameCalendarDay(performanceActivity?.[0]?.activity_date, MDCATEMY_DATE)}
+                                    className={`w-8 h-8 rounded-lg border-2 flex items-center justify-center  ${performanceActivity?.length && !isSameCalendarDay(performanceActivity?.[0]?.activity_date, MDCATEMY_DATE) ? 'transition-all bg-[#222422] border-[#2E302E] text-white hover:border-[#FFC600] hover:text-[#FFC600] hover:shadow-[2px_2px_0px_rgba(255,198,0,0.25)] cursor-pointer' : 'bg-[#181A18]/40 border-[#2E302E]/50 text-[#2E302E] cursor-not-allowed opacity-50'}`}>
                             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round">
                                 <polyline points="15 18 9 12 15 6"/>
                             </svg>
                             </button>
                             <button onClick={() => updateActivity(true, false)} aria-label="Next week"
-                                    className={`w-8 h-8 rounded-lg border-2 flex items-center justify-center  ${performanceActivity?.length === 7 || true? 'transition-all bg-[#222422] border-[#2E302E] text-white hover:border-[#FFC600] hover:text-[#FFC600] hover:shadow-[2px_2px_0px_rgba(255,198,0,0.25)] cursor-pointer' : 'bg-[#181A18]/40 border-[#2E302E]/50 text-[#2E302E] cursor-not-allowed opacity-50'}`}>
+                                    disabled={performanceActivity?.length && !isSameCalendarDay(performanceActivity?.[performanceActivity?.length-1]?.activity_date, Date.now())}
+                                    className={`w-8 h-8 rounded-lg border-2 flex items-center justify-center  ${performanceActivity?.length && !isSameCalendarDay(performanceActivity?.[performanceActivity?.length-1]?.activity_date, Date.now()) ? 'transition-all bg-[#222422] border-[#2E302E] text-white hover:border-[#FFC600] hover:text-[#FFC600] hover:shadow-[2px_2px_0px_rgba(255,198,0,0.25)] cursor-pointer' : 'bg-[#181A18]/40 border-[#2E302E]/50 text-[#2E302E] cursor-not-allowed opacity-50'}`}>
                             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round">
                                 <polyline points="9 18 15 12 9 6"/>
                             </svg>

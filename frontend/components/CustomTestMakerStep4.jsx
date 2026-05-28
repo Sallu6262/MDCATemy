@@ -66,17 +66,13 @@ const CustomTestMakerStep4 = ({selectedTest, isTestCreated}) => {
                     </div>
                 </header>
 
-                <div className="sticky top-0 z-20 -mx-4 mb-6 border-b border-white/[0.06] bg-[#121212]/90 px-4 py-4 backdrop-blur-md sm:-mx-6 sm:px-6">
+                <div className="sticky top-0 z-100 -mx-4 mb-6 border-b border-white/[0.06] bg-[#121212]/90 px-4 py-4 backdrop-blur-md sm:-mx-6 sm:px-6">
                     <label className="block text-[11px] font-semibold uppercase tracking-[0.14em] text-white/40" htmlFor="mcq-search">Search by MCQ ID</label>
                     <div className="mt-2 flex flex-col gap-3 sm:flex-row sm:items-center">
                         <input
                         onChange={e => {
-                            if(!e.target.value){
-                                setMcqsToShow(mcqs);
-                                setTotalPages(Math.ceil(mcqs.length / 10));
-                            }
-                            else if(/^\d*$/.test(e.target.value)){
-                                let tempMcqs = mcqs.filter(mcq => mcq.mcq_id === Number(e.target.value));
+                            if(/^\d*$/.test(e.target.value)){
+                                let tempMcqs = mcqs.filter(mcq => mcq.mcq_id === Number(e.target.value) || !e.target.value);
                                 setMcqsToShow(tempMcqs);
                                 setTotalPages(tempMcqs.length / 10);
                             }

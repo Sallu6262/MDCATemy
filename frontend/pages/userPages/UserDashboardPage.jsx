@@ -104,7 +104,7 @@ const UserDashboardPage = () => {
 
                 <div className="flex items-center justify-between px-0.5">
                 <p className="font-['Inter'] font-semibold text-[14px] uppercase tracking-[0.12em] text-white/40">Overview</p>
-                <Link to="/analytics" className="cursor-pointer flex items-center gap-1 font-['Inter'] font-semibold text-[15px] text-[#E0A800] hover:text-[#FFC600] transition-colors">
+                <Link to="/dashboard/analytics" className="cursor-pointer flex items-center gap-1 font-['Inter'] font-semibold text-[15px] text-[#E0A800] hover:text-[#FFC600] transition-colors">
                     See Detailed Analytics
                     <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
                 </Link>
@@ -327,7 +327,7 @@ const UserDashboardPage = () => {
                     <div className="flex items-center gap-2 flex-shrink-0 mb-1">
                         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#E0A800" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
                         <h3 className="font-['Poppins'] font-medium text-white/80 text-[15px]">Subjects Preparation</h3>
-                        <Link to="/analytics" className="cursor-pointer ml-auto text-[15px] font-['Inter'] text-[#E0A800]">See Detailed Analytics</Link>
+                        <Link to="/dashboard/analytics" className="cursor-pointer ml-auto text-[15px] font-['Inter'] text-[#E0A800]">See Detailed Analytics</Link>
                     </div>
                     <div className="border-t border-white/[0.06] pt-2 flex-1 flex items-center justify-around">
                         
