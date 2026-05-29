@@ -16,6 +16,7 @@ const QuizMakingPage = () => {
 
     const [syllabus, setSyllabus] = useState([]);
     const [mcqDistributionPerTopic, setMcqDistributionPerTopic] = useState({});
+    const [subjectIDs, setSubjectIDs] = useState({});
 
     const [errorMessage, setErrorMessage] = useState("");
     const [showAccuracy, setShowAccuracy] = useState(true);
@@ -36,6 +37,7 @@ const QuizMakingPage = () => {
             if(data.status === 'success'){
                 // console.log(data.data);
                 setSyllabus(data.data.syllabus);
+                setSubjectIDs(data.data.subject_ids);
             }
         }
 
@@ -60,6 +62,14 @@ const QuizMakingPage = () => {
 
         fetchMCQDistributionPerTopic();
     }, []);
+
+    const filterSubjectIDs = () => {
+        let filtered = new Set();
+        Object.keys(subjectIDs).forEach(subject => {
+            if(selectedSubjects.has(subject)) filtered.add(subjectIDs[subject]);
+        })
+        return filtered;
+    }
 
     return (
         <>
@@ -124,7 +134,7 @@ const QuizMakingPage = () => {
                         {step === 1 ? <QuizMakingStep1 selectedSubjects={selectedSubjects} setSelectedSubjects={setSelectedSubjects}/> : ''}
                         {step === 2 ? <QuizMakingStep2 filteredSyllabus={filteredSubjects} selectedChapters={selectedChapters} setSelectedChapters={setSelectedChapters}/> : ''}
                         {step === 3 ? <QuizMakingStep3 filteredChapters={filteredChapters} selectedTopics={selectedTopics} setSelectedTopics={setSelectedTopics} mcqDistributionPerTopic={mcqDistributionPerTopic}/> : ''}
-                        {step === 4 ? <QuizMakingStep4 selectedTopics={selectedTopics} mcqDistributionPerTopic={mcqDistributionPerTopic} setQuizInfo={setQuizInfo} setStep={setStep}/> : ''}
+                        {step === 4 ? <QuizMakingStep4 selectedTopics={selectedTopics} mcqDistributionPerTopic={mcqDistributionPerTopic} setQuizInfo={setQuizInfo} setStep={setStep} selectedSubjects={filterSubjectIDs()}/> : ''}
 
                         {
                             step < 5 ?

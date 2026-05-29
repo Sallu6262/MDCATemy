@@ -1,3 +1,4 @@
+import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import logoImg from "../assets/mdcat.svg"
 
@@ -7,6 +8,14 @@ const Navbar = ({user, setUser}) => {
 
   const API_URL = import.meta.env.VITE_API_URL;
   const navigate = useNavigate();
+
+  const [theme, setTheme] = useState(() => document.documentElement.dataset.theme || 'dark');
+  const toggleTheme = () => {
+    const next = theme === 'light' ? 'dark' : 'light';
+    document.documentElement.dataset.theme = next;
+    localStorage.setItem('mdcatemy-theme', next);
+    setTheme(next);
+  };
 
   const logOutWebsite = async () => {
     const res = await fetch(`${API_URL}/users/logout`,{
@@ -32,7 +41,15 @@ const Navbar = ({user, setUser}) => {
   }
 
   return (
-    <nav className="sticky top-0 left-0 right-0 z-100" style={{ background: "rgba(18,18,18,0.88)", backdropFilter: "blur(24px) saturate(180%)", borderBottom: "1px solid rgba(255,255,255,0.08)", boxShadow: "0 4px 24px rgba(0,0,0,0.25)" }}>
+    <nav
+      className="sticky top-0 left-0 right-0 z-100"
+      style={{
+        background: "rgb(var(--ui-bg-rgb, 18 18 18) / 0.88)",
+        backdropFilter: "blur(24px) saturate(180%)",
+        borderBottom: "1px solid rgb(var(--ui-text-rgb) / 0.08)",
+        boxShadow: "0 4px 24px rgba(0,0,0,0.25)",
+      }}
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between gap-3" style={{ minHeight: "72px" }}>
           <Link to="/" 
@@ -49,11 +66,38 @@ const Navbar = ({user, setUser}) => {
               }}
             />
           </Link>
+
+          <button
+            type="button"
+            onClick={toggleTheme}
+            className="ml-auto inline-flex items-center justify-center rounded-lg border border-white/15 bg-white/[0.04] p-2 text-white/90 transition hover:bg-white/[0.08] lg:ml-0"
+            aria-label="Toggle theme"
+            title={theme === 'light' ? 'Switch to dark' : 'Switch to light'}
+          >
+            {theme === 'light' ? (
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z" />
+              </svg>
+            ) : (
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <circle cx="12" cy="12" r="4" />
+                <path d="M12 2v2" />
+                <path d="M12 20v2" />
+                <path d="m4.93 4.93 1.41 1.41" />
+                <path d="m17.66 17.66 1.41 1.41" />
+                <path d="M2 12h2" />
+                <path d="M20 12h2" />
+                <path d="m6.34 17.66-1.41 1.41" />
+                <path d="m19.07 4.93-1.41 1.41" />
+              </svg>
+            )}
+          </button>
+
           <div className="hidden lg:flex items-center gap-8 ml-auto">
-            <Link to="/books" onClick={examGoingChecker} className="text-sm font-medium hover:text-white transition-colors" style={{ color: "rgba(255,255,255,0.8)", textDecoration: "none" }}>Books</Link>
-            <Link to="/tests" onClick={examGoingChecker} className="text-sm font-medium hover:text-white transition-colors" style={{ color: "rgba(255,255,255,0.8)", textDecoration: "none" }}>Tests</Link>
-            <Link to="/pricing" onClick={examGoingChecker} className="text-sm font-medium hover:text-white transition-colors" style={{ color: "rgba(255,255,255,0.8)", textDecoration: "none" }}>Pricing</Link>
-            <Link to="/contact" onClick={examGoingChecker} className="text-sm font-medium hover:text-white transition-colors" style={{ color: "rgba(255,255,255,0.8)", textDecoration: "none" }}>About Us</Link>
+            <Link to="/books" onClick={examGoingChecker} className="text-sm font-medium hover:text-white transition-colors" style={{ color: "rgb(var(--ui-text-rgb) / 0.8)", textDecoration: "none" }}>Books</Link>
+            <Link to="/tests" onClick={examGoingChecker} className="text-sm font-medium hover:text-white transition-colors" style={{ color: "rgb(var(--ui-text-rgb) / 0.8)", textDecoration: "none" }}>Tests</Link>
+            <Link to="/pricing" onClick={examGoingChecker} className="text-sm font-medium hover:text-white transition-colors" style={{ color: "rgb(var(--ui-text-rgb) / 0.8)", textDecoration: "none" }}>Pricing</Link>
+            <Link to="/contact" onClick={examGoingChecker} className="text-sm font-medium hover:text-white transition-colors" style={{ color: "rgb(var(--ui-text-rgb) / 0.8)", textDecoration: "none" }}>About Us</Link>
           </div>
           <div className="hidden lg:flex items-center gap-3 ml-6">
             {
@@ -72,7 +116,7 @@ const Navbar = ({user, setUser}) => {
             }
           </div>
 
-          <details className="relative ml-auto lg:hidden">
+          <details className="relative lg:hidden">
             <summary className="list-none cursor-pointer rounded-lg border border-white/15 bg-white/[0.04] p-2 text-white/90 transition hover:bg-white/[0.08]" aria-label="Open menu">
               <span className="flex h-6 w-6 flex-col items-center justify-center gap-1">
                 <span className="block h-0.5 w-5 rounded bg-white/90"></span>

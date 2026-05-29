@@ -283,7 +283,7 @@ const ExamTakingScreen = ({ isQuiz, exam, isExamHappening, setIsExamHappeningPar
 
     if(setIsExamHappeningParent) setIsExamHappeningParent(isExamHappening);
 
-    if (isExamHappening) {
+    if (isExamHappening && exam?.timer) {
       if(exam?.test_mode !== 'Silent'){
         audioRef.current.loop = true;
         audioRef.current.play();

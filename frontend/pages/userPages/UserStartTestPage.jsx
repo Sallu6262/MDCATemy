@@ -369,7 +369,8 @@ const UserStartTestPage = () => {
           test_mode: numberToModes[testMode],
           blind_mode: blindMode,
           test_id: testID,
-          answerAfterEach: false
+          answerAfterEach: false,
+          timer: true
         }}
         isExamHappening={true}
         setIsExamHappeningParent={setIsExamHappening}

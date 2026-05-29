@@ -1,15 +1,111 @@
 @import "tailwindcss";
 
+/* Theme tokens
+   - Dark uses your current palette defaults
+   - Light swaps base neutrals only */
+:root,
+html[data-theme="dark"] {
+  --ui-bg: #181A18;
+  --ui-panel: #222422;
+  --ui-panel-2: #1E201E;
+  --ui-border: #2E302E;
+  --ui-text: #ffffff;
+  --ui-muted: #A8ACA8;
+  --ui-bg-rgb: 24 26 24;
+  --ui-text-rgb: 255 255 255;
+  --ui-muted-rgb: 168 172 168;
+}
+
+html[data-theme="light"] {
+  --ui-bg: #ffffff;
+  --ui-panel: #f3f4f6;
+  --ui-panel-2: #ffffff;
+  --ui-border: #d1d5db;
+  --ui-text: #111827;
+  --ui-muted: #4b5563;
+  --ui-bg-rgb: 255 255 255;
+  --ui-text-rgb: 17 24 39;
+  --ui-muted-rgb: 75 85 99;
+}
+
 html {
   scroll-behavior: smooth;
 }
 
 body,
 #root {
-  background-color: #121212;
+  background-color: var(--ui-bg);
   min-height: 100%;
 }
 
+/* Map common Tailwind arbitrary hex classes to theme tokens.
+   This avoids editing dozens of files. */
+html[data-theme] .bg-\[\#181A18\] { background-color: var(--ui-bg) !important; }
+html[data-theme] .bg-\[\#222422\] { background-color: var(--ui-panel) !important; }
+html[data-theme] .bg-\[\#1E201E\] { background-color: var(--ui-panel-2) !important; }
+html[data-theme] .border-\[\#2E302E\] { border-color: var(--ui-border) !important; }
+html[data-theme] .text-\[\#A8ACA8\] { color: var(--ui-muted) !important; }
+html[data-theme] .text-white { color: var(--ui-text) !important; }
+
+/* Tailwind opacity variants like `text-white/80` are separate classnames */
+html[data-theme] .text-white\/95 { color: rgb(var(--ui-text-rgb) / 0.95) !important; }
+html[data-theme] .text-white\/90 { color: rgb(var(--ui-text-rgb) / 0.9) !important; }
+html[data-theme] .text-white\/85 { color: rgb(var(--ui-text-rgb) / 0.85) !important; }
+html[data-theme] .text-white\/80 { color: rgb(var(--ui-text-rgb) / 0.8) !important; }
+html[data-theme] .text-white\/70 { color: rgb(var(--ui-text-rgb) / 0.7) !important; }
+html[data-theme] .text-white\/60 { color: rgb(var(--ui-text-rgb) / 0.6) !important; }
+html[data-theme] .text-white\/50 { color: rgb(var(--ui-text-rgb) / 0.5) !important; }
+html[data-theme] .text-white\/40 { color: rgb(var(--ui-text-rgb) / 0.4) !important; }
+html[data-theme] .text-white\/30 { color: rgb(var(--ui-text-rgb) / 0.3) !important; }
+html[data-theme] .text-white\/25 { color: rgb(var(--ui-text-rgb) / 0.25) !important; }
+html[data-theme] .text-white\/20 { color: rgb(var(--ui-text-rgb) / 0.2) !important; }
+html[data-theme] .text-white\/15 { color: rgb(var(--ui-text-rgb) / 0.15) !important; }
+html[data-theme] .text-white\/10 { color: rgb(var(--ui-text-rgb) / 0.1) !important; }
+
+/* Same idea for muted text opacity variants you use in multiple places */
+html[data-theme] .text-\[\#A8ACA8\]\/80 { color: rgb(var(--ui-muted-rgb) / 0.8) !important; }
+html[data-theme] .text-\[\#A8ACA8\]\/70 { color: rgb(var(--ui-muted-rgb) / 0.7) !important; }
+html[data-theme] .text-\[\#A8ACA8\]\/60 { color: rgb(var(--ui-muted-rgb) / 0.6) !important; }
+html[data-theme] .text-\[\#A8ACA8\]\/50 { color: rgb(var(--ui-muted-rgb) / 0.5) !important; }
+
+/* Background/border utility variants frequently used in nav/cards */
+html[data-theme] .bg-\[\#121212\] { background-color: var(--ui-bg) !important; }
+html[data-theme] .bg-\[\#161616\] { background-color: var(--ui-panel) !important; }
+html[data-theme] .bg-\[\#111411\] { background-color: var(--ui-panel-2) !important; }
+html[data-theme] .bg-\[\#1a1c1a\] { background-color: var(--ui-panel-2) !important; }
+html[data-theme] .bg-\[\#1A1C1A\] { background-color: var(--ui-panel-2) !important; }
+html[data-theme] .bg-\[\#1A1A1A\] { background-color: var(--ui-panel) !important; }
+
+/* Tailwind opacity utilities (e.g. `bg-white/[0.04]`, `border-white/20`) */
+html[data-theme] .bg-white\/\[0\.04\] { background-color: rgb(var(--ui-text-rgb) / 0.04) !important; }
+html[data-theme] .bg-white\/\[0\.06\] { background-color: rgb(var(--ui-text-rgb) / 0.06) !important; }
+html[data-theme] .bg-white\/\[0\.08\] { background-color: rgb(var(--ui-text-rgb) / 0.08) !important; }
+html[data-theme] .bg-white\/10 { background-color: rgb(var(--ui-text-rgb) / 0.10) !important; }
+html[data-theme] .bg-white\/15 { background-color: rgb(var(--ui-text-rgb) / 0.15) !important; }
+html[data-theme] .bg-white\/20 { background-color: rgb(var(--ui-text-rgb) / 0.20) !important; }
+
+html[data-theme] .border-white\/10 { border-color: rgb(var(--ui-text-rgb) / 0.10) !important; }
+html[data-theme] .border-white\/15 { border-color: rgb(var(--ui-text-rgb) / 0.15) !important; }
+html[data-theme] .border-white\/20 { border-color: rgb(var(--ui-text-rgb) / 0.20) !important; }
+
+/* Keep brand yellow unchanged */
+html[data-theme] .bg-\[\#FFC600\] { background-color: #FFC600 !important; }
+html[data-theme] .text-\[\#FFC600\] { color: #FFC600 !important; }
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f8f9fa;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #ffc600;
+  border-radius: 3px;
+}
+
+/* Scrollbar (correct selectors) */
 ::-webkit-scrollbar {
   width: 6px;
 }

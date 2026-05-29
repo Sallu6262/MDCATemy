@@ -1,5 +1,6 @@
 .landing-page {
-  background-color: #121212;
+  background-color: var(--ui-bg);
+  color: var(--ui-text);
   font-family: ui-sans-serif, system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
@@ -32,6 +33,34 @@
     rgba(255, 198, 0, 0.4),
     transparent
   );
+}
+
+.landing-page .landing-hero-overlay-main {
+  background: linear-gradient(
+    to bottom,
+    rgba(10, 10, 10, 0.72) 0%,
+    rgba(10, 10, 10, 0.55) 40%,
+    rgba(10, 10, 10, 0.75) 75%,
+    rgba(10, 10, 10, 0.96) 100%
+  );
+}
+
+html[data-theme="light"] .landing-page .landing-hero-overlay-main {
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.72) 0%,
+    rgba(255, 255, 255, 0.55) 40%,
+    rgba(255, 255, 255, 0.8) 75%,
+    rgba(255, 255, 255, 0.96) 100%
+  );
+}
+
+.landing-page .landing-hero-overlay-radial {
+  background: radial-gradient(ellipse at center, transparent 40%, rgba(0, 0, 0, 0.55) 100%);
+}
+
+html[data-theme="light"] .landing-page .landing-hero-overlay-radial {
+  background: radial-gradient(ellipse at center, transparent 40%, rgba(255, 255, 255, 0.45) 100%);
 }
 
 @keyframes landing-pulse-glow {
@@ -114,4 +143,30 @@
 .landing-page .hero-bg {
   background-size: cover;
   background-position: center 30%;
+}
+
+.landing-page .landing-surface {
+  background-color: var(--ui-panel);
+  border-color: rgb(var(--ui-text-rgb) / 0.1);
+}
+
+.landing-page .landing-section {
+  background-color: var(--ui-bg);
+}
+
+.landing-page .landing-muted {
+  color: rgb(var(--ui-text-rgb) / 0.55);
+}
+
+.landing-page .landing-muted-soft {
+  color: rgb(var(--ui-text-rgb) / 0.4);
+}
+
+.landing-page .landing-body {
+  color: rgb(var(--ui-text-rgb) / 0.75);
+}
+
+.landing-page .landing-contact-card {
+  background: var(--ui-panel);
+  border: 1px solid rgb(var(--ui-text-rgb) / 0.1);
 }

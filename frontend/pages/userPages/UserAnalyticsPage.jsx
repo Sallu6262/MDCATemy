@@ -5,30 +5,30 @@ import { subjectToColor } from '../../utils/HelperObjects';
 
 //weekly activity remaining + all other things
 
-const subjectCircleLink = ({subject, color, accuracy, total}) => {
-    return (
-        <Link to={`/analytics/${subject.toLowerCase()}`} className="group block w-[30%] md:w-[17%]">
-            <div className="relative flex flex-col items-center gap-1.5 py-1 cursor-pointer transition-transform duration-200 hover:-translate-y-1">
-                <div className="relative rounded-full transition-all duration-200 group-hover:drop-shadow-[0_0_14px_rgba(255,198,0,0.45)]">
-                <svg width="74" height="74" className="-rotate-90">
-                    <circle cx="37" cy="37" r="34" stroke="#2E302E" strokeWidth="6" fill="none"/>
-                    <circle cx="37" cy="37" r="34" stroke="#38BDF8" strokeWidth="6" strokeLinecap="round" fill="none"
-                            strokeDasharray="213.628" strokeDashoffset="89.72"/>
-                </svg>
-                <div className="absolute inset-0 flex items-center justify-center">
-                    <span className="font-poppins font-black" style={{ color: `#38BDF8`, fontSize: "13px" }}>{accuracy}%</span>
-                </div>
-                <div className="absolute -bottom-0.5 -right-0.5 w-5 h-5 rounded-full bg-[#FFC600] border-2 border-[#181A18] flex items-center justify-center shadow-[1.5px_1.5px_0px_rgba(0,0,0,0.5)] pulse-chevron" style={{ animationDelay: "0.15s" }}>
-                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#181A18" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
-                </div>
-                </div>
-                <p className="font-poppins font-black text-[13px] text-white text-center leading-tight group-hover:text-[#FFC600] transition-colors">Chemistry</p>
-                <span className="font-inter text-[13px] text-[#A8ACA8]">{total} MCQs</span>
-                <span className="inline-flex items-center gap-0.5 text-[13px] font-poppins font-black px-1.5 py-0.5 rounded-md border text-red-400 bg-red-400/10 border-red-400/30">-1%</span>
-            </div>
-        </Link>
-    )
-}
+// const subjectCircleLink = ({subject, color, accuracy, total}) => {
+//     return (
+//         <Link to={`/dashboard/analytics/${subject.toLowerCase()}`} className="group block w-[30%] md:w-[17%]">
+//             <div className="relative flex flex-col items-center gap-1.5 py-1 cursor-pointer transition-transform duration-200 hover:-translate-y-1">
+//                 <div className="relative rounded-full transition-all duration-200 group-hover:drop-shadow-[0_0_14px_rgba(255,198,0,0.45)]">
+//                 <svg width="74" height="74" className="-rotate-90">
+//                     <circle cx="37" cy="37" r="34" stroke="#2E302E" strokeWidth="6" fill="none"/>
+//                     <circle cx="37" cy="37" r="34" stroke="#38BDF8" strokeWidth="6" strokeLinecap="round" fill="none"
+//                             strokeDasharray="213.628" strokeDashoffset="89.72"/>
+//                 </svg>
+//                 <div className="absolute inset-0 flex items-center justify-center">
+//                     <span className="font-poppins font-black" style={{ color: `#38BDF8`, fontSize: "13px" }}>{accuracy}%</span>
+//                 </div>
+//                 <div className="absolute -bottom-0.5 -right-0.5 w-5 h-5 rounded-full bg-[#FFC600] border-2 border-[#181A18] flex items-center justify-center shadow-[1.5px_1.5px_0px_rgba(0,0,0,0.5)] pulse-chevron" style={{ animationDelay: "0.15s" }}>
+//                     <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#181A18" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+//                 </div>
+//                 </div>
+//                 <p className="font-poppins font-black text-[13px] text-white text-center leading-tight group-hover:text-[#FFC600] transition-colors">Chemistry</p>
+//                 <span className="font-inter text-[13px] text-[#A8ACA8]">{total} MCQs</span>
+//                 <span className="inline-flex items-center gap-0.5 text-[13px] font-poppins font-black px-1.5 py-0.5 rounded-md border text-red-400 bg-red-400/10 border-red-400/30">-1%</span>
+//             </div>
+//         </Link>
+//     )
+// }
 
 const UserAnalyticsPage = () => {
     const {studentAnalytics : sa} = useOutletContext();
@@ -401,11 +401,11 @@ const UserAnalyticsPage = () => {
                                     const percentage = sa?.subjects[perf.subject_name.replace(' ', '_').toLowerCase()];
 
                                     return (
-                                        <Link key={i} to={`/analytics/${perf.subject_name.toLowerCase()}`} className="group block w-[30%] md:w-[17%]">
+                                        <Link key={i} to={`/dashboard/analytics/${perf.subject_name.toLowerCase()}`} className="group block w-[30%] md:w-[17%]">
                                             <div className="relative flex flex-col items-center gap-1.5 py-1 cursor-pointer transition-transform duration-200 hover:-translate-y-1">
                                                 <div className="relative rounded-full transition-all duration-200 group-hover:drop-shadow-[0_0_14px_rgba(255,198,0,0.45)]">
                                                 <svg width="74" height="74" className="-rotate-90">
-                                                    <circle cx="37" cy="37" r="34" stroke="#2E302E" strokeWidth="6" fill="none"/>
+                                                    <circle cx="37" cy="37" r="34" stroke="var(--ui-border)" strokeWidth="6" fill="none"/>
                                                     <circle cx="37" cy="37" r="34" stroke={subjectToColor[perf.subject_name]} strokeWidth="6" strokeLinecap="round" fill="none"
                                                             strokeDasharray="213.628" strokeDashoffset={213.628 - percentage}/>
                                                 </svg>
@@ -418,7 +418,7 @@ const UserAnalyticsPage = () => {
                                                 </div>
                                                 <p className="font-poppins font-black text-[13px] text-white text-center leading-tight group-hover:text-[#FFC600] transition-colors">{perf.subject_name}</p>
                                                 <span className="font-inter text-[13px] text-[#A8ACA8]">{sa?.subjects.biology?.attempt ?? 0} MCQs</span>
-                                                <span className="inline-flex items-center gap-0.5 text-[13px] font-poppins font-black px-1.5 py-0.5 rounded-md border text-emerald-400 bg-emerald-400/10 border-emerald-400/30">+{freqToAccess}%</span>
+                                                <span className="inline-flex items-center gap-0.5 text-[13px] font-poppins font-black px-1.5 py-0.5 rounded-md border text-emerald-400 bg-emerald-400/10 border-emerald-400/30">{freqToAccess}%</span>
                                             </div>
                                         </Link>
                                     )
@@ -437,14 +437,14 @@ const UserAnalyticsPage = () => {
                         </div>
                         <div className="flex items-center gap-1.5 flex-shrink-0">
                             <button onClick={() => updateActivity(false, true)} aria-label="Previous week"
-                                    disabled={weekActivity?.length && !isSameCalendarDay(weekActivity?.[0]?.activity_date, MDCATEMY_DATE)}
+                                    disabled={!(weekActivity?.length && !isSameCalendarDay(weekActivity?.[0]?.activity_date, MDCATEMY_DATE))}
                                     className={`w-8 h-8 rounded-lg border-2 flex items-center justify-center  ${weekActivity?.length && !isSameCalendarDay(weekActivity?.[0]?.activity_date, MDCATEMY_DATE) ? 'transition-all bg-[#222422] border-[#2E302E] text-white hover:border-[#FFC600] hover:text-[#FFC600] hover:shadow-[2px_2px_0px_rgba(255,198,0,0.25)] cursor-pointer' : 'bg-[#181A18]/40 border-[#2E302E]/50 text-[#2E302E] cursor-not-allowed opacity-50'}`}>
                             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round">
                                 <polyline points="15 18 9 12 15 6"/>
                             </svg>
                             </button>
                             <button onClick={() => updateActivity(true, true)} aria-label="Next week"
-                                    disabled={weekActivity?.length && !isSameCalendarDay(weekActivity?.[weekActivity?.length-1]?.activity_date, Date.now())}
+                                    disabled={!(weekActivity?.length && !isSameCalendarDay(weekActivity?.[weekActivity?.length-1]?.activity_date, Date.now()))}
                                     className={`w-8 h-8 rounded-lg border-2 flex items-center justify-center ${weekActivity?.length && !isSameCalendarDay(weekActivity?.[weekActivity?.length-1]?.activity_date, Date.now()) ? 'transition-all bg-[#222422] border-[#2E302E] text-white hover:border-[#FFC600] hover:text-[#FFC600] hover:shadow-[2px_2px_0px_rgba(255,198,0,0.25)] cursor-pointer' : 'bg-[#181A18]/40 border-[#2E302E]/50 text-[#2E302E] cursor-not-allowed opacity-50'}`}>
                             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round">
                                 <polyline points="9 18 15 12 9 6"/>
@@ -541,14 +541,14 @@ const UserAnalyticsPage = () => {
                         </div>
                         <div className="flex items-center gap-1.5 flex-shrink-0">
                             <button onClick={() => updateActivity(false, false)} aria-label="Previous week"
-                                    disabled={performanceActivity?.length && !isSameCalendarDay(performanceActivity?.[0]?.activity_date, MDCATEMY_DATE)}
+                                    disabled={!(performanceActivity?.length && !isSameCalendarDay(performanceActivity?.[0]?.activity_date, MDCATEMY_DATE))}
                                     className={`w-8 h-8 rounded-lg border-2 flex items-center justify-center  ${performanceActivity?.length && !isSameCalendarDay(performanceActivity?.[0]?.activity_date, MDCATEMY_DATE) ? 'transition-all bg-[#222422] border-[#2E302E] text-white hover:border-[#FFC600] hover:text-[#FFC600] hover:shadow-[2px_2px_0px_rgba(255,198,0,0.25)] cursor-pointer' : 'bg-[#181A18]/40 border-[#2E302E]/50 text-[#2E302E] cursor-not-allowed opacity-50'}`}>
                             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round">
                                 <polyline points="15 18 9 12 15 6"/>
                             </svg>
                             </button>
                             <button onClick={() => updateActivity(true, false)} aria-label="Next week"
-                                    disabled={performanceActivity?.length && !isSameCalendarDay(performanceActivity?.[performanceActivity?.length-1]?.activity_date, Date.now())}
+                                    disabled={!(performanceActivity?.length && !isSameCalendarDay(performanceActivity?.[performanceActivity?.length-1]?.activity_date, Date.now()))}
                                     className={`w-8 h-8 rounded-lg border-2 flex items-center justify-center  ${performanceActivity?.length && !isSameCalendarDay(performanceActivity?.[performanceActivity?.length-1]?.activity_date, Date.now()) ? 'transition-all bg-[#222422] border-[#2E302E] text-white hover:border-[#FFC600] hover:text-[#FFC600] hover:shadow-[2px_2px_0px_rgba(255,198,0,0.25)] cursor-pointer' : 'bg-[#181A18]/40 border-[#2E302E]/50 text-[#2E302E] cursor-not-allowed opacity-50'}`}>
                             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round">
                                 <polyline points="9 18 15 12 9 6"/>

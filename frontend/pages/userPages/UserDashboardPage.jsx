@@ -7,14 +7,19 @@ const SubjectCircleButton = ({accuracy, color, subject}) => {
         <div className="flex flex-col items-center gap-1">
             <div className="relative" style={{ width: "56px", height: "56px" }}>
                 <svg width="56" height="56" style={{ transform: "rotate(-90deg)" }}>
-                    <circle cx="28" cy="28" r="22" fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth="6"/>
+                    <circle cx="28" cy="28" r="22" fill="none" stroke="rgb(var(--ui-text-rgb) / 0.08)" strokeWidth="6"/>
                     <circle cx="28" cy="28" r="22" fill="none" stroke={color} strokeWidth="6" strokeLinecap="round" strokeDasharray="138.23" strokeDashoffset={138.23 - accuracy}/>
                 </svg>
                 <div className="absolute inset-0 flex items-center justify-center">
                     <span className="font-['Poppins'] font-medium text-[15px] leading-none" style={{ color: `${color}` }}>{accuracy}%</span>
                 </div>
             </div>
-            <span className="font-['Inter'] font-medium text-[14px] text-white/55 text-center leading-tight max-w-[72px]">{subject}</span>
+            <span
+              className="font-['Inter'] font-medium text-[14px] text-center leading-tight max-w-[72px]"
+              style={{ color: "rgb(var(--ui-text-rgb) / 0.55)" }}
+            >
+              {subject}
+            </span>
         </div>
     )
 }
@@ -43,9 +48,11 @@ const UserDashboardPage = () => {
     return (
         <>
         <style>{`
-            .card { background:#222422; border:1px solid rgba(255,255,255,0.08); border-radius:1rem; box-shadow:0 2px 8px rgba(0,0,0,.30), 0 8px 24px rgba(0,0,0,.20); padding:1rem 1.25rem; }
-            .card-sm { background:#222422; border:1px solid rgba(255,255,255,0.08); border-radius:1rem; box-shadow:0 2px 8px rgba(0,0,0,.30), 0 8px 24px rgba(0,0,0,.20); padding:.75rem 1rem; }
-            .inner-tile { background:#2a2e2a; border:1px solid rgba(255,255,255,0.06); box-shadow:0 2px 8px rgba(0,0,0,.20); }
+            .card { background:var(--ui-panel); border:1px solid rgb(var(--ui-text-rgb) / 0.08); border-radius:1rem; box-shadow:0 2px 8px rgba(0,0,0,.30), 0 8px 24px rgba(0,0,0,.20); padding:1rem 1.25rem; }
+            .card-sm { background:var(--ui-panel); border:1px solid rgb(var(--ui-text-rgb) / 0.08); border-radius:1rem; box-shadow:0 2px 8px rgba(0,0,0,.30), 0 8px 24px rgba(0,0,0,.20); padding:.75rem 1rem; }
+            .inner-tile { background:var(--ui-panel-2); border:1px solid rgb(var(--ui-text-rgb) / 0.06); box-shadow:0 2px 8px rgba(0,0,0,.20); }
+            .promo-quiz { background: linear-gradient(135deg, rgb(255 198 0 / 0.10), var(--ui-panel), var(--ui-panel-2)); }
+            .promo-test { background: linear-gradient(135deg, var(--ui-panel-2), var(--ui-panel), var(--ui-bg)); }
         `}</style>
 
         <section className="fade-in bg-[#181A18] text-white/90 min-h-screen">
@@ -151,7 +158,7 @@ const UserDashboardPage = () => {
                     isPerformance ?
                     <>
                     <Link to="/dashboard/quiz-builder" className="cursor-pointer block">
-                        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#FFC600]/[0.10] via-[#222422] to-[#1d1f1d] border border-[#FFC600]/25 px-5 py-4 shadow-[0_4px_20px_rgba(0,0,0,0.20),_0_8px_28px_rgba(255,198,0,0.10)] active:scale-[0.985] transition-all">
+                        <div className="promo-quiz relative overflow-hidden rounded-2xl border border-[#FFC600]/25 px-5 py-4 shadow-[0_4px_20px_rgba(0,0,0,0.20),_0_8px_28px_rgba(255,198,0,0.10)] active:scale-[0.985] transition-all">
                             <div className="absolute -top-10 -right-10 w-28 h-28 bg-[#FFC600]/25 rounded-full blur-3xl pointer-events-none"></div>
                             <div className="absolute top-0 right-0 w-20 h-[2px] bg-gradient-to-r from-transparent to-[#FFC600] rotate-[-35deg] origin-right translate-y-3 -translate-x-2 pointer-events-none opacity-60"></div>
                             <div className="relative flex items-center gap-3.5">
@@ -175,7 +182,7 @@ const UserDashboardPage = () => {
                     </Link>
 
                     <Link to="/dashboard/test-series" className="cursor-pointer block">
-                        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#1C1C1E] via-[#222422] to-[#181A18] border border-white/[0.10] px-5 py-4 shadow-[0_4px_20px_rgba(0,0,0,0.30),_0_8px_28px_rgba(0,0,0,0.20)] active:scale-[0.985] transition-all">
+                        <div className="promo-test relative overflow-hidden rounded-2xl border border-white/[0.10] px-5 py-4 shadow-[0_4px_20px_rgba(0,0,0,0.30),_0_8px_28px_rgba(0,0,0,0.20)] active:scale-[0.985] transition-all">
                             <div className="absolute left-0 top-4 bottom-4 w-[3px] rounded-full bg-gradient-to-b from-[#FFC600] via-[#FFC600] to-[#FFC600]/0"></div>
                             <div className="absolute inset-0 opacity-[0.04] pointer-events-none" style={{ backgroundImage: "repeating-linear-gradient(45deg,#FFC600 0 1px,transparent 1px 14px)" }}></div>
                             <div className="relative flex items-center gap-3.5">
@@ -220,7 +227,7 @@ const UserDashboardPage = () => {
                 <div className="grid grid-cols-2 gap-2">
                     <Link to="/dashboard/my-copy" onClick={() => JSON.stringify(sessionStorage.setItem("isSavedCopy", false))} className="block">
                     <div className="relative inner-tile rounded-xl p-3 flex flex-col items-center gap-1.5 active:scale-[0.97] transition-transform">
-                        <svg className="absolute top-2.5 right-2.5" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.30)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+                        <svg className="absolute top-2.5 right-2.5" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="rgb(var(--ui-text-rgb) / 0.30)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
                         <div className="w-9 h-9 rounded-xl flex items-center justify-center" style={{ background: "#EF444418" }}>
                         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#EF4444" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5z"/><polyline points="14 2 14 8 20 8"/><line x1="9.5" y1="12.5" x2="14.5" y2="17.5"/><line x1="14.5" y1="12.5" x2="9.5" y2="17.5"/></svg>
                         </div>
@@ -230,7 +237,7 @@ const UserDashboardPage = () => {
                     </Link>
                     <Link to="/dashboard/my-copy" onClick={() => JSON.stringify(sessionStorage.setItem("isSavedCopy", true))} className="block">
                     <div className="relative inner-tile rounded-xl p-3 flex flex-col items-center gap-1.5 active:scale-[0.97] transition-transform">
-                        <svg className="absolute top-2.5 right-2.5" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.30)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+                        <svg className="absolute top-2.5 right-2.5" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="rgb(var(--ui-text-rgb) / 0.30)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
                         <div className="w-9 h-9 rounded-xl flex items-center justify-center" style={{ background: "#38BDF818" }}>
                         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#38BDF8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
                         </div>
@@ -343,7 +350,7 @@ const UserDashboardPage = () => {
                     </section>
 
                     <Link to="/dashboard/quiz-builder" className="cursor-pointer block flex-[1.2] min-h-0">
-                        <div className="relative overflow-hidden rounded-2xl h-full bg-gradient-to-br from-[#FFC600]/[0.10] via-[#222422] to-[#1d1f1d] border border-[#FFC600]/25 px-5 py-4 mb-8 shadow-[0_4px_20px_rgba(0,0,0,0.20),_0_8px_28px_rgba(255,198,0,0.10)] flex flex-col">
+                        <div className="promo-quiz relative overflow-hidden rounded-2xl h-full border border-[#FFC600]/25 px-5 py-4 mb-8 shadow-[0_4px_20px_rgba(0,0,0,0.20),_0_8px_28px_rgba(255,198,0,0.10)] flex flex-col">
                             <div className="absolute -top-10 -right-10 w-28 h-28 bg-[#FFC600]/25 rounded-full blur-3xl pointer-events-none"></div>
                             <div className="relative flex items-center gap-3.5 flex-1">
                             <div className="w-[52px] h-[52px] rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: "linear-gradient(135deg,#FFC600,#E0A800)", boxShadow: "0 4px 12px rgba(255,198,0,0.40), inset 0 1px 0 rgba(255,255,255,0.30)" }}>
@@ -366,7 +373,7 @@ const UserDashboardPage = () => {
                     </Link>
 
                     <Link to="/dashboard/test-series" className="cursor-pointer block flex-[1.2] min-h-0">
-                    <div className="relative overflow-hidden rounded-2xl h-full bg-gradient-to-br from-[#1C1C1E] via-[#222422] to-[#181A18] border border-white/[0.10] px-5 py-4 shadow-[0_4px_20px_rgba(0,0,0,0.30)] flex flex-col">
+                    <div className="promo-test relative overflow-hidden rounded-2xl h-full border border-white/[0.10] px-5 py-4 shadow-[0_4px_20px_rgba(0,0,0,0.30)] flex flex-col">
                         <div className="absolute left-0 top-4 bottom-4 w-[3px] rounded-full bg-gradient-to-b from-[#FFC600] via-[#FFC600] to-[#FFC600]/0"></div>
                         <div className="absolute inset-0 opacity-[0.04] pointer-events-none" style={{ backgroundImage: "repeating-linear-gradient(45deg,#FFC600 0 1px,transparent 1px 14px)" }}></div>
                         <div className="relative flex items-center gap-3.5 flex-1">
@@ -444,11 +451,11 @@ const UserDashboardPage = () => {
                             <path d="M 39.21 39.21 A 86 86 0 0 1 100.00 14.00 L 100.00 33.00 A 67 67 0 0 0 52.62 52.62 Z" fill="#F97316"/>
                             <path d="M 100.00 14.00 A 86 86 0 0 1 160.79 39.21 L 147.38 52.62 A 67 67 0 0 0 100.00 33.00 Z" fill="#EAB308"/>
                             <path d="M 160.79 39.21 A 86 86 0 0 1 186.00 100.00 L 167.00 100.00 A 67 67 0 0 0 147.38 52.62 Z" fill="#22C55E"/>
-                            <text x="14" y="100" textAnchor="end" dominantBaseline="middle" fontSize="8" fontFamily="Inter,sans-serif" fontWeight="500" fill="rgba(255,255,255,0.38)">0</text>
-                            <text x="39.21" y="39.21" textAnchor="end" dominantBaseline="middle" fontSize="8" fontFamily="Inter,sans-serif" fontWeight="500" fill="rgba(255,255,255,0.38)">45</text>
-                            <text x="100" y="1" textAnchor="middle" dominantBaseline="middle" fontSize="8" fontFamily="Inter,sans-serif" fontWeight="500" fill="rgba(255,255,255,0.38)">90</text>
-                            <text x="160.79" y="39.21" textAnchor="start" dominantBaseline="middle" fontSize="8" fontFamily="Inter,sans-serif" fontWeight="500" fill="rgba(255,255,255,0.38)">135</text>
-                            <text x="186" y="100" textAnchor="start" dominantBaseline="middle" fontSize="8" fontFamily="Inter,sans-serif" fontWeight="500" fill="rgba(255,255,255,0.38)">180</text>
+                            <text x="14" y="100" textAnchor="end" dominantBaseline="middle" fontSize="8" fontFamily="Inter,sans-serif" fontWeight="500" fill="rgb(var(--ui-text-rgb) / 0.38)">0</text>
+                            <text x="39.21" y="39.21" textAnchor="end" dominantBaseline="middle" fontSize="8" fontFamily="Inter,sans-serif" fontWeight="500" fill="rgb(var(--ui-text-rgb) / 0.38)">45</text>
+                            <text x="100" y="1" textAnchor="middle" dominantBaseline="middle" fontSize="8" fontFamily="Inter,sans-serif" fontWeight="500" fill="rgb(var(--ui-text-rgb) / 0.38)">90</text>
+                            <text x="160.79" y="39.21" textAnchor="start" dominantBaseline="middle" fontSize="8" fontFamily="Inter,sans-serif" fontWeight="500" fill="rgb(var(--ui-text-rgb) / 0.38)">135</text>
+                            <text x="186" y="100" textAnchor="start" dominantBaseline="middle" fontSize="8" fontFamily="Inter,sans-serif" fontWeight="500" fill="rgb(var(--ui-text-rgb) / 0.38)">180</text>
                             <g transform={`translate(100 100) rotate(${180 - (sa?.predicted_score ?? 0)})`}>
                             <path d="M 3,0 C 2.2,-28 1,-60 0,-62 C -1,-60 -2.2,-28 -3,0 C -1.5,3 1.5,3 3,0 Z" fill="rgba(255,255,255,0.85)"/>
                             </g>

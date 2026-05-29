@@ -5,7 +5,7 @@ import { formatName, subjectToColor } from '../../../utils/HelperObjects';
 const QuizMakingStep2 = ({filteredSyllabus, selectedChapters, setSelectedChapters}) => {
     // console.log(filteredSyllabus);
     const [subject, setSubject] = useState(Object.keys(filteredSyllabus)[0]);
-    console.log(selectedChapters);
+    // console.log(selectedChapters);
 
     return (
         <>

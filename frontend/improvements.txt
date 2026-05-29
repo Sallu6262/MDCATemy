@@ -1,16 +1,16 @@
 After Finals:
 1. Quiz Builder , chapter selection -> subjects in tabs.    (done)
-2. Exam Taking screen (answer at end or after each mcq and other features as well)
+2. Exam Taking screen (answer at end or after each mcq and other features as well)      (done)
 3. Analytics page   (done)
-4. Dashboard page (both dashboard and analytics page has subject preparation in circles)
-5. Detailed Analytics (chapter and topic wise per subject)
-6. review mcqs in previous tests feature.
-7. pagination in admin dashboard.   (done)
-8. smart select in quiz builder
-9. re test all mistakes in mistakes copy
-10. change landing page
-11. toggle mode 
-12. quiz builder - quiz creation
+4. Dashboard page (both dashboard and analytics page has subject preparation in circles)    (done)
+5. review mcqs in previous tests feature.   (done)
+6. pagination in admin dashboard.   (done)
+7. toggle mode     (done)
+8. Detailed Analytics (chapter and topic wise per subject) (have topics and chapters but no idea which subject it belongs to)
+9. smart select in quiz builder
+10. re test all mistakes in mistakes copy
+11. change landing page
+12. quiz builder - quiz creation (need quiz id when quiz created)
 
 improvements:
 1. In signup form, correct matric and fsc percentage needed according to total marks depending on province

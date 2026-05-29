@@ -24,7 +24,7 @@ const DifficultySelectButton = ({difficulty, difficultyToSet, isSelected, setDif
     )
 }
 
-const QuizMakingStep4 = ({mcqDistributionPerTopic, selectedTopics, setQuizInfo, setStep}) => {
+const QuizMakingStep4 = ({mcqDistributionPerTopic, selectedTopics, setQuizInfo, setStep, selectedSubjects}) => {
     const [showTimer, setShowTimer] = useState(false);
     const [totalMcqs, setTotalMcqs] = useState([...selectedTopics].reduce((acc, topic) => acc + mcqDistributionPerTopic[topic], 0));
     const [maxMcqs, setMaxMcqs] = useState([...selectedTopics].reduce((acc, topic) => acc + mcqDistributionPerTopic[topic], 0));
@@ -35,6 +35,8 @@ const QuizMakingStep4 = ({mcqDistributionPerTopic, selectedTopics, setQuizInfo, 
 
     const [hidden, setHidden] = useState(true);
 
+    // console.log(selectedSubjects);
+
     const numberToDifficulty = {
         0 : 'Easy',
         1 : 'Medium',
@@ -43,17 +45,38 @@ const QuizMakingStep4 = ({mcqDistributionPerTopic, selectedTopics, setQuizInfo, 
         4 : 'Custom',
     }
 
+    const API_URL = import.meta.env.VITE_API_URL;
+
     const createQuiz = async () => {
         const info = {
             timer: showTimer,
-            mcq_count: totalMcqs,
+            total_mcqs: totalMcqs,
             difficulty: numberToDifficulty[difficulty],
             answerAfterEach,
-            difficultyRatio
+            difficultyRatio,
+            test_time: time ?? 0
         };
 
-        setQuizInfo(info);
-        setStep(5);
+        const res = await fetch(`${API_URL}/quizzes/create`,{
+            method: 'POST',
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                quiz_name: `new quiz ${Date.now()}`,
+                quiz_mode: answerAfterEach ? 'TUTOR' : 'EXAM',
+                mcq_count: totalMcqs,
+                subject_ids: [...selectedSubjects],
+            })
+        });
+
+        const data = await res.json();
+
+        if(data.status === 'success'){
+            setQuizInfo(info);
+            setStep(5);
+        }
     }
 
     return (
