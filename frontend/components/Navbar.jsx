@@ -2,7 +2,7 @@ import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import logoImg from "../assets/mdcat.svg"
 
-const Navbar = ({user, setUser}) => {
+const Navbar = ({user, setUser, isLanding}) => {
   let name = user?.name;
   name = name?.split(' ')?.map(n => n[0].toUpperCase()).slice(0,2);
 
@@ -44,7 +44,7 @@ const Navbar = ({user, setUser}) => {
     <nav
       className="sticky top-0 left-0 right-0 z-100"
       style={{
-        background: "rgb(var(--ui-bg-rgb, 18 18 18) / 0.88)",
+        background: "rgb(var(--ui-bg-rgb, 18 18 18) / 1)",
         backdropFilter: "blur(24px) saturate(180%)",
         borderBottom: "1px solid rgb(var(--ui-text-rgb) / 0.08)",
         boxShadow: "0 4px 24px rgba(0,0,0,0.25)",
@@ -67,37 +67,38 @@ const Navbar = ({user, setUser}) => {
             />
           </Link>
 
-          <button
-            type="button"
-            onClick={toggleTheme}
-            className="ml-auto inline-flex items-center justify-center rounded-lg border border-white/15 bg-white/[0.04] p-2 text-white/90 transition hover:bg-white/[0.08] lg:ml-0"
-            aria-label="Toggle theme"
-            title={theme === 'light' ? 'Switch to dark' : 'Switch to light'}
-          >
-            {theme === 'light' ? (
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z" />
-              </svg>
-            ) : (
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                <circle cx="12" cy="12" r="4" />
-                <path d="M12 2v2" />
-                <path d="M12 20v2" />
-                <path d="m4.93 4.93 1.41 1.41" />
-                <path d="m17.66 17.66 1.41 1.41" />
-                <path d="M2 12h2" />
-                <path d="M20 12h2" />
-                <path d="m6.34 17.66-1.41 1.41" />
-                <path d="m19.07 4.93-1.41 1.41" />
-              </svg>
-            )}
-          </button>
+          {
+            isLanding? 
+            <button
+              type="button"
+              onClick={toggleTheme}
+              className="ml-auto inline-flex items-center justify-center rounded-lg border border-white/15 bg-white/[0.04] p-2 text-white/90 transition hover:bg-white/[0.08] lg:ml-0"
+              aria-label="Toggle theme"
+              title={theme === 'light' ? 'Switch to dark' : 'Switch to light'}
+            >
+              {theme === 'light' ? (
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z" />
+                </svg>
+              ) : (
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <circle cx="12" cy="12" r="4" />
+                  <path d="M12 2v2" />
+                  <path d="M12 20v2" />
+                  <path d="m4.93 4.93 1.41 1.41" />
+                  <path d="m17.66 17.66 1.41 1.41" />
+                  <path d="M2 12h2" />
+                  <path d="M20 12h2" />
+                  <path d="m6.34 17.66-1.41 1.41" />
+                  <path d="m19.07 4.93-1.41 1.41" />
+                </svg>
+              )}
+            </button> : ''
+          }
 
           <div className="hidden lg:flex items-center gap-8 ml-auto">
-            <Link to="/books" onClick={examGoingChecker} className="text-sm font-medium hover:text-white transition-colors" style={{ color: "rgb(var(--ui-text-rgb) / 0.8)", textDecoration: "none" }}>Books</Link>
-            <Link to="/tests" onClick={examGoingChecker} className="text-sm font-medium hover:text-white transition-colors" style={{ color: "rgb(var(--ui-text-rgb) / 0.8)", textDecoration: "none" }}>Tests</Link>
-            <Link to="/pricing" onClick={examGoingChecker} className="text-sm font-medium hover:text-white transition-colors" style={{ color: "rgb(var(--ui-text-rgb) / 0.8)", textDecoration: "none" }}>Pricing</Link>
-            <Link to="/contact" onClick={examGoingChecker} className="text-sm font-medium hover:text-white transition-colors" style={{ color: "rgb(var(--ui-text-rgb) / 0.8)", textDecoration: "none" }}>About Us</Link>
+            <Link to="/about" onClick={examGoingChecker} className="text-sm font-medium hover:text-white transition-colors" style={{ color: "rgb(var(--ui-text-rgb) / 0.8)", textDecoration: "none" }}>About</Link>
+            <Link to="/tests-series-login" onClick={examGoingChecker} className="text-sm font-medium hover:text-white transition-colors" style={{ color: "rgb(var(--ui-text-rgb) / 0.8)", textDecoration: "none" }}>Tests Session</Link>
           </div>
           <div className="hidden lg:flex items-center gap-3 ml-6">
             {
@@ -111,7 +112,8 @@ const Navbar = ({user, setUser}) => {
               : 
               <>
                 <Link to="/login" style={{ border: "1px solid #FFC600", borderRadius: "8px", padding: "0.5rem 1.25rem", color: "#FFC600", fontSize: "0.875rem", fontWeight: 500, display: "inline-flex", alignItems: "center", height: "38px", textDecoration: "none" }}>Login</Link>
-                <Link to="/signup" style={{ background: "#FFC600", borderRadius: "8px", padding: "0.5rem 1.25rem", color: "#181A18", fontSize: "0.875rem", fontWeight: 600, display: "inline-flex", alignItems: "center", height: "38px", textDecoration: "none" }}>Join today</Link>
+                <Link to="/quiz-builder-login" style={{ border: "1px solid #FFC600", borderRadius: "8px", padding: "0.5rem 1.25rem", color: "#FFC600", fontSize: "0.875rem", fontWeight: 500, display: "inline-flex", alignItems: "center", height: "38px", textDecoration: "none" }}>Quiz Builder Login</Link>
+                <Link to="/signup" style={{ background: "#FFC600", borderRadius: "8px", padding: "0.5rem 1.25rem", color: "#181A18", fontSize: "0.875rem", fontWeight: 600, display: "inline-flex", alignItems: "center", height: "38px", textDecoration: "none" }}>Enroll Now</Link>
               </>
             }
           </div>

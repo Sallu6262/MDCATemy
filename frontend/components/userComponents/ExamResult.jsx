@@ -1,9 +1,11 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import '../../src/animation.css';
 
 const ExamResult = ({isQuiz, correct, wrong, saved, skipped, total, exam}) => {
     const percentage = parseInt((correct / total) * 100);
+
+    const navigate = useNavigate();
 
     return (
         <div className="fade-in flex min-w-0 flex-1 flex-col overflow-hidden">
@@ -50,15 +52,20 @@ const ExamResult = ({isQuiz, correct, wrong, saved, skipped, total, exam}) => {
                 </div>
 
                 <div className="grid grid-cols-2 gap-3">
-                <Link to={isQuiz ? '/dashboard/quiz-builder' : '/dashboard/test-series'} className="cursor-pointer flex items-center justify-center gap-2 rounded-xl border border-[#2E302E] bg-[#2A2C2A]/30 px-4 py-3.5 text-[13px] font-black uppercase tracking-[0.08em] text-white transition-all hover:border-[#FFC600]/40">
+                <button type='button' 
+                    onClick={() => {  
+                        if(isQuiz) navigate(0);
+                        else navigate('/dashboard');
+                    }} 
+                    className="cursor-pointer flex items-center justify-center gap-2 rounded-xl border border-[#2E302E] bg-[#2A2C2A]/30 px-4 py-3.5 text-[13px] font-black uppercase tracking-[0.08em] text-white transition-all hover:border-[#FFC600]/40">
                     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8" />
                     <path d="M21 3v5h-5" />
                     <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16" />
                     <path d="M3 21v-5h5" />
                     </svg>
-                    {isQuiz ? 'New Quiz' : 'Back To Tests Series'}
-                </Link>
+                    {isQuiz ? 'New Quiz' : 'Back To Dashboard'}
+                </button>
 
                 <Link className="cursor-pointer flex items-center justify-center gap-2 rounded-xl bg-[#FFC600] px-4 py-3.5 text-[13px] font-black uppercase tracking-[0.08em] text-[#181A18] shadow-lg shadow-[#FFC600]/15 transition-all hover:scale-[1.01]">
                     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">

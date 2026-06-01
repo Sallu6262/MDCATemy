@@ -6,7 +6,7 @@ import { createRoot } from 'react-dom/client';
 import { useNavigate } from 'react-router-dom';
 
 const TestReviewCard = ({test, setTestReviewHidden, attempted}) => {
-  // console.log(test);
+  console.log(test);
   const reviewRef = useRef(null);
 
   const navigate = useNavigate();
@@ -62,7 +62,6 @@ const TestReviewCard = ({test, setTestReviewHidden, attempted}) => {
       logical_reasoning: lrCount,
       test_mode: "Silent",
       blind_mode: 0,
-      test_id: test?.test_id,
       answerAfterEach: false
     }));
 

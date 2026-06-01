@@ -4,6 +4,7 @@ import QuizMakingStep2 from '../../../components/userComponents/QuizBuilderCompo
 import QuizMakingStep3 from '../../../components/userComponents/QuizBuilderComponents/QuizMakingStep3';
 import QuizMakingStep4 from '../../../components/userComponents/QuizBuilderComponents/QuizMakingStep4';
 import ExamTakingScreen from '../../../components/userComponents/ExamTakingScreen';
+import { useOutletContext } from 'react-router-dom';
 
 const QuizMakingPage = () => {
     const [step, setStep] = useState(1);
@@ -24,6 +25,9 @@ const QuizMakingPage = () => {
     const [quizInfo, setQuizInfo] = useState({});
 
     const API_URL = import.meta.env.VITE_API_URL;
+    const {isExamHappening, setIsExamHappening} = useOutletContext();
+
+    // console.log(Object.keys(syllabus));
 
     useEffect(() => {
         const fetchSyllabusForQuiz = async () => {
@@ -75,7 +79,7 @@ const QuizMakingPage = () => {
         <>
         {
             step < 5 ?
-            <section className="min-h-screen bg-[#0E0F0E] text-white [font-family:Inter,sans-serif] antialiased">
+            <section className="min-h-screen text-white [font-family:Inter,sans-serif] antialiased">
                 <div className="mx-auto max-w-6xl px-4 py-6 lg:px-8">
                     <header className="mb-6 flex items-center gap-3">
                     <div className="flex h-9 w-9 items-center justify-center rounded-lg border border-[#FFC600]/25 bg-[#FFC600]/10">
@@ -172,7 +176,16 @@ const QuizMakingPage = () => {
                                                             Object.keys(syllabus).forEach(subject => {
                                                                 if(selectedSubjects.has(subject)) subjectSet.push({[subject]: syllabus[subject]});
                                                             })
+                                                            
                                                             setFilteredSubjects(Object.assign({}, ...subjectSet));
+                                                            
+                                                            Object.keys(syllabus).forEach(subject => {
+                                                                if(!(selectedSubjects.has(subject))){
+                                                                    Object.keys(syllabus[subject]).forEach(chapter => {
+                                                                        selectedChapters.delete(chapter);
+                                                                    })
+                                                                }
+                                                            })
                                                         } 
 
                                                         //going to step 3
@@ -185,6 +198,17 @@ const QuizMakingPage = () => {
                                                                 })
                                                             })
                                                             setFilteredChapters(Object.assign({}, ...chapterSet));
+
+                                                            Object.keys(filteredSubjects).forEach(subject => {
+                                                                Object.keys(filteredSubjects[subject]).forEach(chapter => {
+                                                                    // console.log(filteredChapters)
+                                                                    if(!(selectedChapters.has(chapter)) && (chapter in filteredChapters)){
+                                                                        filteredChapters[chapter].forEach(topic => {
+                                                                            selectedTopics.delete(topic.id);
+                                                                        })
+                                                                    }
+                                                                })
+                                                            })
                                                         }
 
                                                         //going to step 4
@@ -206,7 +230,13 @@ const QuizMakingPage = () => {
                     </div>
                 </div>
             </section> :
-            <ExamTakingScreen />
+            <ExamTakingScreen 
+                isQuiz={true} 
+                isExamHappening={true} 
+                isExamHappeningParent={isExamHappening} 
+                setIsExamHappeningParent={setIsExamHappening}
+                exam={quizInfo}
+            />
         }
         </>
     )

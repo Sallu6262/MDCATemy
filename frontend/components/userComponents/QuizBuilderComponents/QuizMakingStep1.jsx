@@ -1,14 +1,8 @@
 import React, { useState } from 'react'
 import SubjectSelectButton from './SubjectSelectButton'
+import { subjectToColor } from '../../../utils/HelperObjects'
 
 const QuizMakingStep1 = ({setSelectedSubjects, selectedSubjects}) => {
-    const subjectToColor = {
-        'Biology' : '#10B981',
-        'Chemistry' : '#A78BFA',
-        'Physics' : '#38BDF8',
-        'English' : '#F59E0B',
-        'Logical Reasoning' : '#F472B6',
-    }
 
     return (
         <>

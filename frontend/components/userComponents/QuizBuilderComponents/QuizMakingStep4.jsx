@@ -1,5 +1,8 @@
 import React, { useState } from 'react'
 import CustomMixTestPopUp from './CustomMixTestPopUp';
+import '../../../src/animation.css';
+import sendErrorSuccessMessage from '../../../utils/sendErrorSuccessMessage';
+import { formatName } from '../../../utils/HelperObjects';
 
 const DifficultySelectButton = ({difficulty, difficultyToSet, isSelected, setDifficulty, setHidden, setDifficultyRatio}) => {
     return (
@@ -30,10 +33,12 @@ const QuizMakingStep4 = ({mcqDistributionPerTopic, selectedTopics, setQuizInfo, 
     const [maxMcqs, setMaxMcqs] = useState([...selectedTopics].reduce((acc, topic) => acc + mcqDistributionPerTopic[topic], 0));
     const [difficulty, setDifficulty] = useState(3);
     const [answerAfterEach, setAnswerAfterEach] = useState(true);
-    const [difficultyRatio, setDifficultyRatio] = useState({eas: 33, medium: 34, hard: 33});
+    const [difficultyRatio, setDifficultyRatio] = useState({easy: 33, medium: 34, hard: 33});
     const [time, setTime] = useState(30);
 
     const [hidden, setHidden] = useState(true);
+
+    const [submitSettingsLoading, setSubmitSettingsLoading] = useState(false);
 
     // console.log(selectedSubjects);
 
@@ -48,13 +53,18 @@ const QuizMakingStep4 = ({mcqDistributionPerTopic, selectedTopics, setQuizInfo, 
     const API_URL = import.meta.env.VITE_API_URL;
 
     const createQuiz = async () => {
+        setSubmitSettingsLoading(true);
+
         const info = {
             timer: showTimer,
             total_mcqs: totalMcqs,
             difficulty: numberToDifficulty[difficulty],
             answerAfterEach,
             difficultyRatio,
-            test_time: time ?? 0
+            test_time: showTimer ? time : 0,
+            test_name: `new quiz ${Date.now()}`,
+            test_mode: 'Silent',
+            blindMode: false,
         };
 
         const res = await fetch(`${API_URL}/quizzes/create`,{
@@ -74,9 +84,60 @@ const QuizMakingStep4 = ({mcqDistributionPerTopic, selectedTopics, setQuizInfo, 
         const data = await res.json();
 
         if(data.status === 'success'){
-            setQuizInfo(info);
+            const mcqs = await generateMCQs();
+            
+            let bioCount = 0, phyCount = 0, engCount = 0, lrCount = 0, chemCount = 0;
+
+            mcqs.forEach(mcq => {
+                const subject = formatName(mcq.subject_name);
+                if(mcq.subject_name === 'Biology') bioCount++;
+                else if(mcq.subject_name === 'Chemistry') chemCount++;
+                else if(mcq.subject_name === 'English') engCount++;
+                else if(mcq.subject_name === 'Physics') phyCount++;
+                else lrCount++;
+            })
+
+            setQuizInfo({
+                ...info, 
+                test_id: data.data.quiz_id,
+                mcqs,
+                biology: bioCount,
+                chemistry: chemCount,
+                physics: phyCount,
+                english: engCount,
+                logical_reasoning: lrCount
+            });
+            sendErrorSuccessMessage('success','Creating quiz. Please wait....');
             setStep(5);
         }
+
+        setSubmitSettingsLoading(false);
+    }
+
+    const generateMCQs = async () => {
+        const res = await fetch(`${API_URL}/quizzes/generate`,{
+            method: "POST",
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                topic_ids: [...selectedTopics],
+                easy: difficultyRatio.easy,
+                medium: difficultyRatio.medium,
+                hard: difficultyRatio.hard
+            })
+        });
+
+        const data = await res.json();
+        
+        if(data.status === 'success'){
+            const easy = data.data.mcqs.easy;
+            const medium = data.data.mcqs.medium;
+            const hard = data.data.mcqs.hard;
+            return [...easy, ...medium, ...hard];
+        }
+        return [];
     }
 
     return (
@@ -168,8 +229,9 @@ const QuizMakingStep4 = ({mcqDistributionPerTopic, selectedTopics, setQuizInfo, 
                     </div>
                     <button
                         onClick={() => createQuiz()}
-                        className="mt-4 w-full flex flex-1 cursor-pointer items-center justify-center rounded-xl border-2 border-[#0E0F0E] bg-[#FFC600] px-5 py-3 [font-family:Poppins,sans-serif] text-sm font-black uppercase tracking-[0.1em] text-[#0E0F0E]"
-                        >Submit Settings
+                        disabled={submitSettingsLoading}
+                        className=".disabled-class mt-4 w-full flex flex-1 cursor-pointer items-center justify-center rounded-xl border-2 border-[#0E0F0E] bg-[#FFC600] px-5 py-3 [font-family:Poppins,sans-serif] text-sm font-black uppercase tracking-[0.1em] text-[#0E0F0E]"
+                        >{submitSettingsLoading ? 'Processing....' : 'Submit Settings'}
                     </button>
                     </div>
                 </div>

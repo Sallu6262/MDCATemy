@@ -69,9 +69,9 @@ const Navigator = ({ exam, setMcqNumber, flagged, submitted, mcqNumber, blindMod
                         const n = chipNumber;
                         const chipClass = [
                           'q-chip',
-                          submitted.has(n) ? 'answered' : '',
-                          flagged.has(n) ? 'flagged' : '',
                           n === mcqNumber ? 'current' : '',
+                          flagged.has(n) ? 'flagged' : '',
+                          submitted.has(n) ? 'answered' : '',
                         ]
                           .filter(Boolean)
                           .join(' ');
@@ -201,7 +201,7 @@ const ExamTakingScreen = ({ isQuiz, exam, isExamHappening, setIsExamHappeningPar
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        [isQuiz ? 'quiz_id' : 'test_id']: isQuiz ? exam?.quiz_id : exam?.test_id,
+        [isQuiz ? 'quiz_id' : 'test_id']: exam?.test_id,
         attempts: [
           {
             id: currentMcq?.mcq_id,
@@ -221,7 +221,7 @@ const ExamTakingScreen = ({ isQuiz, exam, isExamHappening, setIsExamHappeningPar
         return newSet;
       });
 
-      if (mcqs[mcqNumber - 1]?.correct_option === mcqs[mcqNumber - 1]?.selected_option)
+      if (mcqs[mcqNumber - 1]?.correct_option === selectedOption)
         setCorrectMCQsCount(prev => prev + 1);
       else setWrongMCQsCount(prev => prev + 1);
     }
@@ -545,7 +545,7 @@ const ExamTakingScreen = ({ isQuiz, exam, isExamHappening, setIsExamHappeningPar
           letter-spacing: 0.08em;
         }
         .action-chip.submit {
-          color: #FFC600;
+          // color: #FFC600;
           background: rgba(255, 198, 0, 0.11);
           border-color: rgba(255, 198, 0, 0.46);
         }
@@ -577,7 +577,7 @@ const ExamTakingScreen = ({ isQuiz, exam, isExamHappening, setIsExamHappeningPar
         .q-chip.answered { background: #FFC600; border-color: #FFC600; color: #181A18; }
         .q-chip.flagged { background: rgba(251, 146, 60, 0.22); border-color: rgba(251, 146, 60, 0.65); color: #FB923C; }
         .q-chip.skipped { background: #2A2C2A; color: #A8ACA8; }
-        .q-chip.current { border: 2px solid #FFC600; color: #FFC600; box-shadow: 0 0 0 1px rgba(255, 198, 0, 0.25); }
+        .q-chip.current { border: 2px solid #FFC600; box-shadow: 0 0 0 1px rgba(255, 198, 0, 0.25); }
         .q-chip.flagged::after {
           content: "";
           position: absolute;

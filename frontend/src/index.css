@@ -12,6 +12,8 @@ html[data-theme="dark"] {
   --ui-text: #ffffff;
   --ui-muted: #A8ACA8;
   --ui-bg-rgb: 24 26 24;
+  --ui-panel-rgb: 26 26 26;
+  --ui-inner-rgb: 18 18 18;
   --ui-text-rgb: 255 255 255;
   --ui-muted-rgb: 168 172 168;
 }
@@ -24,6 +26,8 @@ html[data-theme="light"] {
   --ui-text: #111827;
   --ui-muted: #4b5563;
   --ui-bg-rgb: 255 255 255;
+  --ui-panel-rgb: 243 244 246;
+  --ui-inner-rgb: 249 250 251;
   --ui-text-rgb: 17 24 39;
   --ui-muted-rgb: 75 85 99;
 }
@@ -41,7 +45,13 @@ body,
 /* Map common Tailwind arbitrary hex classes to theme tokens.
    This avoids editing dozens of files. */
 html[data-theme] .bg-\[\#181A18\] { background-color: var(--ui-bg) !important; }
+html[data-theme] .bg-\[\#1A1A1A\]\/90 { background-color: rgb(var(--ui-panel-rgb) / 0.9) !important; }
+html[data-theme] .bg-\[\#1A1A1A\]\/95 { background-color: rgb(var(--ui-panel-rgb) / 0.95) !important; }
+html[data-theme] .bg-\[\#121212\]\/80 { background-color: rgb(var(--ui-inner-rgb) / 0.85) !important; }
+html[data-theme] .bg-\[\#121212\]\/90 { background-color: rgb(var(--ui-inner-rgb) / 0.9) !important; }
 html[data-theme] .bg-\[\#222422\] { background-color: var(--ui-panel) !important; }
+html[data-theme] .hover\:bg-\[\#2A2C2A\]\/40:hover { background-color: rgb(var(--ui-text-rgb) / 0.08) !important; }
+html[data-theme] .hover\:bg-white\/\[0\.07\]:hover { background-color: rgb(var(--ui-text-rgb) / 0.07) !important; }
 html[data-theme] .bg-\[\#1E201E\] { background-color: var(--ui-panel-2) !important; }
 html[data-theme] .border-\[\#2E302E\] { border-color: var(--ui-border) !important; }
 html[data-theme] .text-\[\#A8ACA8\] { color: var(--ui-muted) !important; }
@@ -53,8 +63,12 @@ html[data-theme] .text-white\/90 { color: rgb(var(--ui-text-rgb) / 0.9) !importa
 html[data-theme] .text-white\/85 { color: rgb(var(--ui-text-rgb) / 0.85) !important; }
 html[data-theme] .text-white\/80 { color: rgb(var(--ui-text-rgb) / 0.8) !important; }
 html[data-theme] .text-white\/70 { color: rgb(var(--ui-text-rgb) / 0.7) !important; }
+html[data-theme] .text-white\/65 { color: rgb(var(--ui-text-rgb) / 0.65) !important; }
 html[data-theme] .text-white\/60 { color: rgb(var(--ui-text-rgb) / 0.6) !important; }
+html[data-theme] .text-white\/55 { color: rgb(var(--ui-text-rgb) / 0.55) !important; }
 html[data-theme] .text-white\/50 { color: rgb(var(--ui-text-rgb) / 0.5) !important; }
+html[data-theme] .text-white\/45 { color: rgb(var(--ui-text-rgb) / 0.45) !important; }
+html[data-theme] .text-white\/35 { color: rgb(var(--ui-text-rgb) / 0.35) !important; }
 html[data-theme] .text-white\/40 { color: rgb(var(--ui-text-rgb) / 0.4) !important; }
 html[data-theme] .text-white\/30 { color: rgb(var(--ui-text-rgb) / 0.3) !important; }
 html[data-theme] .text-white\/25 { color: rgb(var(--ui-text-rgb) / 0.25) !important; }
@@ -77,8 +91,11 @@ html[data-theme] .bg-\[\#1A1C1A\] { background-color: var(--ui-panel-2) !importa
 html[data-theme] .bg-\[\#1A1A1A\] { background-color: var(--ui-panel) !important; }
 
 /* Tailwind opacity utilities (e.g. `bg-white/[0.04]`, `border-white/20`) */
+html[data-theme] .bg-white\/\[0\.02\] { background-color: rgb(var(--ui-text-rgb) / 0.02) !important; }
+html[data-theme] .bg-white\/\[0\.03\] { background-color: rgb(var(--ui-text-rgb) / 0.03) !important; }
 html[data-theme] .bg-white\/\[0\.04\] { background-color: rgb(var(--ui-text-rgb) / 0.04) !important; }
 html[data-theme] .bg-white\/\[0\.06\] { background-color: rgb(var(--ui-text-rgb) / 0.06) !important; }
+html[data-theme] .bg-white\/\[0\.07\] { background-color: rgb(var(--ui-text-rgb) / 0.07) !important; }
 html[data-theme] .bg-white\/\[0\.08\] { background-color: rgb(var(--ui-text-rgb) / 0.08) !important; }
 html[data-theme] .bg-white\/10 { background-color: rgb(var(--ui-text-rgb) / 0.10) !important; }
 html[data-theme] .bg-white\/15 { background-color: rgb(var(--ui-text-rgb) / 0.15) !important; }
@@ -87,6 +104,14 @@ html[data-theme] .bg-white\/20 { background-color: rgb(var(--ui-text-rgb) / 0.20
 html[data-theme] .border-white\/10 { border-color: rgb(var(--ui-text-rgb) / 0.10) !important; }
 html[data-theme] .border-white\/15 { border-color: rgb(var(--ui-text-rgb) / 0.15) !important; }
 html[data-theme] .border-white\/20 { border-color: rgb(var(--ui-text-rgb) / 0.20) !important; }
+html[data-theme] .border-white\/\[0\.06\] { border-color: rgb(var(--ui-text-rgb) / 0.06) !important; }
+html[data-theme] .hover\:border-white\/25:hover { border-color: rgb(var(--ui-text-rgb) / 0.25) !important; }
+html[data-theme] .hover\:border-white\/40:hover { border-color: rgb(var(--ui-text-rgb) / 0.40) !important; }
+
+html[data-theme] .placeholder\:text-white\/35::placeholder { color: rgb(var(--ui-text-rgb) / 0.35) !important; }
+html[data-theme] .placeholder\:text-white\/30::placeholder { color: rgb(var(--ui-text-rgb) / 0.3) !important; }
+
+html[data-theme="light"] .\[color-scheme\:dark\] { color-scheme: light; }
 
 /* Keep brand yellow unchanged */
 html[data-theme] .bg-\[\#FFC600\] { background-color: #FFC600 !important; }

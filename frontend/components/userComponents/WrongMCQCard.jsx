@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import sendErrorSuccessMessage from '../../utils/sendErrorSuccessMessage'
 import '../../src/animation.css'
+import { subjectToColor } from '../../utils/HelperObjects'
 
 const WrongMCQCard = ({mcq, setNotMasteredMcqs, setPendingMistakes, setWrongMcqs}) => {
     // console.log(mcq);
@@ -8,14 +9,6 @@ const WrongMCQCard = ({mcq, setNotMasteredMcqs, setPendingMistakes, setWrongMcqs
     const [masterLoading, setMasterLoading] = useState(false);
     const [error, setError] = useState(false);
     const [message, setMessage] = useState("");
-
-    const subjectToColor = {
-        'Biology' : '#10B981',
-        'Chemistry' : '#A78BFA',
-        'Physics' : '#38BDF8',
-        'English' : '#F59E0B',
-        'Logical Reasoning' : '#F472B6',
-    }
 
     const difficultyToColor = {
         'EASY' : 'text-green-400 bg-green-400/10 border-green-400/25',

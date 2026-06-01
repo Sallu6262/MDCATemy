@@ -401,7 +401,7 @@ const UserAnalyticsPage = () => {
                                     const percentage = sa?.subjects[perf.subject_name.replace(' ', '_').toLowerCase()];
 
                                     return (
-                                        <Link key={i} to={`/dashboard/analytics/${perf.subject_name.toLowerCase()}`} className="group block w-[30%] md:w-[17%]">
+                                        <Link key={i} to={`/dashboard/analytics/${perf.subject_name.toLowerCase().replace(' ','-')}`} className="group block w-[30%] md:w-[17%]">
                                             <div className="relative flex flex-col items-center gap-1.5 py-1 cursor-pointer transition-transform duration-200 hover:-translate-y-1">
                                                 <div className="relative rounded-full transition-all duration-200 group-hover:drop-shadow-[0_0_14px_rgba(255,198,0,0.45)]">
                                                 <svg width="74" height="74" className="-rotate-90">
