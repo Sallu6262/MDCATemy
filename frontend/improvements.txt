@@ -5,12 +5,13 @@ After Finals:
 12. change landing page
 13. user analytics page (fix activity + performance charts)
 14. review answer button in exam result.
+15. dynamic seat count in main landing page.
 
 improvements:
-1. In signup form, correct matric and fsc percentage needed according to total marks depending on province
 2. Already added mcqs not visibile during addition in test for better error handling
 5. Track how many mcqs added to test by admin.
 8. when there is no activity data in database, a dummy activity comes with invalid date from backend.
-12. show correct / wrong color in mcq in Exam taking screen when mcq is submitted for answer after each.
 13. skipped count in test review is coming zero from backend. Also test time needed in test review card.
-14. in custom mode in quiz building settings, fix the setting of difficulty ratio.
+
+optional: 
+integrate skeleton UI

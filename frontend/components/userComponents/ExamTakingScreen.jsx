@@ -156,6 +156,25 @@ const ExamTakingScreen = ({ isQuiz, exam, isExamHappening, setIsExamHappeningPar
   const API_URL = import.meta.env.VITE_API_URL;
   const navigate = useNavigate();
 
+  const colorOption = (option) => {
+    if(!isExamHappeningParent){
+      if(option === mcqs[mcqNumber-1].correct_option)
+        return '!bg-emerald-500/8 !border-emerald-500 !text-emerald-400';
+    }
+    else if(exam?.answerAfterEach && submitted.has(mcqNumber)){
+        if(option === mcqs[mcqNumber-1].correct_option)
+          return '!bg-emerald-500/8 !border-emerald-500 !text-emerald-400';
+        else if(selectedOption === option)
+          return '!bg-red-500/8 !border-red-500 !text-red-400';
+    }
+    return '';
+  }
+
+  const focusOnButton = (buttonClass, option) => {
+    document.querySelector(buttonClass).scrollIntoView({behavior: 'smooth'});
+    setSelectedOption(option);
+  }
+
   const flagMCQ = () => {
     if (submitted.has(mcqNumber)) return;
     setFlagged(prev => {
@@ -693,7 +712,7 @@ const ExamTakingScreen = ({ isQuiz, exam, isExamHappening, setIsExamHappeningPar
               <span className="font-mono text-sm font-black text-white">
                 {formatTime(timeRemaining, sixtySecondCountdown)}
               </span>
-              <span className="text-xs font-black text-[#A8ACA8]">II</span>
+              {/* <span className="text-xs font-black text-[#A8ACA8]">II</span> */}
             </div>
             <p className="text-sm font-black text-[#A8ACA8]">
               Q <span className="font-poppins text-lg text-white">{mcqNumber}</span> / {exam?.total_mcqs}
@@ -713,8 +732,8 @@ const ExamTakingScreen = ({ isQuiz, exam, isExamHappening, setIsExamHappeningPar
                       <button
                         type="button"
                         disabled={!isExamHappening}
-                        onClick={() => setSelectedOption('A')}
-                        className={`cursor-pointer option-card ${selectedOption === 'A' ? 'selected' : ''}`}
+                        onClick={() => {focusOnButton('.submit-mcq-button','A')}}
+                        className={`cursor-pointer option-card ${selectedOption === 'A' ? 'selected' : ''} ${colorOption('A')}`}
                       >
                         <span className="option-key">A</span>
                         <span className="text-base font-bold">{mcqs[mcqNumber - 1]?.option_a}</span>
@@ -722,8 +741,8 @@ const ExamTakingScreen = ({ isQuiz, exam, isExamHappening, setIsExamHappeningPar
                       <button
                         type="button"
                         disabled={!isExamHappening}
-                        onClick={() => setSelectedOption('B')}
-                        className={`cursor-pointer option-card ${selectedOption === 'B' ? 'selected' : ''}`}
+                        onClick={() => {focusOnButton('.submit-mcq-button','B')}}
+                        className={`cursor-pointer option-card ${selectedOption === 'B' ? 'selected' : ''} ${colorOption('B')}`}
                       >
                         <span className="option-key">B</span>
                         <span className="text-base font-bold">{mcqs[mcqNumber - 1]?.option_b}</span>
@@ -731,8 +750,8 @@ const ExamTakingScreen = ({ isQuiz, exam, isExamHappening, setIsExamHappeningPar
                       <button
                         type="button"
                         disabled={!isExamHappening}
-                        onClick={() => setSelectedOption('C')}
-                        className={`cursor-pointer option-card ${selectedOption === 'C' ? 'selected' : ''}`}
+                        onClick={() => {focusOnButton('.submit-mcq-button','C')}}
+                        className={`cursor-pointer option-card ${selectedOption === 'C' ? 'selected' : ''} ${colorOption('C')}`}
                       >
                         <span className="option-key">C</span>
                         <span className="text-base font-bold">{mcqs[mcqNumber - 1]?.option_c}</span>
@@ -740,8 +759,8 @@ const ExamTakingScreen = ({ isQuiz, exam, isExamHappening, setIsExamHappeningPar
                       <button
                         type="button"
                         disabled={!isExamHappening}
-                        onClick={() => setSelectedOption('D')}
-                        className={`cursor-pointer option-card ${selectedOption === 'D' ? 'selected' : ''}`}
+                        onClick={() => {focusOnButton('.submit-mcq-button','D')}}
+                        className={`cursor-pointer option-card ${selectedOption === 'D' ? 'selected' : ''} ${colorOption('D')}`}
                       >
                         <span className="option-key">D</span>
                         <span className="text-base font-bold">{mcqs[mcqNumber - 1]?.option_d}</span>
@@ -756,7 +775,7 @@ const ExamTakingScreen = ({ isQuiz, exam, isExamHappening, setIsExamHappeningPar
                   disabled={
                       submitLoading || submitted.has(mcqNumber) || !selectedOption || !isExamHappening
                   }
-                  className={`action-chip mt-4 submit cursor-pointer`}
+                  className={`submit-mcq-button action-chip mt-4 submit cursor-pointer`}
                   >
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                       <line x1="22" y1="2" x2="11" y2="13" />
@@ -890,7 +909,10 @@ const ExamTakingScreen = ({ isQuiz, exam, isExamHappening, setIsExamHappeningPar
               </div>
               <button
                 type="button"
-                onClick={() => setMcqNumber(prev => (prev < exam?.total_mcqs ? prev + 1 : prev))}
+                onClick={() => {
+                  document.querySelector('.question-box').scrollIntoView({behavior: 'smooth'});
+                  setMcqNumber(prev => (prev < exam?.total_mcqs ? prev + 1 : prev));
+                }}
                 className="flex cursor-pointer items-center gap-2 rounded-xl bg-[#FFC600] px-6 py-3 font-black uppercase tracking-wide text-[#181A18] shadow-lg"
               >
                 Next

@@ -7,10 +7,36 @@ const tabBase =
 const navLabel =
   'hidden md:inline font-semibold text-[14px] truncate max-lg:text-[9px] max-lg:font-bold max-lg:uppercase max-lg:tracking-[0.05em]'
 
+const LockIcon = () => {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="hidden md:inline h-4 w-4 flex-shrink-0 opacity-90"
+      aria-hidden="true"
+    >
+      <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+      <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+    </svg>
+  )
+}
+
 const UserNavbar = () => {
     const {student} = useOutletContext();
     let name = student?.name;
     name = name?.split(' ')?.map(n => n[0].toUpperCase()).slice(0,2);
+
+    const checkAccess = (roles) => {
+      return roles.some(role => role === student?.role);
+    }
+
+    const quizBuilderAllowedRoles = ['QUIZ_ONLY', 'DUAL_ACCESS'];
+    const testSeriesAllowedRoles = ['TEST_ONLY'];
+    const myCopyAllowedRoles = ['QUIZ_ONLY', 'DUAL_ACCESS', 'TEST_ONLY'];
 
     return (
         <aside className="order-2 fixed bottom-0 left-0 right-0 z-40 w-full border-t border-[#2E302E] bg-[#222422] px-1 pb-[max(0.35rem,env(safe-area-inset-bottom))] pt-1.5 lg:static lg:order-1 lg:z-auto lg:max-w-[240px] lg:flex-shrink-0 lg:overflow-hidden lg:border-r lg:border-t-0 lg:bg-[#181A18] lg:p-0">
@@ -35,7 +61,11 @@ const UserNavbar = () => {
                     )}
                 </NavLink>
 
-                <NavLink to='/dashboard/quiz-builder' end className={({ isActive }) => `${tabBase} ${isActive ? "bg-[#FFC600]/10 text-[#FFC600]" : "text-[#A8ACA8] hover:bg-[#2A2C2A]/40 hover:text-white"}`}>
+                <NavLink to='/dashboard/quiz-builder' 
+                onClick={(e) => {
+                  if(checkAccess(quizBuilderAllowedRoles)) e.preventDefault();
+                }} 
+                end className={({ isActive }) => `${tabBase} ${checkAccess(quizBuilderAllowedRoles) ? 'cursor-not-allowed' : ''} ${isActive ? "bg-[#FFC600]/10 text-[#FFC600]" : "text-[#A8ACA8] hover:bg-[#2A2C2A]/40 hover:text-white"}`}>
                     {({ isActive }) => (
                       <>
                         <div className={`hidden lg:block absolute left-0 top-1/2 h-5 w-[3px] -translate-y-1/2 rounded-full ${isActive ? 'bg-[#FFC600]' : 'bg-transparent'}`} />
@@ -44,11 +74,18 @@ const UserNavbar = () => {
                         <path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/>
                         </svg>
                         <p className={navLabel}>Quiz Builder</p>
+                        {checkAccess(quizBuilderAllowedRoles) ? <LockIcon /> : ""}
                       </>
                     )}
                 </NavLink>
 
-                <NavLink to='/dashboard/test-series' className={({ isActive }) => `${tabBase} ${isActive ? "bg-[#FFC600]/10 text-[#FFC600]" : "text-[#A8ACA8] hover:bg-[#2A2C2A]/40 hover:text-white"}`}>
+                <NavLink
+                  to='/dashboard/test-series'
+                  onClick={(e) => {
+                    if(!checkAccess(testSeriesAllowedRoles)) e.preventDefault();
+                  }}
+                  className={({ isActive }) => `${tabBase} ${!checkAccess(testSeriesAllowedRoles) ? 'cursor-not-allowed' : ''} ${isActive ? "bg-[#FFC600]/10 text-[#FFC600]" : "text-[#A8ACA8] hover:bg-[#2A2C2A]/40 hover:text-white"}`}
+                >
                     {({ isActive }) => (
                       <>
                         <div className={`hidden lg:block absolute left-0 top-1/2 h-5 w-[3px] -translate-y-1/2 rounded-full ${isActive ? 'bg-[#FFC600]' : 'bg-transparent'}`} />
@@ -59,11 +96,19 @@ const UserNavbar = () => {
                         <path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17"/>
                         </svg>
                         <p className={navLabel}>Test Series</p>
+                        {!checkAccess(testSeriesAllowedRoles) ? <LockIcon /> : ""}
                       </>
                     )}
                 </NavLink>
 
-                <NavLink to='/dashboard/my-copy' end className={({ isActive }) => `${tabBase} ${isActive ? "bg-[#FFC600]/10 text-[#FFC600]" : "text-[#A8ACA8] hover:bg-[#2A2C2A]/40 hover:text-white"}`}>
+                <NavLink
+                  to='/dashboard/my-copy'
+                  onClick={(e) => {
+                    if(!checkAccess(myCopyAllowedRoles)) e.preventDefault();
+                  }}
+                  end
+                  className={({ isActive }) => `${tabBase} ${!checkAccess(myCopyAllowedRoles) ? 'cursor-not-allowed' : ''} ${isActive ? "bg-[#FFC600]/10 text-[#FFC600]" : "text-[#A8ACA8] hover:bg-[#2A2C2A]/40 hover:text-white"}`}
+                >
                     {({ isActive }) => (
                       <>
                         <div className={`hidden lg:block absolute left-0 top-1/2 h-5 w-[3px] -translate-y-1/2 rounded-full ${isActive ? 'bg-[#FFC600]' : 'bg-transparent'}`} />
@@ -74,6 +119,7 @@ const UserNavbar = () => {
                         <path d="M10 12h4"/>
                         </svg>
                         <p className={navLabel}>My Copy</p>
+                        {!checkAccess(myCopyAllowedRoles) ? <LockIcon /> : ""}
                       </>
                     )}
                 </NavLink>

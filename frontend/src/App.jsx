@@ -1,6 +1,7 @@
 import {Route, RouterProvider, createBrowserRouter, createRoutesFromElements} from 'react-router-dom';
 import MainLayout from '../layout/MainLayout';
-import MainLandingPage from '../pages/MainLandingPage';
+import MainLandingPage from '../pages/LandingPages/MainLandingPage';
+import BatchEnrollmentLandingPage from '../pages/LandingPages/BatchEnrollmentLandingPage';
 import NotFoundPage from '../pages/NotFoundPage';
 import AdminDefaultPage from '../pages/adminPages/AdminDefaultPage'
 import AdminDashboardLayout from '../layout/AdminDashboardLayout';
@@ -24,12 +25,19 @@ import ScorePredictorPage from '../pages/userPages/ScorePredictorPage';
 import UserAnalyticsPage from '../pages/userPages/UserAnalyticsPage';
 import QuizMakingPage from '../pages/userPages/QuizBuilder/QuizMakingPage';
 import ReviewPreviousTextMcqsPage from '../pages/userPages/ReviewPreviousTextMcqsPage';
+import LandingPageLayout from '../layout/LandingPageLayout';
+import ComingSoonPage from '../pages/ComingSoonPage'
 
 const App = () => {
+  const MDCATEMY_STATUS = import.meta.env.VITE_MDCATEMY_STATUS;
+
   const router = createBrowserRouter(
     createRoutesFromElements(
       <>
-        <Route path='/' element={<MainLandingPage />}/>
+        <Route path='/' element={<LandingPageLayout />}>
+          <Route index element={<MainLandingPage />}/>
+          <Route path='/batch-enrollment' element={<BatchEnrollmentLandingPage />}/>
+        </Route>
 
         <Route element={<MainLayout />} id='root' loader={getUserLoader}>
 
@@ -38,7 +46,7 @@ const App = () => {
             <Route path='/signup' element={<SignUpPage />}/>
           </Route>
 
-          <Route path='/dashboard' element={<UserDashboardLayout />}>
+          <Route path='/dashboard' element={MDCATEMY_STATUS === 'coming-soon' ? <ComingSoonPage /> : <UserDashboardLayout />}>
             <Route index element={<UserDashboardPage />}/>
             <Route path='score-predictor' element={<ScorePredictorPage />}/>
 
@@ -64,8 +72,9 @@ const App = () => {
           </Route>
 
           <Route path='/payment-status' element={<PaymentErrorPage />}/>
-          <Route path='*' element={<NotFoundPage />}/>
         </Route>
+
+        <Route path='*' element={<NotFoundPage />}/>
       </>
     )
   );

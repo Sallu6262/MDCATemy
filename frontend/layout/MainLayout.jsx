@@ -14,7 +14,7 @@ const MainLayout = () => {
 
   return (
     <section className="min-h-screen flex flex-col">
-      <Navbar user={student || admin} setUser={student ? setStudent : setAdmin} isLanding={true}/>
+      <Navbar user={student || admin} setUser={student ? setStudent : setAdmin} isLanding={false}/>
       <ScrollToTop />
       <div className="flex min-h-0 flex-1 flex-col">
         <Outlet context={{admin, setAdmin, student, setStudent}}/>

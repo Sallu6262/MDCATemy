@@ -90,14 +90,14 @@ const RegistrationPageDecoration = () => {
               <defs>
                 <radialGradient id="registrationGemInner" cx="50%" cy="42%" r="58%">
                   <stop offset="0%" stopColor="rgba(255, 198, 0, 0.38)" />
-                  <stop offset="42%" stopColor="rgba(45, 42, 32, 0.9)" />
-                  <stop offset="100%" stopColor="rgba(16, 16, 16, 1)" />
+                  <stop offset="42%" stopColor="rgb(var(--ui-panel-rgb) / 0.9)" />
+                  <stop offset="100%" stopColor="rgb(var(--ui-bg-rgb) / 1)" />
                 </radialGradient>
               </defs>
               <polygon
                 points="100,8 192,100 100,192 8,100"
                 fill="none"
-                stroke="rgba(255,255,255,0.34)"
+                stroke="rgb(var(--ui-text-rgb) / 0.34)"
                 strokeWidth="1.15"
                 strokeLinejoin="miter"
               />
@@ -108,10 +108,10 @@ const RegistrationPageDecoration = () => {
                 strokeWidth="1.35"
                 strokeLinejoin="miter"
               />
-              <line x1="100" y1="8" x2="100" y2="46" stroke="rgba(255,255,255,0.2)" strokeWidth="0.85" />
-              <line x1="192" y1="100" x2="154" y2="100" stroke="rgba(255,255,255,0.2)" strokeWidth="0.85" />
-              <line x1="100" y1="192" x2="100" y2="154" stroke="rgba(255,255,255,0.2)" strokeWidth="0.85" />
-              <line x1="8" y1="100" x2="46" y2="100" stroke="rgba(255,255,255,0.2)" strokeWidth="0.85" />
+              <line x1="100" y1="8" x2="100" y2="46" stroke="rgb(var(--ui-text-rgb) / 0.2)" strokeWidth="0.85" />
+              <line x1="192" y1="100" x2="154" y2="100" stroke="rgb(var(--ui-text-rgb) / 0.2)" strokeWidth="0.85" />
+              <line x1="100" y1="192" x2="100" y2="154" stroke="rgb(var(--ui-text-rgb) / 0.2)" strokeWidth="0.85" />
+              <line x1="8" y1="100" x2="46" y2="100" stroke="rgb(var(--ui-text-rgb) / 0.2)" strokeWidth="0.85" />
               <circle cx="100" cy="46" r="3.2" fill="#FFC600" />
               <circle cx="154" cy="100" r="3.2" fill="#FFC600" />
               <circle cx="100" cy="154" r="3.2" fill="#FFC600" />
@@ -134,7 +134,7 @@ const RegistrationPageDecoration = () => {
                 fontFamily="Poppins, system-ui, sans-serif"
                 fontWeight="600"
                 fontSize="6"
-                fill="rgba(200,200,200,0.75)"
+                fill="rgb(var(--ui-text-rgb) / 0.75)"
                 letterSpacing="0.22em"
               >
                 MDCAT SCORE

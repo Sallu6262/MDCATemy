@@ -18,6 +18,10 @@ const Navbar = ({user, setUser, isLanding}) => {
   };
 
   const logOutWebsite = async () => {
+    const exists = document.querySelector('.exam-taking-screen');
+
+    if(exists) return;
+
     const res = await fetch(`${API_URL}/users/logout`,{
       method: 'POST',
       credentials: 'include'
@@ -44,7 +48,7 @@ const Navbar = ({user, setUser, isLanding}) => {
     <nav
       className="sticky top-0 left-0 right-0 z-100"
       style={{
-        background: "rgb(var(--ui-bg-rgb, 18 18 18) / 1)",
+        background: isLanding ? "#121212" : "rgb(var(--ui-bg-rgb, 18 18 18) / 1)",
         backdropFilter: "blur(24px) saturate(180%)",
         borderBottom: "1px solid rgb(var(--ui-text-rgb) / 0.08)",
         boxShadow: "0 4px 24px rgba(0,0,0,0.25)",
@@ -68,7 +72,12 @@ const Navbar = ({user, setUser, isLanding}) => {
           </Link>
 
           {
-            isLanding? 
+            isLanding ?
+            <div className="hidden lg:flex items-center gap-8 ml-auto">
+              <Link to="/" onClick={() => document.getElementById("about").scrollIntoView({behavior: 'smooth'})} className="text-sm font-medium hover:text-white transition-colors" style={{ color: "white", textDecoration: "none" }}>About</Link>
+              <Link to="/tests-series-enrollment" className="text-sm font-medium hover:text-white transition-colors" style={{ color: "white", textDecoration: "none" }}>Test Session</Link>
+            </div> 
+            : 
             <button
               type="button"
               onClick={toggleTheme}
@@ -93,13 +102,9 @@ const Navbar = ({user, setUser, isLanding}) => {
                   <path d="m19.07 4.93-1.41 1.41" />
                 </svg>
               )}
-            </button> : ''
+            </button>
           }
 
-          <div className="hidden lg:flex items-center gap-8 ml-auto">
-            <Link to="/about" onClick={examGoingChecker} className="text-sm font-medium hover:text-white transition-colors" style={{ color: "rgb(var(--ui-text-rgb) / 0.8)", textDecoration: "none" }}>About</Link>
-            <Link to="/tests-series-login" onClick={examGoingChecker} className="text-sm font-medium hover:text-white transition-colors" style={{ color: "rgb(var(--ui-text-rgb) / 0.8)", textDecoration: "none" }}>Tests Session</Link>
-          </div>
           <div className="hidden lg:flex items-center gap-3 ml-6">
             {
               user?.payment_status === 'VERIFIED' || user?.role === 'ADMIN' ?
@@ -112,8 +117,8 @@ const Navbar = ({user, setUser, isLanding}) => {
               : 
               <>
                 <Link to="/login" style={{ border: "1px solid #FFC600", borderRadius: "8px", padding: "0.5rem 1.25rem", color: "#FFC600", fontSize: "0.875rem", fontWeight: 500, display: "inline-flex", alignItems: "center", height: "38px", textDecoration: "none" }}>Login</Link>
-                <Link to="/quiz-builder-login" style={{ border: "1px solid #FFC600", borderRadius: "8px", padding: "0.5rem 1.25rem", color: "#FFC600", fontSize: "0.875rem", fontWeight: 500, display: "inline-flex", alignItems: "center", height: "38px", textDecoration: "none" }}>Quiz Builder Login</Link>
-                <Link to="/signup" style={{ background: "#FFC600", borderRadius: "8px", padding: "0.5rem 1.25rem", color: "#181A18", fontSize: "0.875rem", fontWeight: 600, display: "inline-flex", alignItems: "center", height: "38px", textDecoration: "none" }}>Enroll Now</Link>
+                <Link to="/quiz-builder-enrollment" style={{ border: "1px solid #FFC600", borderRadius: "8px", padding: "0.5rem 1.25rem", color: "#FFC600", fontSize: "0.875rem", fontWeight: 500, display: "inline-flex", alignItems: "center", height: "38px", textDecoration: "none" }}>Quiz Builder</Link>
+                <Link to="/batch-enrollment" style={{ background: "#FFC600", borderRadius: "8px", padding: "0.5rem 1.25rem", color: "#181A18", fontSize: "0.875rem", fontWeight: 600, display: "inline-flex", alignItems: "center", height: "38px", textDecoration: "none" }}>Enroll Now</Link>
               </>
             }
           </div>
@@ -126,12 +131,16 @@ const Navbar = ({user, setUser, isLanding}) => {
                 <span className="block h-0.5 w-5 rounded bg-white/90"></span>
               </span>
             </summary>
+
             <div className="absolute right-0 top-12 w-[min(18rem,90vw)] rounded-xl border border-white/10 bg-[#161616] p-3 shadow-[0_10px_30px_rgba(0,0,0,0.35)]">
               <div className="flex flex-col gap-1.5">
-                <Link to="/books" onClick={examGoingChecker} className="rounded-lg px-3 py-2 text-sm font-medium text-white/80 transition hover:bg-white/[0.06] hover:text-white">Books</Link>
-                <Link to="/tests" onClick={examGoingChecker} className="rounded-lg px-3 py-2 text-sm font-medium text-white/80 transition hover:bg-white/[0.06] hover:text-white">Tests</Link>
-                <Link to="/pricing" onClick={examGoingChecker} className="rounded-lg px-3 py-2 text-sm font-medium text-white/80 transition hover:bg-white/[0.06] hover:text-white">Pricing</Link>
-                <Link to="/contact" onClick={examGoingChecker} className="rounded-lg px-3 py-2 text-sm font-medium text-white/80 transition hover:bg-white/[0.06] hover:text-white">About Us</Link>
+                {
+                  isLanding ?
+                  <>
+                    <Link to="/" onClick={() => document.getElementById("about").scrollIntoView({behavior: 'smooth'})} className="rounded-lg px-3 py-2 text-sm font-medium text-white/80 transition hover:bg-white/[0.06] hover:text-white">About</Link>
+                    <Link to="/tests-series-enrollment" className="rounded-lg px-3 py-2 text-sm font-medium text-white/80 transition hover:bg-white/[0.06] hover:text-white">Test Session</Link>
+                  </> : ''
+                }
                 <div className="my-1 h-px bg-white/10"></div>
                 {
                   user?.payment_status === 'VERIFIED' ? 
@@ -143,8 +152,9 @@ const Navbar = ({user, setUser, isLanding}) => {
                     </button>
                   </> :
                   <>
-                    <Link to="/login" className="rounded-lg border border-[#FFC600]/60 px-3 py-2 text-center text-sm font-semibold text-[#FFC600]">Login</Link>
-                    <Link to="/join-today" className="rounded-lg bg-[#FFC600] px-3 py-2 text-center text-sm font-black uppercase tracking-wide text-[#181A18]">Join today</Link>
+                    <Link to="/login" className="rounded-lg bg-[#FFC600] px-3 py-2 text-center text-sm font-black uppercase tracking-wide text-[#181A18]">Login</Link>
+                    <Link to="/quiz-builder-enrollment" className="rounded-lg bg-[#FFC600] px-3 py-2 text-center text-sm font-black uppercase tracking-wide text-[#181A18]">Quiz Builder</Link>
+                    <Link to="/batch-enrollment" className="rounded-lg bg-[#FFC600] px-3 py-2 text-center text-sm font-black uppercase tracking-wide text-[#181A18]">Enroll Now</Link>
                   </>
                 }
               </div>
