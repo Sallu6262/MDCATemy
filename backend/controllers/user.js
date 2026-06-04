@@ -52,7 +52,7 @@ export const getDashboardStats = handleAsyncError(async (req, res, next) => {
         today_attempt: 0,
         total_attempt: 0,
         total_correct: 0,
-        target_score: req.user.target_score,
+        target_marks: req.user.target_marks,
         predicted_score: req.user.predicted_score,
         subjects: {},
         chapters: {},

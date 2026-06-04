@@ -57,7 +57,7 @@ export const protect = handleAsyncError(async (req, res, next) => {
     if (payload.role === "ADMIN")
         user = (await pool.query("SELECT user_id, name, father_name, email, gender, role, password_changed_at FROM users WHERE email=$1", [payload.email])).rows[0];
     else
-        user = (await pool.query("SELECT student_id, name, father_name, email, phone, gender, role, academic_status, province, city, matric_percentage, fsc_percentage, prev_mdcat_score, predicted_score, streak, password_changed_at, payment_status, upgrade_status, target_score FROM users INNER JOIN students ON users.user_id=students.student_id WHERE email=$1", [payload.email])).rows[0];
+        user = (await pool.query("SELECT student_id, name, father_name, email, phone, gender, role, academic_status, province, city, matric_percentage, fsc_percentage, prev_mdcat_score, predicted_score, streak, password_changed_at, payment_status, upgrade_status, target_marks FROM users INNER JOIN students ON users.user_id=students.student_id WHERE email=$1", [payload.email])).rows[0];
 
     if (!user)
         return next(new AppError("This user doesn't exist", 404));
@@ -97,15 +97,15 @@ export const signup = handleAsyncError(async (req, res, next) => {
         return next(new AppError("Incomplete Data for Signup!", 400));
     
     const AGGREGATE_THRESHOLD = 90;
-    const target_score = Math.ceil(4*(AGGREGATE_THRESHOLD - 0.1*matric_percentage - 0.4*fsc_percentage));
+    const target_marks = Math.ceil(4*(AGGREGATE_THRESHOLD - 0.1*matric_percentage - 0.4*fsc_percentage));
 
-    if (role === "TRIBE_MEMBER" &&  target_score > 180)
-        return next(new AppError(`You cannot signup for the Study Tribe module. Your target marks are ${target_score}. Because they're greater than 180, we can't enroll you in this year's batch.`, 400));
+    if (role === "TRIBE_MEMBER" &&  target_marks > 180)
+        return next(new AppError(`You cannot signup for the Study Tribe module. Your target marks are ${target_marks}. Because they're greater than 180, we can't enroll you in this year's batch.`, 400));
 
     password = await hashPassword(password);
 
     const user = (await pool.query("INSERT INTO users (name, father_name, email, password, gender, role) VALUES ($1, $2, $3, $4, $5, $6) RETURNING user_id, role", [name, father_name, email, password, gender, role])).rows[0];
-    await pool.query("INSERT INTO students (student_id, phone, academic_status, province, city, matric_percentage, fsc_percentage, prev_mdcat_score, target_score) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)", [user.user_id, phone, academic_status, province, city, matric_percentage, fsc_percentage, prev_mdcat_score, target_score]);
+    await pool.query("INSERT INTO students (student_id, phone, academic_status, province, city, matric_percentage, fsc_percentage, prev_mdcat_score, target_marks) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)", [user.user_id, phone, academic_status, province, city, matric_percentage, fsc_percentage, prev_mdcat_score, target_marks]);
     await insertTopicsInTopicMasteryTable(user.user_id);
     
     signTokenAndSetInCookie(email, user.role, res);

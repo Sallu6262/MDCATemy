@@ -13,7 +13,7 @@ CREATE TABLE chapters(
     chapter_id SERIAL PRIMARY KEY,  
     chapter_name VARCHAR(50) NOT NULL,
     subject_id INT NOT NULL,
-    chapter_weight NUMERIC(5,2)
+    chapter_weight NUMERIC(5,2),
 
     CONSTRAINT fkey_chapter_subject FOREIGN KEY (subject_id) REFERENCES subjects(subject_id) ON UPDATE CASCADE ON DELETE CASCADE
 );
@@ -59,8 +59,7 @@ CREATE TABLE students (
     upgrade_role USER_ROLE,
 
     CONSTRAINT streak_non_negative CHECK(streak >= 0),
-    CONSTRAINT total_mistakes_non_negative CHECK(total_mistakes >= 0),
-    CONSTRAINT fkey_student_user FOREIGN KEY (student_id) REFERENCES users(user_id) ON UPDATE CASCADE ON DELETE CASCADE,
+    CONSTRAINT fkey_student_user FOREIGN KEY (student_id) REFERENCES users(user_id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 CREATE TABLE activity(
@@ -85,7 +84,7 @@ CREATE TABLE quizzes(
     student_id INT NOT NULL,
     quiz_mode QUIZ_MODE_TYPE NOT NULL,
 
-    FOREIGN KEY (student_id) REFERENCES students(student_id) ON UPDATE CASCADE ON DELETE CASCADE;
+    FOREIGN KEY (student_id) REFERENCES students(student_id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 CREATE TABLE quiz_subjects (
