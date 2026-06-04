@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Privacy Policy — MDCATEMY</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter', 'sans-serif'] }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+
+    .pp-section { margin-bottom: 3.5rem; padding-bottom: 3.5rem; border-bottom: 1px solid #f0f0f0; }
+    .pp-section:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+    .pp-heading { font-size: 1.25rem; font-weight: 900; color: #1a1a1a; text-transform: uppercase; letter-spacing: -0.3px; line-height: 1.2; margin-bottom: 20px; }
+    .pp-subheading { font-size: 0.9rem; font-weight: 700; color: #1a1a1a; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 24px; margin-bottom: 12px; }
+    .pp-text { font-size: 1rem; color: #444; line-height: 1.75; margin-bottom: 16px; }
+    .pp-text:last-child { margin-bottom: 0; }
+
+    .pp-list { list-style: none; padding: 0; margin: 0 0 16px; }
+    .pp-list li { display: flex; align-items: flex-start; gap: 12px; padding: 8px 0; border-bottom: 1px solid #f5f5f5; }
+    .pp-list li:last-child { border-bottom: none; }
+    .pp-dot { width: 6px; height: 6px; border-radius: 50%; background: #F6C90E; flex-shrink: 0; margin-top: 10px; }
+    .pp-li-text { font-size: 1rem; color: #444; line-height: 1.65; }
+
+    .nav-logo-wrap { height: 68px; overflow: hidden; display: flex; align-items: center; text-decoration: none; }
+    .nav-logo-img { height: 320px; width: auto; margin-left: 40px; display: block; }
+
+    .pp-contact-block { background: #f5f5f5; border-radius: 12px; padding: 28px 32px; margin: 24px 0; display: flex; gap: 40px; flex-wrap: wrap; }
+    .pp-contact-label { font-size: 11px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: #999; display: block; margin-bottom: 6px; }
+    .pp-contact-value { font-size: 1rem; font-weight: 700; color: #1a1a1a; text-decoration: none; transition: color 0.2s; }
+    .pp-contact-value:hover { color: #F6C90E; }
+
+    @media (max-width: 640px) {
+      .nav-hide-sm { display: none; }
+      .pp-contact-block { flex-direction: column; gap: 20px; padding: 20px; }
+    }
+  </style>
+</head>
+<body class="bg-white text-[#1a1a1a]">
+
+  <!-- ─────────────────── NAVBAR ─────────────────── -->
+  <nav class="bg-[#1a1a1a] px-8 flex items-center justify-between" style="height:68px;">
+    <a href="index.html" class="nav-logo-wrap">
+      <img src="Images/logo.svg" alt="MDCATEMY" class="nav-logo-img" />
+    </a>
+    <div class="flex items-center gap-6">
+      <a href="index.html" class="nav-hide-sm text-white no-underline text-[0.9rem] font-semibold tracking-[0.3px] hover:text-[#F6C90E] transition-colors duration-200">Home</a>
+      <a href="page2.html" class="bg-[#F6C90E] text-[#1a1a1a] no-underline text-[0.85rem] font-black uppercase tracking-[1px] px-7 py-3 rounded-full hover:bg-white transition-colors duration-200">Enroll Now</a>
+    </div>
+  </nav>
+
+  <!-- ─────────────────── HERO ─────────────────── -->
+  <section class="bg-[#1a1a1a] py-20 px-6 text-center">
+    <div class="max-w-[780px] mx-auto">
+      <div class="inline-block text-[#F6C90E] text-[11px] font-bold tracking-[3px] uppercase mb-5">Legal Document</div>
+      <h1 class="font-black text-white uppercase leading-none mb-5"
+          style="font-size: clamp(3rem, 8vw, 5.5rem); letter-spacing: -2px;">
+        PRIVACY<br><span class="text-[#F6C90E]">POLICY</span>
+      </h1>
+      <p class="text-[0.9rem] font-medium" style="color: rgba(255,255,255,0.45);">
+        Last updated: <strong class="font-bold" style="color:rgba(255,255,255,0.6);">June 2026</strong>
+      </p>
+    </div>
+  </section>
+
+  <!-- ─────────────────── CONTENT ─────────────────── -->
+  <main class="bg-white px-6" style="padding-top:72px; padding-bottom:96px;">
+    <div class="max-w-[780px] mx-auto">
+
+      <!-- Intro -->
+      <div style="margin-bottom:52px;">
+        <p style="font-size:1.1rem; color:#1a1a1a; line-height:1.75; font-weight:500; margin-bottom:20px; padding-left:20px; border-left:3px solid #F6C90E;">
+          Mdcatemy values your privacy and is committed to protecting the personal information of students, parents, guardians, mentors, teachers, and other users who interact with our website, online academy, classes, tests, forms, Discord community, Google Workspace services, WhatsApp support, and related educational services.
+        </p>
+        <p class="pp-text">This Privacy Policy explains what information we collect, how we use it, how we protect it, and how users can contact us regarding their personal information.</p>
+        <p class="pp-text" style="margin-bottom:0;">By using Mdcatemy's website, student account, online classes, test platform, forms, Discord community, WhatsApp support, or any related service, you agree to the practices described in this Privacy Policy.</p>
+      </div>
+
+      <div style="height:1px; background:#e0e0e0; margin-bottom:60px;"></div>
+
+      <!-- Section 1 -->
+      <div class="pp-section">
+        <h2 class="pp-heading">1. Information We Collect</h2>
+        <p class="pp-text">Mdcatemy may collect information when you visit our website, create an account, register for a course or batch, submit a form, purchase a course or test series, attempt quizzes or tests, attend live classes, join our Discord community, contact us on WhatsApp or email, or interact with our services in any other way.</p>
+        <h3 class="pp-subheading">1.1 Personal Information</h3>
+        <p class="pp-text">We may collect the following personal information:</p>
+        <ul class="pp-list">
+          <li><span class="pp-dot"></span><span class="pp-li-text">Full name</span></li>
+          <li><span class="pp-dot"></span><span class="pp-li-text">Email address</span></li>
+          <li><span class="pp-dot"></span><span class="pp-li-text">Phone number</span></li>
+          <li><span class="pp-dot"></span><span class="pp-li-text">City and province</span></li>
+          <li><span class="pp-dot"></span><span class="pp-li-text">School, college, or institution name</span></li>
+          <li><span class="pp-dot"></span><span class="pp-li-text">Academic session or MDCAT preparation year</span></li>
+          <li><span class="pp-dot"></span><span class="pp-li-text">Account login details</span></li>
+          <li><span class="pp-dot"></span><span class="pp-li-text">Course, batch, or package registration details</span></li>
+          <li><span class="pp-dot"></span><span class="pp-li-text">Any information voluntarily submitted through our forms, messages, or support channels</span></li>
+        </ul>
+        <p class="pp-text">We may collect a parent or guardian's phone number only where required for communication, verification, student support, or administrative purposes.</p>
+        <p class="pp-text">Mdcatemy does not normally collect CNIC, B-form, or similar identity documents from students.</p>
+      </div>
+
+      <!-- Section 2 -->
+      <div class="pp-section">
+        <h2 class="pp-heading">2. Academic and Learning Information</h2>
+        <p class="pp-text">To provide educational services, Mdcatemy may collect and process academic and learning-related information, including:</p>
+        <ul class="pp-list">
+          <li><span class="pp-dot"></span><span class="pp-li-text">Subjects, chapters, and topics selected by the student</span></li>
+          <li><span class="pp-dot"></span><span class="pp-li-text">Quiz and test attempts</span></li>
+          <li><span class="pp-dot"></span><span class="pp-li-text">Correct, incorrect, skipped, saved, and marked questions</span></li>
+          <li><span class="pp-dot"></span><span class="pp-li-text">Test scores and results</span></li>
+          <li><span class="pp-dot"></span><span class="pp-li-text">Mistake copy and saved MCQs</span></li>
+          <li><span class="pp-dot"></span><span class="pp-li-text">Performance analytics</span></li>
+          <li><span class="pp-dot"></span><span class="pp-li-text">Attendance in classes or sessions</span></li>
+          <li><span class="pp-dot"></span><span class="pp-li-text">Learning progress and platform activity</span></li>
+          <li><span class="pp-dot"></span><span class="pp-li-text">Feedback, assignments, responses, or academic submissions</span></li>
+          <li><span class="pp-dot"></span><span class="pp-li-text">Mentorship or guidance-related information shared by the student</span></li>
+        </ul>
+        <p class="pp-text">This information helps Mdcatemy provide personalized learning, academic guidance, performance tracking, test analysis, and student support.</p>
+      </div>
+
+      <!-- Section 3 -->
+      <div class="pp-section">
+        <h2 class="pp-heading">3. Payment and Purchase Information</h2>
+        <p class="pp-text">When a user purchases a Mdcatemy course, batch, test series, mentorship plan, or any other paid service, we may collect payment-related information, including:</p>
+        <ul class="pp-list">
+          <li><span class="pp-dot"></span><span class="pp-li-text">Course, batch, or package purchased</span></li>
+          <li><span class="pp-dot"></span><span class="pp-li-text">Payment status</span></li>
+          <li><span class="pp-dot"></span><span class="pp-li-text">Payment method</span></li>
+          <li><span class="pp-dot"></span><span class="pp-li-text">Transaction ID or reference number</span></li>
+          <li><span class="pp-dot"></span><span class="pp-li-text">Payment screenshot or proof of payment</span></li>
+          <li><span class="pp-dot"></span><span class="pp-li-text">Date and time of payment</span></li>
+          <li><span class="pp-dot"></span><span class="pp-li-text">Billing or contact details required for verification</span></li>
+        </ul>
+        <p class="pp-text">Payments may be made through third-party services such as banks, mobile wallets, payment gateways, or other payment providers.</p>
+        <p class="pp-text">Mdcatemy does not store complete debit card, credit card, or sensitive banking information on its own systems.</p>
+        <p class="pp-text">Mdcatemy mainly collects payment screenshots, transaction IDs, sender details, and related proof of payment for verification purposes. Mdcatemy may rely on bank, wallet, or third-party transaction proof submitted by users and may not directly operate all payment channels itself.</p>
+      </div>
+
+      <!-- Section 4 -->
+      <div class="pp-section">
+        <h2 class="pp-heading">4. Communication Information</h2>
+        <p class="pp-text">When users contact Mdcatemy through WhatsApp, email, website forms, Discord, phone calls, or other communication channels, we may collect:</p>
+        <ul class="pp-list">
+          <li><span class="pp-dot"></span><span class="pp-li-text">Messages and replies</span></li>
+          <li><span class="pp-dot"></span><span class="pp-li-text">Support requests</span></li>
+          <li><span class="pp-dot"></span><span class="pp-li-text">Complaints or feedback</span></li>
+          <li><span class="pp-dot"></span><span class="pp-li-text">Guidance and mentorship queries</span></li>
+          <li><span class="pp-dot"></span><span class="pp-li-text">Attachments, screenshots, payment proofs, or documents voluntarily shared by the user</span></li>
+          <li><span class="pp-dot"></span><span class="pp-li-text">Communication history needed to provide support</span></li>
+        </ul>
+        <p class="pp-text">We use this information to respond to students, provide guidance, solve problems, verify payments, improve our services, and maintain proper records.</p>
+      </div>
+
+      <!-- Section 5 -->
+      <div class="pp-section">
+        <h2 class="pp-heading">5. Technical and Website Information</h2>
+        <p class="pp-text">When users visit our website or use our online platform, some technical information may be collected automatically, such as:</p>
+        <ul class="pp-list">
+          <li><span class="pp-dot"></span><span class="pp-li-text">IP address</span></li>
+          <li><span class="pp-dot"></span><span class="pp-li-text">Browser type</span></li>
+          <li><span class="pp-dot"></span><span class="pp-li-text">Device type</span></li>
+          <li><span class="pp-dot"></span><span class="pp-li-text">Operating system</span></li>
+          <li><span class="pp-dot"></span><span class="pp-li-text">Website pages visited</span></li>
+          <li><span class="pp-dot"></span><span class="pp-li-text">Time spent on the website</span></li>
+          <li><span class="pp-dot"></span><span class="pp-li-text">Login activity</span></li>
+          <li><span class="pp-dot"></span><span class="pp-li-text">Basic usage behavior</span></li>
+          <li><span class="pp-dot"></span><span class="pp-li-text">Cookies or similar technologies required for website functionality</span></li>
+        </ul>
+        <p class="pp-text">At the time of this Privacy Policy, Mdcatemy does not intentionally use advanced tracking tools such as Google Analytics, Meta Pixel, or Microsoft Clarity. If such tools are added in the future, this Privacy Policy may be updated accordingly.</p>
+      </div>
+
+      <!-- Section 6 -->
+      <div class="pp-section">
+        <h2 class="pp-heading">6. How We Use Your Information</h2>
+        <p class="pp-text">Mdcatemy may use collected information for the following purposes:</p>
+        <ul class="pp-list">
+          <li><span class="pp-dot"></span><span class="pp-li-text">To create and manage student accounts</span></li>
+          <li><span class="pp-dot"></span><span class="pp-li-text">To provide access to courses, batches, classes, quizzes, tests, and study material</span></li>
+          <li><span class="pp-dot"></span><span class="pp-li-text">To manage enrollments, subscriptions, and packages</span></li>
+          <li><span class="pp-dot"></span><span class="pp-li-text">To verify payments and maintain purchase records</span></li>
+          <li><span class="pp-dot"></span><span class="pp-li-text">To provide academic analytics and performance reports</span></li>
+          <li><span class="pp-dot"></span><span class="pp-li-text">To maintain saved MCQs, mistake copies, and test history</span></li>
+          <li><span class="pp-dot"></span><span class="pp-li-text">To personalize the student learning experience</span></li>
+          <li><span class="pp-dot"></span><span class="pp-li-text">To conduct live classes, recorded lectures, doubt sessions, and mentorship sessions</span></li>
+          <li><span class="pp-dot"></span><span class="pp-li-text">To communicate class schedules, test reminders, updates, and announcements</span></li>
+          <li><span class="pp-dot"></span><span class="pp-li-text">To provide free guidance, mentorship, and student support</span></li>
+          <li><span class="pp-dot"></span><span class="pp-li-text">To respond to queries received through WhatsApp, email, Discord, forms, or calls</span></li>
+          <li><span class="pp-dot"></span><span class="pp-li-text">To improve the website, platform, content, and overall student experience</span></li>
+          <li><span class="pp-dot"></span><span class="pp-li-text">To prevent fraud, misuse, cheating, unauthorized access, or violation of Mdcatemy rules</span></li>
+          <li><span class="pp-dot"></span><span class="pp-li-text">To maintain platform security and integrity</span></li>
+          <li><span class="pp-dot"></span><span class="pp-li-text">To comply with legal, administrative, payment, or security requirements</span></li>
+          <li><span class="pp-dot"></span><span class="pp-li-text">To share important educational messages and service-related communication</span></li>
+        </ul>
+      </div>
+
+      <!-- Section 7 -->
+      <div class="pp-section">
+        <h2 class="pp-heading">7. Communications and Consent</h2>
+        <p class="pp-text">By registering with Mdcatemy, creating an account, joining a batch, purchasing a course, submitting a form, attempting a test, contacting us, or joining our communication channels, you agree that Mdcatemy may contact you through:</p>
+        <ul class="pp-list">
+          <li><span class="pp-dot"></span><span class="pp-li-text">WhatsApp</span></li>
+          <li><span class="pp-dot"></span><span class="pp-li-text">Email</span></li>
+          <li><span class="pp-dot"></span><span class="pp-li-text">Phone call</span></li>
+          <li><span class="pp-dot"></span><span class="pp-li-text">SMS</span></li>
+          <li><span class="pp-dot"></span><span class="pp-li-text">Discord</span></li>
+          <li><span class="pp-dot"></span><span class="pp-li-text">Website notifications</span></li>
+          <li><span class="pp-dot"></span><span class="pp-li-text">Platform notifications</span></li>
+          <li><span class="pp-dot"></span><span class="pp-li-text">Other official Mdcatemy communication channels</span></li>
+        </ul>
+        <p class="pp-text">These communications may include:</p>
+        <ul class="pp-list">
+          <li><span class="pp-dot"></span><span class="pp-li-text">Class schedules</span></li>
+          <li><span class="pp-dot"></span><span class="pp-li-text">Test reminders</span></li>
+          <li><span class="pp-dot"></span><span class="pp-li-text">Result updates</span></li>
+          <li><span class="pp-dot"></span><span class="pp-li-text">Course announcements</span></li>
+          <li><span class="pp-dot"></span><span class="pp-li-text">Academic guidance</span></li>
+          <li><span class="pp-dot"></span><span class="pp-li-text">Free mentorship and support</span></li>
+          <li><span class="pp-dot"></span><span class="pp-li-text">Payment verification</span></li>
+          <li><span class="pp-dot"></span><span class="pp-li-text">Account-related updates</span></li>
+          <li><span class="pp-dot"></span><span class="pp-li-text">Important service notices</span></li>
+          <li><span class="pp-dot"></span><span class="pp-li-text">Educational messages</span></li>
+        </ul>
+        <p class="pp-text">Mdcatemy mainly uses communication channels for educational support, student guidance, reminders, and service-related updates. Promotional messages may also be sent where relevant, but users may request to stop receiving non-essential promotional communication.</p>
+        <p class="pp-text">Important service-related messages may still be sent when necessary for account, payment, class, test, or academic purposes.</p>
+      </div>
+
+      <!-- Section 8 -->
+      <div class="pp-section">
+        <h2 class="pp-heading">8. Live Classes, Sessions, and Recordings</h2>
+        <p class="pp-text">Mdcatemy may conduct live classes, doubt sessions, mentorship sessions, webinars, group discussions, or other educational sessions through platforms such as Google Workspace tools, Google Meet, Discord, or other third-party services.</p>
+        <p class="pp-text">By joining Mdcatemy sessions, users acknowledge and agree that:</p>
+        <ul class="pp-list">
+          <li><span class="pp-dot"></span><span class="pp-li-text">Sessions may be recorded.</span></li>
+          <li><span class="pp-dot"></span><span class="pp-li-text">A user's name, voice, image, video, chat message, question, comment, or participation may appear in the recording.</span></li>
+          <li><span class="pp-dot"></span><span class="pp-li-text">Recordings may be used for educational purposes, revision, quality improvement, mentor training, student support, and academy improvement.</span></li>
+          <li><span class="pp-dot"></span><span class="pp-li-text">Recordings may be shared with enrolled students or authorized users.</span></li>
+          <li><span class="pp-dot"></span><span class="pp-li-text">Selected clips, screenshots, testimonials, or session highlights may be used for marketing, promotional, or educational content.</span></li>
+        </ul>
+        <p class="pp-text">Users who do not want their face or voice to appear in recordings should keep their camera and microphone turned off and use chat or other permitted methods to participate where possible.</p>
+      </div>
+
+      <!-- Section 9 -->
+      <div class="pp-section">
+        <h2 class="pp-heading">9. Discord Community</h2>
+        <p class="pp-text">Mdcatemy may use Discord for batch management, student communication, announcements, community discussion, support, and academic coordination.</p>
+        <p class="pp-text">When users join Mdcatemy's Discord server, their username, messages, profile information, participation, and activity within the server may be visible to Mdcatemy team members and, depending on channel settings, to other members of the community.</p>
+        <p class="pp-text">Users are responsible for following Mdcatemy's community rules and Discord's own terms and privacy policies.</p>
+        <p class="pp-text">Mdcatemy is not responsible for private interactions, messages, or content shared by users outside official Mdcatemy-managed channels.</p>
+      </div>
+
+      <!-- Section 10 -->
+      <div class="pp-section">
+        <h2 class="pp-heading">10. Cookies and Similar Technologies</h2>
+        <p class="pp-text">Mdcatemy may use cookies or similar technologies to:</p>
+        <ul class="pp-list">
+          <li><span class="pp-dot"></span><span class="pp-li-text">Keep users logged in</span></li>
+          <li><span class="pp-dot"></span><span class="pp-li-text">Remember preferences</span></li>
+          <li><span class="pp-dot"></span><span class="pp-li-text">Improve website functionality</span></li>
+          <li><span class="pp-dot"></span><span class="pp-li-text">Maintain website security</span></li>
+          <li><span class="pp-dot"></span><span class="pp-li-text">Understand basic website usage</span></li>
+          <li><span class="pp-dot"></span><span class="pp-li-text">Improve user experience</span></li>
+        </ul>
+        <p class="pp-text">Users can disable cookies through their browser settings. However, some website or account features may not function properly if cookies are disabled.</p>
+      </div>
+
+      <!-- Section 11 -->
+      <div class="pp-section">
+        <h2 class="pp-heading">11. Data Sharing</h2>
+        <p class="pp-text">Mdcatemy does not sell users' personal information to third parties.</p>
+        <p class="pp-text">We may share limited information with trusted third-party service providers only where needed to operate and improve our services. These may include providers for:</p>
+        <ul class="pp-list">
+          <li><span class="pp-dot"></span><span class="pp-li-text">Website hosting</span></li>
+          <li><span class="pp-dot"></span><span class="pp-li-text">Student account management</span></li>
+          <li><span class="pp-dot"></span><span class="pp-li-text">Google Workspace services</span></li>
+          <li><span class="pp-dot"></span><span class="pp-li-text">Discord community management</span></li>
+          <li><span class="pp-dot"></span><span class="pp-li-text">Email communication</span></li>
+          <li><span class="pp-dot"></span><span class="pp-li-text">WhatsApp communication</span></li>
+          <li><span class="pp-dot"></span><span class="pp-li-text">Payment verification</span></li>
+          <li><span class="pp-dot"></span><span class="pp-li-text">Live classes and session delivery</span></li>
+          <li><span class="pp-dot"></span><span class="pp-li-text">Data storage and security</span></li>
+          <li><span class="pp-dot"></span><span class="pp-li-text">Customer support</span></li>
+          <li><span class="pp-dot"></span><span class="pp-li-text">Operational and administrative services</span></li>
+          <li><span class="pp-dot"></span><span class="pp-li-text">Academic partners such as Grammlogic, where students access partner content as part of their course</span></li>
+        </ul>
+        <p class="pp-text">These providers may process user information according to their own privacy policies and terms.</p>
+        <p class="pp-text">Mdcatemy may also disclose information if required by law, legal process, government request, investigation, fraud prevention, platform security, enforcement of our terms, or protection of the rights and safety of Mdcatemy, students, team members, or other users.</p>
+      </div>
+
+      <!-- Section 12 -->
+      <div class="pp-section">
+        <h2 class="pp-heading">12. Third-Party Platforms</h2>
+        <p class="pp-text">Mdcatemy may use third-party platforms and services, including but not limited to:</p>
+        <ul class="pp-list">
+          <li><span class="pp-dot"></span><span class="pp-li-text">Google Workspace</span></li>
+          <li><span class="pp-dot"></span><span class="pp-li-text">Google Meet</span></li>
+          <li><span class="pp-dot"></span><span class="pp-li-text">Discord</span></li>
+          <li><span class="pp-dot"></span><span class="pp-li-text">WhatsApp</span></li>
+          <li><span class="pp-dot"></span><span class="pp-li-text">Email service providers</span></li>
+          <li><span class="pp-dot"></span><span class="pp-li-text">Payment providers</span></li>
+          <li><span class="pp-dot"></span><span class="pp-li-text">Website hosting providers</span></li>
+          <li><span class="pp-dot"></span><span class="pp-li-text">Grammlogic</span></li>
+          <li><span class="pp-dot"></span><span class="pp-li-text">Other educational or operational tools</span></li>
+        </ul>
+        <p class="pp-text">Mdcatemy may collaborate with Grammlogic or other academic partners for selected subjects such as English and Logical Reasoning. Where applicable, students may access lectures, quizzes, practice material, explanations, or related academic services through Grammlogic or partner platforms. Such platforms may collect or process user information according to their own privacy policies and terms.</p>
+        <p class="pp-text">These third-party platforms may collect, store, or process user information according to their own privacy policies.</p>
+        <p class="pp-text">Mdcatemy is not responsible for the privacy practices, security policies, or content of third-party platforms that are not controlled by Mdcatemy.</p>
+      </div>
+
+      <!-- Section 13 -->
+      <div class="pp-section">
+        <h2 class="pp-heading">13. Data Security</h2>
+        <p class="pp-text">Mdcatemy takes reasonable steps to protect user information from unauthorized access, misuse, loss, alteration, disclosure, or destruction.</p>
+        <p class="pp-text">These steps may include access control, limited team access, account security measures, secure storage practices, and administrative controls.</p>
+        <p class="pp-text">However, no internet-based platform, website, storage system, or communication method can be guaranteed to be completely secure. Users are responsible for keeping their account login details confidential and should not share passwords or access credentials with others.</p>
+        <p class="pp-text">If a user believes their account or personal information has been accessed without permission, they should contact Mdcatemy immediately.</p>
+      </div>
+
+      <!-- Section 14 -->
+      <div class="pp-section">
+        <h2 class="pp-heading">14. Data Retention</h2>
+        <p class="pp-text">Mdcatemy may retain user information for as long as necessary to:</p>
+        <ul class="pp-list">
+          <li><span class="pp-dot"></span><span class="pp-li-text">Provide educational services</span></li>
+          <li><span class="pp-dot"></span><span class="pp-li-text">Maintain student accounts</span></li>
+          <li><span class="pp-dot"></span><span class="pp-li-text">Keep academic records and test history</span></li>
+          <li><span class="pp-dot"></span><span class="pp-li-text">Verify payments and purchases</span></li>
+          <li><span class="pp-dot"></span><span class="pp-li-text">Provide support</span></li>
+          <li><span class="pp-dot"></span><span class="pp-li-text">Resolve disputes</span></li>
+          <li><span class="pp-dot"></span><span class="pp-li-text">Prevent fraud, misuse, or unauthorized access</span></li>
+          <li><span class="pp-dot"></span><span class="pp-li-text">Improve platform quality</span></li>
+          <li><span class="pp-dot"></span><span class="pp-li-text">Maintain legal, administrative, tax, payment, or security records</span></li>
+          <li><span class="pp-dot"></span><span class="pp-li-text">Protect platform integrity</span></li>
+        </ul>
+        <p class="pp-text">When information is no longer required, Mdcatemy may delete, anonymize, or securely store it according to operational and legal needs.</p>
+      </div>
+
+      <!-- Section 15 -->
+      <div class="pp-section">
+        <h2 class="pp-heading">15. User Rights and Requests</h2>
+        <p class="pp-text">Users may contact Mdcatemy to request:</p>
+        <ul class="pp-list">
+          <li><span class="pp-dot"></span><span class="pp-li-text">Access to their personal information</span></li>
+          <li><span class="pp-dot"></span><span class="pp-li-text">Correction or update of inaccurate information</span></li>
+          <li><span class="pp-dot"></span><span class="pp-li-text">Deletion of their account or personal data</span></li>
+          <li><span class="pp-dot"></span><span class="pp-li-text">Restriction of certain non-essential communications</span></li>
+          <li><span class="pp-dot"></span><span class="pp-li-text">Clarification about how their information is collected or used</span></li>
+        </ul>
+        <p class="pp-text">Requests can be submitted through WhatsApp or email using the contact details provided below.</p>
+        <p class="pp-text">Mdcatemy may require identity verification before processing certain requests. Some information may be retained where required for payment records, legal compliance, dispute resolution, fraud prevention, security, academic records, or legitimate administrative purposes.</p>
+      </div>
+
+      <!-- Section 16 -->
+      <div class="pp-section">
+        <h2 class="pp-heading">16. Minors and Parental/Guardian Consent</h2>
+        <p class="pp-text">Mdcatemy's services are mainly intended for students preparing for MDCAT and related academic exams. Some users may be under 18 years of age.</p>
+        <p class="pp-text">Users under 18 should use Mdcatemy with the consent or supervision of a parent or legal guardian.</p>
+        <p class="pp-text">Parents or guardians may contact Mdcatemy regarding the personal information, account, enrollment, communication, or participation of a minor student.</p>
+      </div>
+
+      <!-- Section 17 -->
+      <div class="pp-section">
+        <h2 class="pp-heading">17. Student Conduct and Platform Misuse</h2>
+        <p class="pp-text">Users must not misuse Mdcatemy's website, accounts, tests, Discord community, classes, recordings, or study material.</p>
+        <p class="pp-text">Misuse may include:</p>
+        <ul class="pp-list">
+          <li><span class="pp-dot"></span><span class="pp-li-text">Sharing account login details</span></li>
+          <li><span class="pp-dot"></span><span class="pp-li-text">Unauthorized distribution of paid content</span></li>
+          <li><span class="pp-dot"></span><span class="pp-li-text">Recording or redistributing classes without permission</span></li>
+          <li><span class="pp-dot"></span><span class="pp-li-text">Cheating in tests</span></li>
+          <li><span class="pp-dot"></span><span class="pp-li-text">Harassment or inappropriate behavior in community spaces</span></li>
+          <li><span class="pp-dot"></span><span class="pp-li-text">Attempting to access restricted areas of the platform</span></li>
+          <li><span class="pp-dot"></span><span class="pp-li-text">Misusing other students' personal information</span></li>
+        </ul>
+        <p class="pp-text">Mdcatemy may take appropriate action in case of misuse, including warnings, account restrictions, removal from batches or communities, suspension of access, or other necessary measures.</p>
+      </div>
+
+      <!-- Section 18 -->
+      <div class="pp-section">
+        <h2 class="pp-heading">18. Promotional and Educational Content</h2>
+        <p class="pp-text">Mdcatemy may use student feedback, testimonials, success stories, class highlights, performance achievements, screenshots, session clips, or recorded content for educational, promotional, or marketing purposes.</p>
+        <p class="pp-text">Where possible, Mdcatemy will aim to use such content responsibly and avoid unnecessary disclosure of sensitive personal information.</p>
+        <p class="pp-text">Users who do not want their identifiable name, image, voice, testimonial, or personal details used in promotional content may contact Mdcatemy through the official contact details provided below.</p>
+      </div>
+
+      <!-- Section 19 -->
+      <div class="pp-section">
+        <h2 class="pp-heading">19. International Data Processing</h2>
+        <p class="pp-text">Some third-party platforms used by Mdcatemy, such as Google Workspace, Discord, WhatsApp, email services, hosting providers, or other online tools, may process or store information on servers located outside Pakistan.</p>
+        <p class="pp-text">By using Mdcatemy, users acknowledge that their information may be processed through such third-party services where necessary for online educational, communication, operational, or support purposes.</p>
+      </div>
+
+      <!-- Section 20 -->
+      <div class="pp-section">
+        <h2 class="pp-heading">20. Changes to This Privacy Policy</h2>
+        <p class="pp-text">Mdcatemy may update this Privacy Policy from time to time to reflect changes in services, technology, legal requirements, platform features, third-party tools, or operational practices.</p>
+        <p class="pp-text">The updated version will be posted on Mdcatemy's website with a revised "Last updated" date.</p>
+        <p class="pp-text">Continued use of Mdcatemy after the updated Privacy Policy is posted means that the user accepts the revised policy.</p>
+      </div>
+
+      <!-- Section 21 -->
+      <div class="pp-section">
+        <h2 class="pp-heading">21. Contact Us</h2>
+        <p class="pp-text">For questions, requests, or concerns regarding this Privacy Policy or the handling of personal information, users may contact Mdcatemy at:</p>
+        <div class="pp-contact-block">
+          <div>
+            <span class="pp-contact-label">Email</span>
+            <a href="mailto:mdcatemy@gmail.com" class="pp-contact-value">mdcatemy@gmail.com</a>
+          </div>
+          <div>
+            <span class="pp-contact-label">WhatsApp</span>
+            <a href="https://wa.me/923058697159" class="pp-contact-value">+92 305 8697159</a>
+          </div>
+        </div>
+        <p class="pp-text">Mdcatemy will try to respond to privacy-related requests within a reasonable time.</p>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ─────────────────── FOOTER ─────────────────── -->
+  <footer class="bg-[#1e2428] text-center px-6" style="padding-top:56px; padding-bottom:40px; border-top:3px solid #F6C90E;">
+    <div style="font-size:28px; font-weight:900; color:#ffffff; letter-spacing:-0.5px; margin-bottom:12px;">
+      MDCAT<span style="color:#F6C90E;">EMY</span>
+    </div>
+    <p style="font-size:14px; color:rgba(238,238,238,0.5); margin-bottom:32px; font-weight:400;">Training warriors to crack MDCAT 2026.</p>
+    <div style="width:60px; height:2px; background:rgba(246,201,14,0.4); margin:0 auto 28px;"></div>
+    <p style="font-size:13px; color:rgba(238,238,238,0.35);">© 2026 MDCATEMY. All rights reserved.</p>
+  </footer>
+
+</body>
+</html>

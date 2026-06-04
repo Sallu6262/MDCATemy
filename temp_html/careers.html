@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ambassador Program — MDCATEMY</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: { extend: { fontFamily: { sans: ['Inter', 'sans-serif'] } } }
+    }
+  </script>
+
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+
+    /* ── Navbar logo clip ── */
+    .nav-logo-wrap { height: 68px; overflow: hidden; display: flex; align-items: center; text-decoration: none; }
+    .nav-logo-img  { height: 320px; width: auto; margin-left: 40px; display: block; }
+
+    /* ── Reel container — 9:16 portrait ── */
+    .reel-outer {
+      max-width: 380px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    .reel-wrap {
+      position: relative;
+      width: 100%;
+      padding-bottom: 177.78%; /* 16/9 × 100 */
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 24px 80px rgba(0,0,0,0.22);
+      background: #000;
+    }
+
+    .reel-wrap iframe {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      border: 0;
+    }
+
+    /* Instagram blockquote reset so it fills the container cleanly */
+    .reel-wrap .instagram-media {
+      position: absolute !important;
+      top: 0 !important; left: 0 !important;
+      width: 100% !important;
+      min-width: unset !important;
+      max-width: 100% !important;
+      margin: 0 !important;
+      border-radius: 0 !important;
+      box-shadow: none !important;
+    }
+
+    /* ── Details highlight cards ── */
+    .highlight-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      margin: 36px 0 40px;
+    }
+
+    .highlight-card {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 12px;
+      padding: 20px 22px;
+    }
+
+    .highlight-dot {
+      width: 8px; height: 8px;
+      background: #F6C90E;
+      border-radius: 50%;
+      margin-bottom: 10px;
+    }
+
+    .highlight-title {
+      font-size: 0.88rem;
+      font-weight: 800;
+      color: #ffffff;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      margin-bottom: 6px;
+    }
+
+    .highlight-body {
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.5);
+      line-height: 1.6;
+    }
+
+    /* ── CTA button ── */
+    .ambassador-btn {
+      display: inline-block;
+      background: #F6C90E;
+      color: #1a1a1a;
+      font-family: 'Inter', sans-serif;
+      font-size: 15px;
+      font-weight: 900;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      text-decoration: none;
+      padding: 20px 56px;
+      border-radius: 50px;
+      transition: background 0.2s ease, color 0.2s ease, transform 0.15s ease;
+    }
+
+    .ambassador-btn:hover {
+      background: #ffffff;
+      color: #1a1a1a;
+      transform: translateY(-1px);
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 640px) {
+      .nav-hide-sm { display: none; }
+      .highlight-grid { grid-template-columns: 1fr; }
+      .ambassador-btn { width: 100%; text-align: center; padding: 18px 24px; }
+      .reel-outer { max-width: 100%; }
+    }
+
+    @media (max-width: 480px) {
+      .navbar-px { padding-left: 20px !important; padding-right: 20px !important; }
+    }
+  </style>
+</head>
+<body class="bg-white text-[#1a1a1a]">
+
+  <!-- ─────────────────── NAVBAR ─────────────────── -->
+  <nav class="bg-[#1a1a1a] flex items-center justify-between px-8 navbar-px" style="height:68px;">
+    <a href="index.html" class="nav-logo-wrap">
+      <img src="Images/logo.svg" alt="MDCATEMY" class="nav-logo-img" />
+    </a>
+    <div class="flex items-center gap-6">
+      <a href="index.html" class="nav-hide-sm text-white no-underline text-[0.9rem] font-semibold tracking-[0.3px] hover:text-[#F6C90E] transition-colors duration-200">Home</a>
+      <a href="page2.html" class="bg-[#F6C90E] text-[#1a1a1a] no-underline text-[0.85rem] font-black uppercase tracking-[1px] px-7 py-3 rounded-full hover:bg-white transition-colors duration-200">Enroll Now</a>
+    </div>
+  </nav>
+
+  <!-- ─────────────────── HERO ─────────────────── -->
+  <section class="bg-[#1a1a1a] py-20 px-6 text-center">
+    <div class="max-w-[680px] mx-auto">
+      <div class="inline-block text-[#F6C90E] text-[11px] font-bold tracking-[3px] uppercase mb-5">Careers at Mdcatemy</div>
+      <h1 class="font-black text-white uppercase leading-none mb-5"
+          style="font-size: clamp(2.4rem, 6.5vw, 4.6rem); letter-spacing: -2px;">
+        BECOME AN<br><span class="text-[#F6C90E]">AMBASSADOR</span>
+      </h1>
+      <p class="text-[1rem] leading-[1.75]" style="color: rgba(255,255,255,0.5);">
+        Represent Mdcatemy. Empower students around you. Grow with us.
+      </p>
+    </div>
+  </section>
+
+  <!-- ─────────────────── REEL SECTION ─────────────────── -->
+  <section class="bg-white px-6" style="padding-top:72px; padding-bottom:72px;">
+    <div class="max-w-[780px] mx-auto">
+
+      <!-- Heading -->
+      <div class="text-center mb-10">
+        <p class="text-[11px] font-bold tracking-[3px] uppercase text-[#F6C90E] mb-3">Watch This First</p>
+        <h2 class="font-black text-[#1a1a1a] uppercase leading-tight"
+            style="font-size: clamp(1.6rem, 4vw, 2.2rem); letter-spacing: -0.5px;">
+          EVERYTHING YOU NEED<br>TO KNOW
+        </h2>
+      </div>
+
+      <!-- Reel embed -->
+      <div class="reel-outer">
+        <div class="reel-wrap">
+          <iframe
+            src="https://www.instagram.com/reel/DWpCl95DCVt/embed"
+            scrolling="no"
+            allowtransparency="true"
+            allow="encrypted-media; autoplay"
+            title="Mdcatemy Ambassador Program Reel">
+          </iframe>
+        </div>
+      </div>
+
+      <!-- Caption below reel -->
+      <p class="text-center text-[0.82rem] mt-5" style="color:#999;">
+        Can't see the reel?
+        <a href="https://www.instagram.com/reel/DWpCl95DCVt/" target="_blank"
+           class="font-semibold no-underline hover:text-[#F6C90E] transition-colors"
+           style="color:#1a1a1a;">
+          Open on Instagram →
+        </a>
+      </p>
+
+    </div>
+  </section>
+
+  <!-- ─────────────────── DETAILS SECTION ─────────────────── -->
+  <section class="bg-[#1a1a1a] px-6" style="padding-top:72px; padding-bottom:88px;">
+    <div class="max-w-[680px] mx-auto text-center">
+
+      <p class="text-[11px] font-bold tracking-[3px] uppercase text-[#F6C90E] mb-4">Ambassador Program</p>
+      <h2 class="font-black text-white uppercase leading-tight mb-5"
+          style="font-size: clamp(1.6rem, 4vw, 2.2rem); letter-spacing: -0.5px;">
+        WHY JOIN US?
+      </h2>
+      <p style="font-size:1rem; color:rgba(255,255,255,0.5); line-height:1.75; margin-bottom:0;">
+        The Mdcatemy Ambassador Program is for motivated MDCAT students who want to do more than just study. Represent a brand that actually cares about students, earn real rewards, and help your peers find the right path.
+      </p>
+
+      <!-- Highlights grid -->
+      <div class="highlight-grid text-left">
+
+        <div class="highlight-card">
+          <div class="highlight-dot"></div>
+          <div class="highlight-title">Earn Rewards</div>
+          <div class="highlight-body">Get rewarded for every successful referral you bring to Mdcatemy.</div>
+        </div>
+
+        <div class="highlight-card">
+          <div class="highlight-dot"></div>
+          <div class="highlight-title">Official Recognition</div>
+          <div class="highlight-body">Be featured on Mdcatemy's official platforms as a campus ambassador.</div>
+        </div>
+
+        <div class="highlight-card">
+          <div class="highlight-dot"></div>
+          <div class="highlight-title">Build Your Brand</div>
+          <div class="highlight-body">Develop real-world communication, outreach, and leadership skills.</div>
+        </div>
+
+        <div class="highlight-card">
+          <div class="highlight-dot"></div>
+          <div class="highlight-title">Be Part of the Mission</div>
+          <div class="highlight-body">Help other MDCAT students find the guidance they need to succeed.</div>
+        </div>
+
+      </div>
+
+      <!-- CTA -->
+      <a href="https://forms.gle/1y63gdgQ1LPAKHQL9" target="_blank" class="ambassador-btn">
+        Join as Ambassador
+      </a>
+      <p class="text-[0.78rem] mt-4" style="color:rgba(255,255,255,0.25);">
+        Fill out a short application form — we review every submission
+      </p>
+
+    </div>
+  </section>
+
+  <!-- ─────────────────── FOOTER ─────────────────── -->
+  <footer class="bg-[#1e2428] text-center px-6" style="padding-top:56px; padding-bottom:40px; border-top:3px solid #F6C90E;">
+    <div style="font-size:28px; font-weight:900; color:#ffffff; letter-spacing:-0.5px; margin-bottom:12px;">
+      MDCAT<span style="color:#F6C90E;">EMY</span>
+    </div>
+    <p style="font-size:14px; color:rgba(238,238,238,0.5); margin-bottom:32px; font-weight:400;">Training warriors to crack MDCAT 2026.</p>
+    <div style="width:60px; height:2px; background:rgba(246,201,14,0.4); margin:0 auto 28px;"></div>
+    <p style="font-size:13px; color:rgba(238,238,238,0.35);">© 2026 MDCATEMY. All rights reserved.</p>
+  </footer>
+
+</body>
+</html>

@@ -24,9 +24,13 @@ import UserStartTestPage from '../pages/userPages/UserStartTestPage';
 import ScorePredictorPage from '../pages/userPages/ScorePredictorPage';
 import UserAnalyticsPage from '../pages/userPages/UserAnalyticsPage';
 import QuizMakingPage from '../pages/userPages/QuizBuilder/QuizMakingPage';
-import ReviewPreviousTextMcqsPage from '../pages/userPages/ReviewPreviousTextMcqsPage';
+import ReviewPreviousTestMcqsPage from '../pages/userPages/ReviewPreviousTestMcqsPage';
 import LandingPageLayout from '../layout/LandingPageLayout';
 import ComingSoonPage from '../pages/ComingSoonPage'
+import ReviewPreviousQuizMcqsPage from '../pages/userPages/ReviewPreviousQuizMcqsPage';
+import PrivacyPolicyPage from '../pages/LandingPages/PrivacyPolicyPage';
+import TermsAndConditionsPage from '../pages/LandingPages/TermsAndConditionsPage';
+import CareersPage from '../pages/LandingPages/CareersPage';
 
 const App = () => {
   const MDCATEMY_STATUS = import.meta.env.VITE_MDCATEMY_STATUS;
@@ -37,6 +41,9 @@ const App = () => {
         <Route path='/' element={<LandingPageLayout />}>
           <Route index element={<MainLandingPage />}/>
           <Route path='/batch-enrollment' element={<BatchEnrollmentLandingPage />}/>
+          <Route path='/privacy-policy' element={<PrivacyPolicyPage />}/>
+          <Route path='/terms-and-conditions' element={<TermsAndConditionsPage />}/>
+          <Route path='/careers' element={<CareersPage />}/>
         </Route>
 
         <Route element={<MainLayout />} id='root' loader={getUserLoader}>
@@ -51,11 +58,12 @@ const App = () => {
             <Route path='score-predictor' element={<ScorePredictorPage />}/>
 
             <Route path='quiz-builder' element={<QuizMakingPage />}/>
+            <Route path='quiz-builder/previous-quiz/:quizID' element={<ReviewPreviousQuizMcqsPage />}/>
 
             <Route path='test-series' element={<UserTestSeriesLayout />}>
               <Route index element={<UserTestSeriesPage />}/>
               <Route path='previous-tests' element={<AllPreviousTestsPage />}/> 
-              <Route path='previous-tests/:testID' element={<ReviewPreviousTextMcqsPage />}/>
+              <Route path='previous-tests/:testID' element={<ReviewPreviousTestMcqsPage />}/>
               <Route path='all-upcoming-tests' element={<AllUpcomingTestsPage />}/>
               <Route path='start-test/:testID' element={<UserStartTestPage />}/>
             </Route>

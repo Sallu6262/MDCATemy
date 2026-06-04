@@ -5,7 +5,7 @@ import { useEffect } from 'react';
 import { pageFilter, subjectFilter, searchFilter } from '../../utils/filterAndSearch';
 // import filterAndSearchMCQ from '../../utils/filterAndSearch';
 
-const MistakesCopy = ({wrongMcqs, totalMistakes, pendingMistakes, setPendingMistakes, setWrongMcqs, totalWrong}) => {
+const MistakesCopy = ({wrongMcqs, totalMistakes, pendingMistakes, setPendingMistakes, setWrongMcqs, totalWrong, setTotalWrong}) => {
     const API_URL = import.meta.env.VITE_API_URL;
     // console.log(wrongMcqs);
     const [subject, setSubject] = useState(0);
@@ -164,7 +164,7 @@ const MistakesCopy = ({wrongMcqs, totalMistakes, pendingMistakes, setPendingMist
                 notMasteredMcqs?.length ?
                 <>
                 {
-                    notMasteredMcqs?.map((mcq, i) => <WrongMCQCard key={i} mcq={mcq} setWrongMcqs={setWrongMcqs} setNotMasteredMcqs={setNotMasteredMcqs} setPendingMistakes={setPendingMistakes}/>)
+                    notMasteredMcqs?.map((mcq, i) => <WrongMCQCard key={i} mcq={mcq} setWrongMcqs={setWrongMcqs} setNotMasteredMcqs={setNotMasteredMcqs} setPendingMistakes={setPendingMistakes} totalWrong={totalWrong} setTotalWrong={setTotalWrong}/>)
                 }
                     <div className="flex items-center justify-between gap-3">
                         {

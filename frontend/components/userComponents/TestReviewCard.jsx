@@ -62,7 +62,7 @@ const TestReviewCard = ({test, setTestReviewHidden, attempted}) => {
       logical_reasoning: lrCount,
       test_mode: "Silent",
       blind_mode: 0,
-      answerAfterEach: false
+      answerAfterEach: true
     }));
 
     navigate(`${test?.test_id}`);

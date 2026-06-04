@@ -50,6 +50,11 @@ html[data-theme] .border-\[\#2D302D\] { border-color: var(--ui-border) !importan
 html[data-theme] .bg-\[\#2D302D\] { background-color: var(--ui-border) !important; }
 html[data-theme] .text-\[\#8B8E8B\] { color: var(--ui-muted) !important; }
 html[data-theme="light"] .custom-mix-overlay { background-color: rgb(var(--ui-text-rgb) / 0.35) !important; }
+html[data-theme="light"] .smart-select-overlay { background-color: rgb(var(--ui-text-rgb) / 0.4) !important; }
+html[data-theme] .bg-\[\#0E0F0E\]\/40 { background-color: rgb(var(--ui-inner-rgb) / 0.4) !important; }
+html[data-theme] .text-\[\#8B8E8B\]\/70 { color: rgb(var(--ui-muted-rgb) / 0.7) !important; }
+html[data-theme] .text-\[\#8B8E8B\]\/60 { color: rgb(var(--ui-muted-rgb) / 0.6) !important; }
+html[data-theme] .text-\[\#8B8E8B\]\/40 { color: rgb(var(--ui-muted-rgb) / 0.4) !important; }
 html[data-theme] .bg-\[\#1A1A1A\]\/90 { background-color: rgb(var(--ui-panel-rgb) / 0.9) !important; }
 html[data-theme] .bg-\[\#1A1A1A\]\/95 { background-color: rgb(var(--ui-panel-rgb) / 0.95) !important; }
 html[data-theme] .bg-\[\#121212\]\/80 { background-color: rgb(var(--ui-inner-rgb) / 0.85) !important; }
@@ -173,4 +178,10 @@ html[data-theme="light"] .site-footer .hover\:text-white:hover {
 ::-webkit-scrollbar-thumb {
   background: #ffc600;
   border-radius: 3px;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }

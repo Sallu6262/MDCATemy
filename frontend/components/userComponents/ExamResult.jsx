@@ -6,6 +6,7 @@ const ExamResult = ({isQuiz, correct, wrong, saved, skipped, total, exam}) => {
     const percentage = parseInt((correct / total) * 100);
 
     const navigate = useNavigate();
+    console.log(exam);
 
     return (
         <div className="fade-in flex min-w-0 flex-1 flex-col overflow-hidden">
@@ -67,7 +68,27 @@ const ExamResult = ({isQuiz, correct, wrong, saved, skipped, total, exam}) => {
                     {isQuiz ? 'New Quiz' : 'Back To Dashboard'}
                 </button>
 
-                <Link className="cursor-pointer flex items-center justify-center gap-2 rounded-xl bg-[#FFC600] px-4 py-3.5 text-[13px] font-black uppercase tracking-[0.08em] text-[#181A18] shadow-lg shadow-[#FFC600]/15 transition-all hover:scale-[1.01]">
+                <Link to={isQuiz ? `/dashboard/quiz-builder/previous-quiz/${exam?.test_id}` : `/dashboard/test-series/previous-tests/${exam?.test_id}`} 
+                    onClick={() => {
+                        const key = isQuiz ? 'previous-quiz-mcqs' : 'previous-test-mcqs';
+                        localStorage.setItem(key, JSON.stringify({
+                            test_id: exam?.test_id,
+                            test_name: exam?.test_name,
+                            total_mcqs: exam?.mcq_count,
+                            test_time: exam?.test_time ?? 0,
+                            mcqs: exam?.mcqs,
+                            biology: exam?.biology,
+                            chemistry: exam?.chemistry,
+                            physics: exam?.physics,
+                            english: exam?.english,
+                            logical_reasoning: exam?.logical_reasoning,
+                            test_mode: "Silent",
+                            blind_mode: 0,
+                            answerAfterEach: true,
+                            comingFromExamResult: true
+                        }));
+                    }}
+                    className="cursor-pointer flex items-center justify-center gap-2 rounded-xl bg-[#FFC600] px-4 py-3.5 text-[13px] font-black uppercase tracking-[0.08em] text-[#181A18] shadow-lg shadow-[#FFC600]/15 transition-all hover:scale-[1.01]">
                     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
                     <circle cx="12" cy="12" r="3" />

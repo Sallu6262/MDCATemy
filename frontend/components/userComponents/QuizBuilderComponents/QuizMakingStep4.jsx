@@ -30,7 +30,7 @@ const DifficultySelectButton = ({difficulty, difficultyToSet, isSelected, setDif
 const QuizMakingStep4 = ({mcqDistributionPerTopic, selectedTopics, setQuizInfo, setStep, selectedSubjects}) => {
     const [showTimer, setShowTimer] = useState(false);
     const [totalMcqs, setTotalMcqs] = useState([...selectedTopics].reduce((acc, topic) => acc + mcqDistributionPerTopic[topic], 0));
-    const [maxMcqs, setMaxMcqs] = useState([...selectedTopics].reduce((acc, topic) => acc + mcqDistributionPerTopic[topic], 0));
+    const [maxMcqs, setMaxMcqs] = useState(Math.min(180, [...selectedTopics].reduce((acc, topic) => acc + mcqDistributionPerTopic[topic], 0)));
     const [difficulty, setDifficulty] = useState(3);
     const [answerAfterEach, setAnswerAfterEach] = useState(true);
     const [difficultyRatio, setDifficultyRatio] = useState({easy: 33, medium: 34, hard: 33});
@@ -143,7 +143,6 @@ const QuizMakingStep4 = ({mcqDistributionPerTopic, selectedTopics, setQuizInfo, 
     return (
         <>
         {difficulty === 4 && !hidden? <CustomMixTestPopUp setDifficulty={setDifficulty} setDifficultyRatio={setDifficultyRatio} setHidden={setHidden}/> : ''}
-        <div className="mx-auto max-w-6xl px-4 py-6 lg:px-8">
             <div className="mx-auto w-full max-w-3xl space-y-4 lg:max-w-4xl">
                 <section
                 className="rounded-2xl border-2 border-[#2D302D] bg-[#181A18] p-4 lg:p-6"
@@ -165,11 +164,16 @@ const QuizMakingStep4 = ({mcqDistributionPerTopic, selectedTopics, setQuizInfo, 
                         className="cursor-pointer h-10 w-10 rounded-xl border-2 border-[#2D302D] bg-[#0E0F0E]/30 text-xl text-[#8B8E8B]"
                         >
                         -</button
-                        ><span
+                        ><input
+                        type="number" 
+                        min="1"
+                        max="180"
+                        value={totalMcqs}
+                        onChange={e => setTotalMcqs(Math.max(1, Math.min(e.target.value, 180, maxMcqs)))}
                         className="h-10 flex justify-center items-center flex-1 rounded-xl border-2 border-[#2D302D] bg-[#0E0F0E] text-center [font-family:Poppins,sans-serif] text-xl font-black text-[#FFC600]"
-                        >{totalMcqs}</span>
+                        />
                         <button
-                        onClick={() => setTotalMcqs(prev => prev < maxMcqs ? prev +  1 : prev)}
+                        onClick={() => setTotalMcqs(prev => prev < maxMcqs ? prev + 1 : prev)}
                         className="cursor-pointer h-10 w-10 rounded-xl border-2 border-[#2D302D] bg-[#0E0F0E]/30 text-xl text-[#8B8E8B]"
                         >
                         +
@@ -236,10 +240,7 @@ const QuizMakingStep4 = ({mcqDistributionPerTopic, selectedTopics, setQuizInfo, 
                     </div>
                 </div>
                 </section>
-                <div className="flex gap-2">
-                </div>
             </div>
-        </div>
         </>
     )
 }

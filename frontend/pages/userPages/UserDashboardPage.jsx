@@ -84,7 +84,7 @@ const UserDashboardPage = () => {
                         <path d="M 39.21 39.21 A 86 86 0 0 1 100.00 14.00 L 100.00 33.00 A 67 67 0 0 0 52.62 52.62 Z" fill="#F97316"/>
                         <path d="M 100.00 14.00 A 86 86 0 0 1 160.79 39.21 L 147.38 52.62 A 67 67 0 0 0 100.00 33.00 Z" fill="#EAB308"/>
                         <path d="M 160.79 39.21 A 86 86 0 0 1 186.00 100.00 L 167.00 100.00 A 67 67 0 0 0 147.38 52.62 Z" fill="#22C55E"/>
-                        <g transform={`translate(100 100) rotate(${180 - (sa?.predicted_score ?? 0)})`}>
+                        <g transform={`translate(100 100) rotate(${-90 + (sa?.predicted_score ?? 0)})`}>
                             <path d="M 3,0 C 2.2,-28 1,-60 0,-62 C -1,-60 -2.2,-28 -3,0 C -1.5,3 1.5,3 3,0 Z" fill="rgba(255,255,255,0.85)"/>
                         </g>
                         <circle cx="100" cy="100" r="5.5" fill="rgba(255,255,255,0.85)"/>
@@ -456,7 +456,7 @@ const UserDashboardPage = () => {
                             <text x="100" y="1" textAnchor="middle" dominantBaseline="middle" fontSize="8" fontFamily="Inter,sans-serif" fontWeight="500" fill="rgb(var(--ui-text-rgb) / 0.38)">90</text>
                             <text x="160.79" y="39.21" textAnchor="start" dominantBaseline="middle" fontSize="8" fontFamily="Inter,sans-serif" fontWeight="500" fill="rgb(var(--ui-text-rgb) / 0.38)">135</text>
                             <text x="186" y="100" textAnchor="start" dominantBaseline="middle" fontSize="8" fontFamily="Inter,sans-serif" fontWeight="500" fill="rgb(var(--ui-text-rgb) / 0.38)">180</text>
-                            <g transform={`translate(100 100) rotate(${180 - (sa?.predicted_score ?? 0)})`}>
+                            <g transform={`translate(100 100) rotate(${-90 + (sa?.predicted_score ?? 0)})`}>
                             <path d="M 3,0 C 2.2,-28 1,-60 0,-62 C -1,-60 -2.2,-28 -3,0 C -1.5,3 1.5,3 3,0 Z" fill="rgba(255,255,255,0.85)"/>
                             </g>
                             <circle cx="100" cy="100" r="6" fill="rgba(255,255,255,0.85)"/>

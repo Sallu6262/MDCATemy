@@ -2,9 +2,9 @@ import React, { useState } from 'react'
 import ChapterSelectButton from './ChapterSelectButton';
 import { formatName, subjectToColor } from '../../../utils/HelperObjects';
 
-const QuizMakingStep2 = ({filteredSyllabus, selectedChapters, setSelectedChapters}) => {
-    // console.log(filteredSyllabus);
-    const [subject, setSubject] = useState(Object.keys(filteredSyllabus)[0]);
+const QuizMakingStep2 = ({filteredSubjects, selectedChapters, setSelectedChapters}) => {
+    // console.log(filteredSubjects);
+    const [subject, setSubject] = useState(Object.keys(filteredSubjects)[0]);
     // console.log(selectedChapters);
 
     return (
@@ -19,7 +19,7 @@ const QuizMakingStep2 = ({filteredSyllabus, selectedChapters, setSelectedChapter
           </div>
             <div className="flex border-b-2 border-[#2E302E] overflow-x-auto">
                 {
-                    Object.keys(filteredSyllabus).map((sub, i) => {
+                    Object.keys(filteredSubjects).map((sub, i) => {
                         return (
                             <button key={i} onClick={() => setSubject(sub)} className={`cursor-pointer px-3 lg:px-4 py-2.5 lg:py-3 text-[11px] lg:text-[13px] font-poppins font-black whitespace-nowrap flex-shrink-0 text-white ${sub === subject ? 'border-b-2 border-[#FFC600]' : ''}`}>
                                 <div className="flex items-center gap-1.5">
@@ -41,7 +41,7 @@ const QuizMakingStep2 = ({filteredSyllabus, selectedChapters, setSelectedChapter
             </div>
             <div className="flex flex-col gap-5 p-4 lg:p-6">
                 {
-                    <ChapterSelectButton subject={subject} chapters={Object.keys(filteredSyllabus[subject])} setSelectedChapters={setSelectedChapters} selectedChapters={selectedChapters} colorClassName={`bg-[${subjectToColor[subject]}]`}/>
+                    <ChapterSelectButton subject={subject} chapters={Object.keys(filteredSubjects[subject])} setSelectedChapters={setSelectedChapters} selectedChapters={selectedChapters} colorClassName={`bg-[${subjectToColor[subject]}]`}/>
                 }
             </div>
         </section>

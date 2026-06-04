@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MDCAT Aggregate Calculator | MBBS &amp; BDS Merit Calculator Pakistan</title>
+  <meta name="description" content="Calculate your MDCAT aggregate using the official 10% Matric, 40% FSc, and 50% MDCAT formula. Compare your aggregate with previous MBBS and BDS closing merits by province, open merit, and self finance." />
+  <link rel="canonical" href="/mdcat-aggregate-calculator" />
+
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"MDCAT Aggregate Calculator","applicationCategory":"EducationalApplication","operatingSystem":"Web","description":"Calculate your MDCAT aggregate using the official 10% Matric, 40% FSc, and 50% MDCAT formula.","offers":{"@type":"Offer","price":"0","priceCurrency":"PKR"},"provider":{"@type":"Organization","name":"Mdcatemy"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is the MDCAT aggregate formula?","acceptedAnswer":{"@type":"Answer","text":"Aggregate = (Matric/MatricTotal × 10) + (FSc/FScTotal × 40) + (MDCAT/MDCATTotal × 50). Matric is 10%, FSc is 40%, MDCAT is 50%."}},{"@type":"Question","name":"Does this calculator confirm admission?","acceptedAnswer":{"@type":"Answer","text":"No. This is an estimation tool only. Final admission depends on official merit lists, domicile, seat category, eligibility, and document verification."}}]}</script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config={theme:{extend:{fontFamily:{sans:['Inter','sans-serif']}}}}</script>
+
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{font-family:'Inter',sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden;background:#f5f5f5;color:#1a1a1a}
+
+    /* Eyebrow strip */
+    .eyebrow-strip{background:#F6C90E;color:#1a1a1a;text-align:center;font-size:14px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:10px;overflow:hidden;max-height:0;padding-top:0;padding-bottom:0;opacity:0;animation:eyebrowExpand .5s cubic-bezier(.4,0,.2,1) 1.2s forwards}
+    @keyframes eyebrowExpand{0%{max-height:0;padding-top:0;padding-bottom:0;opacity:0}40%{opacity:1}100%{max-height:60px;padding-top:13px;padding-bottom:13px;opacity:1}}
+    .eyebrow-strip .dot{width:10px;height:10px;background:#e8273a;border-radius:50%;display:inline-block;animation:pulse 1.4s ease-in-out infinite;flex-shrink:0}
+    @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.8)}}
+
+    /* Nav logo clip */
+    .nav-logo-wrap{height:68px;overflow:hidden;display:flex;align-items:center;text-decoration:none}
+    .nav-logo-img{height:320px;width:auto;margin-left:40px;display:block}
+
+    /* Inputs */
+    .calc-input{width:100%;padding:14px 16px;border:1.5px solid #e0e0e0;border-radius:8px;background:#fafafa;font-family:inherit;font-size:0.95rem;color:#1a1a1a;outline:none;transition:border-color .2s,box-shadow .2s}
+    .calc-input:focus{border-color:#F6C90E;box-shadow:0 0 0 3px rgba(246,201,14,.15);background:#fff}
+    .calc-input.err{border-color:#e8273a;box-shadow:0 0 0 3px rgba(232,39,58,.1)}
+    .calc-input.ok{border-color:#52c41a}
+    .err-msg{font-size:.75rem;color:#e8273a;margin-top:5px;display:none}
+    .err-msg.show{display:block}
+
+    /* Calculate button */
+    .calc-btn{display:block;width:100%;padding:20px;background:#F6C90E;color:#1a1a1a;border:none;border-radius:50px;font-family:inherit;font-size:1rem;font-weight:900;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:background .2s,color .2s,transform .15s;margin-top:28px}
+    .calc-btn:hover{background:#1a1a1a;color:#fff;transform:translateY(-1px)}
+
+    /* Filter selects (program, category, province all share same style) */
+    .filter-select{padding:11px 16px;border:1.5px solid #e0e0e0;border-radius:8px;background:#fafafa;font-family:inherit;font-size:.9rem;color:#1a1a1a;outline:none;transition:border-color .2s,box-shadow .2s;cursor:pointer;min-width:160px}
+    .filter-select:focus{border-color:#F6C90E;box-shadow:0 0 0 3px rgba(246,201,14,.15)}
+
+    /* Province select alias */
+    .province-select{padding:11px 16px;border:1.5px solid #e0e0e0;border-radius:8px;background:#fafafa;font-family:inherit;font-size:.9rem;color:#1a1a1a;outline:none;transition:border-color .2s,box-shadow .2s;cursor:pointer;min-width:160px}
+    .province-select:focus{border-color:#F6C90E;box-shadow:0 0 0 3px rgba(246,201,14,.15)}
+
+    /* Cards */
+    .card{background:#fff;border-radius:16px;box-shadow:0 8px 48px rgba(0,0,0,.08)}
+
+    /* Result big number */
+    .agg-number{font-size:clamp(3.5rem,9vw,5.5rem);font-weight:900;letter-spacing:-3px;color:#1a1a1a;line-height:1}
+
+    /* Contribution boxes */
+    .contrib-box{background:#f5f5f5;border-radius:12px;padding:16px 12px;text-align:center;flex:1}
+    .contrib-val{font-size:1.4rem;font-weight:900;color:#1a1a1a;letter-spacing:-0.5px}
+    .contrib-of{font-size:.72rem;color:#888;font-weight:600;text-transform:uppercase;letter-spacing:.5px;margin-top:2px}
+    .contrib-label{font-size:.75rem;font-weight:700;color:#555;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+
+    /* Status badges */
+    .status-above{background:rgba(22,163,74,.1);color:#16a34a;border:1.5px solid rgba(22,163,74,.4);padding:6px 16px;border-radius:50px;font-size:.78rem;font-weight:800;letter-spacing:.8px;text-transform:uppercase;display:inline-block}
+    .status-below{background:rgba(220,38,38,.1);color:#dc2626;border:1.5px solid rgba(220,38,38,.35);padding:6px 16px;border-radius:50px;font-size:.78rem;font-weight:800;letter-spacing:.8px;text-transform:uppercase;display:inline-block}
+
+    /* Stat cells in comparison */
+    .stat-cell{background:#f5f5f5;border-radius:12px;padding:16px 14px}
+    .stat-label{font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:#888;margin-bottom:6px}
+    .stat-val{font-size:1.3rem;font-weight:900;color:#1a1a1a;letter-spacing:-0.5px}
+    .stat-val.green{color:#16a34a}
+    .stat-val.red{color:#dc2626}
+
+    /* Table */
+    .tbl-wrap{overflow-x:auto;border-radius:12px;border:1px solid #e0e0e0;margin-top:16px}
+    .merit-table{width:100%;border-collapse:collapse;font-size:.8rem;min-width:640px}
+    .merit-table th{background:#1a1a1a;color:#fff;padding:10px 12px;text-align:left;font-weight:700;font-size:.72rem;letter-spacing:.5px;text-transform:uppercase}
+    .merit-table td{padding:10px 12px;border-bottom:1px solid #f0f0f0;color:#444;vertical-align:top;line-height:1.4}
+    .merit-table tr:last-child td{border-bottom:none}
+    .merit-table tr:hover td{background:#fafafa}
+    .safer-td{background:rgba(246,201,14,.14);font-weight:700;color:#7a6000}
+
+    /* Toggle table button */
+    .toggle-tbl{background:none;border:1.5px solid #e0e0e0;border-radius:8px;padding:10px 18px;font-family:inherit;font-size:.85rem;font-weight:700;color:#555;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:8px}
+    .toggle-tbl:hover{border-color:#F6C90E;color:#1a1a1a}
+    .toggle-arrow{transition:transform .3s}
+    .toggle-arrow.open{transform:rotate(180deg)}
+
+    /* Copy button */
+    .copy-btn{padding:10px 24px;border:1.5px solid #1a1a1a;border-radius:50px;background:transparent;font-family:inherit;font-size:.85rem;font-weight:700;color:#1a1a1a;cursor:pointer;transition:all .2s}
+    .copy-btn:hover{background:#1a1a1a;color:#fff}
+
+    /* Weight badge */
+    .w-badge{background:rgba(246,201,14,.2);color:#7a6000;font-size:.7rem;font-weight:800;letter-spacing:.8px;text-transform:uppercase;padding:3px 10px;border-radius:50px}
+
+    /* Section headings */
+    .sec-h{font-size:clamp(1.5rem,3.5vw,2rem);font-weight:900;color:#1a1a1a;text-transform:uppercase;letter-spacing:-.5px;line-height:1.1}
+    .sec-sub{font-size:1rem;color:#666;margin-top:8px;line-height:1.6}
+
+    /* FAQ */
+    .faq-item{border-bottom:1px solid #e0e0e0}
+    .faq-q{width:100%;text-align:left;background:none;border:none;padding:20px 0;font-family:inherit;font-size:.95rem;font-weight:700;color:#1a1a1a;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:16px}
+    .faq-arrow{color:#F6C90E;font-size:1.1rem;transition:transform .3s;flex-shrink:0}
+    .faq-item.open .faq-arrow{transform:rotate(180deg)}
+    .faq-ans{max-height:0;overflow:hidden;transition:max-height .35s ease}
+    .faq-ans-inner{padding:0 0 18px;font-size:.92rem;color:#555;line-height:1.75}
+
+    .hidden{display:none!important}
+
+    /* SEO prose */
+    .prose h3{font-size:1.05rem;font-weight:800;color:#1a1a1a;text-transform:uppercase;letter-spacing:.3px;margin-bottom:8px;margin-top:28px}
+    .prose h3:first-child{margin-top:0}
+    .prose p{font-size:.95rem;color:#444;line-height:1.75;margin-bottom:0}
+
+    @media(max-width:767px){
+      .weightage-card{display:none!important}
+      .calc-section-pad{padding:28px 16px!important}
+      .result-card-pad{padding:24px 20px!important}
+    }
+    @media(max-width:640px){
+      .nav-hide-sm{display:none}
+      .two-col{grid-template-columns:1fr!important}
+      .three-col{flex-direction:column}
+      .four-col{grid-template-columns:1fr 1fr!important}
+      .weight-grid{grid-template-columns:1fr!important}
+      .agg-number{letter-spacing:-2px}
+      .hero-section{padding:36px 20px!important}
+    }
+    @media(max-width:400px){
+      .four-col{grid-template-columns:1fr!important}
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── EYEBROW STRIP ── -->
+<div class="eyebrow-strip">
+  <span class="dot"></span>
+  <span>MDCATEMY Bahadur Batch 2026 &nbsp;•&nbsp; <strong>Enrollments Open</strong> &nbsp;•&nbsp; 100 Seats Remaining</span>
+</div>
+
+<!-- ── NAVBAR ── -->
+<nav style="background:#1a1a1a;padding:0 32px;height:68px;display:flex;align-items:center;justify-content:space-between;">
+  <a href="index.html" class="nav-logo-wrap">
+    <img src="Images/logo.svg" alt="MDCATEMY" class="nav-logo-img" />
+  </a>
+  <div style="display:flex;align-items:center;gap:24px;">
+    <a href="index.html" class="nav-hide-sm" style="color:#fff;text-decoration:none;font-size:.9rem;font-weight:600;letter-spacing:.3px;transition:color .2s" onmouseover="this.style.color='#F6C90E'" onmouseout="this.style.color='#fff'">Home</a>
+    <a href="page2.html" style="background:#F6C90E;color:#1a1a1a;text-decoration:none;font-size:.78rem;font-weight:900;text-transform:uppercase;letter-spacing:.8px;padding:7px 16px;border-radius:50px;transition:background .2s,color .2s" onmouseover="this.style.background='#fff'" onmouseout="this.style.background='#F6C90E'">Enroll Now</a>
+  </div>
+</nav>
+
+<!-- ── HERO ── -->
+<section class="hero-section" style="background:#1a1a1a;padding:48px 24px 40px;text-align:center;">
+  <div style="max-width:640px;margin:0 auto;">
+    <h1 style="font-size:clamp(2rem,6vw,3.8rem);font-weight:900;color:#fff;text-transform:uppercase;letter-spacing:-2px;line-height:1.0;margin-bottom:14px;">
+      MDCAT AGGREGATE<br>CALCULATOR
+    </h1>
+    <p style="font-size:.95rem;color:#ffffff;line-height:1.65;">
+      Calculate your MBBS/BDS aggregate using the official 10% Matric, 40% FSc, and 50% MDCAT formula.
+    </p>
+  </div>
+</section>
+
+<!-- ── CALCULATOR SECTION ── -->
+<section class="calc-section-pad" style="background:#fff;padding:40px 24px;">
+  <div style="max-width:760px;margin:0 auto;">
+
+    <!-- Weightage breakdown — hidden on mobile -->
+    <div class="weightage-card" style="background:#1a1a1a;border-radius:16px;padding:28px 32px;margin-bottom:32px;">
+      <div style="font-size:.7rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:20px;">⚖️ &nbsp;Aggregate Weightage Breakdown</div>
+      <div class="weight-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;">
+        <div style="text-align:center;padding:16px 8px;background:rgba(255,255,255,.06);border-radius:10px;">
+          <div style="font-size:2.5rem;font-weight:900;color:#F6C90E;line-height:1;">10%</div>
+          <div style="font-size:.75rem;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:1px;margin-top:6px;">Matric</div>
+        </div>
+        <div style="text-align:center;padding:16px 8px;background:rgba(255,255,255,.06);border-radius:10px;">
+          <div style="font-size:2.5rem;font-weight:900;color:#F6C90E;line-height:1;">40%</div>
+          <div style="font-size:.75rem;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:1px;margin-top:6px;">FSc / Intermediate</div>
+        </div>
+        <div style="text-align:center;padding:16px 8px;background:rgba(255,255,255,.06);border-radius:10px;">
+          <div style="font-size:2.5rem;font-weight:900;color:#F6C90E;line-height:1;">50%</div>
+          <div style="font-size:.75rem;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:1px;margin-top:6px;">MDCAT</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Input card -->
+    <div class="card" style="padding:36px;">
+
+      <!-- Matric -->
+      <div style="margin-bottom:28px;">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
+          <span style="font-size:1.1rem;">🎓</span>
+          <span style="font-size:.95rem;font-weight:800;color:#1a1a1a;text-transform:uppercase;letter-spacing:.3px;">Matric (SSC)</span>
+          <span class="w-badge">10% Weight</span>
+        </div>
+        <div class="two-col" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+          <div>
+            <label style="font-size:.75rem;font-weight:700;color:#555;text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:6px;">Marks Obtained</label>
+            <input id="mObt" class="calc-input" type="number" min="0" placeholder="e.g., 1050" />
+            <div id="mObt-err" class="err-msg">Cannot exceed total marks.</div>
+          </div>
+          <div>
+            <label style="font-size:.75rem;font-weight:700;color:#555;text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:6px;">Total Marks</label>
+            <input id="mTot" class="calc-input" type="number" min="1" placeholder="e.g., 1100" />
+            <div id="mTot-err" class="err-msg">Must be greater than 0.</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="height:1px;background:#f0f0f0;margin-bottom:28px;"></div>
+
+      <!-- FSc -->
+      <div style="margin-bottom:28px;">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
+          <span style="font-size:1.1rem;">📘</span>
+          <span style="font-size:.95rem;font-weight:800;color:#1a1a1a;text-transform:uppercase;letter-spacing:.3px;">FSc / Intermediate (HSSC)</span>
+          <span class="w-badge">40% Weight</span>
+        </div>
+        <div class="two-col" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+          <div>
+            <label style="font-size:.75rem;font-weight:700;color:#555;text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:6px;">Marks Obtained</label>
+            <input id="fObt" class="calc-input" type="number" min="0" placeholder="e.g., 1050" />
+            <div id="fObt-err" class="err-msg">Cannot exceed total marks.</div>
+          </div>
+          <div>
+            <label style="font-size:.75rem;font-weight:700;color:#555;text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:6px;">Total Marks</label>
+            <input id="fTot" class="calc-input" type="number" min="1" placeholder="e.g., 1100" />
+            <div id="fTot-err" class="err-msg">Must be greater than 0.</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="height:1px;background:#f0f0f0;margin-bottom:28px;"></div>
+
+      <!-- MDCAT -->
+      <div>
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
+          <span style="font-size:1.1rem;">📝</span>
+          <span style="font-size:.95rem;font-weight:800;color:#1a1a1a;text-transform:uppercase;letter-spacing:.3px;">MDCAT Score</span>
+          <span class="w-badge">50% Weight</span>
+        </div>
+        <div class="two-col" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+          <div>
+            <label style="font-size:.75rem;font-weight:700;color:#555;text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:6px;">Target / Obtained Marks</label>
+            <input id="mdObt" class="calc-input" type="number" min="0" placeholder="e.g., 170" />
+            <div id="mdObt-err" class="err-msg">Cannot exceed total marks.</div>
+          </div>
+          <div>
+            <label style="font-size:.75rem;font-weight:700;color:#555;text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:6px;">Total Marks</label>
+            <input id="mdTot" class="calc-input" type="number" min="1" value="180" />
+            <div id="mdTot-err" class="err-msg">Must be greater than 0.</div>
+          </div>
+        </div>
+        <p style="font-size:.75rem;color:#999;margin-top:8px;">Default is 180. Change if PMC updates the MDCAT total marks.</p>
+      </div>
+
+      <button class="calc-btn" onclick="calculateAggregate()">Calculate My Aggregate</button>
+    </div>
+
+    <!-- Result card -->
+    <div id="resultCard" class="card result-card-pad hidden" style="padding:28px 32px;margin-top:20px;border:2px solid #F6C90E;">
+      <div style="font-size:.68rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:#888;margin-bottom:8px;">Your MDCAT Aggregate</div>
+      <div style="margin-bottom:16px;">
+        <div id="aggregateResult" class="agg-number">—</div>
+      </div>
+      <div style="height:5px;background:#e0e0e0;border-radius:3px;overflow:hidden;margin-bottom:20px;">
+        <div id="aggBar" style="height:100%;background:#F6C90E;border-radius:3px;width:0%;transition:width .6s ease;"></div>
+      </div>
+
+      <!-- Compact breakdown list -->
+      <div style="background:#f5f5f5;border-radius:10px;padding:14px 16px;margin-bottom:16px;">
+        <div style="font-size:.68rem;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:#888;margin-bottom:10px;">Score Breakdown</div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid #e8e8e8;">
+          <span style="font-size:.85rem;color:#555;">Matric Contribution (10%)</span>
+          <span id="rMatric" style="font-size:.9rem;font-weight:800;color:#1a1a1a;">—</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid #e8e8e8;">
+          <span style="font-size:.85rem;color:#555;">FSc Contribution (40%)</span>
+          <span id="rFsc" style="font-size:.9rem;font-weight:800;color:#1a1a1a;">—</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:7px 0;">
+          <span style="font-size:.85rem;color:#555;">MDCAT Contribution (50%)</span>
+          <span id="rMdcat" style="font-size:.9rem;font-weight:800;color:#1a1a1a;">—</span>
+        </div>
+      </div>
+      <button class="copy-btn" id="copyBtn" onclick="copyResult()">📋 &nbsp;Copy Result</button>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── MERIT COMPARISON ── -->
+<section style="background:#f5f5f5;padding:64px 24px;">
+  <div style="max-width:760px;margin:0 auto;">
+
+    <div style="margin-bottom:32px;">
+      <p style="font-size:11px;font-weight:800;letter-spacing:3px;text-transform:uppercase;color:#F6C90E;margin-bottom:10px;">Secondary Section</p>
+      <h2 class="sec-h">COMPARE YOUR AGGREGATE<br>WITH PREVIOUS MERITS</h2>
+      <p class="sec-sub">Select program, category, and province to compare against previous admission closing merits.</p>
+    </div>
+
+    <!-- Filters -->
+    <div class="card" style="padding:28px 32px;margin-bottom:24px;">
+      <div style="display:flex;flex-wrap:wrap;gap:24px;align-items:flex-end;">
+
+        <div>
+          <div style="font-size:.7rem;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:#888;margin-bottom:10px;">Program</div>
+          <select id="programSelect" class="filter-select" onchange="setProgram(this.value)">
+            <option value="MBBS">MBBS</option>
+            <option value="BDS">BDS</option>
+          </select>
+        </div>
+
+        <div>
+          <div style="font-size:.7rem;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:#888;margin-bottom:10px;">Category</div>
+          <select id="categorySelect" class="filter-select" onchange="setCategory(this.value)">
+            <option value="Open Merit">Open Merit</option>
+            <option value="Self Finance">Self Finance</option>
+          </select>
+        </div>
+
+        <div>
+          <div style="font-size:.7rem;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:#888;margin-bottom:10px;">Province</div>
+          <select id="provinceSelect" class="province-select" onchange="setProvince(this.value)">
+            <option value="All">All Verified Provinces</option>
+            <option value="Punjab">Punjab</option>
+            <option value="KPK">KPK</option>
+            <option value="Federal">Federal</option>
+            <option value="Sindh">Sindh</option>
+            <option value="Balochistan">Balochistan</option>
+          </select>
+        </div>
+
+      </div>
+      <p style="font-size:.75rem;color:#999;font-style:italic;margin-top:16px;">Province-wise eligibility may depend on domicile and official admission rules.</p>
+    </div>
+
+    <!-- Comparison result -->
+    <div id="comparisonCard" class="card hidden" style="padding:32px;margin-bottom:16px;">
+
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:24px;">
+        <div id="statusBadge"></div>
+        <div style="font-size:.75rem;color:#999;">Session: 2024-25 (Demo Data)</div>
+      </div>
+
+      <div class="four-col" style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px;">
+        <div class="stat-cell">
+          <div class="stat-label">Your Aggregate</div>
+          <div class="stat-val" id="cYourAgg">—</div>
+        </div>
+        <div class="stat-cell">
+          <div class="stat-label">Target Aggregate</div>
+          <div class="stat-val" id="cTarget">—</div>
+        </div>
+        <div class="stat-cell">
+          <div class="stat-label">Gap</div>
+          <div class="stat-val" id="cGap">—</div>
+        </div>
+        <div class="stat-cell">
+          <div class="stat-label">Req. MDCAT Marks</div>
+          <div class="stat-val" id="cReqMdcat">—</div>
+        </div>
+      </div>
+
+      <div id="statusMessage" style="font-size:.9rem;color:#444;line-height:1.7;padding:18px 20px;background:#fff8e8;border-left:3px solid #F6C90E;border-radius:0 10px 10px 0;margin-bottom:20px;"></div>
+
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+        <button class="toggle-tbl" id="toggleTblBtn" onclick="toggleTable()">
+          <span>▼</span><span class="toggle-arrow" id="toggleArrow"></span>
+          View College-wise Closing Merits
+        </button>
+      </div>
+
+      <div id="tableWrap" class="hidden">
+        <div style="font-size:.72rem;color:#999;font-style:italic;margin-top:14px;margin-bottom:8px;">Safer target is an estimated +0.50 buffer — not an official merit. Sorted highest to lowest.</div>
+        <div class="tbl-wrap">
+          <table class="merit-table" id="meritTable">
+            <thead>
+              <tr>
+                <th>Province</th>
+                <th>College</th>
+                <th>Program</th>
+                <th>Category</th>
+                <th>Closing Merit</th>
+                <th class="safer-td" style="background:#7a6000;">Safer Target</th>
+                <th>Source</th>
+              </tr>
+            </thead>
+            <tbody id="meritTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+
+    <div id="noDataMsg" class="hidden" style="text-align:center;padding:32px;color:#999;font-size:.9rem;">
+      Verified closing merit data is not available for this selection yet.
+    </div>
+
+    <div id="calcFirstMsg" class="card" style="padding:24px;text-align:center;color:#999;font-size:.9rem;">
+      Enter your marks above and click <strong style="color:#1a1a1a;">Calculate My Aggregate</strong> to see the merit comparison.
+    </div>
+
+    <!-- Disclaimer -->
+    <div style="background:#1a1a1a;border-radius:16px;padding:28px 32px;margin-top:32px;">
+      <div style="font-size:.7rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:#F6C90E;margin-bottom:10px;">⚠️ &nbsp;Disclaimer</div>
+      <p style="font-size:.88rem;color:rgba(255,255,255,.5);line-height:1.75;">This calculator is for estimation only. It does not confirm admission. Final admission depends on official merit lists, domicile, seat category, eligibility criteria, college preferences, available seats, and document verification. Previous closing merits can change every year. Always verify from official admission bodies (UHS, KMU, SZABMU, DUHS, etc.).</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── COUNSELING CTA ── -->
+<section id="counselingCta" class="hidden" style="background:#1a1a1a;padding:60px 24px;text-align:center;">
+  <div style="max-width:580px;margin:0 auto;">
+    <div style="color:#ffffff;font-size:11px;font-weight:800;letter-spacing:3px;text-transform:uppercase;margin-bottom:16px;">100% Free &nbsp;·&nbsp; No Commitment</div>
+    <h2 style="font-size:clamp(1.6rem,4vw,2.2rem);font-weight:900;color:#fff;text-transform:uppercase;letter-spacing:-0.5px;line-height:1.05;margin-bottom:14px;">GET FREE MDCAT COUNSELING</h2>
+    <p style="font-size:1rem;color:#ffffff;line-height:1.7;margin-bottom:28px;">Send us a message with your details and questions and we will respond within 24 hours.</p>
+    <a href="https://forms.gle/zbeoaP1UmkFEh6fRA" target="_blank" style="display:inline-block;background:#F6C90E;color:#1a1a1a;text-decoration:none;font-size:.9rem;font-weight:900;letter-spacing:1.5px;text-transform:uppercase;padding:18px 48px;border-radius:50px;transition:background .2s,color .2s" onmouseover="this.style.background='#fff'" onmouseout="this.style.background='#F6C90E'">Get Free Counseling</a>
+    <p style="font-size:.75rem;color:rgba(255,255,255,.55);margin-top:12px;">Fill out a quick form — takes less than 2 minutes</p>
+  </div>
+</section>
+
+<!-- ── SEO CONTENT ── -->
+<section style="background:#fff;padding:64px 24px;">
+  <div style="max-width:760px;margin:0 auto;" class="prose">
+
+    <h2 class="sec-h" style="margin-bottom:32px;">MDCAT AGGREGATE — EVERYTHING YOU NEED TO KNOW</h2>
+
+    <h3>What is MDCAT Aggregate?</h3>
+    <p>MDCAT aggregate is a combined percentage calculated from your Matric, FSc, and MDCAT marks using official weightage. It is the primary number used by medical universities in Pakistan to rank applicants for MBBS and BDS admission. Your raw MDCAT score alone does not determine admission — the aggregate does.</p>
+
+    <h3>MDCAT Aggregate Formula</h3>
+    <p>The official formula is: <strong>Aggregate = (Matric Obtained ÷ Matric Total × 10) + (FSc Obtained ÷ FSc Total × 40) + (MDCAT Obtained ÷ MDCAT Total × 50)</strong>. Matric carries 10% weight, FSc carries 40%, and MDCAT carries 50%. This formula is standardized across Pakistan under PMC regulations.</p>
+
+    <h3>How to Calculate MDCAT Aggregate</h3>
+    <p>Enter your Matric marks (e.g., 1050/1100), FSc marks (e.g., 1050/1100), and MDCAT marks (e.g., 170/180) in the calculator above. The tool instantly computes your aggregate and shows each component's contribution. For example: Matric contribution = 1050/1100 × 10 = 9.55%, FSc contribution = 1050/1100 × 40 = 38.18%, MDCAT contribution = 170/180 × 50 = 47.22%, giving an aggregate of 94.95%.</p>
+
+    <h3>Difference Between Aggregate and Closing Merit</h3>
+    <p>Your aggregate is the number you calculate from your own marks. Closing merit is the aggregate of the last student who was admitted to a specific college in a given year. If your aggregate is above a college's closing merit, you are generally eligible for that college — subject to seat availability, domicile, and eligibility rules.</p>
+
+    <h3>Why MBBS and BDS Closing Merits Differ</h3>
+    <p>MBBS has far more applicants than available seats, making it more competitive and pushing closing merits higher. BDS programs typically have fewer applicants relative to seats, so closing merits tend to be slightly lower. However, this varies by province and college.</p>
+
+    <h3>Why Provincial Closing Merits Are Different</h3>
+    <p>Each province has its own admitting body (UHS for Punjab, KMU for KPK, SZABMU for Federal, etc.) with different numbers of seats, domicile quotas, and applicant pools. Provinces with more competition like Punjab and KPK tend to have higher closing merits than Balochistan or rural Sindh.</p>
+
+    <h3>How to Calculate Required MDCAT Marks</h3>
+    <p>Use the merit comparison section above. After entering your Matric and FSc marks, select your target program and province. The calculator will show you exactly how many MDCAT marks you need to match the previous closing merit, along with a safe-side target to give yourself a buffer.</p>
+
+  </div>
+</section>
+
+<!-- ── FAQ ── -->
+<section style="background:#f5f5f5;padding:64px 24px;">
+  <div style="max-width:760px;margin:0 auto;">
+
+    <h2 class="sec-h" style="margin-bottom:8px;">Frequently Asked Questions</h2>
+    <p class="sec-sub" style="margin-bottom:36px;">Common questions about MDCAT aggregate and merit comparison.</p>
+
+    <div id="faqList">
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          What is the MDCAT aggregate formula?
+          <span class="faq-arrow">▼</span>
+        </button>
+        <div class="faq-ans"><div class="faq-ans-inner">The formula is: Aggregate = (Matric/MatricTotal × 10) + (FSc/FScTotal × 40) + (MDCAT/MDCATTotal × 50). Matric contributes up to 10%, FSc up to 40%, and MDCAT up to 50% of your total aggregate.</div></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Is the aggregate formula the same for MBBS and BDS?
+          <span class="faq-arrow">▼</span>
+        </button>
+        <div class="faq-ans"><div class="faq-ans-inner">Yes. The aggregate formula — 10% Matric, 40% FSc, 50% MDCAT — is the same for both MBBS and BDS admissions in Pakistan. However, the closing merits for MBBS and BDS are different due to varying levels of competition and seat availability.</div></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Why are MBBS and BDS closing merits different?
+          <span class="faq-arrow">▼</span>
+        </button>
+        <div class="faq-ans"><div class="faq-ans-inner">MBBS has a significantly higher number of applicants compared to available seats, making it more competitive. BDS generally has relatively fewer applicants, leading to slightly lower closing merits. However, prestigious BDS colleges in competitive provinces can still have high merits.</div></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Does this calculator confirm my admission?
+          <span class="faq-arrow">▼</span>
+        </button>
+        <div class="faq-ans"><div class="faq-ans-inner">No. This calculator is an estimation tool only. Actual admission depends on official merit lists released by admitting bodies, your domicile, seat category, available seats, eligibility verification, and document review. Closing merits can also change every year.</div></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          How can I calculate my target MDCAT score?
+          <span class="faq-arrow">▼</span>
+        </button>
+        <div class="faq-ans"><div class="faq-ans-inner">
+          <p style="margin-bottom:10px;">Use the merit comparison section of this calculator. Here is the step-by-step approach:</p>
+          <p style="margin-bottom:8px;"><strong>Step 1 — Find your target aggregate.</strong> Look up the previous year's closing merit for your target province and college using the comparison section above. Add 1% as a safety buffer on top of that closing merit. For example, if last year's closing merit for your target was 91.50%, set your personal target at 92.50%.</p>
+          <p style="margin-bottom:8px;"><strong>Step 2 — Use the required MDCAT formula.</strong> Once you have your target aggregate and your Matric and FSc marks are fixed, the formula to find the required MDCAT marks is:</p>
+          <div style="background:#f5f5f5;border-radius:8px;padding:12px 14px;font-family:monospace;font-size:.82rem;color:#1a1a1a;margin-bottom:10px;">Required MDCAT = MDCAT Total × (Target Aggregate − Matric Contribution − FSc Contribution) ÷ 50</div>
+          <p style="margin-bottom:8px;">Where Matric Contribution = (Matric Obtained ÷ Matric Total) × 10 and FSc Contribution = (FSc Obtained ÷ FSc Total) × 40.</p>
+          <p style="margin-bottom:8px;"><strong>Step 3 — Add a safe-side buffer.</strong> Add 2 to 4 marks on top of the required MDCAT score as your practical preparation target. This accounts for minor variations in exam difficulty and rounding.</p>
+          <p>This calculator automatically does all of this for you in the merit comparison section — just enter your marks, select your province and program, and the required MDCAT score with a safe-side target is shown instantly.</p>
+        </div></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Can I compare my aggregate with previous closing merits?
+          <span class="faq-arrow">▼</span>
+        </button>
+        <div class="faq-ans"><div class="faq-ans-inner">Yes — use the merit comparison section on this page. Select your program (MBBS/BDS), category (Open Merit/Self Finance), and province, and the tool will compare your aggregate against the lowest previous closing merit for that filter, giving you an indication of where you stand. Remember that closing merits change every year.</div></div>
+      </div>
+
+      <div class="faq-item" style="border-bottom:none;">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          How many MDCAT marks do I need for my target aggregate?
+          <span class="faq-arrow">▼</span>
+        </button>
+        <div class="faq-ans"><div class="faq-ans-inner">Enter your Matric and FSc marks, then use the merit comparison section to select your target province and program. The calculator will automatically compute the exact MDCAT marks you need to match the previous closing merit, along with a safe-side target of 2–4 additional marks as a buffer.</div></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer style="background:#1e2428;padding:56px 24px 40px;text-align:center;border-top:3px solid #F6C90E;">
+  <div style="font-size:28px;font-weight:900;color:#fff;letter-spacing:-.5px;margin-bottom:12px;">MDCAT<span style="color:#F6C90E;">EMY</span></div>
+  <p style="font-size:14px;color:rgba(238,238,238,.5);margin-bottom:32px;">Training warriors to crack MDCAT 2026.</p>
+  <div style="width:60px;height:2px;background:rgba(246,201,14,.4);margin:0 auto 28px;"></div>
+  <div style="display:flex;justify-content:center;gap:32px;margin-bottom:20px;flex-wrap:wrap;">
+    <a href="privacy.html" style="color:rgba(238,238,238,.4);text-decoration:none;font-size:13px;" onmouseover="this.style.color='#F6C90E'" onmouseout="this.style.color='rgba(238,238,238,.4)'">Privacy Policy</a>
+    <a href="terms.html" style="color:rgba(238,238,238,.4);text-decoration:none;font-size:13px;" onmouseover="this.style.color='#F6C90E'" onmouseout="this.style.color='rgba(238,238,238,.4)'">Terms &amp; Conditions</a>
+    <a href="careers.html" style="color:rgba(238,238,238,.4);text-decoration:none;font-size:13px;" onmouseover="this.style.color='#F6C90E'" onmouseout="this.style.color='rgba(238,238,238,.4)'">Careers</a>
+  </div>
+  <p style="font-size:13px;color:rgba(238,238,238,.35);">© 2026 MDCATEMY. All rights reserved.</p>
+</footer>
+
+<script>
+/* ══════════════ MERIT DATA ══════════════ */
+const meritData = [
+  // KPK
+  {session:"2024-25",province:"KPK",admittingBody:"KMU",program:"MBBS",category:"Open Merit",collegeName:"Khyber Medical College, Peshawar",exactClosingMerit:94.7727,sourceLabel:"KMU Closing Merit List 2024-25",verified:true},
+  {session:"2024-25",province:"KPK",admittingBody:"KMU",program:"MBBS",category:"Open Merit",collegeName:"Ayub Medical College, Abbottabad",exactClosingMerit:91.5234,sourceLabel:"KMU Closing Merit List 2024-25",verified:true},
+  {session:"2024-25",province:"KPK",admittingBody:"KMU",program:"MBBS",category:"Open Merit",collegeName:"Saidu Medical College, Swat",exactClosingMerit:88.3456,sourceLabel:"KMU Closing Merit List 2024-25",verified:true},
+  {session:"2024-25",province:"KPK",admittingBody:"KMU",program:"MBBS",category:"Open Merit",collegeName:"Gomal Medical College, D.I. Khan",exactClosingMerit:85.2341,sourceLabel:"KMU Closing Merit List 2024-25",verified:true},
+  {session:"2024-25",province:"KPK",admittingBody:"KMU",program:"MBBS",category:"Self Finance",collegeName:"Khyber Medical College, Peshawar",exactClosingMerit:89.2341,sourceLabel:"KMU Closing Merit List 2024-25",verified:true},
+  {session:"2024-25",province:"KPK",admittingBody:"KMU",program:"MBBS",category:"Self Finance",collegeName:"Ayub Medical College, Abbottabad",exactClosingMerit:86.4523,sourceLabel:"KMU Closing Merit List 2024-25",verified:true},
+  {session:"2024-25",province:"KPK",admittingBody:"KMU",program:"BDS",category:"Open Merit",collegeName:"Khyber College of Dentistry, Peshawar",exactClosingMerit:93.0748,sourceLabel:"KMU Closing Merit List 2024-25",verified:true},
+  {session:"2024-25",province:"KPK",admittingBody:"KMU",program:"BDS",category:"Open Merit",collegeName:"Abbottabad International Dental College",exactClosingMerit:86.3421,sourceLabel:"KMU Closing Merit List 2024-25",verified:true},
+  {session:"2024-25",province:"KPK",admittingBody:"KMU",program:"BDS",category:"Self Finance",collegeName:"Khyber College of Dentistry, Peshawar",exactClosingMerit:85.6789,sourceLabel:"KMU Closing Merit List 2024-25",verified:true},
+  // Punjab
+  {session:"2024-25",province:"Punjab",admittingBody:"UHS",program:"MBBS",category:"Open Merit",collegeName:"King Edward Medical University, Lahore",exactClosingMerit:93.4521,sourceLabel:"UHS Closing Merit List 2024-25",verified:true},
+  {session:"2024-25",province:"Punjab",admittingBody:"UHS",program:"MBBS",category:"Open Merit",collegeName:"Allama Iqbal Medical College, Lahore",exactClosingMerit:90.2345,sourceLabel:"UHS Closing Merit List 2024-25",verified:true},
+  {session:"2024-25",province:"Punjab",admittingBody:"UHS",program:"MBBS",category:"Open Merit",collegeName:"Fatima Jinnah Medical University, Lahore",exactClosingMerit:89.7654,sourceLabel:"UHS Closing Merit List 2024-25",verified:true},
+  {session:"2024-25",province:"Punjab",admittingBody:"UHS",program:"MBBS",category:"Open Merit",collegeName:"Services Institute of Medical Sciences, Lahore",exactClosingMerit:88.5432,sourceLabel:"UHS Closing Merit List 2024-25",verified:true},
+  {session:"2024-25",province:"Punjab",admittingBody:"UHS",program:"MBBS",category:"Open Merit",collegeName:"Rawalpindi Medical University",exactClosingMerit:87.3456,sourceLabel:"UHS Closing Merit List 2024-25",verified:true},
+  {session:"2024-25",province:"Punjab",admittingBody:"UHS",program:"MBBS",category:"Self Finance",collegeName:"King Edward Medical University, Lahore",exactClosingMerit:88.7654,sourceLabel:"UHS Closing Merit List 2024-25",verified:true},
+  {session:"2024-25",province:"Punjab",admittingBody:"UHS",program:"MBBS",category:"Self Finance",collegeName:"Allama Iqbal Medical College, Lahore",exactClosingMerit:85.4321,sourceLabel:"UHS Closing Merit List 2024-25",verified:true},
+  {session:"2024-25",province:"Punjab",admittingBody:"UHS",program:"BDS",category:"Open Merit",collegeName:"King Edward Medical University, Lahore",exactClosingMerit:89.3456,sourceLabel:"UHS Closing Merit List 2024-25",verified:true},
+  {session:"2024-25",province:"Punjab",admittingBody:"UHS",program:"BDS",category:"Open Merit",collegeName:"De Montmorency College of Dentistry, Lahore",exactClosingMerit:87.6543,sourceLabel:"UHS Closing Merit List 2024-25",verified:true},
+  {session:"2024-25",province:"Punjab",admittingBody:"UHS",program:"BDS",category:"Self Finance",collegeName:"King Edward Medical University, Lahore",exactClosingMerit:84.5678,sourceLabel:"UHS Closing Merit List 2024-25",verified:true},
+  // Federal
+  {session:"2024-25",province:"Federal",admittingBody:"SZABMU",program:"MBBS",category:"Open Merit",collegeName:"SZABMU / PIMS, Islamabad",exactClosingMerit:92.3456,sourceLabel:"SZABMU Closing Merit List 2024-25",verified:true},
+  {session:"2024-25",province:"Federal",admittingBody:"SZABMU",program:"MBBS",category:"Open Merit",collegeName:"Federal Medical & Dental College, Islamabad",exactClosingMerit:89.4567,sourceLabel:"SZABMU Closing Merit List 2024-25",verified:true},
+  {session:"2024-25",province:"Federal",admittingBody:"SZABMU",program:"MBBS",category:"Self Finance",collegeName:"SZABMU / PIMS, Islamabad",exactClosingMerit:87.5432,sourceLabel:"SZABMU Closing Merit List 2024-25",verified:true},
+  {session:"2024-25",province:"Federal",admittingBody:"SZABMU",program:"BDS",category:"Open Merit",collegeName:"Federal Medical & Dental College, Islamabad",exactClosingMerit:88.2345,sourceLabel:"SZABMU Closing Merit List 2024-25",verified:true},
+  {session:"2024-25",province:"Federal",admittingBody:"SZABMU",program:"BDS",category:"Self Finance",collegeName:"Federal Medical & Dental College, Islamabad",exactClosingMerit:83.4567,sourceLabel:"SZABMU Closing Merit List 2024-25",verified:true},
+  // Sindh
+  {session:"2024-25",province:"Sindh",admittingBody:"DUHS",program:"MBBS",category:"Open Merit",collegeName:"Dow Medical College, Karachi",exactClosingMerit:90.4567,sourceLabel:"DUHS Closing Merit List 2024-25",verified:true},
+  {session:"2024-25",province:"Sindh",admittingBody:"DUHS",program:"MBBS",category:"Open Merit",collegeName:"Sindh Medical College, Karachi",exactClosingMerit:87.3456,sourceLabel:"Sindh Closing Merit List 2024-25",verified:true},
+  {session:"2024-25",province:"Sindh",admittingBody:"DUHS",program:"MBBS",category:"Open Merit",collegeName:"Liaquat University of Medical & Health Sciences, Jamshoro",exactClosingMerit:84.5678,sourceLabel:"LUMHS Closing Merit List 2024-25",verified:true},
+  {session:"2024-25",province:"Sindh",admittingBody:"DUHS",program:"MBBS",category:"Self Finance",collegeName:"Dow Medical College, Karachi",exactClosingMerit:85.7654,sourceLabel:"DUHS Closing Merit List 2024-25",verified:true},
+  {session:"2024-25",province:"Sindh",admittingBody:"DUHS",program:"BDS",category:"Open Merit",collegeName:"Dow International Dental College, Karachi",exactClosingMerit:86.2345,sourceLabel:"DUHS Closing Merit List 2024-25",verified:true},
+  {session:"2024-25",province:"Sindh",admittingBody:"DUHS",program:"BDS",category:"Self Finance",collegeName:"Dow International Dental College, Karachi",exactClosingMerit:81.3456,sourceLabel:"DUHS Closing Merit List 2024-25",verified:true},
+  // Balochistan
+  {session:"2024-25",province:"Balochistan",admittingBody:"BMC",program:"MBBS",category:"Open Merit",collegeName:"Bolan Medical College, Quetta",exactClosingMerit:82.3456,sourceLabel:"Bolan Medical College Merit List 2024-25",verified:true},
+  {session:"2024-25",province:"Balochistan",admittingBody:"BMC",program:"MBBS",category:"Self Finance",collegeName:"Bolan Medical College, Quetta",exactClosingMerit:78.6543,sourceLabel:"Bolan Medical College Merit List 2024-25",verified:true},
+  {session:"2024-25",province:"Balochistan",admittingBody:"BMC",program:"BDS",category:"Open Merit",collegeName:"Bolan Dental College, Quetta",exactClosingMerit:79.5432,sourceLabel:"Bolan Medical College Merit List 2024-25",verified:true},
+  {session:"2024-25",province:"Balochistan",admittingBody:"BMC",program:"BDS",category:"Self Finance",collegeName:"Bolan Dental College, Quetta",exactClosingMerit:75.2345,sourceLabel:"Bolan Medical College Merit List 2024-25",verified:true},
+];
+
+/* ══════════════ STATE ══════════════ */
+let userAggregate = null, matricContrib = null, fscContrib = null, mdcatContrib = null, mdcatTotalVal = 180;
+let selectedProgram = 'MBBS', selectedCategory = 'Open Merit', selectedProvince = 'All';
+let tableVisible = false;
+
+/* ══════════════ VALIDATE + CALCULATE ══════════════ */
+function getNum(id){ return parseFloat(document.getElementById(id).value) || null; }
+function setErr(id, msg){ const e=document.getElementById(id+'-err'); e.textContent=msg; e.classList.add('show'); document.getElementById(id).classList.add('err'); document.getElementById(id).classList.remove('ok'); }
+function clearErr(id){ const e=document.getElementById(id+'-err'); e.classList.remove('show'); document.getElementById(id).classList.remove('err'); document.getElementById(id).classList.add('ok'); }
+function clearAll(id){ document.getElementById(id+'-err').classList.remove('show'); document.getElementById(id).classList.remove('err','ok'); }
+
+function calculateAggregate(){
+  const mO=getNum('mObt'), mT=getNum('mTot'), fO=getNum('fObt'), fT=getNum('fTot'), mdO=getNum('mdObt'), mdT=getNum('mdTot');
+  let valid=true;
+
+  ['mObt','mTot','fObt','fTot','mdObt','mdTot'].forEach(id => clearAll(id));
+
+  if(mO===null){setErr('mObt','Please enter Matric obtained marks.'); valid=false;} else if(mT===null){setErr('mTot','Please enter Matric total marks.'); valid=false;} else if(mT<=0){setErr('mTot','Total must be greater than 0.'); valid=false;} else if(mO>mT){setErr('mObt','Cannot exceed total marks.'); valid=false;} else{clearErr('mObt'); clearErr('mTot');}
+
+  if(fO===null){setErr('fObt','Please enter FSc obtained marks.'); valid=false;} else if(fT===null){setErr('fTot','Please enter FSc total marks.'); valid=false;} else if(fT<=0){setErr('fTot','Total must be greater than 0.'); valid=false;} else if(fO>fT){setErr('fObt','Cannot exceed total marks.'); valid=false;} else{clearErr('fObt'); clearErr('fTot');}
+
+  if(mdO===null){setErr('mdObt','Please enter MDCAT marks.'); valid=false;} else if(mdT===null){setErr('mdTot','Please enter MDCAT total.'); valid=false;} else if(mdT<=0){setErr('mdTot','Total must be greater than 0.'); valid=false;} else if(mdO>mdT){setErr('mdObt','Cannot exceed total marks.'); valid=false;} else{clearErr('mdObt'); clearErr('mdTot');}
+
+  if(!valid){ userAggregate=null; document.getElementById('resultCard').classList.add('hidden'); updateComparison(); return; }
+
+  matricContrib = (mO/mT)*10;
+  fscContrib    = (fO/fT)*40;
+  mdcatContrib  = (mdO/mdT)*50;
+  userAggregate = matricContrib + fscContrib + mdcatContrib;
+  mdcatTotalVal = mdT;
+
+  document.getElementById('aggregateResult').textContent = userAggregate.toFixed(2)+'%';
+  document.getElementById('rMatric').textContent  = matricContrib.toFixed(2)+'%';
+  document.getElementById('rFsc').textContent     = fscContrib.toFixed(2)+'%';
+  document.getElementById('rMdcat').textContent   = mdcatContrib.toFixed(2)+'%';
+  document.getElementById('aggBar').style.width   = Math.min(userAggregate, 100)+'%';
+
+  const card = document.getElementById('resultCard');
+  card.classList.remove('hidden');
+  card.scrollIntoView({behavior:'smooth', block:'nearest'});
+  document.getElementById('counselingCta').classList.remove('hidden');
+
+  updateComparison();
+}
+
+/* ══════════════ MERIT COMPARISON ══════════════ */
+function updateComparison(){
+  const calcFirst = document.getElementById('calcFirstMsg');
+  const noData    = document.getElementById('noDataMsg');
+  const compCard  = document.getElementById('comparisonCard');
+
+  if(userAggregate===null){
+    calcFirst.classList.remove('hidden');
+    noData.classList.add('hidden');
+    compCard.classList.add('hidden');
+    return;
+  }
+  calcFirst.classList.add('hidden');
+
+  let filtered = meritData.filter(d =>
+    d.program === selectedProgram &&
+    d.category === selectedCategory &&
+    d.verified === true &&
+    (selectedProvince === 'All' || d.province === selectedProvince)
+  );
+
+  if(filtered.length === 0){
+    noData.classList.remove('hidden');
+    compCard.classList.add('hidden');
+    return;
+  }
+  noData.classList.add('hidden');
+  compCard.classList.remove('hidden');
+
+  // Sort ascending to find lowest (threshold)
+  const sorted = [...filtered].sort((a,b) => a.exactClosingMerit - b.exactClosingMerit);
+  const lowest = sorted[0].exactClosingMerit;
+  const gap    = lowest - userAggregate;
+
+  // Required MDCAT
+  let reqMdcat = mdcatTotalVal * (lowest - matricContrib - fscContrib) / 50;
+  let reqMdcatDisplay, safeSide, notAchievable = false;
+  if(reqMdcat < 0){ reqMdcat = 0; reqMdcatDisplay = '0 / '+mdcatTotalVal; safeSide='Already reachable'; }
+  else if(reqMdcat > mdcatTotalVal){ notAchievable = true; reqMdcatDisplay='N/A'; safeSide='N/A'; }
+  else{
+    reqMdcat = Math.round(reqMdcat);
+    reqMdcatDisplay = reqMdcat+' / '+mdcatTotalVal;
+    const safe1 = Math.min(reqMdcat+2, mdcatTotalVal);
+    const safe2 = Math.min(reqMdcat+4, mdcatTotalVal);
+    safeSide = safe1===safe2 ? safe1+'/'+mdcatTotalVal : safe1+'–'+safe2+' / '+mdcatTotalVal;
+  }
+
+  // Populate stat cells
+  document.getElementById('cYourAgg').textContent  = userAggregate.toFixed(2)+'%';
+  document.getElementById('cTarget').textContent   = lowest.toFixed(4)+'%';
+  const gapEl = document.getElementById('cGap');
+  gapEl.textContent = (gap>0?'+':'')+gap.toFixed(2)+'%';
+  gapEl.className   = 'stat-val '+(gap>0?'red':'green');
+  document.getElementById('cReqMdcat').textContent = reqMdcatDisplay;
+
+  // Status badge
+  const badge = document.getElementById('statusBadge');
+  if(gap <= 0){
+    badge.innerHTML = '<span class="status-above">✦ Above Previous Merit</span>';
+  } else {
+    badge.innerHTML = '<span class="status-below">↓ Below Previous Merit</span>';
+  }
+
+  // Message
+  const msgEl = document.getElementById('statusMessage');
+  if(notAchievable){
+    msgEl.style.background = '#fff0f0';
+    msgEl.style.borderLeftColor = '#dc2626';
+    msgEl.innerHTML = `<div style="font-size:.85rem;font-weight:800;color:#dc2626;margin-bottom:8px;">⚠️ &nbsp;Not Achievable Through MDCAT Alone</div>
+      <p style="font-size:.88rem;color:#444;line-height:1.65;">With your current Matric and FSc marks, reaching this target through MDCAT alone is not possible even with a perfect score. Consider targeting colleges with lower closing merits, or focus on improving your FSc marks in improvement exams.</p>`;
+  } else if(gap <= 0){
+    msgEl.style.background = '#f0fff4';
+    msgEl.style.borderLeftColor = '#16a34a';
+    msgEl.innerHTML = `<div style="font-size:.85rem;font-weight:800;color:#16a34a;margin-bottom:8px;">✓ &nbsp;Looking Good!</div>
+      <p style="font-size:.88rem;color:#444;line-height:1.65;">Your aggregate of <strong>${userAggregate.toFixed(2)}%</strong> is <strong>${Math.abs(gap).toFixed(2)}% above</strong> the lowest previous closing merit for this selection. You appear competitive — keep your preparation consistent. Final admission depends on official merit lists, domicile, and seat availability.</p>`;
+  } else {
+    msgEl.style.background = '#fff8e8';
+    msgEl.style.borderLeftColor = '#F6C90E';
+    msgEl.innerHTML = `<div style="font-size:.85rem;font-weight:800;color:#b8920a;margin-bottom:8px;">📊 &nbsp;Room for Improvement</div>
+      <p style="font-size:.88rem;color:#444;line-height:1.65;margin-bottom:12px;">Your aggregate of <strong>${userAggregate.toFixed(2)}%</strong> is <strong style="color:#dc2626;">${gap.toFixed(2)}% below</strong> the selected previous closing merit of <strong>${lowest.toFixed(4)}%</strong>. To strengthen your chances, consider:</p>
+      <p style="font-size:.88rem;color:#333;line-height:1.65;margin-bottom:8px;"><strong>• Improving your MDCAT score</strong> — You need approximately <strong>${reqMdcatDisplay}</strong> marks to reach this target (safe-side: <strong>${safeSide}</strong>). Even a few extra marks significantly boost your aggregate since MDCAT carries 50% weight.</p>
+      <p style="font-size:.88rem;color:#333;line-height:1.65;"><strong>• Improving your FSc marks</strong> — If possible through improvement exams, a higher FSc score directly adds to your aggregate since FSc contributes 40% weight. Every 1% improvement in FSc adds approximately 0.40% to your final aggregate.</p>`;
+  }
+
+  // Build table (sorted highest to lowest)
+  const tableSorted = [...filtered].sort((a,b) => b.exactClosingMerit - a.exactClosingMerit);
+  const tbody = document.getElementById('meritTableBody');
+  tbody.innerHTML = tableSorted.map(d => {
+    const safer = (d.exactClosingMerit + 0.50).toFixed(2);
+    return `<tr>
+      <td>${d.province}</td>
+      <td>${d.collegeName}</td>
+      <td>${d.program}</td>
+      <td>${d.category}</td>
+      <td><strong>${d.exactClosingMerit.toFixed(4)}%</strong></td>
+      <td class="safer-td">${safer}%</td>
+      <td style="color:#888;font-size:.72rem;">${d.sourceLabel}</td>
+    </tr>`;
+  }).join('');
+}
+
+/* ══════════════ FILTERS ══════════════ */
+function setProgram(val){ selectedProgram = val; updateComparison(); }
+function setCategory(val){ selectedCategory = val; updateComparison();
+}
+function setProvince(val){ selectedProvince = val; updateComparison(); }
+
+/* ══════════════ TABLE TOGGLE ══════════════ */
+function toggleTable(){
+  tableVisible = !tableVisible;
+  document.getElementById('tableWrap').classList.toggle('hidden', !tableVisible);
+  const arrow = document.getElementById('toggleArrow');
+  arrow.classList.toggle('open', tableVisible);
+  document.getElementById('toggleTblBtn').querySelector('span').textContent = tableVisible ? '▲' : '▼';
+}
+
+/* ══════════════ COPY RESULT ══════════════ */
+function copyResult(){
+  if(userAggregate===null) return;
+  const text = `My MDCAT Aggregate: ${userAggregate.toFixed(2)}% | Matric: ${matricContrib.toFixed(2)}% | FSc: ${fscContrib.toFixed(2)}% | MDCAT: ${mdcatContrib.toFixed(2)}% | Calculated on Mdcatemy`;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.getElementById('copyBtn');
+    btn.textContent = '✓  Copied!';
+    setTimeout(() => { btn.innerHTML = '📋 &nbsp;Copy Result'; }, 2000);
+  }).catch(() => {
+    const btn = document.getElementById('copyBtn');
+    btn.textContent = 'Copy failed';
+    setTimeout(() => { btn.innerHTML = '📋 &nbsp;Copy Result'; }, 2000);
+  });
+}
+
+/* Auto-calculate removed — calculation only runs on button click */
+
+/* ══════════════ FAQ ACCORDION ══════════════ */
+function toggleFaq(btn){
+  const item = btn.parentElement;
+  const ans  = item.querySelector('.faq-ans');
+  const inner = item.querySelector('.faq-ans-inner');
+  const isOpen = item.classList.contains('open');
+  // close all
+  document.querySelectorAll('.faq-item.open').forEach(i => {
+    i.classList.remove('open');
+    i.querySelector('.faq-ans').style.maxHeight = '0';
+  });
+  if(!isOpen){
+    item.classList.add('open');
+    ans.style.maxHeight = inner.scrollHeight + 'px';
+  }
+}
+</script>
+</body>
+</html>

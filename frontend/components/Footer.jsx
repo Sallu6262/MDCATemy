@@ -1,6 +1,13 @@
 import { Link } from "react-router-dom"
 
 const Footer = () => {
+  const navigateToComponent = (id) => {
+    const url = window.location.href;
+    if(url.includes('/batch-enrollment')){
+      document.getElementById(id).scrollIntoView({behavior: 'smooth'});
+    }
+  }
+
   return (
     <footer
       className="site-footer"
@@ -41,17 +48,19 @@ const Footer = () => {
             <p className="text-white font-bold text-xs uppercase tracking-widest mb-5">Company</p>
             <ul className="space-y-3">
               <li><Link to="/" onClick={() => document.getElementById("about").scrollIntoView({behavior: 'smooth'})} className="text-sm transition-colors duration-200 hover:text-white" style={{ color: "rgb(var(--ui-text-rgb) / 0.45)", textDecoration: "none" }}>About Us</Link></li>
-              <li><Link to="/" className="text-sm transition-colors duration-200 hover:text-white" style={{ color: "rgb(var(--ui-text-rgb) / 0.45)", textDecoration: "none" }}>Scholarship</Link></li>
-              <li><Link to="/contact" className="text-sm transition-colors duration-200 hover:text-white" style={{ color: "rgb(var(--ui-text-rgb) / 0.45)", textDecoration: "none" }}>Contact</Link></li>
+              <li><Link to="/batch-enrollment" onClick={() => navigateToComponent("scholarships")} state={!window.location.href.includes('/batch-enrollment') ? {comingFromFooter: true, id: "scholarships"} : null} className="text-sm transition-colors duration-200 hover:text-white" style={{ color: "rgb(var(--ui-text-rgb) / 0.45)", textDecoration: "none" }}>Scholarship</Link></li>
+              <li><Link to="/batch-enrollment" onClick={() => navigateToComponent("contact")} state={!window.location.href.includes('/batch-enrollment') ? {comingFromFooter: true, id: "contact"} : null} className="text-sm transition-colors duration-200 hover:text-white" style={{ color: "rgb(var(--ui-text-rgb) / 0.45)", textDecoration: "none" }}>Contact</Link></li>
+              <li><span className="text-[#FFFFFF] text-sm transition-colors duration-200 hover:text-white" style={{textDecoration: "underline" }}>mdcatemy@gmail.com</span></li>
             </ul>
           </div>
 
           <div>
             <p className="text-white font-bold text-xs uppercase tracking-widest mb-5">Legal</p>
             <ul className="space-y-3">
-              <li><Link to="/" className="text-sm transition-colors duration-200 hover:text-white" style={{ color: "rgb(var(--ui-text-rgb) / 0.45)", textDecoration: "none" }}>Privacy Policy</Link></li>
-              <li><Link to="/" className="text-sm transition-colors duration-200 hover:text-white" style={{ color: "rgb(var(--ui-text-rgb) / 0.45)", textDecoration: "none" }}>Terms And Conditions</Link></li>
-              <li><Link to="/" className="text-sm transition-colors duration-200 hover:text-white" style={{ color: "rgb(var(--ui-text-rgb) / 0.45)", textDecoration: "none" }}>Refund Policy</Link></li>
+              <li><Link to="/privacy-policy" className="text-sm transition-colors duration-200 hover:text-white" style={{ color: "rgb(var(--ui-text-rgb) / 0.45)", textDecoration: "none" }}>Privacy Policy</Link></li>
+              <li><Link to="/terms-and-conditions" className="text-sm transition-colors duration-200 hover:text-white" style={{ color: "rgb(var(--ui-text-rgb) / 0.45)", textDecoration: "none" }}>Terms And Conditions</Link></li>
+              <li><Link to="/batch-enrollment" onClick={() => navigateToComponent("refund")} state={!window.location.href.includes('/batch-enrollment') ? {comingFromFooter: true, id: "refund"} : null} className="text-sm transition-colors duration-200 hover:text-white" style={{ color: "rgb(var(--ui-text-rgb) / 0.45)", textDecoration: "none" }}>Refund Policy</Link></li>
+              <li><Link to="/careers" className="text-sm transition-colors duration-200 hover:text-white" style={{ color: "rgb(var(--ui-text-rgb) / 0.45)", textDecoration: "none" }}>Careers</Link></li>
             </ul>
           </div>
 

@@ -11,7 +11,8 @@ import tAleeza from "../../assets/Images/t-aleeza.jpeg"
 import tSarwat from "../../assets/Images/t-sarwat.jpeg"
 import tBenyamin from "../../assets/Images/t-benyamin.jpeg"
 import '../../src/animation.css';
-import { Link } from "react-router-dom"
+import { Link, useLocation, useNavigate } from "react-router-dom"
+import { useEffect } from "react"
 
 const ctaBtn =
   "cursor-pointer inline-block rounded-full bg-[#F6C90E] font-[Inter] font-black uppercase text-[#1a1a1a] no-underline transition-all duration-200 hover:bg-[#1a1a1a] hover:text-white hover:-translate-y-px"
@@ -126,8 +127,18 @@ const FaqItem = ({ question, answer }) => (
 )
 
 const BatchEnrollmentLandingPage = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if(location?.state?.comingFromFooter){
+      document.getElementById(location?.state?.id).scrollIntoView({behavior: 'smooth'});
+      navigate(location.pathname, {replace: true, state: null});
+    }
+  }, []);
+
   return (
-    <div className="overflow-x-hidden font-[Inter] antialiased fade-in">
+    <div className="overflow-x-hidden font-[Inter] antialiased">
       {/* Eyebrow strip */}
       <div className="flex items-center justify-center gap-2.5 bg-[#F6C90E] px-5 py-[13px] text-center text-sm font-bold text-[#1a1a1a]">
         <span className="inline-block h-2.5 w-2.5 shrink-0 animate-pulse rounded-full bg-[#e8273a]" />
@@ -171,8 +182,7 @@ const BatchEnrollmentLandingPage = () => {
             className="block h-full w-full border-0"
             src="https://www.youtube.com/embed/segTM8x2HWs?start=4142&autoplay=1&mute=0&rel=0&modestbranding=1"
             title="Bahadur Batch enrollment video"
-            allow="autoplay; encrypted-media; fullscreen"
-            allowFullScreen
+            allow="encrypted-media; fullscreen"
           />
         </div>
       </section>
@@ -213,12 +223,15 @@ const BatchEnrollmentLandingPage = () => {
         </div>
       </section>
 
-      {/* Chat testimonials — horizontal scroll, no JS */}
+      {/* Chat testimonials — horizontal scroll */}
       <section className="bg-white pb-[70px] pt-[60px]">
         <p className="mx-auto mb-9 max-w-[1100px] px-6 text-center text-[clamp(1.2rem,2vw,1.6rem)] font-black leading-snug tracking-[-0.5px] text-[#1a1a1a]">
           At the end of our session we asked students about their experience.
           <br />
           Here are some of the many responses we received.
+        </p>
+        <p className="mx-auto mb-5 max-w-[1100px] px-6 text-center text-[0.88rem] font-medium text-[#888]">
+          Scroll horizontally to see more testimonials →
         </p>
         <div className="overflow-x-auto pb-5 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           <div className="mx-auto flex w-max items-start gap-5 px-6 snap-x snap-mandatory">
@@ -421,7 +434,7 @@ const BatchEnrollmentLandingPage = () => {
       </section>
 
       {/* Guarantee */}
-      <section className="bg-[#f5f5f5] px-6 pb-24 pt-20">
+      <section id="refund" className="bg-[#f5f5f5] px-6 pb-24 pt-20">
         <div className="mx-auto max-w-[780px]">
           <div className="rounded-[20px] bg-white px-[60px] py-14 shadow-[0_4px_32px_rgba(0,0,0,0.07)] max-[600px]:px-6 max-[600px]:py-9">
             <h2 className="mb-7 text-[1.75rem] font-black leading-snug tracking-[-0.5px] text-[#1a1a1a] max-[600px]:text-[1.35rem]">
@@ -478,17 +491,17 @@ const BatchEnrollmentLandingPage = () => {
           </div>
         </div>
         <div className="mt-14 text-center">
-          <a
-            href="#enroll"
+          <button
+            onClick={() => document.getElementById('enroll').scrollIntoView({behavior: 'smooth'})}
             className={`${ctaBtn} px-[52px] py-[22px] text-[17px] tracking-[1.5px] max-[600px]:w-full max-[600px]:px-5 max-[600px]:py-[18px] max-[600px]:text-sm`}
           >
             Enroll Now
-          </a>
+          </button>
         </div>
       </section>
 
       {/* Got questions */}
-      <section className="bg-[#f5f5f5] px-6 pb-[100px]">
+      <section id="contact" className="bg-[#f5f5f5] px-6 pb-[100px]">
         <div className="mx-auto max-w-[780px]">
           <div className="rounded-[20px] bg-white px-[60px] py-[52px] shadow-[0_4px_32px_rgba(0,0,0,0.07)] max-[600px]:px-6 max-[600px]:py-9">
             <h2 className="mb-2.5 text-[1.75rem] font-black tracking-[-0.5px] text-[#1a1a1a]">Got Questions?</h2>

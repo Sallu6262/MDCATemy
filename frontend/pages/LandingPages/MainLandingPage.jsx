@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom"
 import hayanImg from "../../assets/Images/Hayan.svg"
-import salmanImg from "../../assets/Images/Salman.svg"
+import salmanImg from "../../assets/Images/salman.png"
 import flpsImg from "../../assets/Images/flps.svg"
 import plannerImg from "../../assets/Images/planner.svg"
 import courseImg from "../../assets/Images/course.svg"
@@ -12,7 +12,7 @@ const ctaBtn =
 
 const MainLandingPage = () => {
   return (
-    <div className="font-[Inter] antialiased overflow-x-hidden bg-[#f5f5f5] text-[#1a1a1a] fade-in">
+    <div className="font-[Inter] antialiased overflow-x-hidden bg-[#f5f5f5] text-[#1a1a1a]">
 
       {/* Eyebrow strip */}
       <div className="flex items-center justify-center gap-2.5 overflow-hidden bg-[#F6C90E] px-4 py-[13px] text-center text-sm font-semibold text-[#1a1a1a] max-[900px]:gap-[7px] max-[900px]:px-4 max-[900px]:py-[11px] max-[900px]:text-xs">
@@ -181,6 +181,32 @@ const MainLandingPage = () => {
               </a>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* Free MDCAT Counseling */}
+      <section className="bg-[#1a1a1a] px-6 py-16 text-center">
+        <div className="max-w-[600px] mx-auto">
+          <span className="inline-block text-[11px] font-extrabold tracking-[2px] uppercase text-[#ffffff] mb-[18px]">
+            100% Free &nbsp;·&nbsp; No Commitment
+          </span>
+          <h2 className="text-[2rem] font-black text-[#ffffff] tracking-[-1px] uppercase leading-[1.05] mb-3.5 max-[640px]:text-[1.65rem]">
+            GET FREE MDCAT COUNSELING
+          </h2>
+          <p className="text-base text-[rgba(255,255,255,0.55)] leading-[1.7] mb-8">
+            Send your details and questions and we will answer you within 24 hours.
+          </p>
+          <a
+            href="https://forms.gle/zbeoaP1UmkFEh6fRA"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-block bg-[#F6C90E] text-[#1a1a1a] text-[15px] font-black tracking-[1.5px] uppercase no-underline px-[52px] py-5 rounded-full transition-all duration-200 hover:bg-[#ffffff] hover:text-[#1a1a1a] hover:-translate-y-px max-[640px]:w-full max-[640px]:px-6 max-[640px]:py-[18px]"
+          >
+            Get Free Counseling
+          </a>
+          <p className="text-[0.78rem] text-[rgba(255,255,255,0.25)] mt-3.5 tracking-[0.3px]">
+            Fill out a quick form — takes less than 2 minutes
+          </p>
         </div>
       </section>
 
