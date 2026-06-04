@@ -11,7 +11,7 @@ const PaymentForm = () => {
         'QUIZ_ONLY' : 3000,
         'TEST_ONLY' : 2000,
         'DUAL_ACCESS' : 5000,
-        'TRIBE_MEMBER' : 25000
+        'TRIBE_MEMBER' : 19999
     }
 
     const API_URL = import.meta.env.VITE_API_URL;
@@ -22,6 +22,7 @@ const PaymentForm = () => {
     const [coupon, setCoupon] = useState('');
     const [tempCoupon, setTempCoupon] = useState('');
     const [upgradedRole, setUpgradedRole] = useState(student?.role || '');
+    const [selectedStartDate, setSelectedStartDate] = useState('2026-06-15');
 
     const [isCouponCorrect, setIsCouponCorrect] = useState('');
     const [applyLoading, setApplyLoading] = useState(false);
@@ -131,6 +132,61 @@ const PaymentForm = () => {
                     readOnly
                     className="w-full rounded-xl border border-[#FFC600]/25 bg-[#FFC600]/10 px-4 py-3.5 text-base font-bold text-[#FFC600] outline-none"
                 />
+                </div>
+
+                <div>
+                <p className="mb-2 block text-[11px] font-bold uppercase tracking-wider text-white/45">Select your start date</p>
+                <div className="space-y-3">
+                    <label
+                    htmlFor="start-date-15"
+                    className={`block cursor-pointer rounded-2xl border p-4 transition ${
+                        selectedStartDate === '2026-06-15'
+                        ? 'border-[#FFC600] bg-[#FFC600]/10'
+                        : 'border-white/[0.12] bg-white/[0.03] hover:border-white/[0.22]'
+                    }`}
+                    >
+                    <div className="flex items-center gap-4">
+                        <input
+                        id="start-date-15"
+                        type="radio"
+                        name="start_date"
+                        value="2026-06-15"
+                        checked={selectedStartDate === '2026-06-15'}
+                        onChange={(e) => setSelectedStartDate(e.target.value)}
+                        className="h-5 w-5 accent-[#FFC600]"
+                        />
+                        <div>
+                        <p className="text-[1.05rem] font-extrabold text-white/85">Start 15th June 2026</p>
+                        <p className="mt-1 text-[1.05rem] font-extrabold text-white/65">Recommended for all students</p>
+                        </div>
+                    </div>
+                    </label>
+
+                    <label
+                    htmlFor="start-date-22"
+                    className={`block cursor-pointer rounded-2xl border p-4 transition ${
+                        selectedStartDate === '2026-06-22'
+                        ? 'border-[#FFC600] bg-[#FFC600]/10'
+                        : 'border-white/[0.12] bg-white/[0.03] hover:border-white/[0.22]'
+                    }`}
+                    >
+                    <div className="flex items-center gap-4">
+                        <input
+                        id="start-date-22"
+                        type="radio"
+                        name="start_date"
+                        value="2026-06-22"
+                        checked={selectedStartDate === '2026-06-22'}
+                        onChange={(e) => setSelectedStartDate(e.target.value)}
+                        className="h-5 w-5 accent-[#FFC600]"
+                        />
+                        <div>
+                        <p className="text-[1.05rem] font-extrabold text-white/85">Start 22nd June 2026</p>
+                        <p className="mt-1 text-[1.05rem] font-extrabold text-white/65">Recommended for Federal students</p>
+                        </div>
+                    </div>
+                    </label>
+                </div>
                 </div>
 
                 <div className="rounded-xl border border-white/[0.1] bg-[#141414]/90 p-4 sm:p-5">

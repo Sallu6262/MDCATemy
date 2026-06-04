@@ -14,24 +14,39 @@ const SignUpForm = ({setStep}) => {
     const [number, setNumber] = useState(student?.phone || '');
     const [province, setProvince] = useState(student?.province || '');
     const [city, setCity] = useState(student?.city || '');
-    const [studentType, setStudentType] = useState(student?.role || '');
-    const [sscMarks, setSSCMarks] = useState('');
-    const [fscMarks1, setFSCMarks1] = useState('');
-    const [fscMarks2, setFSCMarks2] = useState('');
+    const [studentType, setStudentType] = useState(student?.role || localStorage.getItem("student-type") || '');
+    const [sscMarksObtained, setSSCMarksObtained] = useState('');
+    const [sscMarksTotal, setSSCMarksTotal] = useState('');
+    const [fscMarks1Obtained, setFSCMarks1Obtained] = useState('');
+    const [fscMarks1Total, setFSCMarks1Total] = useState('');
+    const [fscMarks2Obtained, setFSCMarks2Obtained] = useState('');
+    const [fscMarks2Total, setFSCMarks2Total] = useState('');
     const [mdcatScore, setMdcatScore] = useState(student?.prev_mdcat_score || '');
     const [email, setEmail] = useState(student?.email || '');
     const [password, setPassword] = useState(student?.password || '');
     const [academicStatus, setAcademicStatus] = useState(student?.academic_status || '');
 
     const [loading, setLoading] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
+    const [error, setError] = useState(false);
 
     const API_URL = import.meta.env.VITE_API_URL;
+    const MDCATEMY_STATUS = import.meta.env.VITE_MDCATEMY_STATUS;
 
     const signupToWebsite = async (e) => {
         e.preventDefault();
 
         if(student){
             setStep(prev => prev == 1 ? prev + 1 : prev);
+            return;
+        }
+
+        if(sscMarksObtained > sscMarksTotal ||
+            fscMarks1Obtained > fscMarks1Total || 
+            fscMarks2Obtained > fscMarks2Total
+        ){
+            setError(true);
+            setErrorMessage('Obtained marks cannot be greater than total marks');
             return;
         }
 
@@ -54,8 +69,8 @@ const SignUpForm = ({setStep}) => {
                 province,
                 city,
                 academic_status: academicStatus,
-                matric_percentage: Number(((sscMarks / 1100) * 100).toFixed(2)) || 0,
-                fsc_percentage: Number((((fscMarks2 ?? fscMarks1) / (fscMarks2 ? 1100 : 550)) * 100).toFixed(2)) || 0,
+                matric_percentage: Number(((sscMarksObtained / sscMarksTotal) * 100).toFixed(2)) || 0,
+                fsc_percentage: Number((((fscMarks2Obtained || fscMarks1Obtained) / (fscMarks2Obtained ? fscMarks2Total : fscMarks1Total)) * 100).toFixed(2)) || 0,
                 prev_mdcat_score: mdcatScore || 0
             })
         });
@@ -63,6 +78,9 @@ const SignUpForm = ({setStep}) => {
         const data = await res.json();
         
         if(data.status === 'success'){
+            setError(false);
+            setErrorMessage('');
+
             const res2 = await fetch(`${API_URL}/users/me`,{
                 credentials: 'include'
             });
@@ -73,7 +91,9 @@ const SignUpForm = ({setStep}) => {
                 setStudent(data2.data);
                 setStep(prev => prev == 1 ? prev + 1 : prev);
             }
-
+        } else {
+            setError(true);
+            setErrorMessage(data.message);
         }
 
         setLoading(false);
@@ -177,7 +197,6 @@ const SignUpForm = ({setStep}) => {
                         className="min-w-0 flex-1 bg-transparent py-3.5 pr-4 pl-3 text-sm text-white placeholder:text-white/30 outline-none"
                     />
                     </div>
-                    <p className="mt-1.5 text-xs text-white/35">Pakistan numbers only — country code is fixed.</p>
                 </div>
 
                 <div className="grid gap-5 sm:grid-cols-2">
@@ -283,29 +302,29 @@ const SignUpForm = ({setStep}) => {
                     <option value="" disabled className="bg-[#1c1c1c]">
                         Select student type
                     </option>
-                    <option value="QUIZ_ONLY" className="bg-[#1c1c1c]">
-                        Quiz Builder Student
+                    <option value="QUIZ_ONLY" disabled={MDCATEMY_STATUS === 'coming-soon'} className="bg-[#1c1c1c]">
+                        Quiz Builder Student {` ${MDCATEMY_STATUS === 'coming-soon' ? ' - Coming Soon' : ''}`} 
                     </option>
                     <option value="TRIBE_MEMBER" className="bg-[#1c1c1c]">
                         Study Tribe Student
                     </option>
-                    <option value="TEST_ONLY" className="bg-[#1c1c1c]">
-                        Test Series Student
+                    <option value="TEST_ONLY" disabled={MDCATEMY_STATUS === 'coming-soon'} className="bg-[#1c1c1c]">
+                        Test Series Student {` ${MDCATEMY_STATUS === 'coming-soon' ? ' - Coming Soon' : ''}`}
                     </option>
-                    <option value="DUAL_ACCESS" className="bg-[#1c1c1c]">
-                        Quiz Builder + Test Series Student
+                    <option value="DUAL_ACCESS" disabled={MDCATEMY_STATUS === 'coming-soon'} className="bg-[#1c1c1c]">
+                        Quiz Builder + Test Series Student {` ${MDCATEMY_STATUS === 'coming-soon' ? ' - Coming Soon' : ''}`}
                     </option>
                     </select>
                 </div>
 
                 <div>
                     <label htmlFor="ssc_year" className="mb-2 block text-[11px] font-bold uppercase tracking-wider text-white/45">
-                        {student?.matric_percentage ? 'SSC Percentage' : 'SSC Marks'}
+                        {student?.matric_percentage ? 'SSC Percentage' : 'Obtained SSC Marks'}
                     </label>
                     <input
                         readOnly={student}
-                        value={student?.matric_percentage || sscMarks}
-                        onChange={e => setSSCMarks(e.target.value)}
+                        value={student?.matric_percentage || sscMarksObtained}
+                        onChange={e => setSSCMarksObtained(e.target.value)}
                         id="ssc_year"
                         name="ssc_year"
                         type="number"
@@ -317,6 +336,28 @@ const SignUpForm = ({setStep}) => {
                         className="w-full rounded-xl border border-white/[0.1] bg-[#1c1c1c] px-4 py-3.5 text-sm text-white placeholder:text-white/30 outline-none transition focus:border-[#FFC600]/50 focus:ring-2 focus:ring-[#FFC600]/20"
                     />
                 </div>
+
+                {
+                    !student ?
+                    <div>
+                        <label htmlFor="ssc_year_total" className="mb-2 block text-[11px] font-bold uppercase tracking-wider text-white/45">
+                            Total SSC Marks
+                        </label>
+                        <input
+                            readOnly={student}
+                            value={sscMarksTotal}
+                            onChange={e => setSSCMarksTotal(e.target.value)}
+                            id="ssc_year_total"
+                            name="ssc_year_total"
+                            type="number"
+                            required
+                            min={0}
+                            step={1}
+                            placeholder="e.g. 1100"
+                            className="w-full rounded-xl border border-white/[0.1] bg-[#1c1c1c] px-4 py-3.5 text-sm text-white placeholder:text-white/30 outline-none transition focus:border-[#FFC600]/50 focus:ring-2 focus:ring-[#FFC600]/20"
+                        />
+                    </div> : ''
+                }
 
                 <div className={`grid gap-5 {student ? 'sm:grid-cols-1' : 'sm:grid-cols-2'}`}>
                     {
@@ -341,38 +382,72 @@ const SignUpForm = ({setStep}) => {
                         <>
                             <div>
                                 <label htmlFor="fsc_year1" className="mb-2 block text-[11px] font-bold uppercase tracking-wider text-white/45">
-                                    FSC first year marks
+                                    Obtained FSC first year marks
                                 </label>
                                 <input
-                                    value={fscMarks1}
-                                    onChange={e => setFSCMarks1(e.target.value)}
+                                    value={fscMarks1Obtained}
+                                    onChange={e => setFSCMarks1Obtained(e.target.value)}
                                     id="fsc_year1"
                                     name="fsc_year1"
                                     type="number"
                                     required
                                     min={0}
-                                    max={550}
                                     step={1}
                                     placeholder="e.g. 520"
                                     className="w-full rounded-xl border border-white/[0.1] bg-[#1c1c1c] px-4 py-3.5 text-sm text-white placeholder:text-white/30 outline-none transition focus:border-[#FFC600]/50 focus:ring-2 focus:ring-[#FFC600]/20"
                                 />
                             </div>
+
                             <div>
-                            <label htmlFor="fsc_year2" className="mb-2 block text-[11px] font-bold uppercase tracking-wider text-white/45">
-                                FSC second year marks
-                            </label>
-                            <input
-                                value={fscMarks2}
-                                onChange={e => setFSCMarks2(e.target.value)}
-                                id="fsc_year2"
-                                name="fsc_year2"
-                                type="number"
-                                min={0}
-                                max={1100}
-                                step={1}
-                                placeholder="e.g. 540"
-                                className="w-full rounded-xl border border-white/[0.1] bg-[#1c1c1c] px-4 py-3.5 text-sm text-white placeholder:text-white/30 outline-none transition focus:border-[#FFC600]/50 focus:ring-2 focus:ring-[#FFC600]/20"
-                            />
+                                <label htmlFor="fsc_year1_total" className="mb-2 block text-[11px] font-bold uppercase tracking-wider text-white/45">
+                                    Total FSC First Year Marks
+                                </label>
+                                <input
+                                    value={fscMarks1Total}
+                                    onChange={e => setFSCMarks1Total(e.target.value)}
+                                    id="fsc_year1_total"
+                                    name="fsc_year1_total"
+                                    type="number"
+                                    required
+                                    min={0}
+                                    step={1}
+                                    placeholder="e.g. 550"
+                                    className="w-full rounded-xl border border-white/[0.1] bg-[#1c1c1c] px-4 py-3.5 text-sm text-white placeholder:text-white/30 outline-none transition focus:border-[#FFC600]/50 focus:ring-2 focus:ring-[#FFC600]/20"
+                                />
+                            </div>
+
+                            <div>
+                                <label htmlFor="fsc_year2" className="mb-2 block text-[11px] font-bold uppercase tracking-wider text-white/45">
+                                    Obtained FSC second year marks
+                                </label>
+                                <input
+                                    value={fscMarks2Obtained}
+                                    onChange={e => setFSCMarks2Obtained(e.target.value)}
+                                    id="fsc_year2"
+                                    name="fsc_year2"
+                                    type="number"
+                                    min={0}
+                                    step={1}
+                                    placeholder="e.g. 1000"
+                                    className="w-full rounded-xl border border-white/[0.1] bg-[#1c1c1c] px-4 py-3.5 text-sm text-white placeholder:text-white/30 outline-none transition focus:border-[#FFC600]/50 focus:ring-2 focus:ring-[#FFC600]/20"
+                                />
+                            </div>
+
+                            <div>
+                                <label htmlFor="fsc_year2_total" className="mb-2 block text-[11px] font-bold uppercase tracking-wider text-white/45">
+                                    Total FSC second year marks
+                                </label>
+                                <input
+                                    value={fscMarks2Total}
+                                    onChange={e => setFSCMarks2Total(e.target.value)}
+                                    id="fsc_year2_total"
+                                    name="fsc_year2_total"
+                                    type="number"
+                                    min={0}
+                                    step={1}
+                                    placeholder="e.g. 1100"
+                                    className="w-full rounded-xl border border-white/[0.1] bg-[#1c1c1c] px-4 py-3.5 text-sm text-white placeholder:text-white/30 outline-none transition focus:border-[#FFC600]/50 focus:ring-2 focus:ring-[#FFC600]/20"
+                                />
                             </div>
                         </>
                     }
@@ -437,6 +512,8 @@ const SignUpForm = ({setStep}) => {
                     className="w-full rounded-xl border border-white/[0.1] bg-[#1c1c1c] px-4 py-3.5 text-sm text-white placeholder:text-white/30 outline-none transition focus:border-[#FFC600]/50 focus:ring-2 focus:ring-[#FFC600]/20"
                     />
                 </div>
+
+                <span className={`inline-block w-full text-center ${error ? 'text-red-500' : 'text-green-500'}`}>{errorMessage}</span>
 
                 <div className={`mt-2 grid gap-3 ${student?.pending_status === 'VERIFIED' ? 'sm:grid-cols-2': 'sm:grid-cols-1'}`}>
                     {

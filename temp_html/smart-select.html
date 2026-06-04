@@ -1,14 +1,151 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" /><title>Smart Select</title><link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin /><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=Poppins:wght@600;700;900&display=swap" rel="stylesheet" /><script src="https://cdn.tailwindcss.com"></script><script>tailwind.config={theme:{extend:{fontFamily:{inter:['Inter','sans-serif'],poppins:['Poppins','sans-serif']},colors:{mdcat:'#FFC600',warriorBlack:'#0E0F0E',darkCharcoal:'#181A18',warriorBorder:'#2D302D',warriorText:'#8B8E8B'}}}}}</script></head>
-<body class="min-h-screen overflow-hidden bg-warriorBlack font-inter text-white">
-<a id="ss-backdrop" href="builder.html" class="fixed inset-0 z-40 bg-black/70 backdrop-blur-sm"></a>
-<div class="fixed inset-x-0 bottom-0 z-50 max-h-[90vh] rounded-t-2xl border-t-2 border-warriorBorder bg-darkCharcoal"><div class="flex justify-center pt-3"><div class="h-1 w-10 rounded-full bg-warriorBorder"></div></div>
-<div class="flex items-center justify-between border-b border-warriorBorder/60 px-5 py-3"><div class="flex items-center gap-2"><span class="text-mdcat">?</span><span class="font-poppins text-[15px] font-black">Smart Select</span></div><a id="ss-close" href="builder.html" class="flex h-7 w-7 items-center justify-center rounded-lg bg-warriorBlack/40 text-warriorText">?</a></div>
-<div class="space-y-3 p-5"><p class="text-[11px] text-warriorText/70">Let the algorithm pick - build a test targeting your weakest areas.</p>
-<a href="smart-select-weakest.html" class="flex items-center gap-3 rounded-xl border border-warriorBorder bg-warriorBlack/40 px-4 py-3"><div class="flex h-10 w-10 items-center justify-center rounded-xl bg-red-500/10 text-red-400">?</div><div class="flex-1"><p class="font-poppins text-[13px] font-black">Top N Weakest Topics <span class="rounded-full bg-emerald-400/15 px-2 py-0.5 text-[9px] uppercase tracking-[0.1em] text-emerald-400">Most popular</span></p><p class="text-[11px] text-warriorText/60">Weakest across all subjects & chapters</p></div><span class="text-warriorText/40">›</span></a>
-<div class="flex items-center gap-3 rounded-xl border border-warriorBorder bg-warriorBlack/40 px-4 py-3"><div class="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-400/10 text-amber-400">?</div><div class="flex-1"><p class="font-poppins text-[13px] font-black">Weakest by Subject</p><p class="text-[11px] text-warriorText/60">Pick subjects, then top N weak topics</p></div><span class="text-warriorText/40">›</span></div>
-<div class="flex items-center gap-3 rounded-xl border border-warriorBorder bg-warriorBlack/40 px-4 py-3"><div class="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-400/10 text-blue-400">?</div><div class="flex-1"><p class="font-poppins text-[13px] font-black">Weakest in Chapter</p><p class="text-[11px] text-warriorText/60">Pick subject -> chapter -> top N topics</p></div><span class="text-warriorText/40">›</span></div>
-<div class="flex items-center gap-3 rounded-xl border border-warriorBorder bg-warriorBlack/40 px-4 py-3"><div class="flex h-10 w-10 items-center justify-center rounded-xl bg-purple-500/10 text-purple-400">?</div><div class="flex-1"><p class="font-poppins text-[13px] font-black">Mystery Test <span class="rounded-full bg-purple-400/15 px-2 py-0.5 text-[9px] uppercase tracking-[0.1em] text-purple-300">Surprise me</span></p><p class="text-[11px] text-warriorText/60">35% weak · 45% improving · 20% strong</p></div><span class="text-warriorText/40">›</span></div>
-</div></div>
-<script>(function(){var p=new URLSearchParams(window.location.search);var from=p.get('from')||'builder.html';var ok=['builder.html','builder-chapters.html','builder-topics.html','builder-settings.html'];if(ok.indexOf(from)===-1)from='builder.html';document.getElementById('ss-backdrop').setAttribute('href',from);document.getElementById('ss-close').setAttribute('href',from);document.addEventListener('keydown',function(e){if(e.key==='Escape')window.location.href=from;});})();</script>
-</body></html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Smart Select</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=Poppins:wght@600;700;900&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config={theme:{extend:{fontFamily:{inter:['Inter','sans-serif'],poppins:['Poppins','sans-serif']},colors:{mdcat:'#FFC600',warriorBlack:'#0E0F0E',darkCharcoal:'#181A18',warriorBorder:'#2D302D',warriorText:'#8B8E8B'}}}}
+    </script>
+  </head>
+  <body
+    class="min-h-screen overflow-hidden bg-warriorBlack font-inter text-white"
+  >
+    <a
+      id="ss-backdrop"
+      href="builder.html"
+      class="fixed inset-0 z-40 bg-black/70 backdrop-blur-sm"
+    ></a>
+    <div
+      class="fixed inset-x-0 bottom-0 z-50 max-h-[90vh] rounded-t-2xl border-t-2 border-warriorBorder bg-darkCharcoal"
+    >
+      <div class="flex justify-center pt-3">
+        <div class="h-1 w-10 rounded-full bg-warriorBorder"></div>
+      </div>
+      <div
+        class="flex items-center justify-between border-b border-warriorBorder/60 px-5 py-3"
+      >
+        <div class="flex items-center gap-2">
+          <span class="text-mdcat">?</span
+          ><span class="font-poppins text-[15px] font-black">Smart Select</span>
+        </div>
+        <a
+          id="ss-close"
+          href="builder.html"
+          class="flex h-7 w-7 items-center justify-center rounded-lg bg-warriorBlack/40 text-warriorText"
+          >?</a
+        >
+      </div>
+      <div class="space-y-3 p-5">
+        <p class="text-[11px] text-warriorText/70">
+          Let the algorithm pick - build a test targeting your weakest areas.
+        </p>
+        <a
+          href="smart-select-weakest.html"
+          class="flex items-center gap-3 rounded-xl border border-warriorBorder bg-warriorBlack/40 px-4 py-3"
+          ><div
+            class="flex h-10 w-10 items-center justify-center rounded-xl bg-red-500/10 text-red-400"
+          >
+            ?
+          </div>
+          <div class="flex-1">
+            <p class="font-poppins text-[13px] font-black">
+              Top N Weakest Topics
+              <span
+                class="rounded-full bg-emerald-400/15 px-2 py-0.5 text-[9px] uppercase tracking-[0.1em] text-emerald-400"
+                >Most popular</span
+              >
+            </p>
+            <p class="text-[11px] text-warriorText/60">
+              Weakest across all subjects & chapters
+            </p>
+          </div>
+          <span class="text-warriorText/40">ï¿½</span></a
+        >
+        <div
+          class="flex items-center gap-3 rounded-xl border border-warriorBorder bg-warriorBlack/40 px-4 py-3"
+        >
+          <div
+            class="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-400/10 text-amber-400"
+          >
+            ?
+          </div>
+          <div class="flex-1">
+            <p class="font-poppins text-[13px] font-black">
+              Weakest by Subject
+            </p>
+            <p class="text-[11px] text-warriorText/60">
+              Pick subjects, then top N weak topics
+            </p>
+          </div>
+          <span class="text-warriorText/40">ï¿½</span>
+        </div>
+        <div
+          class="flex items-center gap-3 rounded-xl border border-warriorBorder bg-warriorBlack/40 px-4 py-3"
+        >
+          <div
+            class="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-400/10 text-blue-400"
+          >
+            ?
+          </div>
+          <div class="flex-1">
+            <p class="font-poppins text-[13px] font-black">
+              Weakest in Chapter
+            </p>
+            <p class="text-[11px] text-warriorText/60">
+              Pick subject -> chapter -> top N topics
+            </p>
+          </div>
+          <span class="text-warriorText/40">ï¿½</span>
+        </div>
+        <div
+          class="flex items-center gap-3 rounded-xl border border-warriorBorder bg-warriorBlack/40 px-4 py-3"
+        >
+          <div
+            class="flex h-10 w-10 items-center justify-center rounded-xl bg-purple-500/10 text-purple-400"
+          >
+            ?
+          </div>
+          <div class="flex-1">
+            <p class="font-poppins text-[13px] font-black">
+              Mystery Test
+              <span
+                class="rounded-full bg-purple-400/15 px-2 py-0.5 text-[9px] uppercase tracking-[0.1em] text-purple-300"
+                >Surprise me</span
+              >
+            </p>
+            <p class="text-[11px] text-warriorText/60">
+              35% weak ï¿½ 45% improving ï¿½ 20% strong
+            </p>
+          </div>
+          <span class="text-warriorText/40">ï¿½</span>
+        </div>
+      </div>
+    </div>
+    <script>
+      (function () {
+        var p = new URLSearchParams(window.location.search);
+        var from = p.get("from") || "builder.html";
+        var ok = [
+          "builder.html",
+          "builder-chapters.html",
+          "builder-topics.html",
+          "builder-settings.html",
+        ];
+        if (ok.indexOf(from) === -1) from = "builder.html";
+        document.getElementById("ss-backdrop").setAttribute("href", from);
+        document.getElementById("ss-close").setAttribute("href", from);
+        document.addEventListener("keydown", function (e) {
+          if (e.key === "Escape") window.location.href = from;
+        });
+      })();
+    </script>
+  </body>
+</html>

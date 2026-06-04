@@ -110,7 +110,7 @@ const UserCopyPage = () => {
                     {
                         mistakeOrSave 
                         ? <SavedCopy setSavedMcqs={setSavedMcqs} savedMcqs={savedMcqs} totalSaved={totalSaved}/> 
-                        : <MistakesCopy totalWrong={totalWrong} wrongMcqs={wrongMcqs} setPendingMistakes={setPendingMistakes} totalMistakes={totalMistakes} pendingMistakes={pendingMistakes} setWrongMcqs={setWrongMcqs}/>
+                        : <MistakesCopy setTotalWrong={setTotalWrong} totalWrong={totalWrong} wrongMcqs={wrongMcqs} setPendingMistakes={setPendingMistakes} totalMistakes={totalMistakes} pendingMistakes={pendingMistakes} setWrongMcqs={setWrongMcqs}/>
                     }
 
                 </div>

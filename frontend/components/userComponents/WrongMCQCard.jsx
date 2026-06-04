@@ -1,21 +1,14 @@
 import React, { useState } from 'react'
 import sendErrorSuccessMessage from '../../utils/sendErrorSuccessMessage'
 import '../../src/animation.css'
+import { subjectToColor } from '../../utils/HelperObjects'
 
-const WrongMCQCard = ({mcq, setNotMasteredMcqs, setPendingMistakes, setWrongMcqs}) => {
+const WrongMCQCard = ({mcq, setNotMasteredMcqs, setPendingMistakes, setWrongMcqs, setTotalWrong, totalWrong}) => {
     // console.log(mcq);
     const [showOptions, setShowOptions] = useState(false);
     const [masterLoading, setMasterLoading] = useState(false);
     const [error, setError] = useState(false);
     const [message, setMessage] = useState("");
-
-    const subjectToColor = {
-        'Biology' : '#10B981',
-        'Chemistry' : '#A78BFA',
-        'Physics' : '#38BDF8',
-        'English' : '#F59E0B',
-        'Logical Reasoning' : '#F472B6',
-    }
 
     const difficultyToColor = {
         'EASY' : 'text-green-400 bg-green-400/10 border-green-400/25',
@@ -52,6 +45,8 @@ const WrongMCQCard = ({mcq, setNotMasteredMcqs, setPendingMistakes, setWrongMcqs
 
     const API_URL = import.meta.env.VITE_API_URL;
 
+    // console.log(totalWrong);
+
     const masterMCQ = async () => {
         setMasterLoading(true);
 
@@ -61,10 +56,13 @@ const WrongMCQCard = ({mcq, setNotMasteredMcqs, setPendingMistakes, setWrongMcqs
         });
 
         if(res.status === 200){
+            const subject = mcq.subject_name.toLowerCase().replace(' ','_');
+
             sendErrorSuccessMessage('success', 'MCQ mastered!');
             setNotMasteredMcqs(prev => prev.filter(mMcq => mMcq.mcq_id !== mcq.mcq_id));
             setPendingMistakes(prev => prev - 1);
             setWrongMcqs(prev => prev.map(wrongMcq => wrongMcq.mcq_id === mcq.mcq_id ? {...mcq, is_mastered: 1} : wrongMcq));
+            setTotalWrong(prev => ({...prev, [subject]: prev[subject] - 1}))
         } else {
             setError(true);
             setMessage('Operation failed! Try again later.');

@@ -1,80 +1,147 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Tailwind Slider Demo</title>
+import { useEffect } from "react";
 
-  <!-- Tailwind CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
+function ExamProtection({ isExamActive }) {
 
-  <style>
-    /* Remove default appearance */
-    input[type="range"] {
-      -webkit-appearance: none;
-      appearance: none;
-    }
+    // 1. Detect tab switch / minimize / another app
+    useEffect(() => {
+        if (!isExamActive) return;
 
-    /* Track */
-    input[type="range"]::-webkit-slider-runnable-track {
-      height: 8px;
-      background: #374151; /* gray-700 */
-      border-radius: 9999px;
-    }
+        const handleVisibility = () => {
+            if (document.hidden) {
+                console.log("User left tab/window");
+            }
+        };
 
-    input[type="range"]::-moz-range-track {
-      height: 8px;
-      background: #374151;
-      border-radius: 9999px;
-    }
+        document.addEventListener(
+            "visibilitychange",
+            handleVisibility
+        );
 
-    /* Thumb */
-    input[type="range"]::-webkit-slider-thumb {
-      -webkit-appearance: none;
-      width: 20px;
-      height: 20px;
-      background: #FFC600;
-      border-radius: 50%;
-      cursor: pointer;
-      margin-top: -6px; /* center thumb */
-    }
+        return () => {
+            document.removeEventListener(
+                "visibilitychange",
+                handleVisibility
+            );
+        };
+    }, [isExamActive]);
 
-    input[type="range"]::-moz-range-thumb {
-      width: 20px;
-      height: 20px;
-      background: #FFC600;
-      border-radius: 50%;
-      cursor: pointer;
-      border: none;
-    }
-  </style>
-</head>
 
-<body class="bg-[#0E0F0E] text-white flex items-center justify-center min-h-screen">
 
-  <div class="w-96 p-6 rounded-2xl bg-[#1A1B1A] shadow-xl">
+    // 2. Prevent refresh / close / typing another URL
+    useEffect(() => {
+        if (!isExamActive) return;
 
-    <h1 class="text-lg font-bold mb-6 text-center">
-      Drag Slider (HTML + Tailwind)
-    </h1>
+        const handleBeforeUnload = (e) => {
+            e.preventDefault();
+            e.returnValue = "";
+        };
 
-    <!-- Slider -->
-    <input 
-      type="range" 
-      min="0" 
-      max="100" 
-      value="50"
-      class="w-full cursor-pointer"
-    />
+        window.addEventListener(
+            "beforeunload",
+            handleBeforeUnload
+        );
 
-    <!-- Labels -->
-    <div class="flex justify-between text-sm mt-3 text-gray-400">
-      <span>0</span>
-      <span>50</span>
-      <span>100</span>
-    </div>
+        return () => {
+            window.removeEventListener(
+                "beforeunload",
+                handleBeforeUnload
+            );
+        };
+    }, [isExamActive]);
 
-  </div>
 
-</body>
-</html>
+
+    // 3. Detect browser losing focus
+    useEffect(() => {
+        if (!isExamActive) return;
+
+        const handleBlur = () => {
+            console.log("Browser lost focus");
+        };
+
+        window.addEventListener("blur", handleBlur);
+
+        return () => {
+            window.removeEventListener(
+                "blur",
+                handleBlur
+            );
+        };
+    }, [isExamActive]);
+
+
+
+    // 4. Intercept internal navigation links
+    useEffect(() => {
+        if (!isExamActive) return;
+
+        const handleClick = (e) => {
+            const anchor = e.target.closest("a");
+
+            if (!anchor) return;
+
+            const confirmed = window.confirm(
+                "Leave exam?"
+            );
+
+            if (!confirmed) {
+                e.preventDefault();
+            }
+        };
+
+        document.addEventListener(
+            "click",
+            handleClick
+        );
+
+        return () => {
+            document.removeEventListener(
+                "click",
+                handleClick
+            );
+        };
+    }, [isExamActive]);
+
+
+
+    // 5. Prevent browser back button
+    useEffect(() => {
+        if (!isExamActive) return;
+
+        window.history.pushState(
+            null,
+            "",
+            window.location.href
+        );
+
+        const handlePopState = () => {
+            const confirmed = window.confirm(
+                "Leave exam?"
+            );
+
+            if (!confirmed) {
+                window.history.pushState(
+                    null,
+                    "",
+                    window.location.href
+                );
+            }
+        };
+
+        window.addEventListener(
+            "popstate",
+            handlePopState
+        );
+
+        return () => {
+            window.removeEventListener(
+                "popstate",
+                handlePopState
+            );
+        };
+    }, [isExamActive]);
+
+
+
+    return null;
+}

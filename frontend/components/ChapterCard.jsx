@@ -2,7 +2,7 @@ import React from 'react'
 import TopicCard from './TopicCard'
 
 const ChapterCard = ({chapter, chapterNo, topics, setSelectedTopics, selectedTopics}) => {
-    // console.log(selectedTopics);
+    // console.log(topics);
     return (
         <details className="chapter-disclosure rounded-xl">
             <summary className="cursor-pointer px-2 py-3 text-left transition hover:bg-white/[0.03] sm:px-3">

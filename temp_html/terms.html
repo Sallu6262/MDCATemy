@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Terms &amp; Conditions — MDCATEMY</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter', 'sans-serif'] }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+
+    .tc-section { margin-bottom: 3.5rem; padding-bottom: 3.5rem; border-bottom: 1px solid #f0f0f0; }
+    .tc-section:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+    .tc-heading { font-size: 1.25rem; font-weight: 900; color: #1a1a1a; text-transform: uppercase; letter-spacing: -0.3px; line-height: 1.2; margin-bottom: 20px; }
+    .tc-subheading { font-size: 0.9rem; font-weight: 700; color: #1a1a1a; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 24px; margin-bottom: 12px; }
+    .tc-text { font-size: 1rem; color: #444; line-height: 1.75; margin-bottom: 16px; }
+    .tc-text:last-child { margin-bottom: 0; }
+
+    .tc-list { list-style: none; padding: 0; margin: 0 0 16px; }
+    .tc-list li { display: flex; align-items: flex-start; gap: 12px; padding: 8px 0; border-bottom: 1px solid #f5f5f5; }
+    .tc-list li:last-child { border-bottom: none; }
+    .tc-dot { width: 6px; height: 6px; border-radius: 50%; background: #F6C90E; flex-shrink: 0; margin-top: 10px; }
+    .tc-li-text { font-size: 1rem; color: #444; line-height: 1.65; }
+
+    .nav-logo-wrap { height: 68px; overflow: hidden; display: flex; align-items: center; text-decoration: none; }
+    .nav-logo-img { height: 320px; width: auto; margin-left: 40px; display: block; }
+
+    .tc-contact-block { background: #f5f5f5; border-radius: 12px; padding: 28px 32px; margin: 24px 0; display: flex; gap: 40px; flex-wrap: wrap; }
+    .tc-contact-label { font-size: 11px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: #999; display: block; margin-bottom: 6px; }
+    .tc-contact-value { font-size: 1rem; font-weight: 700; color: #1a1a1a; text-decoration: none; transition: color 0.2s; }
+    .tc-contact-value:hover { color: #F6C90E; }
+
+    @media (max-width: 640px) {
+      .nav-hide-sm { display: none; }
+      .tc-contact-block { flex-direction: column; gap: 20px; padding: 20px; }
+    }
+  </style>
+</head>
+<body class="bg-white text-[#1a1a1a]">
+
+  <!-- ─────────────────── NAVBAR ─────────────────── -->
+  <nav class="bg-[#1a1a1a] px-8 flex items-center justify-between" style="height:68px;">
+    <a href="index.html" class="nav-logo-wrap">
+      <img src="Images/logo.svg" alt="MDCATEMY" class="nav-logo-img" />
+    </a>
+    <div class="flex items-center gap-6">
+      <a href="index.html" class="nav-hide-sm text-white no-underline text-[0.9rem] font-semibold tracking-[0.3px] hover:text-[#F6C90E] transition-colors duration-200">Home</a>
+      <a href="page2.html" class="bg-[#F6C90E] text-[#1a1a1a] no-underline text-[0.85rem] font-black uppercase tracking-[1px] px-7 py-3 rounded-full hover:bg-white transition-colors duration-200">Enroll Now</a>
+    </div>
+  </nav>
+
+  <!-- ─────────────────── HERO ─────────────────── -->
+  <section class="bg-[#1a1a1a] py-20 px-6 text-center">
+    <div class="max-w-[780px] mx-auto">
+      <div class="inline-block text-[#F6C90E] text-[11px] font-bold tracking-[3px] uppercase mb-5">Legal Document</div>
+      <h1 class="font-black text-white uppercase leading-none mb-5"
+          style="font-size: clamp(2.6rem, 7vw, 5rem); letter-spacing: -2px;">
+        TERMS &amp;<br><span class="text-[#F6C90E]">CONDITIONS</span>
+      </h1>
+      <p class="text-[0.9rem] font-medium" style="color: rgba(255,255,255,0.45);">
+        Last updated: <strong class="font-bold" style="color:rgba(255,255,255,0.6);">June 2026</strong>
+      </p>
+    </div>
+  </section>
+
+  <!-- ─────────────────── CONTENT ─────────────────── -->
+  <main class="bg-white px-6" style="padding-top:72px; padding-bottom:96px;">
+    <div class="max-w-[780px] mx-auto">
+
+      <!-- Intro -->
+      <div style="margin-bottom:52px;">
+        <p style="font-size:1.1rem; color:#1a1a1a; line-height:1.75; font-weight:500; margin-bottom:20px; padding-left:20px; border-left:3px solid #F6C90E;">
+          Welcome to Mdcatemy. These Terms &amp; Conditions explain the rules and conditions for using Mdcatemy's website, student accounts, live classes, recorded lectures, quiz builder, test series, notes, PDFs, Discord community, mentorship services, WhatsApp guidance, and related educational services.
+        </p>
+        <p class="tc-text">By accessing or using Mdcatemy, creating an account, joining a batch, purchasing any service, attempting tests or quizzes, joining our Discord server, attending live or recorded sessions, or contacting our mentors, you agree to follow these Terms &amp; Conditions.</p>
+        <p class="tc-text" style="margin-bottom:0;">If you do not agree with these Terms, you should not use Mdcatemy's services.</p>
+      </div>
+
+      <div style="height:1px; background:#e0e0e0; margin-bottom:60px;"></div>
+
+      <!-- Definitions -->
+      <div class="tc-section">
+        <h2 class="tc-heading">Definitions</h2>
+        <p class="tc-text">In these Terms &amp; Conditions:</p>
+        <p class="tc-text"><strong style="color:#1a1a1a; font-weight:700;">"Mdcatemy", "we", "our", or "us"</strong> refers to Mdcatemy.</p>
+        <p class="tc-text"><strong style="color:#1a1a1a; font-weight:700;">"User", "student", "you", or "your"</strong> refers to any person who visits our website, creates an account, purchases a service, joins a batch, attends classes, attempts quizzes or tests, joins our Discord server, contacts our mentors, or uses any Mdcatemy service.</p>
+        <p class="tc-text"><strong style="color:#1a1a1a; font-weight:700;">"Services"</strong> refers to all services provided by Mdcatemy, including live lectures, recorded lectures, test series, quiz builder, notes, PDFs, study material, mentorship, Discord community, WhatsApp guidance, free guidance, paid batches, student accounts, and related educational features.</p>
+        <p class="tc-text"><strong style="color:#1a1a1a; font-weight:700;">"Content"</strong> refers to all lectures, videos, notes, PDFs, MCQs, explanations, quizzes, tests, graphics, written material, recordings, branding, logos, designs, website content, and other material provided by Mdcatemy.</p>
+      </div>
+
+      <!-- Eligibility -->
+      <div class="tc-section">
+        <h2 class="tc-heading">Eligibility</h2>
+        <p class="tc-text">Mdcatemy's services are mainly intended for MDCAT students and related academic learners.</p>
+        <p class="tc-text">By using Mdcatemy, you confirm that:</p>
+        <ul class="tc-list">
+          <li><span class="tc-dot"></span><span class="tc-li-text">You are capable of using the services responsibly; or</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">If you are under 18 years of age, you are using Mdcatemy with the consent or supervision of a parent or legal guardian.</span></li>
+        </ul>
+        <p class="tc-text">Parents or guardians are responsible for monitoring the use of Mdcatemy by minor students.</p>
+      </div>
+
+      <!-- Nature of Services -->
+      <div class="tc-section">
+        <h2 class="tc-heading">Nature of Services</h2>
+        <p class="tc-text">Mdcatemy is an online educational academy. At present, Mdcatemy does not offer physical or on-campus sessions.</p>
+        <p class="tc-text">Mdcatemy may provide:</p>
+        <ul class="tc-list">
+          <li><span class="tc-dot"></span><span class="tc-li-text">Live lectures</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">Recorded lectures</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">Test series</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">Website-based quizzes</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">A quiz builder for custom practice</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">Notes and PDFs</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">Lecture-related study material</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">Discord-based batch community</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">WhatsApp and other communication support</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">Free general guidance and mentorship</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">Paid batch mentorship and academic support</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">Collaborated teaching, quizzes, explanations, or material through selected academic partners</span></li>
+        </ul>
+        <p class="tc-text">Mdcatemy may update, add, remove, modify, or discontinue any feature, service, schedule, teacher, mentor, content type, pricing, package, or platform structure when necessary.</p>
+      </div>
+
+      <!-- Educational Disclaimer -->
+      <div class="tc-section">
+        <h2 class="tc-heading">Educational Disclaimer</h2>
+        <p class="tc-text">Mdcatemy provides educational support, learning resources, tests, mentorship, guidance, and academic facilities only.</p>
+        <p class="tc-text">Mdcatemy does not guarantee:</p>
+        <ul class="tc-list">
+          <li><span class="tc-dot"></span><span class="tc-li-text">MDCAT score</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">Admission into any medical or dental college</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">Merit position</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">Selection in any university</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">Specific improvement in marks</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">Any fixed academic result</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">Any career outcome</span></li>
+        </ul>
+        <p class="tc-text">A student's performance depends on many factors, including personal effort, consistency, discipline, preparation level, exam difficulty, examination policies, health, time management, and other external conditions.</p>
+        <p class="tc-text">Mdcatemy's role is to provide learning support, guidance, practice resources, and academic facilities to help students in their preparation.</p>
+      </div>
+
+      <!-- Accounts and Access -->
+      <div class="tc-section">
+        <h2 class="tc-heading">Accounts and Access</h2>
+        <p class="tc-text">Students may be required to create an account to access Mdcatemy's website features, quiz builder, test series, batch content, or other services.</p>
+        <p class="tc-text">Users are responsible for maintaining the confidentiality of their login details.</p>
+
+        <h3 class="tc-subheading">Batch Accounts</h3>
+        <p class="tc-text">Batch accounts are personal and are intended for the registered student only.</p>
+        <p class="tc-text">Batch account sharing is not allowed. A student may not share batch login details with friends, siblings, relatives, classmates, or any other person.</p>
+
+        <h3 class="tc-subheading">Test Series and Quiz Builder Accounts</h3>
+        <p class="tc-text">For test series and quiz builder services, account access may be used according to the access rules set by Mdcatemy. However, an account must not be used by multiple users at the same time.</p>
+        <p class="tc-text">Mdcatemy may restrict, suspend, or terminate access if unusual activity, simultaneous usage, abuse, misuse, excessive sharing, or violation of these Terms is detected.</p>
+
+        <h3 class="tc-subheading">Account Misuse</h3>
+        <p class="tc-text">The following actions are prohibited:</p>
+        <ul class="tc-list">
+          <li><span class="tc-dot"></span><span class="tc-li-text">Sharing login details where not allowed</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">Selling, renting, or transferring account access</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">Using another student's account without permission</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">Allowing multiple users to use one account at the same time</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">Trying to bypass access restrictions</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">Attempting to hack, copy, scrape, overload, or misuse the platform</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">Using the platform in a way that harms Mdcatemy or other users</span></li>
+        </ul>
+        <p class="tc-text">Violation may result in warning, temporary suspension, permanent ban, access restriction, or denial of refund, depending on the seriousness of the violation and Mdcatemy's decision.</p>
+      </div>
+
+      <!-- Access Duration -->
+      <div class="tc-section">
+        <h2 class="tc-heading">Access Duration</h2>
+        <p class="tc-text">Access duration depends on the package, batch, test series, quiz builder plan, or payment method selected by the student.</p>
+        <p class="tc-text">For monthly installment plans, access may end or be restricted when the paid month ends or when the next installment is not paid on time.</p>
+        <p class="tc-text">For full upfront batch payment, access is generally valid until the end of MDCAT 2026, unless otherwise stated on the relevant batch page.</p>
+        <p class="tc-text">Mdcatemy may provide extra access, extensions, bonus access, or additional support at its own discretion. Such extensions are not guaranteed and cannot be demanded as a right unless clearly promised in writing by Mdcatemy.</p>
+      </div>
+
+      <!-- Payments and Installments -->
+      <div class="tc-section">
+        <h2 class="tc-heading">Payments and Installments</h2>
+        <p class="tc-text">Mdcatemy may offer:</p>
+        <ul class="tc-list">
+          <li><span class="tc-dot"></span><span class="tc-li-text">One-time payment plans</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">Monthly installment plans</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">Batch-wise payments</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">Test series payments</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">Quiz builder subscriptions</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">Discounts</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">Scholarships</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">Promotional offers</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">Special access plans</span></li>
+        </ul>
+        <p class="tc-text">Users are responsible for submitting correct payment details and proof of payment where required.</p>
+        <p class="tc-text">Mdcatemy may ask for:</p>
+        <ul class="tc-list">
+          <li><span class="tc-dot"></span><span class="tc-li-text">Transaction ID</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">Payment screenshot</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">Payment date</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">Payment method</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">Sender account details</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">Other information needed for verification</span></li>
+        </ul>
+        <p class="tc-text">Mdcatemy may verify payments manually before granting or continuing access.</p>
+        <p class="tc-text">Failure to pay the required fee or next installment on time may result in warning, temporary restriction, suspension, or termination of access.</p>
+        <p class="tc-text">Duplicate payments verified by Mdcatemy may be adjusted or refunded after verification.</p>
+      </div>
+
+      <!-- Refund Policy -->
+      <div class="tc-section">
+        <h2 class="tc-heading">Refund Policy</h2>
+        <p class="tc-text">Refund terms may vary depending on the service purchased.</p>
+
+        <h3 class="tc-subheading">Test Series and Quiz Builder</h3>
+        <p class="tc-text">Fees paid for the test series and quiz builder are generally non-refundable once access has been provided or the service period has started.</p>
+
+        <h3 class="tc-subheading">Batch Refunds</h3>
+        <p class="tc-text">Refunds for Mdcatemy batches are governed by the specific refund policy mentioned on the relevant batch landing page or batch details page. By joining a batch, the student agrees to the refund policy stated on that batch page.</p>
+
+        <h3 class="tc-subheading">Installments</h3>
+        <p class="tc-text">Installment payments are linked to continued access. If a student fails to pay the next installment, Mdcatemy may restrict or stop access.</p>
+        <p class="tc-text">Previous installment payments are generally not refunded unless Mdcatemy decides otherwise or unless a specific refund condition is mentioned on the relevant service page.</p>
+
+        <h3 class="tc-subheading">Refund Review</h3>
+        <p class="tc-text">Mdcatemy may review refund requests on a case-by-case basis where appropriate.</p>
+        <p class="tc-text">Refund approval, rejection, adjustment, or partial refund depends on the service purchased, access already provided, refund terms on the relevant page, payment verification, and Mdcatemy's final decision.</p>
+      </div>
+
+      <!-- Downloadable and Non-Downloadable Content -->
+      <div class="tc-section">
+        <h2 class="tc-heading">Downloadable and Non-Downloadable Content</h2>
+        <p class="tc-text">Mdcatemy may allow users to download certain content such as notes, PDFs, worksheets, lectures, tests, or other study material.</p>
+        <p class="tc-text">Users may only download content that Mdcatemy officially makes available for download.</p>
+        <p class="tc-text">Downloaded content is provided for the personal educational use of the registered student only.</p>
+        <p class="tc-text">Even where downloading is allowed, users may not misuse, resell, leak, commercially exploit, or distribute Mdcatemy content in a way that harms Mdcatemy, its students, mentors, teachers, or academic partners.</p>
+        <p class="tc-text">Mdcatemy may change which content is downloadable at any time.</p>
+      </div>
+
+      <!-- Intellectual Property -->
+      <div class="tc-section">
+        <h2 class="tc-heading">Intellectual Property</h2>
+        <p class="tc-text">Unless otherwise stated, all Mdcatemy content is owned by Mdcatemy or used by Mdcatemy with permission.</p>
+        <p class="tc-text">This includes:</p>
+        <ul class="tc-list">
+          <li><span class="tc-dot"></span><span class="tc-li-text">Lectures and recorded videos</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">Notes and PDFs</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">MCQs, tests, and explanations</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">Quiz material and study material</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">Website content and graphics</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">Designs, logos, and branding</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">Recorded sessions</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">Discord structures and internal learning systems</span></li>
+        </ul>
+        <p class="tc-text">Users are granted limited access to use Mdcatemy content for personal educational purposes only.</p>
+        <p class="tc-text">Users may not claim ownership over Mdcatemy content or use it for commercial, competing, harmful, or unauthorized purposes.</p>
+      </div>
+
+      <!-- Content Sharing and Internal Confidentiality -->
+      <div class="tc-section">
+        <h2 class="tc-heading">Content Sharing and Internal Confidentiality</h2>
+        <p class="tc-text">Mdcatemy understands that students may use educational content for personal study and revision. However, the following actions are strictly prohibited:</p>
+        <ul class="tc-list">
+          <li><span class="tc-dot"></span><span class="tc-li-text">Sharing paid access in a way that violates these Terms</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">Misusing downloadable material</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">Selling or commercially exploiting Mdcatemy content</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">Uploading Mdcatemy content to unauthorized platforms</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">Sharing internal batch information publicly</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">Sharing private mentor-student communication without permission</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">Sharing personal details of students, mentors, teachers, team members, or community members</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">Leaking internal Mdcatemy discussions, plans, screenshots, documents, or private community matters</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">Misusing screenshots, recordings, chats, or personal information from Mdcatemy spaces</span></li>
+        </ul>
+        <p class="tc-text">Leakage of students' personal details, mentor-student communication, internal community discussions, internal academy affairs, private screenshots, or confidential information is strictly prohibited.</p>
+        <p class="tc-text">Violation may result in warning, removal from the community, suspension, permanent ban, denial of refund, or other appropriate action.</p>
+      </div>
+
+      <!-- Live Classes and Recordings -->
+      <div class="tc-section">
+        <h2 class="tc-heading">Live Classes and Recordings</h2>
+        <p class="tc-text">Mdcatemy may conduct live lectures, doubt sessions, mentorship sessions, group discussions, webinars, and other educational sessions.</p>
+        <p class="tc-text">By joining Mdcatemy sessions, you agree that:</p>
+        <ul class="tc-list">
+          <li><span class="tc-dot"></span><span class="tc-li-text">Sessions may be recorded.</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">Your name, voice, video, image, chat message, question, answer, or participation may appear in the recording.</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">Recordings may be used for educational, revision, quality improvement, training, promotional, and marketing purposes.</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">Selected clips, screenshots, testimonials, session highlights, or performance-related content may be used for Mdcatemy's educational or promotional activities.</span></li>
+        </ul>
+        <p class="tc-text">Students who do not want their face or voice to appear in recordings should keep their camera and microphone turned off and use chat or other allowed methods to participate where possible.</p>
+      </div>
+
+      <!-- Mentorship and Free Guidance -->
+      <div class="tc-section">
+        <h2 class="tc-heading">Mentorship and Free Guidance</h2>
+        <p class="tc-text">Mdcatemy may provide free guidance and general mentorship through mentors, founders, co-founders, WhatsApp numbers, website contact numbers, Discord, or other communication channels.</p>
+        <p class="tc-text">Free mentorship is provided for general academic guidance and student support. It does not create any guarantee of admission, score, selection, or personal availability of a specific mentor at all times.</p>
+        <p class="tc-text">Mdcatemy may also provide paid mentorship and academic support as part of selected batches or packages.</p>
+        <p class="tc-text">Mentorship is advisory in nature. Students are responsible for their own preparation, decisions, schedule, consistency, and exam performance.</p>
+      </div>
+
+      <!-- Discord Community and Student Conduct -->
+      <div class="tc-section">
+        <h2 class="tc-heading">Discord Community and Student Conduct</h2>
+        <p class="tc-text">Mdcatemy may operate official Discord servers or other online communities for batch management, announcements, guidance, discussions, academic support, and mentorship.</p>
+        <p class="tc-text">Users must behave respectfully and responsibly in all Mdcatemy communities.</p>
+        <p class="tc-text">The following actions are prohibited:</p>
+        <ul class="tc-list">
+          <li><span class="tc-dot"></span><span class="tc-li-text">Harassment, abuse, or insulting language</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">Hate speech or bullying</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">Spamming or cheating</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">Impersonation</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">Disturbing live sessions</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">Sharing inappropriate or unauthorized material</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">Misusing student or mentor information</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">Leaking private discussions</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">Sending irrelevant promotions</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">Attempting to damage or disrupt the community</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">Violating Discord rules or Mdcatemy community rules</span></li>
+        </ul>
+        <p class="tc-text">Mdcatemy may moderate channels, remove messages, restrict users, suspend accounts, remove participants, or permanently terminate access where necessary.</p>
+      </div>
+
+      <!-- Tests, Quizzes, and Academic Integrity -->
+      <div class="tc-section">
+        <h2 class="tc-heading">Tests, Quizzes, and Academic Integrity</h2>
+        <p class="tc-text">Mdcatemy may provide quizzes, test series, mock tests, practice tests, custom quiz builder features, saved MCQs, mistake copy, explanations, and performance analytics.</p>
+        <p class="tc-text">Students must use these features honestly and responsibly.</p>
+        <p class="tc-text">The following actions are prohibited:</p>
+        <ul class="tc-list">
+          <li><span class="tc-dot"></span><span class="tc-li-text">Cheating in tests</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">Manipulating scores or results</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">Attempting to exploit bugs</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">Using unauthorized methods to access answers</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">Disturbing test systems</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">Sharing private test access in violation of these Terms</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">Misusing analytics or student data</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">Attempting to damage the quiz builder or testing platform</span></li>
+        </ul>
+        <p class="tc-text">Mdcatemy may change test schedules, question structures, difficulty levels, explanations, analytics features, or quiz builder functions when needed.</p>
+        <p class="tc-text">Mdcatemy does not guarantee that any quiz, test, MCQ, explanation, or prediction will exactly match the official MDCAT exam.</p>
+      </div>
+
+      <!-- Collaboration with Grammlogic and Other Partners -->
+      <div class="tc-section">
+        <h2 class="tc-heading">Collaboration with Grammlogic and Other Partners</h2>
+        <p class="tc-text">Mdcatemy may collaborate with Grammlogic or other academic partners for selected subjects, services, quizzes, explanations, lectures, practice material, or academic support.</p>
+        <p class="tc-text">For English and Logical Reasoning, Grammlogic may provide teaching, lectures, practice material, quizzes, explanations, or related academic services for Mdcatemy students, depending on the package, batch, or test series.</p>
+        <p class="tc-text">Batch students may receive lectures, practice material, quizzes, and explanations through Grammlogic or related platforms.</p>
+        <p class="tc-text">Test series students may receive quiz material and explanations through Grammlogic or related platforms where applicable.</p>
+        <p class="tc-text">When students use Grammlogic or any third-party partner platform, they may also be subject to that platform's own terms, privacy policy, access rules, technical requirements, and conduct rules.</p>
+        <p class="tc-text">Mdcatemy is not responsible for technical issues, downtime, policies, account restrictions, or platform-level decisions of third-party services that are not fully controlled by Mdcatemy. However, Mdcatemy will try to support students where reasonable and possible.</p>
+        <p class="tc-text">Mdcatemy may change, replace, add, or remove academic partners when needed.</p>
+      </div>
+
+      <!-- Scholarships, Discounts, and Offers -->
+      <div class="tc-section">
+        <h2 class="tc-heading">Scholarships, Discounts, and Offers</h2>
+        <p class="tc-text">Mdcatemy may offer scholarships, discounts, promotional offers, free access, partial access, or special packages.</p>
+        <p class="tc-text">Such offers may be limited by time, eligibility, seats, verification, batch availability, or other conditions.</p>
+        <p class="tc-text">Mdcatemy may approve, reject, modify, extend, withdraw, or change scholarships, discounts, or promotional offers at its own discretion.</p>
+        <p class="tc-text">A scholarship or discount given to one student does not automatically create a right for another student to receive the same offer.</p>
+      </div>
+
+      <!-- Third-Party Services -->
+      <div class="tc-section">
+        <h2 class="tc-heading">Third-Party Services</h2>
+        <p class="tc-text">Mdcatemy may use third-party platforms and services for teaching, communication, hosting, payments, community management, forms, emails, live sessions, recordings, and operations.</p>
+        <p class="tc-text">These may include:</p>
+        <ul class="tc-list">
+          <li><span class="tc-dot"></span><span class="tc-li-text">Google Workspace and Google Meet</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">Discord</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">WhatsApp</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">Email services</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">Website hosting services</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">Payment, bank, or mobile wallet channels for payment proof and verification</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">Grammlogic</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">Other educational or operational tools</span></li>
+        </ul>
+        <p class="tc-text">Third-party platforms may have their own terms, privacy policies, availability, technical requirements, and service limitations.</p>
+        <p class="tc-text">Mdcatemy is not responsible for the independent policies, technical failures, downtime, account restrictions, data practices, or actions of third-party platforms that are not fully controlled by Mdcatemy.</p>
+      </div>
+
+      <!-- Communications -->
+      <div class="tc-section">
+        <h2 class="tc-heading">Communications</h2>
+        <p class="tc-text">By registering, purchasing, joining a batch, submitting a form, joining a session, joining Discord, attempting a test, contacting mentors, or using Mdcatemy services, you agree that Mdcatemy may contact you through:</p>
+        <ul class="tc-list">
+          <li><span class="tc-dot"></span><span class="tc-li-text">WhatsApp</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">Email</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">Phone call or SMS</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">Discord</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">Website and platform notifications</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">Other official Mdcatemy channels</span></li>
+        </ul>
+        <p class="tc-text">Communications may include class schedules, test reminders, batch announcements, payment verification, installment reminders, academic guidance, free mentorship, support replies, service updates, important notices, and relevant educational messages.</p>
+        <p class="tc-text">Users may request to stop receiving non-essential promotional messages. However, important account-related, payment-related, batch-related, test-related, or service-related messages may still be sent where necessary.</p>
+      </div>
+
+      <!-- Platform Changes and Availability -->
+      <div class="tc-section">
+        <h2 class="tc-heading">Platform Changes and Availability</h2>
+        <p class="tc-text">Mdcatemy may update, improve, modify, pause, restrict, or discontinue any part of its website, services, quiz builder, test series, batch structure, community, content, mentors, teachers, pricing, schedule, or access rules at any time.</p>
+        <p class="tc-text">Mdcatemy will try to provide services responsibly, but we do not guarantee uninterrupted, error-free, or always-available access.</p>
+        <p class="tc-text">Services may be affected by:</p>
+        <ul class="tc-list">
+          <li><span class="tc-dot"></span><span class="tc-li-text">Internet issues or server downtime</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">Third-party platform failures</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">Maintenance or technical bugs</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">Payment verification delays</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">Device or browser issues</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">Google, Discord, WhatsApp, hosting, or partner platform issues</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">Examination schedule changes</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">Operational changes</span></li>
+        </ul>
+        <p class="tc-text">Mdcatemy may fix, update, or change platform features when needed.</p>
+      </div>
+
+      <!-- Limitation of Liability -->
+      <div class="tc-section">
+        <h2 class="tc-heading">Limitation of Liability</h2>
+        <p class="tc-text">Mdcatemy provides services on an educational and "as available" basis.</p>
+        <p class="tc-text">Mdcatemy shall not be held responsible for:</p>
+        <ul class="tc-list">
+          <li><span class="tc-dot"></span><span class="tc-li-text">Internet failure or device problems</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">Student-side technical issues</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">Server downtime or third-party platform issues</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">Google Meet, Discord, WhatsApp, email, hosting, or partner service failures</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">Payment delays caused by third-party systems</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">Exam schedule changes or government/examination authority decisions</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">Student performance outcomes</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">Missed classes due to student-side issues</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">Data loss caused by factors outside Mdcatemy's reasonable control</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">Indirect, incidental, or consequential losses</span></li>
+        </ul>
+        <p class="tc-text">Mdcatemy's responsibility, if any, shall be limited to the service purchased and the extent allowed by applicable law.</p>
+      </div>
+
+      <!-- Force Majeure -->
+      <div class="tc-section">
+        <h2 class="tc-heading">Force Majeure</h2>
+        <p class="tc-text">Mdcatemy shall not be liable for delay, interruption, or failure to perform services due to events beyond reasonable control, including but not limited to:</p>
+        <ul class="tc-list">
+          <li><span class="tc-dot"></span><span class="tc-li-text">Natural disasters</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">Internet outages or power failures</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">Server failures or cyberattacks</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">Pandemics or strikes</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">Political instability or government actions</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">Examination authority decisions</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">Platform shutdowns or restrictions</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">Third-party service failures</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">Any other event beyond Mdcatemy's reasonable control</span></li>
+        </ul>
+      </div>
+
+      <!-- Privacy Policy -->
+      <div class="tc-section">
+        <h2 class="tc-heading">Privacy Policy</h2>
+        <p class="tc-text">Use of Mdcatemy is also governed by our Privacy Policy.</p>
+        <p class="tc-text">The Privacy Policy explains how Mdcatemy collects, uses, stores, shares, and protects user information.</p>
+        <p class="tc-text">By using Mdcatemy, you also agree to the practices described in the Privacy Policy.</p>
+      </div>
+
+      <!-- Suspension and Termination -->
+      <div class="tc-section">
+        <h2 class="tc-heading">Suspension and Termination</h2>
+        <p class="tc-text">Mdcatemy may warn, restrict, suspend, or permanently terminate a user's access if the user:</p>
+        <ul class="tc-list">
+          <li><span class="tc-dot"></span><span class="tc-li-text">Violates these Terms</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">Misuses the platform</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">Shares account access in violation of rules</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">Leaks internal or personal information</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">Harasses students, mentors, or team members</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">Cheats, hacks, exploits, or abuses the platform</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">Fails to pay required installments</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">Disrupts classes or communities</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">Violates Discord or community rules</span></li>
+          <li><span class="tc-dot"></span><span class="tc-li-text">Acts in a way that harms Mdcatemy, its students, team members, mentors, teachers, or partners</span></li>
+        </ul>
+        <p class="tc-text">In serious cases, access may be terminated without prior notice and without refund.</p>
+      </div>
+
+      <!-- Governing Law and Jurisdiction -->
+      <div class="tc-section">
+        <h2 class="tc-heading">Governing Law and Jurisdiction</h2>
+        <p class="tc-text">These Terms &amp; Conditions shall be governed and interpreted in accordance with the laws of Pakistan.</p>
+        <p class="tc-text">Any dispute arising in connection with these Terms, Mdcatemy's services, payments, access, or platform use shall fall under the jurisdiction of the competent courts of Peshawar, Pakistan, unless otherwise required by applicable law.</p>
+      </div>
+
+      <!-- Changes to These Terms -->
+      <div class="tc-section">
+        <h2 class="tc-heading">Changes to These Terms</h2>
+        <p class="tc-text">Mdcatemy may update, revise, or change these Terms &amp; Conditions from time to time.</p>
+        <p class="tc-text">Changes may be made due to updates in services, pricing, payment policies, refund policies, platform features, third-party tools, legal requirements, academic structure, or operational needs.</p>
+        <p class="tc-text">The updated Terms will be posted on Mdcatemy's website with a revised "Last updated" date.</p>
+        <p class="tc-text">Continued use of Mdcatemy after updated Terms are posted means that you accept the revised Terms &amp; Conditions.</p>
+        <p class="tc-text">Users are encouraged to review this page from time to time.</p>
+      </div>
+
+      <!-- Contact Us -->
+      <div class="tc-section">
+        <h2 class="tc-heading">Contact Us</h2>
+        <p class="tc-text">For questions or concerns regarding these Terms &amp; Conditions, you may contact Mdcatemy at:</p>
+        <div class="tc-contact-block">
+          <div>
+            <span class="tc-contact-label">Email</span>
+            <a href="mailto:mdcatemy@gmail.com" class="tc-contact-value">mdcatemy@gmail.com</a>
+          </div>
+          <div>
+            <span class="tc-contact-label">WhatsApp</span>
+            <a href="https://wa.me/923058697159" class="tc-contact-value">+92 305 8697159</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ─────────────────── FOOTER ─────────────────── -->
+  <footer class="bg-[#1e2428] text-center px-6" style="padding-top:56px; padding-bottom:40px; border-top:3px solid #F6C90E;">
+    <div style="font-size:28px; font-weight:900; color:#ffffff; letter-spacing:-0.5px; margin-bottom:12px;">
+      MDCAT<span style="color:#F6C90E;">EMY</span>
+    </div>
+    <p style="font-size:14px; color:rgba(238,238,238,0.5); margin-bottom:32px; font-weight:400;">Training warriors to crack MDCAT 2026.</p>
+    <div style="width:60px; height:2px; background:rgba(246,201,14,0.4); margin:0 auto 28px;"></div>
+    <p style="font-size:13px; color:rgba(238,238,238,0.35);">© 2026 MDCATEMY. All rights reserved.</p>
+  </footer>
+
+</body>
+</html>

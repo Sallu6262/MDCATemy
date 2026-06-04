@@ -17,7 +17,8 @@ const TestModeButton = ({icon, name, desc, isSelected, modes, setTestMode}) => {
 
 const UserStartTestPage = () => {
   const {testID} = useParams();
-  const {upcomingTests} = useOutletContext();
+  const {upcomingTests, setIsExamHappening, isExamHappening} = useOutletContext();
+
   const API_URL = import.meta.env.VITE_API_URL;
 
   const [testToBegin, setTestToBegin] = useState(null);
@@ -367,9 +368,13 @@ const UserStartTestPage = () => {
           logical_reasoning: testToBegin?.logical_reasoning ?? 0,
           test_mode: numberToModes[testMode],
           blind_mode: blindMode,
-          test_id: testID
+          test_id: testID,
+          answerAfterEach: false,
+          timer: true
         }}
         isExamHappening={true}
+        setIsExamHappeningParent={setIsExamHappening}
+        isExamHappeningParent={isExamHappening}
       />
     }
     </>

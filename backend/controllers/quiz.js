@@ -32,7 +32,10 @@ export const createQuiz = handleAsyncError(async (req, res, next) => {
 
     res.status(200).json({
         status: "success",
-        message: "Quiz created successfully!"
+        message: "Quiz created successfully!",
+        data: {
+            quiz_id
+        }
     });
 });
 
@@ -121,7 +124,7 @@ export const recordAnswer = handleAsyncError(async (req, res, next) => {
 
 export const submitQuizResult = handleAsyncError(async (req, res, next) => {
     const {quiz_id, correct_count} = req.body;
-    if (!quiz_id || !correct_count)
+    if (!quiz_id || !(typeof correct_count === "number" && !Number.isNaN(correct_count)))
         return next("Please provide both quiz_id and correct_count", 400);
 
     await pool.query("UPDATE quizzes SET correct_count=$2 WHERE quiz_id=$1", [quiz_id, correct_count]);

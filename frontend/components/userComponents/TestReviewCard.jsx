@@ -3,12 +3,13 @@ import MCQPdf from '../MCQpdf';
 import { pdf } from '@react-pdf/renderer';
 import jsPDF from 'jspdf';
 import { createRoot } from 'react-dom/client';
+import { useNavigate } from 'react-router-dom';
 
 const TestReviewCard = ({test, setTestReviewHidden, attempted}) => {
-  // console.log(test);
+  console.log(test);
   const reviewRef = useRef(null);
 
-  const sum = test?.correct + test?.mistakes;
+  const navigate = useNavigate();
 
   const testDate = new Date(test?.test_date).toLocaleDateString("en-GB", {
     day: "2-digit",
@@ -36,10 +37,40 @@ const TestReviewCard = ({test, setTestReviewHidden, attempted}) => {
 
     URL.revokeObjectURL(url);
   }
+
+  const reviewPreviousTestMCQs = () => {
+    let bioCount = 0, phyCount = 0, engCount = 0, lrCount = 0, chemCount = 0;
+    test?.mcqs?.forEach(mcq => {
+      const subject = mcq.subject_name.toLowerCase().replace('_',' ');
+      if(subject === 'biology') bioCount++;
+      else if(subject === 'physics') phyCount++;
+      else if(subject === 'english') engCount++;
+      else if(subject === 'chemstry') chemCount++;
+      else lrCount++;
+    });
+
+    localStorage.setItem("previous-test-mcqs", JSON.stringify({
+      test_id: test.test_id,
+      test_name: test.test_name,
+      total_mcqs: test.mcq_count,
+      test_time: test.test_time ?? 0,
+      mcqs: test.mcqs,
+      biology: bioCount,
+      chemistry: chemCount,
+      physics: phyCount,
+      english: engCount,
+      logical_reasoning: lrCount,
+      test_mode: "Silent",
+      blind_mode: 0,
+      answerAfterEach: true
+    }));
+
+    navigate(`${test?.test_id}`);
+  }
   
   useEffect(() => {
     reviewRef?.current?.focus();
-    showResult(parseInt((test?.correct / (sum ? sum : 1)) * 100));
+    showResult(parseInt((test?.correct / (test?.mcq_count || 1)) * 100));
   },[]);
 
     return (
@@ -86,7 +117,7 @@ const TestReviewCard = ({test, setTestReviewHidden, attempted}) => {
                         <circle cx="40" cy="40" r="36" fill="none" stroke="#2A2C2A" strokeWidth="6"/>
                         <circle cx="40" cy="40" r="36" fill="none"
                                 stroke={`${result.color}`} strokeWidth="6" strokeLinecap="round"
-                                strokeDasharray="176.43 226.19"/>
+                                strokeDasharray={`${(result.percentage / 100) * 226.19} 226.19`}/>
                       </svg>
                       <div className="absolute inset-0 flex flex-col items-center justify-center">
                         <span className="font-[Poppins] font-black text-white text-[20px] leading-none">{result.percentage}%</span>
@@ -132,7 +163,7 @@ const TestReviewCard = ({test, setTestReviewHidden, attempted}) => {
                     <p className="text-[#A8ACA8] text-[9px] font-[Inter] mt-1 uppercase tracking-[0.08em]">Skipped</p>
                   </div>
                   <div className="bg-[#181A18]/60 border border-sky-500/20 bg-sky-500/5 rounded-lg py-2 text-center">
-                    <p className="font-[Poppins] font-black text-[15px] leading-none text-sky-400">142m</p>
+                    <p className="font-[Poppins] font-black text-[15px] leading-none text-sky-400">{test?.test_tim ?? 60}m</p>
                     <p className="text-[#A8ACA8] text-[9px] font-[Inter] mt-1 uppercase tracking-[0.08em]">Time</p>
                   </div>
                 </div>
@@ -147,7 +178,7 @@ const TestReviewCard = ({test, setTestReviewHidden, attempted}) => {
                 Download Test as PDF
               </button>
 
-              <button className="cursor-pointer w-full flex items-center justify-between gap-3 px-4 py-4 rounded-xl bg-[#FFC600] text-[#181A18] border-2 border-[#181A18] shadow-[3px_3px_0px_rgba(0,0,0,0.55)] hover:shadow-[5px_5px_0px_rgba(0,0,0,0.55)] active:scale-[0.98] transition-all duration-150">
+              <button onClick={reviewPreviousTestMCQs} className="cursor-pointer w-full flex items-center justify-between gap-3 px-4 py-4 rounded-xl bg-[#FFC600] text-[#181A18] border-2 border-[#181A18] shadow-[3px_3px_0px_rgba(0,0,0,0.55)] hover:shadow-[5px_5px_0px_rgba(0,0,0,0.55)] active:scale-[0.98] transition-all duration-150">
                 <div className="flex items-center gap-3 min-w-0 text-left">
                   <div className="w-10 h-10 bg-[#181A18] rounded-lg flex items-center justify-center flex-shrink-0">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FFC600" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">

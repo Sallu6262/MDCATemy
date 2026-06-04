@@ -1,9 +1,9 @@
 import React, { useRef, useState } from 'react'
 import AdminDashboardHeader from '../../components/adminComponents/AdminDashboardHeader'
-import CustomTestMakerStep1 from '../../components/CustomTestMakerStep1'
-import CustomTestMakerStep2 from '../../components/CustomTestMakerStep2';
-import CustomTestMakerStep3 from '../../components/CustomTestMakerStep3';
-import CustomTestMakerStep4 from '../../components/CustomTestMakerStep4';
+import CustomTestMakerStep1 from '../../components/adminComponents/CustomTestMakerStep1'
+import CustomTestMakerStep2 from '../../components/adminComponents/CustomTestMakerStep2';
+import CustomTestMakerStep3 from '../../components/adminComponents/CustomTestMakerStep3';
+import CustomTestMakerStep4 from '../../components/adminComponents/CustomTestMakerStep4';
 
 const AdminCustomTestMakerPage = () => {
     const [step, setStep] = useState(1);

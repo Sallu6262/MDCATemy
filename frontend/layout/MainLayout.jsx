@@ -13,13 +13,14 @@ const MainLayout = () => {
   const [admin, setAdmin] = useState(res.status === 'success' && res.data.role === 'ADMIN' ? res.data : null);
 
   return (
-    <>
-      <Navbar user={student || admin} setUser={student ? setStudent : setAdmin}/>
+    <section className="min-h-screen flex flex-col">
+      <Navbar user={student || admin} setUser={student ? setStudent : setAdmin} isLanding={false}/>
       <ScrollToTop />
-      <Outlet context={{admin, setAdmin, student, setStudent}}/>
-      <Footer />
+      <div className="flex min-h-0 flex-1 flex-col">
+        <Outlet context={{admin, setAdmin, student, setStudent}}/>
+      </div>
       <ToastContainer />
-    </>
+    </section>
   )
 }
 

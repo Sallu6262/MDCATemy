@@ -1,13 +1,156 @@
 @import "tailwindcss";
 
+/* Theme tokens
+   - Dark uses your current palette defaults
+   - Light swaps base neutrals only */
+:root,
+html[data-theme="dark"] {
+  --ui-bg: #181A18;
+  --ui-panel: #222422;
+  --ui-panel-2: #1E201E;
+  --ui-border: #2E302E;
+  --ui-text: #ffffff;
+  --ui-muted: #A8ACA8;
+  --ui-bg-rgb: 24 26 24;
+  --ui-panel-rgb: 26 26 26;
+  --ui-inner-rgb: 18 18 18;
+  --ui-text-rgb: 255 255 255;
+  --ui-muted-rgb: 168 172 168;
+}
+
+html[data-theme="light"] {
+  --ui-bg: #ffffff;
+  --ui-panel: #f3f4f6;
+  --ui-panel-2: #ffffff;
+  --ui-border: #d1d5db;
+  --ui-text: #111827;
+  --ui-muted: #4b5563;
+  --ui-bg-rgb: 255 255 255;
+  --ui-panel-rgb: 243 244 246;
+  --ui-inner-rgb: 249 250 251;
+  --ui-text-rgb: 17 24 39;
+  --ui-muted-rgb: 75 85 99;
+}
+
 html {
   scroll-behavior: smooth;
 }
 
 body,
 #root {
-  background-color: #121212;
+  background-color: var(--ui-bg);
   min-height: 100%;
+}
+
+/* Map common Tailwind arbitrary hex classes to theme tokens.
+   This avoids editing dozens of files. */
+html[data-theme] .bg-\[\#181A18\] { background-color: var(--ui-bg) !important; }
+html[data-theme] .bg-\[\#181A18\]\/95 { background-color: rgb(var(--ui-bg-rgb) / 0.95) !important; }
+html[data-theme] .border-\[\#2D302D\] { border-color: var(--ui-border) !important; }
+html[data-theme] .bg-\[\#2D302D\] { background-color: var(--ui-border) !important; }
+html[data-theme] .text-\[\#8B8E8B\] { color: var(--ui-muted) !important; }
+html[data-theme="light"] .custom-mix-overlay { background-color: rgb(var(--ui-text-rgb) / 0.35) !important; }
+html[data-theme="light"] .smart-select-overlay { background-color: rgb(var(--ui-text-rgb) / 0.4) !important; }
+html[data-theme] .bg-\[\#0E0F0E\]\/40 { background-color: rgb(var(--ui-inner-rgb) / 0.4) !important; }
+html[data-theme] .text-\[\#8B8E8B\]\/70 { color: rgb(var(--ui-muted-rgb) / 0.7) !important; }
+html[data-theme] .text-\[\#8B8E8B\]\/60 { color: rgb(var(--ui-muted-rgb) / 0.6) !important; }
+html[data-theme] .text-\[\#8B8E8B\]\/40 { color: rgb(var(--ui-muted-rgb) / 0.4) !important; }
+html[data-theme] .bg-\[\#1A1A1A\]\/90 { background-color: rgb(var(--ui-panel-rgb) / 0.9) !important; }
+html[data-theme] .bg-\[\#1A1A1A\]\/95 { background-color: rgb(var(--ui-panel-rgb) / 0.95) !important; }
+html[data-theme] .bg-\[\#121212\]\/80 { background-color: rgb(var(--ui-inner-rgb) / 0.85) !important; }
+html[data-theme] .bg-\[\#121212\]\/90 { background-color: rgb(var(--ui-inner-rgb) / 0.9) !important; }
+html[data-theme] .bg-\[\#141414\] { background-color: var(--ui-bg) !important; }
+html[data-theme] .bg-\[\#141414\]\/90 { background-color: rgb(var(--ui-panel-rgb) / 0.9) !important; }
+html[data-theme] .bg-\[\#181818\] { background-color: var(--ui-panel) !important; }
+html[data-theme] .bg-\[\#1c1c1c\] { background-color: var(--ui-panel) !important; }
+html[data-theme] .bg-\[\#222422\] { background-color: var(--ui-panel) !important; }
+html[data-theme] .hover\:bg-\[\#2A2C2A\]\/40:hover { background-color: rgb(var(--ui-text-rgb) / 0.08) !important; }
+html[data-theme] .hover\:bg-white\/\[0\.07\]:hover { background-color: rgb(var(--ui-text-rgb) / 0.07) !important; }
+html[data-theme] .bg-\[\#1E201E\] { background-color: var(--ui-panel-2) !important; }
+html[data-theme] .border-\[\#2E302E\] { border-color: var(--ui-border) !important; }
+html[data-theme] .text-\[\#A8ACA8\] { color: var(--ui-muted) !important; }
+html[data-theme] .text-white { color: var(--ui-text) !important; }
+
+/* Tailwind opacity variants like `text-white/80` are separate classnames */
+html[data-theme] .text-white\/95 { color: rgb(var(--ui-text-rgb) / 0.95) !important; }
+html[data-theme] .text-white\/90 { color: rgb(var(--ui-text-rgb) / 0.9) !important; }
+html[data-theme] .text-white\/85 { color: rgb(var(--ui-text-rgb) / 0.85) !important; }
+html[data-theme] .text-white\/80 { color: rgb(var(--ui-text-rgb) / 0.8) !important; }
+html[data-theme] .text-white\/70 { color: rgb(var(--ui-text-rgb) / 0.7) !important; }
+html[data-theme] .text-white\/65 { color: rgb(var(--ui-text-rgb) / 0.65) !important; }
+html[data-theme] .text-white\/60 { color: rgb(var(--ui-text-rgb) / 0.6) !important; }
+html[data-theme] .text-white\/55 { color: rgb(var(--ui-text-rgb) / 0.55) !important; }
+html[data-theme] .text-white\/50 { color: rgb(var(--ui-text-rgb) / 0.5) !important; }
+html[data-theme] .text-white\/45 { color: rgb(var(--ui-text-rgb) / 0.45) !important; }
+html[data-theme] .text-white\/35 { color: rgb(var(--ui-text-rgb) / 0.35) !important; }
+html[data-theme] .text-white\/40 { color: rgb(var(--ui-text-rgb) / 0.4) !important; }
+html[data-theme] .text-white\/30 { color: rgb(var(--ui-text-rgb) / 0.3) !important; }
+html[data-theme] .text-white\/25 { color: rgb(var(--ui-text-rgb) / 0.25) !important; }
+html[data-theme] .text-white\/20 { color: rgb(var(--ui-text-rgb) / 0.2) !important; }
+html[data-theme] .text-white\/15 { color: rgb(var(--ui-text-rgb) / 0.15) !important; }
+html[data-theme] .text-white\/10 { color: rgb(var(--ui-text-rgb) / 0.1) !important; }
+
+/* Same idea for muted text opacity variants you use in multiple places */
+html[data-theme] .text-\[\#A8ACA8\]\/80 { color: rgb(var(--ui-muted-rgb) / 0.8) !important; }
+html[data-theme] .text-\[\#A8ACA8\]\/70 { color: rgb(var(--ui-muted-rgb) / 0.7) !important; }
+html[data-theme] .text-\[\#A8ACA8\]\/60 { color: rgb(var(--ui-muted-rgb) / 0.6) !important; }
+html[data-theme] .text-\[\#A8ACA8\]\/50 { color: rgb(var(--ui-muted-rgb) / 0.5) !important; }
+
+/* Background/border utility variants frequently used in nav/cards */
+html[data-theme] .bg-\[\#121212\] { background-color: var(--ui-bg) !important; }
+html[data-theme] .bg-\[\#161616\] { background-color: var(--ui-panel) !important; }
+html[data-theme] .bg-\[\#111411\] { background-color: var(--ui-panel-2) !important; }
+html[data-theme] .bg-\[\#1a1c1a\] { background-color: var(--ui-panel-2) !important; }
+html[data-theme] .bg-\[\#1A1C1A\] { background-color: var(--ui-panel-2) !important; }
+html[data-theme] .bg-\[\#1A1A1A\] { background-color: var(--ui-panel) !important; }
+html[data-theme] option.bg-\[\#1c1c1c\] { background-color: var(--ui-panel) !important; color: var(--ui-text) !important; }
+
+/* Tailwind opacity utilities (e.g. `bg-white/[0.04]`, `border-white/20`) */
+html[data-theme] .bg-white\/\[0\.02\] { background-color: rgb(var(--ui-text-rgb) / 0.02) !important; }
+html[data-theme] .bg-white\/\[0\.03\] { background-color: rgb(var(--ui-text-rgb) / 0.03) !important; }
+html[data-theme] .bg-white\/\[0\.04\] { background-color: rgb(var(--ui-text-rgb) / 0.04) !important; }
+html[data-theme] .bg-white\/\[0\.06\] { background-color: rgb(var(--ui-text-rgb) / 0.06) !important; }
+html[data-theme] .bg-white\/\[0\.07\] { background-color: rgb(var(--ui-text-rgb) / 0.07) !important; }
+html[data-theme] .bg-white\/\[0\.08\] { background-color: rgb(var(--ui-text-rgb) / 0.08) !important; }
+html[data-theme] .bg-white\/10 { background-color: rgb(var(--ui-text-rgb) / 0.10) !important; }
+html[data-theme] .bg-white\/15 { background-color: rgb(var(--ui-text-rgb) / 0.15) !important; }
+html[data-theme] .bg-white\/20 { background-color: rgb(var(--ui-text-rgb) / 0.20) !important; }
+
+html[data-theme] .border-white\/10 { border-color: rgb(var(--ui-text-rgb) / 0.10) !important; }
+html[data-theme] .border-white\/15 { border-color: rgb(var(--ui-text-rgb) / 0.15) !important; }
+html[data-theme] .border-white\/20 { border-color: rgb(var(--ui-text-rgb) / 0.20) !important; }
+html[data-theme] .border-white\/\[0\.06\] { border-color: rgb(var(--ui-text-rgb) / 0.06) !important; }
+html[data-theme] .hover\:border-white\/25:hover { border-color: rgb(var(--ui-text-rgb) / 0.25) !important; }
+html[data-theme] .hover\:border-white\/40:hover { border-color: rgb(var(--ui-text-rgb) / 0.40) !important; }
+
+html[data-theme] .placeholder\:text-white\/35::placeholder { color: rgb(var(--ui-text-rgb) / 0.35) !important; }
+html[data-theme] .placeholder\:text-white\/30::placeholder { color: rgb(var(--ui-text-rgb) / 0.3) !important; }
+
+html[data-theme="light"] .\[color-scheme\:dark\] { color-scheme: light; }
+
+/* Keep brand yellow unchanged */
+html[data-theme] .bg-\[\#FFC600\] { background-color: #FFC600 !important; }
+html[data-theme] .text-\[\#FFC600\] { color: #FFC600 !important; }
+
+/* Site footer — always dark; theme toggle does not apply */
+.site-footer {
+  --ui-bg: #181A18;
+  --ui-text: #ffffff;
+  --ui-muted: #A8ACA8;
+  --ui-text-rgb: 255 255 255;
+  --ui-muted-rgb: 168 172 168;
+  background-color: #181A18 !important;
+  border-top-color: #2E302E !important;
+  color-scheme: dark;
+}
+
+html[data-theme="light"] .site-footer .text-\[\#A8ACA8\] {
+  color: #A8ACA8 !important;
+}
+
+html[data-theme="light"] .site-footer .text-white,
+html[data-theme="light"] .site-footer .hover\:text-white:hover {
+  color: #ffffff !important;
 }
 
 ::-webkit-scrollbar {
@@ -21,4 +164,24 @@ body,
 ::-webkit-scrollbar-thumb {
   background: #ffc600;
   border-radius: 3px;
+}
+
+/* Scrollbar (correct selectors) */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f8f9fa;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #ffc600;
+  border-radius: 3px;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }

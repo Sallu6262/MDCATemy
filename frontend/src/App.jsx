@@ -1,6 +1,7 @@
 import {Route, RouterProvider, createBrowserRouter, createRoutesFromElements} from 'react-router-dom';
 import MainLayout from '../layout/MainLayout';
-import LandingPage from '../pages/LandingPage';
+import MainLandingPage from '../pages/LandingPages/MainLandingPage';
+import BatchEnrollmentLandingPage from '../pages/LandingPages/BatchEnrollmentLandingPage';
 import NotFoundPage from '../pages/NotFoundPage';
 import AdminDefaultPage from '../pages/adminPages/AdminDefaultPage'
 import AdminDashboardLayout from '../layout/AdminDashboardLayout';
@@ -23,12 +24,27 @@ import UserStartTestPage from '../pages/userPages/UserStartTestPage';
 import ScorePredictorPage from '../pages/userPages/ScorePredictorPage';
 import UserAnalyticsPage from '../pages/userPages/UserAnalyticsPage';
 import QuizMakingPage from '../pages/userPages/QuizBuilder/QuizMakingPage';
+import ReviewPreviousTestMcqsPage from '../pages/userPages/ReviewPreviousTestMcqsPage';
+import LandingPageLayout from '../layout/LandingPageLayout';
+import ComingSoonPage from '../pages/ComingSoonPage'
+import ReviewPreviousQuizMcqsPage from '../pages/userPages/ReviewPreviousQuizMcqsPage';
+import PrivacyPolicyPage from '../pages/LandingPages/PrivacyPolicyPage';
+import TermsAndConditionsPage from '../pages/LandingPages/TermsAndConditionsPage';
+import CareersPage from '../pages/LandingPages/CareersPage';
 
 const App = () => {
+  const MDCATEMY_STATUS = import.meta.env.VITE_MDCATEMY_STATUS;
+
   const router = createBrowserRouter(
     createRoutesFromElements(
       <>
-        <Route path='/' element={<LandingPage />}/>
+        <Route path='/' element={<LandingPageLayout />}>
+          <Route index element={<MainLandingPage />}/>
+          <Route path='/batch-enrollment' element={<BatchEnrollmentLandingPage />}/>
+          <Route path='/privacy-policy' element={<PrivacyPolicyPage />}/>
+          <Route path='/terms-and-conditions' element={<TermsAndConditionsPage />}/>
+          <Route path='/careers' element={<CareersPage />}/>
+        </Route>
 
         <Route element={<MainLayout />} id='root' loader={getUserLoader}>
 
@@ -37,15 +53,17 @@ const App = () => {
             <Route path='/signup' element={<SignUpPage />}/>
           </Route>
 
-          <Route path='/dashboard' element={<UserDashboardLayout />}>
+          <Route path='/dashboard' element={MDCATEMY_STATUS === 'coming-soon' ? <ComingSoonPage /> : <UserDashboardLayout />}>
             <Route index element={<UserDashboardPage />}/>
-            <Route path='/dashboard/score-predictor' element={<ScorePredictorPage />}/>
+            <Route path='score-predictor' element={<ScorePredictorPage />}/>
 
-            <Route path='/dashboard/quiz-builder' element={<QuizMakingPage />}/>
+            <Route path='quiz-builder' element={<QuizMakingPage />}/>
+            <Route path='quiz-builder/previous-quiz/:quizID' element={<ReviewPreviousQuizMcqsPage />}/>
 
             <Route path='test-series' element={<UserTestSeriesLayout />}>
               <Route index element={<UserTestSeriesPage />}/>
               <Route path='previous-tests' element={<AllPreviousTestsPage />}/> 
+              <Route path='previous-tests/:testID' element={<ReviewPreviousTestMcqsPage />}/>
               <Route path='all-upcoming-tests' element={<AllUpcomingTestsPage />}/>
               <Route path='start-test/:testID' element={<UserStartTestPage />}/>
             </Route>
@@ -62,8 +80,9 @@ const App = () => {
           </Route>
 
           <Route path='/payment-status' element={<PaymentErrorPage />}/>
-          <Route path='*' element={<NotFoundPage />}/>
         </Route>
+
+        <Route path='*' element={<NotFoundPage />}/>
       </>
     )
   );
