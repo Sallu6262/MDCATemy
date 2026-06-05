@@ -7,5 +7,5 @@ export const subjectToColor = {
 }
 
 export const formatName = (name) => {
-    return name.split('_').map(n => n[0].toUpperCase() + n.slice(1)).join(' ');
+    return name.replaceAll('-','_').split('_').map(n => n[0].toUpperCase() + n.slice(1)).join(' ');
 }

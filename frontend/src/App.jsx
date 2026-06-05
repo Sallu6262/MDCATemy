@@ -31,6 +31,7 @@ import ReviewPreviousQuizMcqsPage from '../pages/userPages/ReviewPreviousQuizMcq
 import PrivacyPolicyPage from '../pages/LandingPages/PrivacyPolicyPage';
 import TermsAndConditionsPage from '../pages/LandingPages/TermsAndConditionsPage';
 import CareersPage from '../pages/LandingPages/CareersPage';
+import DetailedAnalyticsPage from '../pages/userPages/DetailedAnalyticsPage';
 
 const App = () => {
   const MDCATEMY_STATUS = import.meta.env.VITE_MDCATEMY_STATUS;
@@ -70,6 +71,8 @@ const App = () => {
 
             <Route path='my-copy' element={<UserCopyPage />}/>
             <Route path='analytics' element={<UserAnalyticsPage />}/>
+            <Route path='analytics/:subject' element={<DetailedAnalyticsPage isSubjectOrChapter={true}/>}/>
+            <Route path='analytics/:subject/:chapter' element={<DetailedAnalyticsPage isSubjectOrChapter={false} />}/>
           </Route>
 
           <Route path='/admin' element={<AdminDashboardLayout />}>

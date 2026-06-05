@@ -8,7 +8,7 @@ const SubjectCircleButton = ({accuracy, color, subject}) => {
             <div className="relative" style={{ width: "56px", height: "56px" }}>
                 <svg width="56" height="56" style={{ transform: "rotate(-90deg)" }}>
                     <circle cx="28" cy="28" r="22" fill="none" stroke="rgb(var(--ui-text-rgb) / 0.08)" strokeWidth="6"/>
-                    <circle cx="28" cy="28" r="22" fill="none" stroke={color} strokeWidth="6" strokeLinecap="round" strokeDasharray="138.23" strokeDashoffset={138.23 - accuracy}/>
+                    <circle cx="28" cy="28" r="22" fill="none" stroke={color} strokeWidth="6" strokeLinecap="round" strokeDasharray="138.23" strokeDashoffset={String(138.23 - accuracy ?? 0)}/>
                 </svg>
                 <div className="absolute inset-0 flex items-center justify-center">
                     <span className="font-['Poppins'] font-medium text-[15px] leading-none" style={{ color: `${color}` }}>{accuracy}%</span>

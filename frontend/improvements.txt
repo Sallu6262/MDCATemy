@@ -1,9 +1,8 @@
 After Finals:
-9. Detailed Analytics (chapter and topic wise per subject) (have topics and chapters but no idea which subject it belongs to)
 10. smart select in quiz builder
 11. re test all mistakes in mistakes copy
 12. change landing page + other static pages
-13. user analytics page (fix activity + performance charts) -> will be done in last 
+13. user analytics page (fix activity + performance charts + some data to be dynamic) -> will be done in last 
 15. dynamic seat count in main landing page.
 14. fix sign up page
 15. accuracy needed from backend for subjects, chapters, topics

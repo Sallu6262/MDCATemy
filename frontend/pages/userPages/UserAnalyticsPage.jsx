@@ -165,7 +165,7 @@ const UserAnalyticsPage = () => {
         setTotalWeekMcqs(sa?.activity.reduce((acc, val) => acc + val.attempt_count, 0));
     }, [sa]);
 
-    console.log(sa);
+    // console.log(sa);
 
     return (
         <>

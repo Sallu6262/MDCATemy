@@ -24,11 +24,11 @@ const QuizMakingStep1 = ({showAccuracy, smartSelectHidden, setSelectedSubjects, 
             </div>
 
             <div className="grid gap-2 lg:grid-cols-2 lg:gap-3">
-                <SubjectSelectButton showAccuracy={showAccuracy} smartSelectHidden={smartSelectHidden} subject={"Biology"} colorClass={`bg-[${subjectToColor["Biology"]}]`} setSelectedSubjects={setSelectedSubjects} isSelected={selectedSubjects.has('biology')}/>
-                <SubjectSelectButton showAccuracy={showAccuracy} smartSelectHidden={smartSelectHidden} subject={"Chemistry"} colorClass={`bg-[${subjectToColor["Chemistry"]}]`} setSelectedSubjects={setSelectedSubjects} isSelected={selectedSubjects.has('chemistry')}/>
-                <SubjectSelectButton showAccuracy={showAccuracy} smartSelectHidden={smartSelectHidden} subject={"Physics"} colorClass={`bg-[${subjectToColor["Physics"]}]`} setSelectedSubjects={setSelectedSubjects} isSelected={selectedSubjects.has('physics')}/>
-                <SubjectSelectButton showAccuracy={showAccuracy} smartSelectHidden={smartSelectHidden} subject={"English"} colorClass={`bg-[${subjectToColor["English"]}]`} setSelectedSubjects={setSelectedSubjects} isSelected={selectedSubjects.has('english')}/>
-                <SubjectSelectButton showAccuracy={showAccuracy} smartSelectHidden={smartSelectHidden} subject={"Logical Reasoning"} colorClass={`bg-[${subjectToColor["Logical Reasoning"]}]`} setSelectedSubjects={setSelectedSubjects} isSelected={selectedSubjects.has('logical_reasoning')}/>
+                <SubjectSelectButton showAccuracy={showAccuracy} smartSelectHidden={smartSelectHidden} subject={"Biology"} colorClass={subjectToColor["Biology"]} setSelectedSubjects={setSelectedSubjects} isSelected={selectedSubjects.has('biology')}/>
+                <SubjectSelectButton showAccuracy={showAccuracy} smartSelectHidden={smartSelectHidden} subject={"Chemistry"} colorClass={subjectToColor["Chemistry"]} setSelectedSubjects={setSelectedSubjects} isSelected={selectedSubjects.has('chemistry')}/>
+                <SubjectSelectButton showAccuracy={showAccuracy} smartSelectHidden={smartSelectHidden} subject={"Physics"} colorClass={subjectToColor["Physics"]} setSelectedSubjects={setSelectedSubjects} isSelected={selectedSubjects.has('physics')}/>
+                <SubjectSelectButton showAccuracy={showAccuracy} smartSelectHidden={smartSelectHidden} subject={"English"} colorClass={subjectToColor["English"]} setSelectedSubjects={setSelectedSubjects} isSelected={selectedSubjects.has('english')}/>
+                <SubjectSelectButton showAccuracy={showAccuracy} smartSelectHidden={smartSelectHidden} subject={"Logical Reasoning"} colorClass={subjectToColor["Logical Reasoning"]} setSelectedSubjects={setSelectedSubjects} isSelected={selectedSubjects.has('logical_reasoning')}/>
             </div>
             </div>
         </section>

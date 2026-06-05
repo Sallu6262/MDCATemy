@@ -9,8 +9,15 @@ import SmartSelectWeakestTopic from './SmartSelectWeakestTopic';
 const SmartSelect = ({filterChapterIDs, filterSubjectIDs, quizMakingStep, smartSelectHidden, resetData, setSmartSelectHidden, setQuizMakingStep, setSelectedSubjects, selectedSubjects, filteredSubjects, selectedChapters, setSelectedChapters, moveToNextStepAndFilter, filteredChapters, selectedTopics, setSelectedTopics, mcqDistributionPerTopic}) => {
     //step is starting from zero to sync with quiz making without smart select.
     const [errorMessage, setErrorMessage] = useState("");
+
+    //0 means nothing
+    //1 means user selected weakest by subject
+    //2 means user selected weakest by chapter
     const [isWeakestChapterOrSubject, setIsWeakestChapterOrSubject] = useState(0);
 
+    const [subjectCache, setSubjectCache] = useState(() => new Set());
+    const [chapterCache, setChapterCache] = useState(() => new Set());
+    const [topicsCache, setTopicsCache] = useState([]);
     // console.log(selectedSubjects);
     
     return (
@@ -80,12 +87,18 @@ const SmartSelect = ({filterChapterIDs, filterSubjectIDs, quizMakingStep, smartS
                 {
                     quizMakingStep === 3 ?
                     <SmartSelectWeakestTopic 
+                        subjectCache={subjectCache}
+                        chapterCache={chapterCache}
+                        setSubjectCache={setSubjectCache}
+                        setChapterCache={setChapterCache}
                         setQuizMakingStep={setQuizMakingStep}
                         selectedTopics={selectedTopics}
                         setSelectedTopics={setSelectedTopics}
                         mcqDistributionPerTopic={mcqDistributionPerTopic}
-                        filteredChapterIDs={filterChapterIDs()}
-                        filteredSubjectIDs={filterSubjectIDs()}
+                        filterChapterIDs={filterChapterIDs}
+                        filterSubjectIDs={filterSubjectIDs}
+                        topicsCache={topicsCache}
+                        setTopicsCache={setTopicsCache}
                     /> : ''
                 }
 

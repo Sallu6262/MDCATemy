@@ -29,30 +29,16 @@ const QuizMakingPage = () => {
     const [smartSelectHidden, setSmartSelectHidden] = useState(true);
 
     const API_URL = import.meta.env.VITE_API_URL;
-    const {isExamHappening, setIsExamHappening} = useOutletContext();
+    const {isExamHappening, setIsExamHappening, syllabusAndIDs} = useOutletContext();
 
     // console.log(Object.keys(syllabus));
     // console.log(quizInfo)
 
     useEffect(() => {
-        const fetchSyllabusForQuiz = async () => {
-            const res = await fetch(`${API_URL}/mcqs/topics`, {
-                method: 'GET',
-                credentials: 'include'
-            });
-
-            const data = await res.json();
-
-            if(data.status === 'success'){
-                // console.log(data.data);
-                setSyllabus(data.data.syllabus);
-                setSubjectIDs(data.data.subject_ids);
-                setChapterIDs(data.data.chapter_ids);
-            }
-        }
-
-        fetchSyllabusForQuiz();
-    }, []);
+        setSyllabus(syllabusAndIDs?.syllabus);
+        setSubjectIDs(syllabusAndIDs?.subject_ids);
+        setChapterIDs(syllabusAndIDs?.chapter_ids);
+    }, [syllabusAndIDs]);
 
     useEffect(() => {
         const fetchMCQDistributionPerTopic = async () => {
