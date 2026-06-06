@@ -136,7 +136,8 @@ export const bookmarkMCQ = handleAsyncError(async (req, res, next) => {
 export const getSavedMCQs = handleAsyncError(async (req, res, next) => {
     // /saved-mcqs?page=1&biology=1&physics=1&chemistry=1&english=1&logical_reasoning=1&search=umair,anwar
     let data = {
-        count: 0,
+        current_count: 0,
+        total_count: 0,
         biology: 0,
         physics: 0,
         chemistry: 0,
@@ -144,7 +145,7 @@ export const getSavedMCQs = handleAsyncError(async (req, res, next) => {
         logical_reasoning: 0
     };
 
-    const mcq_query = "SELECT mcq_bank.mcq_id, subject_name, chapter_name, question, option_a, option_b, option_c, option_d, correct_option, explanation, saved_date::TEXT FROM bookmarks INNER JOIN mcq_bank ON mcq_bank.mcq_id = bookmarks.mcq_id INNER JOIN subjects ON mcq_bank.subject_id = subjects.subject_id INNER JOIN chapters ON mcq_bank.chapter_id = chapters.chapter_id WHERE student_id=$1 AND subjects.subject_name = ANY ($4) AND mcq_bank.question ILIKE ANY($5) ORDER BY saved_date, subject_name DESC LIMIT $2 OFFSET $3";
+    const mcq_query = "SELECT mcq_bank.mcq_id, subject_name, chapter_name, question, option_a, option_b, option_c, option_d, correct_option, explanation, saved_date::TEXT, COUNT(mcq_bank.mcq_id) OVER()::INT AS total_count FROM bookmarks INNER JOIN mcq_bank ON mcq_bank.mcq_id = bookmarks.mcq_id INNER JOIN subjects ON mcq_bank.subject_id = subjects.subject_id INNER JOIN chapters ON mcq_bank.chapter_id = chapters.chapter_id WHERE student_id=$1 AND subjects.subject_name = ANY ($4) AND mcq_bank.question ILIKE ANY($5) ORDER BY saved_date, subject_name DESC LIMIT $2 OFFSET $3";
     const subject_count_query = "SELECT subject_name, COALESCE(COUNT(mcq_bank.mcq_id)::INT, 0) AS mcq_count FROM bookmarks INNER JOIN mcq_bank ON mcq_bank.mcq_id=bookmarks.mcq_id INNER JOIN subjects ON mcq_bank.subject_id=subjects.subject_id WHERE student_id=$1 GROUP BY subject_name";
 
     const [subject_wise_counts, mcqs] = await getMCQsAndSubjectWiseCountsForUser(req, next, mcq_query, subject_count_query);
@@ -153,7 +154,12 @@ export const getSavedMCQs = handleAsyncError(async (req, res, next) => {
         data[formatColumnName(obj.subject_name)] += obj.mcq_count;
     });
 
-    data.count = mcqs.length;
+    mcqs.forEach(obj => {
+        data.total_count = obj.total_count;
+        delete obj.total_count;
+    });
+
+    data.current_count = mcqs.length;
     data.mcqs = mcqs;
 
     res.status(200).json({
