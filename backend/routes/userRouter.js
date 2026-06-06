@@ -1,7 +1,7 @@
 import express from "express";
 import multer from "multer";
 import { signup, login, logout, protect, restrictTo, isPaymentVerified } from "../controllers/auth.js";
-import { getMe, getDashboardStats, getSavedMCQs, getWrongMCQs, deleteSavedMCQ, deleteWrongMCQ, uploadPaymentReceipt, bookmarkMCQ, getWeakestTopics, getPredictedScoreLeaderboard, getUserActivity } from "../controllers/user.js";
+import { getMe, getDashboardStats, getSavedMCQs, getWrongMCQs, deleteSavedMCQ, deleteWrongMCQ, uploadPaymentReceipt, bookmarkMCQ, getWeakestTopics, getPredictedScoreLeaderboard, getUserActivity, getUsersSubjectChapterTopicWisePerformance } from "../controllers/user.js";
 
 const router = express.Router();
 
@@ -28,6 +28,7 @@ const upload = multer({storage: multer.diskStorage({
 router.get("/me", protect, getMe);
 router.get("/stats", protect, isPaymentVerified, /* restrictTo("student"), */ getDashboardStats);
 router.get("/activity", protect, isPaymentVerified, /* restrictTo("student"), */ getUserActivity);
+router.get("/performance", protect, isPaymentVerified, /* restrictTo("student"), */ getUsersSubjectChapterTopicWisePerformance); 
 router.get("/leaderboard", protect, isPaymentVerified, /* restrictTo("student"), */ getPredictedScoreLeaderboard);
 router.post("/weakest-topics", protect, isPaymentVerified, /* restrictTo("student"), */ getWeakestTopics);
 

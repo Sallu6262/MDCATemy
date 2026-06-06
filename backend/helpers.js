@@ -14,6 +14,14 @@ export const initialize = () => {
 }
 export const formatColumnName = (name) => name.replaceAll(" ", "_").toLowerCase();
 
+export const formatDate = (date) => {
+    return new Intl.DateTimeFormat('fr-CA', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit'
+    }).format(date);
+}
+
 export const readDataFromExcelFile = async (buffer) => {
     const data = await readSheet(Readable.from(buffer));
     const res = [];

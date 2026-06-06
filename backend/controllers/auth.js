@@ -51,6 +51,7 @@ export const protect = handleAsyncError(async (req, res, next) => {
     const token = req.cookies["mdcatemy-login-token"];
     if (!token) 
         return next(new AppError("You're not logged in!", 401));
+
     const payload = jwt.verify(token, process.env.JWT_SIGN_SECRET);
     let user = undefined;
 
@@ -93,14 +94,8 @@ export const isPaymentVerified = handleAsyncError(async (req, res, next) => {
 export const signup = handleAsyncError(async (req, res, next) => {
     let {name, father_name, gender, role, phone, email, password, academic_status, province, city, matric_percentage, fsc_percentage, prev_mdcat_score} = req.body;
 
-    if (!name || !father_name || !email || !password || !gender || !phone || !role || !province || !city || !matric_percentage || !fsc_percentage || !academic_status)
+    if (!name || !father_name || !email || !password || !gender || !phone || !role || !province || !city || !matric_percentage || !fsc_percentage || !academic_status || !target_marks)
         return next(new AppError("Incomplete Data for Signup!", 400));
-    
-    const AGGREGATE_THRESHOLD = 90;
-    const target_marks = Math.ceil(4*(AGGREGATE_THRESHOLD - 0.1*matric_percentage - 0.4*fsc_percentage));
-
-    if (role === "TRIBE_MEMBER" &&  target_marks > 180)
-        return next(new AppError(`You cannot signup for the Study Tribe module. Your target marks are ${target_marks}. Because they're greater than 180, we can't enroll you in this year's batch.`, 400));
 
     password = await hashPassword(password);
 

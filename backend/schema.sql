@@ -53,6 +53,7 @@ CREATE TABLE students (
     fsc_percentage NUMERIC(10,2) NOT NULL,
     prev_mdcat_score INT CHECK(prev_mdcat_score >= 0),
     target_marks INT NOT NULL,
+    predicted_score INT NOT NULL DEFAULT 80,
     coupon VARCHAR(10),
     payment_status PAYMENT_STATUS NOT NULL DEFAULT 'PENDING',
     upgrade_status PAYMENT_STATUS,
@@ -161,7 +162,7 @@ CREATE TABLE attempted_mcqs(
     selected_option CHAR(1) NOT NULL,
     quiz_id INT,
     test_id INT,
-    saved_date DATE NOT NULL DEFAULT CURRENT_DATE, 
+    attempted_date DATE NOT NULL DEFAULT CURRENT_DATE, 
     is_mastered INT NOT NULL DEFAULT 0,
 
     CONSTRAINT check_mcq_belonging CHECK ((quiz_id IS NOT NULL AND test_id IS NULL) OR (quiz_id IS NULL AND test_id IS NOT NULL)),

@@ -27,7 +27,7 @@ export const uploadMCQs = handleAsyncError(async (req, res, next) => {
 
 
 export const getAllTopics = handleAsyncError(async (req, res, next) => {
-    let data = (await pool.query("SELECT DISTINCT subject_name, chapter_name, topic_name, subjects.subject_id, chapters.chapter_id, topics.topic_id FROM mcq_bank INNER JOIN subjects ON subjects.subject_id=mcq_bank.subject_id INNER JOIN chapters ON chapters.chapter_id=mcq_bank.chapter_id INNER JOIN topics ON topics.topic_id=mcq_bank.topic_id")).rows;
+    let data = (await pool.query("SELECT subject_name, chapter_name, topic_name, subjects.subject_id, chapters.chapter_id, topics.topic_id FROM topics INNER JOIN chapters ON chapters.chapter_id=topics.chapter_id INNER JOIN subjects ON subjects.subject_id=topics.subject_id")).rows;
     let syllabus = convertSyllabusQueryResultIntoSyllabusObject(data);
     let subject_ids = {};
     let chapter_ids = {};
@@ -53,5 +53,27 @@ export const deleteMCQ = handleAsyncError(async (req, res, next) => {
     (await pool.query("DELETE FROM mcq_bank WHERE mcq_id=$1", [req.params.mcq_id]));
     res.status(204).json({
         status: "success"
+    });
+});
+
+export const retestWrongMCQs = handleAsyncError(async (req, res, next) => {
+
+    // /mcqs/retest?start=1&end=10&biology=1&physics=1&search=umair,anwar
+    
+    const {start, end} = req.query;
+    const subjects = [];
+
+    if (req.query.biology) subjects.push("Biology");        
+    if (req.query.physics) subjects.push("Physics");
+    if (req.query.english) subjects.push("English");
+    if (req.query.chemistry) subjects.push("Chemistry");
+    if (req.query.logical_reasoning) subjects.push("Logical Reasoning");
+
+    const search = req.query?.search?.split(",").map(word => `%${word}%`) ?? ["%"];    
+    const mcqs = (await pool.query("SELECT mcq_bank.mcq_id, topic_id, question, option_a, option_b, option_c, option_d, correct_option, explanation, difficulty, subject_name, chapter_name, (CASE WHEN bookmarks.mcq_id IS NOT NULL THEN 1 ELSE 0 END) AS is_bookmarked FROM attempted_mcqs INNER JOIN mcq_bank ON mcq_bank.mcq_id = attempted_mcqs.mcq_id INNER JOIN subjects ON mcq_bank.subject_id = subjects.subject_id INNER JOIN chapters ON mcq_bank.chapter_id = chapters.chapter_id LEFT JOIN bookmarks ON bookmarks.mcq_id = mcq_bank.mcq_id AND bookmarks.student_id = $1 WHERE attempted_mcqs.student_id=$1 AND subjects.subject_name = ANY ($4) AND mcq_bank.question ILIKE ANY($5) AND attempted_mcqs.selected_option != mcq_bank.correct_option ORDER BY attempted_date, subject_name DESC LIMIT $2 OFFSET $3", [req.user.student_id, end-start+1, start-1, subjects, search])).rows;
+
+    res.status(200).json({
+        status: "success",
+        data: mcqs
     });
 });

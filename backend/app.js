@@ -10,7 +10,8 @@ import mcqRouter from "./routes/mcqRouter.js";
 import quizRouter from "./routes/quizRouter.js";
 import testRouter from "./routes/testRouter.js";
 import paymentRouter from "./routes/paymentRouter.js";
-import { errorMiddleware } from "./error.js";
+import systemRouter from "./routes/systemRouter.js";
+import { errorMiddleware, handleAsyncError } from "./error.js";
 import pool from "./database.js";
 import cors from "cors";
 
@@ -28,7 +29,6 @@ app.use(express.urlencoded({extended: true, limit:'10kb'}));
 app.use(morgan("tiny"));
 
 // SECURITY
-// TODO: SQL INJECTION REMAINS
 app.use([xss(), helmet(), hpp({ whitelist: ['attempts', 'topic_ids', 'chapter_ids', 'subject_ids', 'topics'] })]);
 
 // Rate limiting
@@ -49,6 +49,7 @@ app.use("/api/v1/mcqs/", mcqRouter);
 app.use("/api/v1/quizzes/", quizRouter);
 app.use("/api/v1/tests/", testRouter);
 app.use("/api/v1/payments/", paymentRouter);
+app.use("/api/v1/system/", systemRouter);
 
 app.use(errorMiddleware);
 

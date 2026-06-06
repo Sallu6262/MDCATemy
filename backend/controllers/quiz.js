@@ -1,6 +1,7 @@
 import { readDataFromExcelFile } from "../helpers.js";
-import { AppError, handleAsyncError } from "../error.js";
+import { AppError, errorMiddleware, handleAsyncError } from "../error.js";
 import pool from "../database.js";
+import { bookmarkMCQ } from "./user.js";
 
 export const getAllUserQuizzesDetails = handleAsyncError(async (req, res, next) => {
     let data = (await pool.query("SELECT quizzes.quiz_id, quiz_name, correct_count, mcq_count, attempt_date::TEXT, quiz_mode, STRING_AGG(subjects.subject_id::TEXT, ',') AS subject_ids, STRING_AGG(subject_name, ',') AS subject_names FROM quizzes INNER JOIN quiz_subjects ON quizzes.quiz_id=quiz_subjects.quiz_id INNER JOIN subjects ON subjects.subject_id=quiz_subjects.subject_id WHERE student_id=$1 GROUP BY quizzes.quiz_id, quiz_name, correct_count, mcq_count, attempt_date, quiz_mode ORDER BY quizzes.quiz_id DESC", [req.user.student_id])).rows;
@@ -110,7 +111,7 @@ export const recordAnswer = handleAsyncError(async (req, res, next) => {
     if (!today_activity.length)
         await pool.query("INSERT INTO activity(student_id, attempt_count, correct_count, streak) VALUES ($1, $2, $3, $4)", [req.user.student_id, mcq_attempts.length, correct_count, req.user.streak]);
     else
-        await pool.query("UPDATE activity SET attempt_count=$2, correct_count=$3, streak=$4 WHERE student_id=$1 AND activity_date=$5::DATE", [req.user.student_id, today_activity[0].attempt_count + mcq_attempts.length, today_activity[0].correct_count + correct_count, req.user.streak, new Date()]);
+        await pool.query("UPDATE activity SET attempt_count=$2, correct_count=$3, streak=$4 WHERE student_id=$1 AND activity_date=CURRENT_DATE", [req.user.student_id, today_activity[0].attempt_count + mcq_attempts.length, today_activity[0].correct_count + correct_count, req.user.streak]);
 
     if (quiz_id)
         await pool.query("INSERT INTO attempted_mcqs (student_id, mcq_id, quiz_id, selected_option) VALUES " + mcq_attempts.map(mcq => `(${req.user.student_id}, ${mcq.id}, ${quiz_id}, '${mcq.selected_option}')`).join(", "));

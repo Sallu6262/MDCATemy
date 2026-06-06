@@ -17,7 +17,7 @@ export function errorMiddleware(error, req, res, next) {
     if (process.env.MODE === "prod") {
         sendProductionError(error, res);
     } else {
-        console.error(error.message);
+        console.error(error);
         sendDevelopementError(error, res);
     }
 }
@@ -57,6 +57,11 @@ function sendProductionError(error, res) {
             res.status(400).json({                
                 status: "error",
                 message: "The excel file you've uploaded contains missing columns which are not matching the expected file format. Please contact the DEVs for this problem."
+            });
+        } else if (error.errno === -2 && error.syscall === "stat" && error.code === "ENOENT" && error.status === 404) {
+            res.status(404).json({
+                status: "error",
+                message: "The receipt of the student is not found. Please ask the student to upload the payment receipt again."
             });
         } else {
             res.status(500).json({
