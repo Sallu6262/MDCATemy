@@ -10,6 +10,7 @@ const UserDashboardLayout = () => {
     const [studentAnalytics, setStudentAnalytics] = useState(null);
     const [leaderboard, setLeaderboard] = useState([]);
     const [isExamHappening, setIsExamHappening] = useState(false);
+    const [syllabusAndIDs, setSyllabusAndIDs] = useState({});
 
     const API_URL = import.meta.env.VITE_API_URL;
     
@@ -61,13 +62,30 @@ const UserDashboardLayout = () => {
         }
     
         fetchLeaderBoard();
-      }, []);
+    }, []);
+
+    useEffect(() => {
+        const fetchSyllabus = async () => {
+            const res = await fetch(`${API_URL}/mcqs/topics`, {
+                method: 'GET',
+                credentials: 'include'
+            });
+
+            const data = await res.json();
+
+            if(data.status === 'success'){
+                setSyllabusAndIDs(data.data);
+            }
+        }
+
+        fetchSyllabus();
+    }, []);
 
     return (
         <section className={`fade-in flex min-h-0 flex-1 flex-col bg-[#181A18] text-white font-[Inter,sans-serif] antialiased ${isExamHappening ? 'overflow-hidden' : ''}`}>
             <div className={`flex min-h-0 flex-1 flex-col lg:flex-row ${isExamHappening ? 'overflow-hidden' : ''}`}>
                 <div className={`order-1 flex min-h-0 flex-1 flex-col lg:order-2 lg:pb-0 ${isExamHappening ? 'overflow-hidden pb-0' : 'pb-[5.5rem]'}`}>
-                    <Outlet context={{studentAnalytics, setStudentAnalytics, leaderboard, setIsExamHappening, isExamHappening}}/>
+                    <Outlet context={{studentAnalytics, setStudentAnalytics, leaderboard, setIsExamHappening, isExamHappening, syllabusAndIDs}}/>
                 </div>
                 {!isExamHappening ? <UserNavbar /> : ''}
             </div>
