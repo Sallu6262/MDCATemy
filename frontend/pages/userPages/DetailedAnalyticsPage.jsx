@@ -12,8 +12,10 @@ const DetailedAnalyticsPage = ({isSubjectOrChapter}) => {
     const [formattedSubject, setFormattedSubject] = useState(subject);
     const [formattedChapter, setFormattedChapter] = useState(chapter ?? "None");
 
-    // console.log(syllabusAndIDs?.syllabus?.['biology']['cell_biology']);
-    // console.log(topics)
+    const formatTopic = (name) => {
+        return name.toLowerCase().replaceAll(' ','_');
+    }
+    
     useEffect(() => {
         if(syllabusAndIDs?.syllabus){
             setChapters(Object.keys(syllabusAndIDs.syllabus[subject.replaceAll('-','_')]));
@@ -35,7 +37,7 @@ const DetailedAnalyticsPage = ({isSubjectOrChapter}) => {
             return (total / chapters?.length).toFixed(2);
         } else {
             topics?.forEach(topic => {
-                total += sa?.topics[topic.name] || 0;
+                total += sa?.topics[formatTopic(topic.name)] || 0;
             })
             return (total / topics?.length).toFixed(2) ?? 0;
         }
@@ -54,9 +56,9 @@ const DetailedAnalyticsPage = ({isSubjectOrChapter}) => {
             });
         } else {
             topics?.forEach(topic => {
-                if(sa?.topics[topic.name] >= value){
-                    strongest = topic.name;
-                    value = sa?.topics[topic.name];
+                if(sa?.topics[formatTopic(topic.name)] >= value){
+                    strongest = formatTopic(topic.name);
+                    value = sa?.topics[formatTopic(topic.name)];
                 }
             });
         }
@@ -83,9 +85,9 @@ const DetailedAnalyticsPage = ({isSubjectOrChapter}) => {
             });
         } else {
             topics?.forEach(topic => {
-                if(sa?.topics[topic.name] <= value){
-                    weakest = topic.name;
-                    value = sa?.topics[topic.name];
+                if(sa?.topics[formatTopic(topic.name)] <= value){
+                    weakest = formatTopic(topic.name);
+                    value = sa?.topics[formatTopic(topic.name)];
                 }
             });
         }
@@ -213,13 +215,13 @@ const DetailedAnalyticsPage = ({isSubjectOrChapter}) => {
                                                     <div className="relative" style={{ width: '88px', height: '88px' }}>
                                                         <svg width="88" height="88" className="-rotate-90">
                                                             <circle cx="44" cy="44" r="40.5" stroke="var(--ui-border)" strokeWidth="7" fill="none" />
-                                                            <circle cx="44" cy="44" r="40.5" stroke={subjectToColor[formattedSubject]} strokeWidth="7" strokeLinecap="round" fill="none" strokeDasharray="254.47" strokeDashoffset={254.47 - ((sa?.topics[topic.name] ?? 0) / 100) * 254.47} />
+                                                            <circle cx="44" cy="44" r="40.5" stroke={subjectToColor[formattedSubject]} strokeWidth="7" strokeLinecap="round" fill="none" strokeDasharray="254.47" strokeDashoffset={254.47 - ((sa?.topics[formatTopic(topic.name)] ?? 0) / 100) * 254.47} />
                                                         </svg>
                                                         <div className="absolute inset-0 flex items-center justify-center">
-                                                            <span className="font-black [font-family:Poppins,sans-serif]" style={{ color: subjectToColor[formattedSubject], fontSize: '13px' }}>{sa?.topics[topic.name] ?? 0}%</span>
+                                                            <span className="font-black [font-family:Poppins,sans-serif]" style={{ color: subjectToColor[formattedSubject], fontSize: '13px' }}>{sa?.topics[formatTopic(topic.name)] ?? 0}%</span>
                                                         </div>
                                                     </div>
-                                                    <p className="px-1 text-center text-[12px] font-black leading-tight text-white transition-colors [font-family:Poppins,sans-serif] group-hover:text-[#FFC600]">{formatName(topic.name)}</p>
+                                                    <p className="px-1 text-center text-[12px] font-black leading-tight text-white transition-colors [font-family:Poppins,sans-serif] group-hover:text-[#FFC600]">{formatName(formatTopic(topic.name))}</p>
                                                 </div>
                                             </div>
                                         )

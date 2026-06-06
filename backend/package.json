@@ -5,8 +5,8 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "dev": "MODE=dev nodemon index.js",
-    "prod": "MODE=prod nodemon index.js",
+    "dev": "set MODE=dev && nodemon index.js",
+    "prod": "set MODE=prod && nodemon index.js",
     "rayyan-dev": "cross-env MODE=dev DATABASE_USERNAME=postgres DATABASE_PASSWORD=database123 nodemon index.js",
     "rayyan-prod": "cross-env MODE=prod DATABASE_USERNAME=postgres DATABASE_PASSWORD=database123 nodemon index.js"
   },
@@ -29,8 +29,5 @@
     "pg": "^8.20.0",
     "pg-cursor": "^2.19.0",
     "read-excel-file": "^8.0.3"
-  },
-  "devDependencies": {
-    "nodemon": "^3.1.14"
   }
 }

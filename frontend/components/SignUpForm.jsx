@@ -1,12 +1,14 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { Link, useOutletContext } from 'react-router-dom'
 import '../src/animation.css';
+import { EnrollmentContext } from '../utils/EnrollmentContext';
 
 const selectChevron =
   "url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 fill=%22none%22 viewBox=%220 0 24 24%22 stroke=%22%23FFC600%22%3E%3Cpath stroke-linecap=%22round%22 stroke-linejoin=%22round%22 stroke-width=%222%22 d=%22M19 9l-7 7-7-7%22/%3E%3C/svg%3E')"
 
 const SignUpForm = ({setStep}) => {
     const {student, setStudent} = useOutletContext();
+    const {enrollmentCount} = useContext(EnrollmentContext);
 
     const [userName, setUserName] = useState(student?.name || '');
     const [fatherName, setFatherName] = useState(student?.father_name || '');
@@ -14,7 +16,7 @@ const SignUpForm = ({setStep}) => {
     const [number, setNumber] = useState(student?.phone || '');
     const [province, setProvince] = useState(student?.province || '');
     const [city, setCity] = useState(student?.city || '');
-    const [studentType, setStudentType] = useState(student?.role || localStorage.getItem("student-type") || '');
+    const [studentType, setStudentType] = useState(student?.role || (enrollmentCount === 0 ? 'DUAL_ACCESS' : '') || localStorage.getItem("student-type") || '');
     const [sscMarksObtained, setSSCMarksObtained] = useState('');
     const [sscMarksTotal, setSSCMarksTotal] = useState('');
     const [fscMarks1Obtained, setFSCMarks1Obtained] = useState('');
@@ -25,6 +27,7 @@ const SignUpForm = ({setStep}) => {
     const [email, setEmail] = useState(student?.email || '');
     const [password, setPassword] = useState(student?.password || '');
     const [academicStatus, setAcademicStatus] = useState(student?.academic_status || '');
+    const [targetScore, setTargetScore] = useState('');
 
     const [loading, setLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
@@ -71,7 +74,8 @@ const SignUpForm = ({setStep}) => {
                 academic_status: academicStatus,
                 matric_percentage: Number(((sscMarksObtained / sscMarksTotal) * 100).toFixed(2)) || 0,
                 fsc_percentage: Number((((fscMarks2Obtained || fscMarks1Obtained) / (fscMarks2Obtained ? fscMarks2Total : fscMarks1Total)) * 100).toFixed(2)) || 0,
-                prev_mdcat_score: mdcatScore || 0
+                prev_mdcat_score: mdcatScore || 0,
+                target_marks: targetScore
             })
         });
 
@@ -305,7 +309,7 @@ const SignUpForm = ({setStep}) => {
                     <option value="QUIZ_ONLY" disabled={MDCATEMY_STATUS === 'coming-soon'} className="bg-[#1c1c1c]">
                         Quiz Builder Student {` ${MDCATEMY_STATUS === 'coming-soon' ? ' - Coming Soon' : ''}`} 
                     </option>
-                    <option value="TRIBE_MEMBER" className="bg-[#1c1c1c]">
+                    <option value="TRIBE_MEMBER" disabled={enrollmentCount === 0} className="bg-[#1c1c1c]">
                         Study Tribe Student
                     </option>
                     <option value="TEST_ONLY" disabled={MDCATEMY_STATUS === 'coming-soon'} className="bg-[#1c1c1c]">
@@ -478,6 +482,34 @@ const SignUpForm = ({setStep}) => {
                 }
 
                 <div>
+                    <label htmlFor="target_score" className="mb-2 block text-[11px] font-bold uppercase tracking-wider text-white/45">
+                        MDCAT Target Score
+                    </label>
+                    <input
+                        readOnly={student}
+                        value={student?.target_marks ?? targetScore}
+                        onChange={e => {
+                            const val = e.target.value;
+
+                            if(val === "" || val < 0){
+                                setTargetScore("");
+                                return;
+                            }
+
+                            setTargetScore(Math.min(180, val));
+                        }}
+                        id="target_score"
+                        name="target_score"
+                        type="number"
+                        min={0}
+                        max={180}
+                        step={1}
+                        placeholder="e.g. 170"
+                        className="w-full rounded-xl border border-white/[0.1] bg-[#1c1c1c] px-4 py-3.5 text-sm text-white placeholder:text-white/30 outline-none transition focus:border-[#FFC600]/50 focus:ring-2 focus:ring-[#FFC600]/20"
+                    />
+                </div>
+
+                <div>
                     <label htmlFor="email" className="mb-2 block text-[11px] font-bold uppercase tracking-wider text-white/45">
                     Email address
                     </label>
@@ -515,9 +547,9 @@ const SignUpForm = ({setStep}) => {
 
                 <span className={`inline-block w-full text-center ${error ? 'text-red-500' : 'text-green-500'}`}>{errorMessage}</span>
 
-                <div className={`mt-2 grid gap-3 ${student?.pending_status === 'VERIFIED' ? 'sm:grid-cols-2': 'sm:grid-cols-1'}`}>
+                <div className={`mt-2 grid gap-3 ${student?.payment_status === 'VERIFIED' ? 'sm:grid-cols-2': 'sm:grid-cols-1'}`}>
                     {
-                        student?.pending_status === 'VERIFIED' ? 
+                        student?.payment_status === 'VERIFIED' ? 
                         <button
                             type="button"
                             onClick={upgradePlan}

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useOutletContext } from 'react-router-dom';
 import '../src/animation.css';
+import sendErrorSuccessMessage from '../utils/sendErrorSuccessMessage';
 
 const selectChevron =
   "url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 fill=%22none%22 viewBox=%220 0 24 24%22 stroke=%22%23FFC600%22%3E%3Cpath stroke-linecap=%22round%22 stroke-linejoin=%22round%22 stroke-width=%222%22 d=%22M19 9l-7 7-7-7%22/%3E%3C/svg%3E')"
@@ -77,6 +78,8 @@ const PaymentForm = () => {
         
         if(data.status === 'success'){
             navigate('/payment-status');
+        } else {
+            sendErrorSuccessMessage('error', data.message);
         }
 
         setPaymentLoading(false);
@@ -248,7 +251,7 @@ const PaymentForm = () => {
                     <div>
                     <label htmlFor="payment_screenshot" className="mb-2 block text-[11px] font-bold uppercase tracking-wider text-white/45">Upload payment proof screenshot</label>
                     <label htmlFor="payment_screenshot" className="flex cursor-pointer flex-col items-center justify-center rounded-xl border border-dashed border-white/[0.18] bg-[#1c1c1c] px-4 py-8 text-center hover:border-[#FFC600]/50">
-                        <span className="text-sm font-semibold text-white/85">Choose image file</span>
+                        <span className="text-sm font-semibold text-white/85">Choose image file (max: 100 KB)</span>
                         <span className="mt-1 text-xs text-white/45">PNG, JPG, JPEG</span>
                         <span className="mt-1 text-sm font-semibold text-white/85">{paymentProof?.name || 'No File Selected Yet'}</span>
                     </label>

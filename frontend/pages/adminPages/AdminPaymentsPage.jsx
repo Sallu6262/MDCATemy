@@ -143,23 +143,29 @@ const AdminPaymentsPage = () => {
                         </div>
 
                         <div className="mt-4 flex items-center justify-center gap-6">
-                            <button
-                            onClick={decrementUser}
-                            type="button"
-                            aria-label="Previous image"
-                            className="cursor-pointer flex h-12 w-12 items-center justify-center rounded-full border border-[#FFC600]/40 bg-[#FFC600] text-lg font-black text-[#181A18] shadow-[0_8px_24px_rgba(0,0,0,0.45)] transition hover:opacity-90"
-                            >
-                            ‹
-                            </button>
+                            {
+                                userNumber > 0 ?
+                                <button
+                                    onClick={decrementUser}
+                                    type="button"
+                                    aria-label="Previous image"
+                                    className="cursor-pointer flex h-12 w-12 items-center justify-center rounded-full border border-[#FFC600]/40 bg-[#FFC600] text-lg font-black text-[#181A18] shadow-[0_8px_24px_rgba(0,0,0,0.45)] transition hover:opacity-90"
+                                    >
+                                    ‹
+                                </button> : ''
+                            }
 
-                            <button
-                            onClick={incrementUser}
-                            type="button"
-                            aria-label="Next image"
-                            className="cursor-pointer flex h-12 w-12 items-center justify-center rounded-full border border-[#FFC600]/40 bg-[#FFC600] text-lg font-black text-[#181A18] shadow-[0_8px_24px_rgba(0,0,0,0.45)] transition hover:opacity-90"
-                            >
-                            ›
-                            </button>
+                            {
+                                userNumber < users?.length - 1 ?
+                                <button
+                                    onClick={incrementUser}
+                                    type="button"
+                                    aria-label="Next image"
+                                    className="cursor-pointer flex h-12 w-12 items-center justify-center rounded-full border border-[#FFC600]/40 bg-[#FFC600] text-lg font-black text-[#181A18] shadow-[0_8px_24px_rgba(0,0,0,0.45)] transition hover:opacity-90"
+                                    >
+                                    ›
+                                </button> : ''
+                            }
                         </div>
                     </div>
                     </article>

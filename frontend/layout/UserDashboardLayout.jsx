@@ -16,7 +16,7 @@ const UserDashboardLayout = () => {
     
     useEffect(() => {
         // console.log('here in dashboard');
-        if(!student){
+        if(!student || student?.payment_status === 'REJECTED'){
             navigate('/');
             return;
         } 
@@ -29,7 +29,9 @@ const UserDashboardLayout = () => {
             navigate('/admin');
             return;
         }
+    }, []);
 
+    useEffect(() => {
         const fetchStats = async () => {
             const res = await fetch(`${API_URL}/users/stats`, {
                 method: 'GET',
@@ -39,8 +41,8 @@ const UserDashboardLayout = () => {
             const data = await res.json();
 
             if(data.status === 'success'){
+                // console.log(data.data);
                 setStudentAnalytics(data.data);
-                // console.log(data);
             }
         }
 

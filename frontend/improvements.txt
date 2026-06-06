@@ -2,15 +2,11 @@ After Finals:
 10. smart select in quiz builder
 11. re test all mistakes in mistakes copy
 12. change landing page + other static pages
-13. user analytics page (fix activity + performance charts + some data to be dynamic) -> will be done in last 
-15. dynamic seat count in main landing page.
-14. fix sign up page
+13. user analytics page (fix activity + performance charts + some data to be dynamic)
 15. accuracy needed from backend for subjects, chapters, topics
 
 improvements:
-2. Already added mcqs not visibile during addition in test for better error handling
 5. Track how many mcqs added to test by admin.
-8. when there is no activity data in database, a dummy activity comes with invalid date from backend.
 13. skipped count in test review is coming zero from backend. Also test time needed in test review card.
 14. temporary disabled role based access in user navbar for quiz builder, remember to correct it.
 
