@@ -16,6 +16,8 @@ const CustomTestMakerStep4 = ({selectedTest, isTestCreated}) => {
     const [totalPages, setTotalPages] = useState(1);
     const [searchedMCQ, setSearchedMCQ] = useState("");
 
+    const [mcqsAddedCount, setMcqsAddedCount] = useState(0);
+
     useEffect(() => {
         const fetchMCQs = async () => {
             const res = await fetch(`${API_URL}/quizzes/generate`, {
@@ -41,6 +43,9 @@ const CustomTestMakerStep4 = ({selectedTest, isTestCreated}) => {
                 setMCQs(tempMcqs);
                 setMcqsToShow(tempMcqs);
                 setTotalPages(Math.ceil(tempMcqs.length / 10));
+
+                const count = data.data.count;
+                setMcqsAddedCount(count.easy + count.medium + count.hard);
             }
         }
 
@@ -60,7 +65,7 @@ const CustomTestMakerStep4 = ({selectedTest, isTestCreated}) => {
                 <header className="mb-6">
                     <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#FFC600]">Custom test maker</p>
                     <h1 className="mt-2 text-2xl font-black tracking-tight sm:text-3xl">Step 4 — Pick MCQs for the test</h1>
-                    <p className="mt-2 max-w-2xl text-sm text-white/55">MCQs below mock a filtered API response by selected topics. Each row: select, stem, four options (two per row), add action.</p>
+                    <p className="mt-2 max-w-2xl text-xl text-white/55">MCQ added to this test: {mcqsAddedCount}</p>
                     <div className="mt-4 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 text-xs text-white/50">
                         <span className="font-semibold text-[#FFC600]">4</span> / 4
                     </div>
@@ -81,42 +86,49 @@ const CustomTestMakerStep4 = ({selectedTest, isTestCreated}) => {
                     </div>
                 </div>
 
-                <section className="flex-1 space-y-5" aria-label="MCQ list">
-                    {
-                        mcqsToShow.length ? 
-                        mcqsToShow?.slice((pageNumber - 1) * 10, (pageNumber) * 10).map((mcq, i)=> <MCQCard key={i} mcq={mcq} mcqNo={i+(pageNumber-1)*10+1} isSearched={Number(searchedMCQ) === mcq.mcq_id} testID={selectedTest?.id}/>) :
-                        <div className='w-full text-center text-lg text-gray-400'>No mcqs found!</div>
-                    }
-                </section>
-                <div className="mt-6 flex items-center justify-between gap-3">
-                    {
-                        pageNumber > 1 ?
-                        <button
-                            type="button"
-                            onClick={() => setPageNumber(prev => prev - 1)}
-                            className="cursor-pointer inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border border-[#2E302E] bg-[#222422] text-[#A8ACA8] text-[13px] font-[Inter] font-bold hover:text-white hover:border-[#A8ACA8]/40 transition-all"
-                        >
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
-                                <polyline points="15 18 9 12 15 6"/>
-                            </svg>
-                            Page {pageNumber-1}
-                        </button> : <div></div>
-                    }
+                {
+                    mcqsAddedCount >= selectedTest?.total_mcqs ?
+                    <h1 className='text-center w-full text-xl text-gray-400'>Note: You have already added all the mcqs for this Test.</h1>
+                    :
+                    <>
+                    <section className="flex-1 space-y-5" aria-label="MCQ list">
+                        {
+                            mcqsToShow.length ? 
+                            mcqsToShow?.slice((pageNumber - 1) * 10, (pageNumber) * 10).map((mcq, i)=> <MCQCard key={i} mcq={mcq} mcqNo={i+(pageNumber-1)*10+1} isSearched={Number(searchedMCQ) === mcq.mcq_id} testID={selectedTest?.id} setMcqsAddedCount={setMcqsAddedCount}/>) :
+                            <div className='w-full text-center text-lg text-gray-400'>No mcqs found!</div>
+                        }
+                    </section>
+                    <div className="mt-6 flex items-center justify-between gap-3">
+                        {
+                            pageNumber > 1 ?
+                            <button
+                                type="button"
+                                onClick={() => setPageNumber(prev => prev - 1)}
+                                className="cursor-pointer inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border border-[#2E302E] bg-[#222422] text-[#A8ACA8] text-[13px] font-[Inter] font-bold hover:text-white hover:border-[#A8ACA8]/40 transition-all"
+                            >
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
+                                    <polyline points="15 18 9 12 15 6"/>
+                                </svg>
+                                Page {pageNumber-1}
+                            </button> : <div></div>
+                        }
 
-                    {
-                        pageNumber < totalPages ?
-                        <button
-                            type="button"
-                            onClick={() => setPageNumber(prev => prev + 1)}
-                            className="cursor-pointer inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border border-[#FFC600]/40 bg-[#FFC600]/10 text-[#FFC600] text-[13px] font-[Inter] font-bold hover:bg-[#FFC600]/15 transition-all"
-                        >
-                            Page {pageNumber+1}
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
-                                <polyline points="9 18 15 12 9 6"/>
-                            </svg>
-                        </button> : <div></div>
-                    }
-                </div>
+                        {
+                            pageNumber < totalPages ?
+                            <button
+                                type="button"
+                                onClick={() => setPageNumber(prev => prev + 1)}
+                                className="cursor-pointer inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border border-[#FFC600]/40 bg-[#FFC600]/10 text-[#FFC600] text-[13px] font-[Inter] font-bold hover:bg-[#FFC600]/15 transition-all"
+                            >
+                                Page {pageNumber+1}
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
+                                    <polyline points="9 18 15 12 9 6"/>
+                                </svg>
+                            </button> : <div></div>
+                        }
+                    </div>
+                    </>
+                }
             </div>
         </section>
     )

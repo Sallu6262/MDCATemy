@@ -173,6 +173,10 @@ const UserAnalyticsPage = () => {
         }
     }
 
+    const getPredictedScorePerSubject = (subject, total) => {
+        return Math.round(0.25 + 0.7 * (((sa?.subjects[subject] ?? 0) / 100) * total));
+    }
+
     useEffect(() => {
         setWeekActivity(fillMissingDates(sa?.activity));
         setPerformanceActivity(fillMissingDates(sa?.activity));
@@ -237,7 +241,7 @@ const UserAnalyticsPage = () => {
                             </div>
                             </div>
                             <div>
-                            <p className="font-poppins font-black text-[20px] leading-none text-white">{sa?.total_attempt}</p>
+                            <p className="font-poppins font-black text-[20px] leading-none text-white">{sa?.total_attempt ?? 0}</p>
                             <p className="text-[#A8ACA8] text-[12px] font-inter mt-1 truncate">Lifetime</p>
                             </div>
                         </div>
@@ -267,7 +271,7 @@ const UserAnalyticsPage = () => {
                             </div>
                             </div>
                             <div>
-                            <p className="font-poppins font-black text-[20px] leading-none text-orange-400">{sa?.streak}d</p>
+                            <p className="font-poppins font-black text-[20px] leading-none text-orange-400">{sa?.streak ?? 0}d</p>
                             <p className="text-[#A8ACA8] text-[12px] font-inter mt-1 truncate">{sa?.streak ? 'Keep it alive' : 'Begin your streak'}</p>
                             </div>
                         </div>
@@ -282,8 +286,8 @@ const UserAnalyticsPage = () => {
                             </div>
                             </div>
                             <div>
-                            <p className="font-poppins font-black text-[20px] leading-none text-white">{sa?.today_attempt} / 50</p>
-                            <p className="text-[#A8ACA8] text-[12px] font-inter mt-1 truncate">{sa?.today_attempt * 2}% of goal</p>
+                            <p className="font-poppins font-black text-[20px] leading-none text-white">{sa?.today_attempt ?? 0} / 50</p>
+                            <p className="text-[#A8ACA8] text-[12px] font-inter mt-1 truncate">{(sa?.today_attempt ?? 0) * 2}% of goal</p>
                             </div>
                         </div>
 
@@ -303,7 +307,7 @@ const UserAnalyticsPage = () => {
                             </div>
                             <div className="text-right">
                             <p className="text-[12px] font-poppins font-black uppercase tracking-[0.1em] text-[#A8ACA8]">Target</p>
-                            <p className="font-poppins font-black text-white text-lg leading-none">{sa?.target_marks}</p>
+                            <p className="font-poppins font-black text-white text-lg leading-none">{sa?.target_marks ?? 0}</p>
                             </div>
                         </div>
 
@@ -348,32 +352,32 @@ const UserAnalyticsPage = () => {
                             <div className="flex items-center gap-1.5 bg-[#181A18] border-2 border-[#2E302E] rounded-xl px-2.5 py-1.5">
                             <div className="w-2 h-2 rounded-full" style={{ backgroundColor: "#10B981" }}></div>
                             <span className="text-[12px] font-poppins font-black text-[#A8ACA8]">Bio</span>
-                            <span className="text-[12px] font-inter text-white font-bold">49</span>
-                            <span className="text-[12px] font-inter text-[#A8ACA8]">/ 68</span>
+                            <span className="text-[12px] font-inter text-white font-bold">{getPredictedScorePerSubject('biology',81)}</span>
+                            <span className="text-[12px] font-inter text-[#A8ACA8]">/ 81</span>
                             </div>
                             <div className="flex items-center gap-1.5 bg-[#181A18] border-2 border-[#2E302E] rounded-xl px-2.5 py-1.5">
                             <div className="w-2 h-2 rounded-full" style={{ backgroundColor: "#38BDF8" }}></div>
                             <span className="text-[12px] font-poppins font-black text-[#A8ACA8]">Chem</span>
-                            <span className="text-[12px] font-inter text-white font-bold">31</span>
-                            <span className="text-[12px] font-inter text-[#A8ACA8]">/ 54</span>
+                            <span className="text-[12px] font-inter text-white font-bold">{getPredictedScorePerSubject('chemistry',45)}</span>
+                            <span className="text-[12px] font-inter text-[#A8ACA8]">/ 45</span>
                             </div>
                             <div className="flex items-center gap-1.5 bg-[#181A18] border-2 border-[#2E302E] rounded-xl px-2.5 py-1.5">
                             <div className="w-2 h-2 rounded-full" style={{ backgroundColor: "#A78BFA" }}></div>
                             <span className="text-[12px] font-poppins font-black text-[#A8ACA8]">Phys</span>
-                            <span className="text-[12px] font-inter text-white font-bold">33</span>
-                            <span className="text-[12px] font-inter text-[#A8ACA8]">/ 54</span>
+                            <span className="text-[12px] font-inter text-white font-bold">{getPredictedScorePerSubject('physics',36)}</span>
+                            <span className="text-[12px] font-inter text-[#A8ACA8]">/ 36</span>
                             </div>
                             <div className="flex items-center gap-1.5 bg-[#181A18] border-2 border-[#2E302E] rounded-xl px-2.5 py-1.5">
                             <div className="w-2 h-2 rounded-full" style={{ backgroundColor: "#2DD4BF" }}></div>
                             <span className="text-[12px] font-poppins font-black text-[#A8ACA8]">Eng</span>
-                            <span className="text-[12px] font-inter text-white font-bold">15</span>
-                            <span className="text-[12px] font-inter text-[#A8ACA8]">/ 18</span>
+                            <span className="text-[12px] font-inter text-white font-bold">{getPredictedScorePerSubject('english',9)}</span>
+                            <span className="text-[12px] font-inter text-[#A8ACA8]">/ 9</span>
                             </div>
                             <div className="flex items-center gap-1.5 bg-[#181A18] border-2 border-[#2E302E] rounded-xl px-2.5 py-1.5">
                             <div className="w-2 h-2 rounded-full" style={{ backgroundColor: "#FB923C" }}></div>
                             <span className="text-[12px] font-poppins font-black text-[#A8ACA8]">LR</span>
-                            <span className="text-[12px] font-inter text-white font-bold">3</span>
-                            <span className="text-[12px] font-inter text-[#A8ACA8]">/ 6</span>
+                            <span className="text-[12px] font-inter text-white font-bold">{getPredictedScorePerSubject('logical_reasoning',9)}</span>
+                            <span className="text-[12px] font-inter text-[#A8ACA8]">/ 9</span>
                             </div>
                         </div>
                         </div>
@@ -405,14 +409,14 @@ const UserAnalyticsPage = () => {
 
                             {
                                 sa?.performance?.map((perf, i) => {
-                                    let freqToAccess = perf.prev_day_increase;
+                                    let freqToAccess = perf.prev_day_increase ?? 0;
                                     if(frequency === 1){
-                                        freqToAccess = perf.prev_week_increase;
+                                        freqToAccess = perf.prev_week_increase ?? 0;
                                     } else if(frequency === 2){
-                                        freqToAccess = perf.prev_month_increase;
+                                        freqToAccess = perf.prev_month_increase ?? 0;
                                     }
 
-                                    const percentage = sa?.subjects[perf.subject_name.replace(' ', '_').toLowerCase()];
+                                    const percentage = sa?.subjects[perf.subject_name.replace(' ', '_').toLowerCase()] ?? 0;
 
                                     return (
                                         <Link key={i} to={`/dashboard/analytics/${perf.subject_name.toLowerCase().replace(' ','-')}`} className="group block w-[30%] md:w-[17%]">
@@ -420,18 +424,18 @@ const UserAnalyticsPage = () => {
                                                 <div className="relative rounded-full transition-all duration-200 group-hover:drop-shadow-[0_0_14px_rgba(255,198,0,0.45)]">
                                                 <svg width="74" height="74" className="-rotate-90">
                                                     <circle cx="37" cy="37" r="34" stroke="var(--ui-border)" strokeWidth="6" fill="none"/>
-                                                    <circle cx="37" cy="37" r="34" stroke={subjectToColor[perf.subject_name]} strokeWidth="6" strokeLinecap="round" fill="none"
+                                                    <circle cx="37" cy="37" r="34" stroke={subjectToColor[perf.subject_name] ?? '#10B981'} strokeWidth="6" strokeLinecap="round" fill="none"
                                                             strokeDasharray="213.628" strokeDashoffset={213.628 - percentage}/>
                                                 </svg>
                                                 <div className="absolute inset-0 flex items-center justify-center">
-                                                    <span className="font-poppins font-black" style={{ color: `${subjectToColor[perf.subject_name]}`, fontSize: "13px" }}>{percentage}%</span>
+                                                    <span className="font-poppins font-black" style={{ color: `${subjectToColor[perf.subject_name] ?? '#10B981'}`, fontSize: "13px" }}>{percentage ?? 0}%</span>
                                                 </div>
                                                 <div className="absolute -bottom-0.5 -right-0.5 w-5 h-5 rounded-full bg-[#FFC600] border-2 border-[#181A18] flex items-center justify-center shadow-[1.5px_1.5px_0px_rgba(0,0,0,0.5)] pulse-chevron" style={{ animationDelay: "0s" }}>
                                                     <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#181A18" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
                                                 </div>
                                                 </div>
-                                                <p className="font-poppins font-black text-[13px] text-white text-center leading-tight group-hover:text-[#FFC600] transition-colors">{perf.subject_name}</p>
-                                                <span className="font-inter text-[13px] text-[#A8ACA8]">{sa?.subjects.biology?.attempt ?? 0} MCQs</span>
+                                                <p className="font-poppins font-black text-[13px] text-white text-center leading-tight group-hover:text-[#FFC600] transition-colors">{perf.subject_name ?? 'None'}</p>
+                                                <span className="font-inter text-[13px] text-[#A8ACA8]">{sa?.subjects?.biology?.attempt ?? 0} MCQs</span>
                                                 <span className="inline-flex items-center gap-0.5 text-[13px] font-poppins font-black px-1.5 py-0.5 rounded-md border text-emerald-400 bg-emerald-400/10 border-emerald-400/30">{freqToAccess}%</span>
                                             </div>
                                         </Link>
@@ -616,7 +620,7 @@ const UserAnalyticsPage = () => {
                             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                 <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/>
                             </svg>
-                            <span className="text-[13px] font-poppins font-black">+6% from last week</span>
+                            <span className="text-[13px] font-poppins font-black">{sa?.performance?.reduce((acc, perf) => parseInt(acc + (perf.prev_week_increase ?? 0) / 5), 0)}% from last week</span>
                             </div>
                             <div className="flex items-center gap-1.5">
                             <span className="text-[12px] font-poppins font-black uppercase tracking-[0.1em] text-[#A8ACA8]">Avg</span>
@@ -653,11 +657,11 @@ const UserAnalyticsPage = () => {
                                         <p className="font-poppins font-black text-red-400 text-base">{topic.tmi}%</p>
                                         <p className="text-[#A8ACA8] text-[12px] font-inter">correct</p>
                                         </div>
-                                        <a href="quiz.html" className="w-7 h-7 bg-[#FFC600]/10 border border-[#FFC600]/20 rounded-md flex items-center justify-center text-[#FFC600] hover:bg-[#FFC600]/20 transition-colors">
-                                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                                            <polyline points="9 18 15 12 9 6"/>
-                                        </svg>
-                                        </a>
+                                        <Link to="/dashboard/quiz-builder" className="w-7 h-7 bg-[#FFC600]/10 border border-[#FFC600]/20 rounded-md flex items-center justify-center text-[#FFC600] hover:bg-[#FFC600]/20 transition-colors">
+                                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                                                <polyline points="9 18 15 12 9 6"/>
+                                            </svg>
+                                        </Link>
                                     </div>
                                 )
                             })

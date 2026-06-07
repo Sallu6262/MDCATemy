@@ -34,7 +34,7 @@ const UserNavbar = () => {
       return roles.some(role => role === student?.role);
     }
 
-    const quizBuilderAllowedRoles = ['QUIZ_ONLY', 'DUAL_ACCESS', "TRIBE_MEMBER"];
+    const quizBuilderAllowedRoles = ["TEST_ONLY", 'QUIZ_ONLY', 'DUAL_ACCESS', "TRIBE_MEMBER"];
     const testSeriesAllowedRoles = ['TEST_ONLY', "TRIBE_MEMBER"];
     const myCopyAllowedRoles = ['QUIZ_ONLY', 'DUAL_ACCESS', 'TEST_ONLY', "TRIBE_MEMBER"];
 
@@ -63,9 +63,9 @@ const UserNavbar = () => {
 
                 <NavLink to='/dashboard/quiz-builder' 
                 onClick={(e) => {
-                  if(checkAccess(quizBuilderAllowedRoles)) e.preventDefault();
+                  if(!checkAccess(quizBuilderAllowedRoles)) e.preventDefault();
                 }} 
-                end className={({ isActive }) => `${tabBase} ${checkAccess(quizBuilderAllowedRoles) ? 'cursor-not-allowed' : ''} ${isActive ? "bg-[#FFC600]/10 text-[#FFC600]" : "text-[#A8ACA8] hover:bg-[#2A2C2A]/40 hover:text-white"}`}>
+                end className={({ isActive }) => `${tabBase} ${!checkAccess(quizBuilderAllowedRoles) ? 'cursor-not-allowed' : ''} ${isActive ? "bg-[#FFC600]/10 text-[#FFC600]" : "text-[#A8ACA8] hover:bg-[#2A2C2A]/40 hover:text-white"}`}>
                     {({ isActive }) => (
                       <>
                         <div className={`hidden lg:block absolute left-0 top-1/2 h-5 w-[3px] -translate-y-1/2 rounded-full ${isActive ? 'bg-[#FFC600]' : 'bg-transparent'}`} />
@@ -74,7 +74,7 @@ const UserNavbar = () => {
                         <path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/>
                         </svg>
                         <p className={navLabel}>Quiz Builder</p>
-                        {checkAccess(quizBuilderAllowedRoles) ? <LockIcon /> : ""}
+                        {!checkAccess(quizBuilderAllowedRoles) ? <LockIcon /> : ""}
                       </>
                     )}
                 </NavLink>

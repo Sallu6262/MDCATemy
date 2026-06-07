@@ -138,7 +138,7 @@ const AdminPaymentsPage = () => {
                             <img
                             src={userReceipt}
                             alt="Payment proof"
-                            className="block h-[340px] w-full object-cover"
+                            className="block h-[340px] w-full object-contain"
                             />
                         </div>
 
