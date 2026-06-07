@@ -85,7 +85,7 @@ const CustomTestMakerStep3 = ({selectedTest, setSelectedTest, nextStage, isTestC
             const data = await res.json();
 
             if(data.status === 'success'){
-                // console.log(data.data);
+                console.log(data);
                 const id = data.data?.test_id || selectedTest?.id; 
                 if(isTestCreated) setSelectedTest(prev => ({...prev, id , topics: [...topicIDS]}));
                 else setSelectedTest(prev => ({...prev, topics: [...topicIDS]}));

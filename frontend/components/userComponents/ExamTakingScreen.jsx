@@ -158,11 +158,11 @@ const ExamTakingScreen = ({ isQuiz, exam, isExamHappening, setIsExamHappeningPar
 
   const colorOption = (option) => {
     if(!isExamHappeningParent){
-      if(option === mcqs[mcqNumber-1].correct_option)
+      if(option === mcqs[mcqNumber-1]?.correct_option)
         return '!bg-emerald-500/8 !border-emerald-500 !text-emerald-400';
     }
     else if(exam?.answerAfterEach && submitted.has(mcqNumber)){
-        if(option === mcqs[mcqNumber-1].correct_option)
+        if(option === mcqs[mcqNumber-1]?.correct_option)
           return '!bg-emerald-500/8 !border-emerald-500 !text-emerald-400';
         else if(selectedOption === option)
           return '!bg-red-500/8 !border-red-500 !text-red-400';

@@ -1,6 +1,6 @@
 import { Link, useOutlet, useOutletContext } from "react-router-dom"
 import hayanImg from "../../assets/Images/Hayan.svg"
-import salmanImg from "../../assets/Images/salman.png"
+import salmanImg from "../../assets/Images/salman.svg"
 import flpsImg from "../../assets/Images/flps.svg"
 import plannerImg from "../../assets/Images/planner.svg"
 import courseImg from "../../assets/Images/course.svg"
