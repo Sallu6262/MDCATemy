@@ -27,8 +27,7 @@ const MCQCard = ({mcq, isSearched, mcqNo, testID, setMcqsAddedCount}) => {
         });
 
         const data = await res.json();
-
-        console.log(data);
+        
         if(data.status === 'success'){
             setIsAdded(true);
             setMessage("MCQ added to test!");

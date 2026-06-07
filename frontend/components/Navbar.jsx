@@ -75,7 +75,7 @@ const Navbar = ({user, setUser, isLanding, isEnrollmentFinished}) => {
             isLanding ?
             <div className="hidden lg:flex items-center gap-8 ml-auto">
               <Link to="/" onClick={() => document.getElementById("about").scrollIntoView({behavior: 'smooth'})} className="text-sm font-medium hover:text-white transition-colors" style={{ color: "white", textDecoration: "none" }}>About</Link>
-              <Link to="/tests-series-enrollment" className="text-sm font-medium hover:text-white transition-colors" style={{ color: "white", textDecoration: "none" }}>Test Session</Link>
+              <Link to="/test-series-enrollment" className="text-sm font-medium hover:text-white transition-colors" style={{ color: "white", textDecoration: "none" }}>Test Session</Link>
             </div> 
             : 
             <button
@@ -141,7 +141,7 @@ const Navbar = ({user, setUser, isLanding, isEnrollmentFinished}) => {
                   isLanding ?
                   <>
                     <Link to="/" onClick={() => document.getElementById("about").scrollIntoView({behavior: 'smooth'})} className="rounded-lg px-3 py-2 text-sm font-medium text-white/80 transition hover:bg-white/[0.06] hover:text-white">About</Link>
-                    <Link to="/tests-series-enrollment" className="text-sm font-medium hover:text-white transition-colors" style={{ color: "white", textDecoration: "none" }}>Test Session</Link>
+                    <Link to="/test-series-enrollment" className="text-sm font-medium hover:text-white transition-colors" style={{ color: "white", textDecoration: "none" }}>Test Session</Link>
                   </> : ''
                 }
                 <div className="my-1 h-px bg-white/10"></div>

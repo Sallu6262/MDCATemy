@@ -842,8 +842,8 @@ const ExamTakingScreen = ({ isQuiz, exam, isExamHappening, setIsExamHappeningPar
               <button
                 type="button"
                 onClick={flagMCQ}
-                disabled={!isExamHappening}
-                className={`action-chip ${!isExamHappening ? 'cursor-not-allowed' : 'cursor-pointer'}`}
+                disabled={!isExamHappeningParent || submitted.has(mcqNumber)}
+                className={`action-chip ${!isExamHappeningParent || submitted.has(mcqNumber) ? 'cursor-not-allowed' : 'cursor-pointer'}`}
               >
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z" />
@@ -854,8 +854,8 @@ const ExamTakingScreen = ({ isQuiz, exam, isExamHappening, setIsExamHappeningPar
               <button
                 type="button"
                 onClick={bookmarkMCQ}
-                disabled={saveLoading || bookmarks.has(mcqNumber) || !isExamHappening}
-                className={`action-chip ${saveLoading || bookmarks.has(mcqNumber) || !isExamHappening ? 'cursor-not-allowed' : 'cursor-pointer'}`}
+                disabled={saveLoading || bookmarks.has(mcqNumber) || !isExamHappeningParent}
+                className={`action-chip ${saveLoading || bookmarks.has(mcqNumber) || !isExamHappeningParent ? 'cursor-not-allowed' : 'cursor-pointer'}`}
               >
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z" />
@@ -872,7 +872,7 @@ const ExamTakingScreen = ({ isQuiz, exam, isExamHappening, setIsExamHappeningPar
                     submitExam(false, setSubmitExamLoading);
                   }
                 }}
-                disabled={!isExamHappening || submitExamLoading}
+                disabled={!isExamHappeningParent || submitExamLoading}
                 className={`action-chip submit cursor-pointer`}
               >
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">

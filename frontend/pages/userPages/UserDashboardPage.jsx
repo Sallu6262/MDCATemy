@@ -434,7 +434,7 @@ const UserDashboardPage = () => {
                     <div className="card-sm flex flex-col flex-shrink-0">
                     <div className="flex-shrink-0 mb-1">
                         <h3 className="font-['Poppins'] font-medium text-white/80 text-[15px]">Score predictor</h3>
-                        <p className="font-['Inter'] text-[15px] text-white/40">Your goal should be to reach {sa?.target_marks} / 180</p>
+                        <p className="font-['Inter'] text-[15px] text-white/40">Your goal should be to reach {sa?.target_marks ?? 0} / 180</p>
                         <a href="#" className="mt-1.5 flex items-center justify-center gap-1 w-full py-1.5 rounded-lg border border-[#FFC600]/20 bg-[#FFC600]/[0.05] font-['Inter'] font-semibold text-[14px] text-center text-[#E0A800] hover:bg-[#FFC600]/[0.11] transition-colors">
                         Understand Score Predictor Algorithm
                         {/* <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"/></svg> */}

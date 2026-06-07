@@ -4,7 +4,7 @@ import salmanImg from "../../assets/Images/salman.svg"
 import flpsImg from "../../assets/Images/flps.svg"
 import plannerImg from "../../assets/Images/planner.svg"
 import courseImg from "../../assets/Images/course.svg"
-import webinarImg from "../../assets/Images/webinar.svg"
+import webinarImg from "../../assets/Images/webinar.jpeg"
 import '../../src/animation.css';
 
 const ctaBtn =
@@ -171,15 +171,15 @@ const MainLandingPage = () => {
                 <img src={webinarImg} alt="Why 90% of MDCAT Students Fail Webinar" className="h-full w-full object-contain" />
               </div>
               <p className="mb-5 max-w-[220px] flex-1 text-center text-[0.88rem] leading-[1.55] text-[#555]">
-                How to be in the 10% that actually makes it. Full webinar.
+                An MDCAT planner to cover your whole syllabus in 60 days.
               </p>
               <a
-                href="https://www.youtube.com/watch?v=9tsu7yo64hs&t=2141s"
+                href="https://drive.google.com/file/d/1KUi-2uMw_ElbrKijNz6l5bNMpEVugDdo/view?usp=sharing"
                 target="_blank"
                 rel="noopener noreferrer"
                 className={`${ctaBtn} w-full px-6 py-[15px] text-center text-sm tracking-[0.8px]`}
               >
-                Watch This Webinar
+                Download Free
               </a>
             </div>
           </div>

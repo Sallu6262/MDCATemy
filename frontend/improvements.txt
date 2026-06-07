@@ -2,13 +2,11 @@ After Finals:
 10. smart select in quiz builder
 11. re test all mistakes in mistakes copy
 12. change and fix landing page + other static pages
-13. user analytics page (fix activity + performance charts + some data to be dynamic)
 15. accuracy needed from backend for subjects, chapters, topics
 16. check internet connection in exam taking screen.
 
 improvements:
 5. Track how many mcqs added to test by admin.
-13. skipped count in test review is coming zero from backend. Also test time needed in test review card.
 14. temporary disabled role based access in user navbar for quiz builder, remember to correct it.
 
 optional: 

@@ -68,6 +68,7 @@ const App = () => {
           <Route path='/privacy-policy' element={<PrivacyPolicyPage />}/>
           <Route path='/terms-and-conditions' element={<TermsAndConditionsPage />}/>
           <Route path='/careers' element={<CareersPage />}/>
+          <Route path='/test-series-enrollment' element={<ComingSoonPage />}/>
         </Route>
 
         <Route element={<MainLayout />} id='root' loader={getUserLoader}>

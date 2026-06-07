@@ -87,14 +87,14 @@ const CustomTestMakerStep4 = ({selectedTest, isTestCreated}) => {
                 </div>
 
                 {
-                    mcqsAddedCount === selectedTest?.total_mcqs ?
+                    mcqsAddedCount >= selectedTest?.total_mcqs ?
                     <h1 className='text-center w-full text-xl text-gray-400'>Note: You have already added all the mcqs for this Test.</h1>
                     :
                     <>
                     <section className="flex-1 space-y-5" aria-label="MCQ list">
                         {
                             mcqsToShow.length ? 
-                            mcqsToShow?.slice((pageNumber - 1) * 10, (pageNumber) * 10).map((mcq, i)=> <MCQCard key={i} mcq={mcq} mcqNo={i+(pageNumber-1)*10+1} isSearched={Number(searchedMCQ) === mcq.mcq_id} testID={selectedTest?.id}/>) :
+                            mcqsToShow?.slice((pageNumber - 1) * 10, (pageNumber) * 10).map((mcq, i)=> <MCQCard key={i} mcq={mcq} mcqNo={i+(pageNumber-1)*10+1} isSearched={Number(searchedMCQ) === mcq.mcq_id} testID={selectedTest?.id} setMcqsAddedCount={setMcqsAddedCount}/>) :
                             <div className='w-full text-center text-lg text-gray-400'>No mcqs found!</div>
                         }
                     </section>

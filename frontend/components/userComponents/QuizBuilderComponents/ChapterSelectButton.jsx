@@ -7,7 +7,7 @@ const ChapterSelectButton = ({chapters, subject, colorClass, setSelectedChapters
 
     useEffect(() => {
         setSelectAll(chapters.every(chapter => selectedChapters.has(chapter)));
-    }, [selectedChapters]);
+    }, [selectedChapters, chapters]);
 
     return (
         <>
