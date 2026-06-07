@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom"
+import { Link, useOutlet, useOutletContext } from "react-router-dom"
 import hayanImg from "../../assets/Images/Hayan.svg"
 import salmanImg from "../../assets/Images/salman.png"
 import flpsImg from "../../assets/Images/flps.svg"
@@ -11,6 +11,8 @@ const ctaBtn =
   "inline-block rounded-full bg-[#F6C90E] font-[Inter] font-black uppercase text-[#1a1a1a] no-underline transition-all duration-200 hover:bg-[#1a1a1a] hover:text-white hover:-translate-y-px"
 
 const MainLandingPage = () => {
+  const {enrollmentCount} = useOutletContext();
+
   return (
     <div className="font-[Inter] antialiased overflow-x-hidden bg-[#f5f5f5] text-[#1a1a1a]">
 
@@ -18,8 +20,8 @@ const MainLandingPage = () => {
       <div className="flex items-center justify-center gap-2.5 overflow-hidden bg-[#F6C90E] px-4 py-[13px] text-center text-sm font-semibold text-[#1a1a1a] max-[900px]:gap-[7px] max-[900px]:px-4 max-[900px]:py-[11px] max-[900px]:text-xs">
         <span className="inline-block h-2.5 w-2.5 shrink-0 rounded-full bg-[#e8273a] animate-pulse" />
         <span>
-          MDCATEMY Bahadur Batch 2026 &nbsp;•&nbsp; <strong>Enrollments Open</strong>{" "}
-          &nbsp;•&nbsp; 100 Seats Remaining
+          MDCATEMY Bahadur Batch 2026 &nbsp;•&nbsp; <strong>Enrollments {enrollmentCount === 0 ? 'Closed' : 'Open'}</strong>{" "}
+          {enrollmentCount !== 0 && (`• ${enrollmentCount} Seats Remaining`)} 
         </span>
       </div>
 

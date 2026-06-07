@@ -8,7 +8,7 @@ const SubjectCircleButton = ({accuracy, color, subject}) => {
             <div className="relative" style={{ width: "56px", height: "56px" }}>
                 <svg width="56" height="56" style={{ transform: "rotate(-90deg)" }}>
                     <circle cx="28" cy="28" r="22" fill="none" stroke="rgb(var(--ui-text-rgb) / 0.08)" strokeWidth="6"/>
-                    <circle cx="28" cy="28" r="22" fill="none" stroke={color} strokeWidth="6" strokeLinecap="round" strokeDasharray="138.23" strokeDashoffset={String(138.23 - accuracy ?? 0)}/>
+                    <circle cx="28" cy="28" r="22" fill="none" stroke={color} strokeWidth="6" strokeLinecap="round" strokeDasharray="138.23" strokeDashoffset={String(138.23 - (accuracy ?? 0))}/>
                 </svg>
                 <div className="absolute inset-0 flex items-center justify-center">
                     <span className="font-['Poppins'] font-medium text-[15px] leading-none" style={{ color: `${color}` }}>{accuracy}%</span>
@@ -434,7 +434,7 @@ const UserDashboardPage = () => {
                     <div className="card-sm flex flex-col flex-shrink-0">
                     <div className="flex-shrink-0 mb-1">
                         <h3 className="font-['Poppins'] font-medium text-white/80 text-[15px]">Score predictor</h3>
-                        <p className="font-['Inter'] text-[15px] text-white/40">Your goal should be to reach {sa?.target_score} / 180</p>
+                        <p className="font-['Inter'] text-[15px] text-white/40">Your goal should be to reach {sa?.target_marks} / 180</p>
                         <a href="#" className="mt-1.5 flex items-center justify-center gap-1 w-full py-1.5 rounded-lg border border-[#FFC600]/20 bg-[#FFC600]/[0.05] font-['Inter'] font-semibold text-[14px] text-center text-[#E0A800] hover:bg-[#FFC600]/[0.11] transition-colors">
                         Understand Score Predictor Algorithm
                         {/* <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"/></svg> */}

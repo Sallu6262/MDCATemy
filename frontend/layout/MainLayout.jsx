@@ -6,7 +6,7 @@ import { useState } from "react"
 import { ToastContainer } from "react-toastify"
 import 'react-toastify/dist/ReactToastify.css'
 
-const MainLayout = () => {
+const MainLayout = (z) => {
   const res = useRouteLoaderData('root');
 
   const [student, setStudent] = useState(res.status === 'success' && res.data.role !== 'ADMIN' ? res.data : null);

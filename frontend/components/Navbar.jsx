@@ -2,7 +2,7 @@ import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import logoImg from "../assets/mdcat.svg"
 
-const Navbar = ({user, setUser, isLanding}) => {
+const Navbar = ({user, setUser, isLanding, isEnrollmentFinished}) => {
   let name = user?.name;
   name = name?.split(' ')?.map(n => n[0].toUpperCase()).slice(0,2);
 
@@ -109,16 +109,19 @@ const Navbar = ({user, setUser, isLanding}) => {
             {
               user?.payment_status === 'VERIFIED' || user?.role === 'ADMIN' ?
               <>
-                <button onClick={logOutWebsite} type="button" style={{cursor: 'pointer' ,border: "1px solid #FFC600", borderRadius: "8px", padding: "0.5rem 1.25rem", color: "#FFC600", fontSize: "0.875rem", fontWeight: 500, display: "inline-flex", alignItems: "center", height: "38px", textDecoration: "none" }}>Logout</button>
+                <button onClick={logOutWebsite} type="button" style={{backgroundColor: theme === 'dark' ? "" : "#FFC600", cursor: 'pointer' ,border: `1px solid ${theme === 'dark' ? "#FFC600" : "#000000"}`, borderRadius: "8px", padding: "0.5rem 1.25rem", color: theme === 'dark' ? "#FFC600" : "#000000", fontSize: "0.875rem", fontWeight: 500, display: "inline-flex", alignItems: "center", height: "38px", textDecoration: "none" }}>Logout</button>
                 <button type="button" className="cursor-pointer inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#FFC600]/40 bg-[#FFC600]/15 text-sm font-black text-[#FFC600]" aria-label="Profile initials">
                   {name}
                 </button>
               </>
               : 
               <>
-                <Link to="/login" style={{ border: "1px solid #FFC600", borderRadius: "8px", padding: "0.5rem 1.25rem", color: "#FFC600", fontSize: "0.875rem", fontWeight: 500, display: "inline-flex", alignItems: "center", height: "38px", textDecoration: "none" }}>Login</Link>
-                <Link to="/quiz-builder-enrollment" style={{ border: "1px solid #FFC600", borderRadius: "8px", padding: "0.5rem 1.25rem", color: "#FFC600", fontSize: "0.875rem", fontWeight: 500, display: "inline-flex", alignItems: "center", height: "38px", textDecoration: "none" }}>Quiz Builder</Link>
-                <Link to="/batch-enrollment" style={{ background: "#FFC600", borderRadius: "8px", padding: "0.5rem 1.25rem", color: "#181A18", fontSize: "0.875rem", fontWeight: 600, display: "inline-flex", alignItems: "center", height: "38px", textDecoration: "none" }}>Enroll Now</Link>
+              <Link to="/login" style={{ border: "1px solid #FFC600", borderRadius: "8px", padding: "0.5rem 1.25rem", color: "#FFC600", fontSize: "0.875rem", fontWeight: 500, display: "inline-flex", alignItems: "center", height: "38px", textDecoration: "none" }}>Login</Link>
+                {
+                  !isEnrollmentFinished ?
+                  <Link to="/signup" style={{ background: "#FFC600", borderRadius: "8px", padding: "0.5rem 1.25rem", color: "#181A18", fontSize: "0.875rem", fontWeight: 600, display: "inline-flex", alignItems: "center", height: "38px", textDecoration: "none" }}>Sign Up</Link>
+                  : ''
+                }
               </>
             }
           </div>
@@ -138,7 +141,7 @@ const Navbar = ({user, setUser, isLanding}) => {
                   isLanding ?
                   <>
                     <Link to="/" onClick={() => document.getElementById("about").scrollIntoView({behavior: 'smooth'})} className="rounded-lg px-3 py-2 text-sm font-medium text-white/80 transition hover:bg-white/[0.06] hover:text-white">About</Link>
-                    <Link to="/tests-series-enrollment" className="rounded-lg px-3 py-2 text-sm font-medium text-white/80 transition hover:bg-white/[0.06] hover:text-white">Test Session</Link>
+                    <Link to="/tests-series-enrollment" className="text-sm font-medium hover:text-white transition-colors" style={{ color: "white", textDecoration: "none" }}>Test Session</Link>
                   </> : ''
                 }
                 <div className="my-1 h-px bg-white/10"></div>
@@ -152,9 +155,12 @@ const Navbar = ({user, setUser, isLanding}) => {
                     </button>
                   </> :
                   <>
-                    <Link to="/login" className="rounded-lg bg-[#FFC600] px-3 py-2 text-center text-sm font-black uppercase tracking-wide text-[#181A18]">Login</Link>
-                    <Link to="/quiz-builder-enrollment" className="rounded-lg bg-[#FFC600] px-3 py-2 text-center text-sm font-black uppercase tracking-wide text-[#181A18]">Quiz Builder</Link>
-                    <Link to="/batch-enrollment" className="rounded-lg bg-[#FFC600] px-3 py-2 text-center text-sm font-black uppercase tracking-wide text-[#181A18]">Enroll Now</Link>
+                  <Link to="/login" className="rounded-lg bg-[#FFC600] px-3 py-2 text-center text-sm font-black uppercase tracking-wide text-[#181A18]">Login</Link>
+                  {
+                    !isEnrollmentFinished ?
+                    <Link to="/signup" className="rounded-lg bg-[#FFC600] px-3 py-2 text-center text-sm font-black uppercase tracking-wide text-[#181A18]">Sign Up</Link>
+                    : ''
+                  }
                   </>
                 }
               </div>

@@ -11,7 +11,7 @@ import tAleeza from "../../assets/Images/t-aleeza.jpeg"
 import tSarwat from "../../assets/Images/t-sarwat.jpeg"
 import tBenyamin from "../../assets/Images/t-benyamin.jpeg"
 import '../../src/animation.css';
-import { Link, useLocation, useNavigate } from "react-router-dom"
+import { Link, useLocation, useNavigate, useOutletContext } from "react-router-dom"
 import { useEffect } from "react"
 
 const ctaBtn =
@@ -130,6 +130,8 @@ const BatchEnrollmentLandingPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
+  const {enrollmentCount} = useOutletContext();
+
   useEffect(() => {
     if(location?.state?.comingFromFooter){
       document.getElementById(location?.state?.id).scrollIntoView({behavior: 'smooth'});
@@ -143,7 +145,7 @@ const BatchEnrollmentLandingPage = () => {
       <div className="flex items-center justify-center gap-2.5 bg-[#F6C90E] px-5 py-[13px] text-center text-sm font-bold text-[#1a1a1a]">
         <span className="inline-block h-2.5 w-2.5 shrink-0 animate-pulse rounded-full bg-[#e8273a]" />
         <span>
-          BAHADUR BATCH 2026 &nbsp;•&nbsp; <strong>100 SEATS REMAINING</strong>
+          BAHADUR BATCH 2026 {enrollmentCount !== 0 && (`• ${enrollmentCount} Seats Remaining`)} 
         </span>
       </div>
 
@@ -295,7 +297,7 @@ const BatchEnrollmentLandingPage = () => {
             </p>
             <div className="mx-auto mb-4 h-0.5 w-10 bg-[#F6C90E]" />
             <p className="mb-6 flex-1 text-[0.85rem] leading-[1.7] text-[#555]">
-              4th semester CS student at Ghulam Ishaq Khan Institute. 15th on merit across all of KPK. GIK scholarship
+              4th semester CS student at Ghulam Ishaq Khan Institute. 15th on merit across all of Pakistan. GIK scholarship
               holder. Teaches Physics with a concept-first approach strictly within your MDCAT syllabus.
             </p>
             <a href="#" className={`${ctaBtn} w-full px-6 py-3.5 text-xs tracking-wide`}>
@@ -366,8 +368,13 @@ const BatchEnrollmentLandingPage = () => {
                 <p className="mb-5 text-[0.92rem] font-semibold text-[#111]">
                   Installment plan is available for deserving students
                 </p>
-                <Link to="/signup" onClick={() => localStorage.setItem("student-type", "TRIBE_MEMBER")} className={`${ctaBtn} px-10 py-4 text-sm tracking-[1.5px] max-[700px]:w-full max-[700px]:text-center`}>
-                  Enroll Now
+                <Link to="/signup" 
+                  onClick={(e) => {
+                    if(enrollmentCount === 0) e.preventDefault();
+                    else localStorage.setItem("student-type", "TRIBE_MEMBER");
+                  }} 
+                  className={`${ctaBtn} px-10 py-4 text-sm tracking-[1.5px] max-[700px]:w-full max-[700px]:text-center`}>
+                  {enrollmentCount === 0 ? 'Enrollment Closed!' : 'Enroll Now'}
                 </Link>
               </div>
             </div>
@@ -492,10 +499,12 @@ const BatchEnrollmentLandingPage = () => {
         </div>
         <div className="mt-14 text-center">
           <button
-            onClick={() => document.getElementById('enroll').scrollIntoView({behavior: 'smooth'})}
+            onClick={() => {
+              if(enrollmentCount !== 0) document.getElementById('enroll').scrollIntoView({behavior: 'smooth'});
+            }}
             className={`${ctaBtn} px-[52px] py-[22px] text-[17px] tracking-[1.5px] max-[600px]:w-full max-[600px]:px-5 max-[600px]:py-[18px] max-[600px]:text-sm`}
           >
-            Enroll Now
+            {enrollmentCount === 0 ? 'Enrollment Closed!' : 'Enroll Now'}
           </button>
         </div>
       </section>

@@ -119,8 +119,21 @@ const UserAnalyticsPage = () => {
         if(!data) return;
 
         let dates = [];
-        let date = new Date(data[data.length - 1]?.activity_date);
-        for(let i=0 ; i<7 ; i++){
+        let date = new Date(data[data.length - 1]?.activity_date ?? Date.now());
+
+        let counter = 0, recent = Date.now();
+        const diff = parseInt((Date.now() - new Date(data[0]?.activity_date ?? Date.now())) / (3600 * 24 * 1000));
+        if(diff > 6){
+            recent -= 3600 * 24 * 1000 * (diff - 6);
+        }
+
+        while(!isSameCalendarDay(recent, date)){
+            dates.push(formatDate(date));
+            date.setDate(date.getDate()+1);
+            counter++;
+        }
+
+        for(let i=0 ; i<7-counter ; i++){
             dates.push(formatDate(date));
             date.setDate(date.getDate()-1);
         }
@@ -130,9 +143,10 @@ const UserAnalyticsPage = () => {
                 data.push({attempt_count: 0, correct_count: 0, activity_date: date});
             }
         });
-
+        
         // console.log(data);
         data.sort((a, b) => new Date(a?.activity_date) - new Date(b?.activity_date));
+        data = data.filter(activity => new Date(activity?.activity_date) >= new Date(MDCATEMY_DATE));
         return data;
     }
 
@@ -162,10 +176,10 @@ const UserAnalyticsPage = () => {
     useEffect(() => {
         setWeekActivity(fillMissingDates(sa?.activity));
         setPerformanceActivity(fillMissingDates(sa?.activity));
-        setTotalWeekMcqs(sa?.activity.reduce((acc, val) => acc + val.attempt_count, 0));
+        setTotalWeekMcqs(sa?.activity?.reduce((acc, val) => acc + val.attempt_count, 0));
     }, [sa]);
 
-    // console.log(sa);
+    // console.log(sa?.activity);
 
     return (
         <>
@@ -289,7 +303,7 @@ const UserAnalyticsPage = () => {
                             </div>
                             <div className="text-right">
                             <p className="text-[12px] font-poppins font-black uppercase tracking-[0.1em] text-[#A8ACA8]">Target</p>
-                            <p className="font-poppins font-black text-white text-lg leading-none">{sa?.target_score}</p>
+                            <p className="font-poppins font-black text-white text-lg leading-none">{sa?.target_marks}</p>
                             </div>
                         </div>
 
@@ -306,7 +320,7 @@ const UserAnalyticsPage = () => {
                                     </filter>
                                 </defs>
 
-                                <path d="M 32 140 A 108 108 0 0 1 248 140" fill="none" stroke="#2E302E" strokeWidth="18" strokeLinecap="round"/>
+                                <path d="M 32 140 A 108 108 0 0 1 248 140" fill="none" stroke="var(--ui-border)" strokeWidth="18" strokeLinecap="round"/>
 
                                 <path d="M 32 140 A 108 108 0 0 1 248 140" fill="none" stroke="url(#gauge-grad)"
                                         strokeWidth="18" strokeLinecap="round"
@@ -390,7 +404,7 @@ const UserAnalyticsPage = () => {
                         <div className="flex flex-wrap justify-center gap-y-4 gap-x-3 md:gap-x-4">
 
                             {
-                                sa?.performance.map((perf, i) => {
+                                sa?.performance?.map((perf, i) => {
                                     let freqToAccess = perf.prev_day_increase;
                                     if(frequency === 1){
                                         freqToAccess = perf.prev_week_increase;
@@ -478,34 +492,39 @@ const UserAnalyticsPage = () => {
                             <span className="text-[13px] font-poppins font-black">{sa?.streak}d streak</span>
                             </div>
                         </div>
+                        
+                        {
+                            weekActivity?.length ? 
+                            <div className="grid grid-cols-7 gap-1.5">
 
-                        <div className="grid grid-cols-7 gap-1.5">
+                                {
+                                    weekActivity?.map((activity, i) => {
+                                        const tier = attemptCountToTier(activity?.attempt_count)
+                                        const styles = attemptCountToColor[tier]
+                                        const isToday = activity?.activity_date && isSameCalendarDay(activity?.activity_date, new Date())
+                                        return (
+                                            <div
+                                                key={i}
+                                                className={`relative rounded-xl py-2.5 px-1 flex flex-col items-center gap-0.5 ${styles.card} ${isToday ? 'ring-2 ring-[#FFC600]/30 border-[#FFC600]' : ''}`}
+                                            >
+                                                {isToday ? (
+                                                    <span className="absolute -top-1.5 left-1/2 -translate-x-1/2 px-1.5 py-px rounded-full bg-[#FFC600] text-[#181A18] text-[7px] font-poppins font-black uppercase tracking-wider border border-[#181A18]">
+                                                        Today
+                                                    </span>
+                                                ) : null}
+                                                <span className={styles.day}>{numberToDay[new Date(activity?.activity_date).getDay()]}</span>
+                                                <span className={styles.date}>{new Date(activity?.activity_date).getDate()}</span>
+                                                <span className={styles.count}>{activity?.attempt_count ?? 0}</span>
+                                                <span className={styles.label}>MCQs</span>
+                                            </div>
+                                        )
+                                    })
+                                }
 
-                            {
-                                weekActivity?.map((activity, i) => {
-                                    const tier = attemptCountToTier(activity?.attempt_count)
-                                    const styles = attemptCountToColor[tier]
-                                    const isToday = activity?.activity_date && isSameCalendarDay(activity?.activity_date, new Date())
-                                    return (
-                                        <div
-                                            key={i}
-                                            className={`relative rounded-xl py-2.5 px-1 flex flex-col items-center gap-0.5 ${styles.card} ${isToday ? 'ring-2 ring-[#FFC600]/30 border-[#FFC600]' : ''}`}
-                                        >
-                                            {isToday ? (
-                                                <span className="absolute -top-1.5 left-1/2 -translate-x-1/2 px-1.5 py-px rounded-full bg-[#FFC600] text-[#181A18] text-[7px] font-poppins font-black uppercase tracking-wider border border-[#181A18]">
-                                                    Today
-                                                </span>
-                                            ) : null}
-                                            <span className={styles.day}>{numberToDay[new Date(activity?.activity_date).getDay()]}</span>
-                                            <span className={styles.date}>{new Date(activity?.activity_date).getDate()}</span>
-                                            <span className={styles.count}>{activity?.attempt_count ?? 0}</span>
-                                            <span className={styles.label}>MCQs</span>
-                                        </div>
-                                    )
-                                })
-                            }
-
-                        </div>
+                            </div>
+                            :
+                            <span className='w-full inline-block text-center text-xl'>No data to show yet!</span>
+                        }
 
                         <div className="flex items-center gap-x-3 gap-y-2 mt-4 flex-wrap">
                             <span className="text-[12px] font-poppins font-black uppercase tracking-[0.12em] text-[#A8ACA8]">Legend</span>
@@ -559,41 +578,45 @@ const UserAnalyticsPage = () => {
 
                         <div className="bg-[#222422] border-2 border-[#2E302E] rounded-2xl p-5 shadow-[4px_4px_0px_rgba(255,198,0,0.12)]">
                         
-                        <div className="flex items-end gap-2 h-[200px]">
+                        {
+                            performanceActivity?.length ? 
+                            <div className="flex items-end gap-2 h-[200px]">
+                                {
+                                    performanceActivity?.map((activity, i) => {
+                                        let bgColor = '#FFA500';
+                                        let textColor = 'text-amber-400';
+                                        let height = parseInt((activity.correct_count / (activity.attempt_count || 1)) * 100);
+    
+                                        if(height > 75){
+                                            bgColor = '#10B981';
+                                            textColor = 'text-emerald-400';
+                                        }
+                                        else if(height < 50){
+                                            bgColor = '#FF0000';
+                                            textColor = 'text-red-400';
+                                        }
+                                        return (
+                                            <div key={i} className="flex-1 flex flex-col items-center justify-end gap-1.5 h-full">
+                                                <span className={`text-[12px] font-poppins font-black ${textColor}`}>{height}%</span>
+                                                <div className="w-full rounded-t-md" style={{height: `${height / 2}%` , background: `${bgColor}`, opacity: "0.65" }}></div>
+                                                <span className="text-[12px] font-poppins font-black text-[#A8ACA8]">{numberToDay[new Date(activity.activity_date).getDay()]}</span>
+                                                <span className="text-[13px] font-inter text-[#A8ACA8]/70">{new Date(activity.activity_date).getDate()}</span>
+                                            </div>
+                                        )
+                                    })
+                                }
+                            </div>
+                            : 
+                            <span className='w-full inline-block text-center text-xl'>No data to show yet!</span>
+                        }
 
-                            {
-                                performanceActivity?.map((activity, i) => {
-                                    let bgColor = '#FFA500';
-                                    let textColor = 'text-amber-400';
-                                    let height = parseInt((activity.correct_count / (activity.attempt_count || 1)) * 100);
-
-                                    if(height > 75){
-                                        bgColor = '#10B981';
-                                        textColor = 'text-emerald-400';
-                                    }
-                                    else if(height < 50){
-                                        bgColor = '#FF0000';
-                                        textColor = 'text-red-400';
-                                    }
-                                    return (
-                                        <div key={i} className="flex-1 flex flex-col items-center justify-end gap-1.5 h-full">
-                                            <span className={`text-[12px] font-poppins font-black ${textColor}`}>{height}%</span>
-                                            <div className="w-full rounded-t-md" style={{height: `${height / 2}%` , background: `${bgColor}`, opacity: "0.65" }}></div>
-                                            <span className="text-[12px] font-poppins font-black text-[#A8ACA8]">{numberToDay[new Date(activity.activity_date).getDay()]}</span>
-                                            <span className="text-[13px] font-inter text-[#A8ACA8]/70">{new Date(activity.activity_date).getDate()}</span>
-                                        </div>
-                                    )
-                                })
-                            }
-
-                        </div>
 
                         <div className="mt-4 pt-4 border-t border-[#2E302E] flex items-center justify-between gap-4 flex-wrap">
                             <div className="flex items-center gap-1.5 text-emerald-400 bg-emerald-400/10 border border-emerald-400/30 rounded-full px-2.5 py-1">
                             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                 <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/>
                             </svg>
-                            <span className="text-[13px] font-poppins font-black">+6% week-over-week</span>
+                            <span className="text-[13px] font-poppins font-black">+6% from last week</span>
                             </div>
                             <div className="flex items-center gap-1.5">
                             <span className="text-[12px] font-poppins font-black uppercase tracking-[0.1em] text-[#A8ACA8]">Avg</span>
@@ -606,7 +629,7 @@ const UserAnalyticsPage = () => {
                     <div>
                         <div className="flex items-center justify-between mb-4">
                         <h2 className="font-poppins font-black text-white text-[14px] uppercase tracking-[0.08em]">Focus Here — Weak Topics</h2>
-                        <Link to="/quiz-builder" className="text-[#FFC600] text-xs font-poppins font-black hover:underline flex items-center gap-1">
+                        <Link to="/dashboard/quiz-builder" className="text-[#FFC600] text-xs font-poppins font-black hover:underline flex items-center gap-1">
                             Go to Quiz Builder
                             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                             <polyline points="9 18 15 12 9 6"/>
@@ -618,7 +641,7 @@ const UserAnalyticsPage = () => {
 
 
                         {
-                            sa?.weak_topics.map((topic, i) => {
+                            sa?.weak_topics?.map((topic, i) => {
                                 return (
                                     <div key={i} className="flex items-center gap-4 px-5 py-3.5 hover:bg-[#2A2C2A]/20 transition-colors">
                                         <div className="w-1 h-8 rounded-full flex-shrink-0" style={{ backgroundColor: `${subjectToColor[topic.subject_name]}` }}></div>

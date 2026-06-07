@@ -1,4 +1,5 @@
 import {Route, RouterProvider, createBrowserRouter, createRoutesFromElements} from 'react-router-dom';
+import {EnrollmentContext} from '../utils/EnrollmentContext';
 import MainLayout from '../layout/MainLayout';
 import MainLandingPage from '../pages/LandingPages/MainLandingPage';
 import BatchEnrollmentLandingPage from '../pages/LandingPages/BatchEnrollmentLandingPage';
@@ -32,14 +33,36 @@ import PrivacyPolicyPage from '../pages/LandingPages/PrivacyPolicyPage';
 import TermsAndConditionsPage from '../pages/LandingPages/TermsAndConditionsPage';
 import CareersPage from '../pages/LandingPages/CareersPage';
 import DetailedAnalyticsPage from '../pages/userPages/DetailedAnalyticsPage';
+import UserAnalyticsLayout from '../layout/UserAnalyticsLayout';
+import { useEffect, useState } from 'react';
 
 const App = () => {
   const MDCATEMY_STATUS = import.meta.env.VITE_MDCATEMY_STATUS;
+  const [enrollmentCount, setEnrollmentCount] = useState(100);
+  
+  const API_URL = import.meta.env.VITE_API_URL;
+
+  useEffect(() => {
+    const fetchEnrollmentCount = async () => {
+      const res = await fetch(`${API_URL}/system/remaining-seats`);
+
+      if(res.ok){
+        const data = await res.json();
+
+        if(data.status === 'success'){
+          const seats = data.data.seats;
+          setEnrollmentCount(seats);
+        }
+      }
+    } 
+
+    fetchEnrollmentCount();
+  }, []);
 
   const router = createBrowserRouter(
     createRoutesFromElements(
       <>
-        <Route path='/' element={<LandingPageLayout />}>
+        <Route path='/' element={<LandingPageLayout enrollmentCount={enrollmentCount}/>}>
           <Route index element={<MainLandingPage />}/>
           <Route path='/batch-enrollment' element={<BatchEnrollmentLandingPage />}/>
           <Route path='/privacy-policy' element={<PrivacyPolicyPage />}/>
@@ -49,7 +72,7 @@ const App = () => {
 
         <Route element={<MainLayout />} id='root' loader={getUserLoader}>
 
-          <Route element={<RegistrationLayout />}>
+          <Route element={<RegistrationLayout/>}>
             <Route path='/login' element={<LoginPage />}/>
             <Route path='/signup' element={<SignUpPage />}/>
           </Route>
@@ -70,9 +93,12 @@ const App = () => {
             </Route>
 
             <Route path='my-copy' element={<UserCopyPage />}/>
-            <Route path='analytics' element={<UserAnalyticsPage />}/>
-            <Route path='analytics/:subject' element={<DetailedAnalyticsPage isSubjectOrChapter={true}/>}/>
-            <Route path='analytics/:subject/:chapter' element={<DetailedAnalyticsPage isSubjectOrChapter={false} />}/>
+            
+            <Route path='analytics' element={<UserAnalyticsLayout />}>
+              <Route index element={<UserAnalyticsPage />}/>
+              <Route path=':subject' element={<DetailedAnalyticsPage isSubjectOrChapter={true}/>}/>
+              <Route path=':subject/:chapter' element={<DetailedAnalyticsPage isSubjectOrChapter={false} />}/>
+            </Route>
           </Route>
 
           <Route path='/admin' element={<AdminDashboardLayout />}>
@@ -90,7 +116,11 @@ const App = () => {
     )
   );
 
-  return <RouterProvider router={router} />
+  return (
+    <EnrollmentContext.Provider value={{enrollmentCount, setEnrollmentCount}}>
+      <RouterProvider router={router} />
+    </EnrollmentContext.Provider>
+  )
 }
 
 export default App

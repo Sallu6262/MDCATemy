@@ -1,12 +1,14 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { Link, useOutletContext } from 'react-router-dom'
 import '../src/animation.css';
+import { EnrollmentContext } from '../utils/EnrollmentContext';
 
 const selectChevron =
   "url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 fill=%22none%22 viewBox=%220 0 24 24%22 stroke=%22%23FFC600%22%3E%3Cpath stroke-linecap=%22round%22 stroke-linejoin=%22round%22 stroke-width=%222%22 d=%22M19 9l-7 7-7-7%22/%3E%3C/svg%3E')"
 
 const SignUpForm = ({setStep}) => {
     const {student, setStudent} = useOutletContext();
+    const {enrollmentCount} = useContext(EnrollmentContext);
 
     const [userName, setUserName] = useState(student?.name || '');
     const [fatherName, setFatherName] = useState(student?.father_name || '');
@@ -14,7 +16,7 @@ const SignUpForm = ({setStep}) => {
     const [number, setNumber] = useState(student?.phone || '');
     const [province, setProvince] = useState(student?.province || '');
     const [city, setCity] = useState(student?.city || '');
-    const [studentType, setStudentType] = useState(student?.role || localStorage.getItem("student-type") || '');
+    const [studentType, setStudentType] = useState(student?.role || (enrollmentCount === 0 ? 'TEST_ONLY' : '') || localStorage.getItem("student-type") || '');
     const [sscMarksObtained, setSSCMarksObtained] = useState('');
     const [sscMarksTotal, setSSCMarksTotal] = useState('');
     const [fscMarks1Obtained, setFSCMarks1Obtained] = useState('');
@@ -23,8 +25,10 @@ const SignUpForm = ({setStep}) => {
     const [fscMarks2Total, setFSCMarks2Total] = useState('');
     const [mdcatScore, setMdcatScore] = useState(student?.prev_mdcat_score || '');
     const [email, setEmail] = useState(student?.email || '');
-    const [password, setPassword] = useState(student?.password || '');
+    const [password, setPassword] = useState(student?.password || '');   
+    const [passwordVisible, setPasswordVisible] = useState(false);
     const [academicStatus, setAcademicStatus] = useState(student?.academic_status || '');
+    const [targetScore, setTargetScore] = useState('');
 
     const [loading, setLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
@@ -43,7 +47,7 @@ const SignUpForm = ({setStep}) => {
 
         if(sscMarksObtained > sscMarksTotal ||
             fscMarks1Obtained > fscMarks1Total || 
-            fscMarks2Obtained > fscMarks2Total
+            (fscMarks2Obtained && fscMarks2Total && fscMarks2Obtained > fscMarks2Total)
         ){
             setError(true);
             setErrorMessage('Obtained marks cannot be greater than total marks');
@@ -71,7 +75,8 @@ const SignUpForm = ({setStep}) => {
                 academic_status: academicStatus,
                 matric_percentage: Number(((sscMarksObtained / sscMarksTotal) * 100).toFixed(2)) || 0,
                 fsc_percentage: Number((((fscMarks2Obtained || fscMarks1Obtained) / (fscMarks2Obtained ? fscMarks2Total : fscMarks1Total)) * 100).toFixed(2)) || 0,
-                prev_mdcat_score: mdcatScore || 0
+                prev_mdcat_score: mdcatScore || 0,
+                target_marks: targetScore
             })
         });
 
@@ -302,17 +307,11 @@ const SignUpForm = ({setStep}) => {
                     <option value="" disabled className="bg-[#1c1c1c]">
                         Select student type
                     </option>
-                    <option value="QUIZ_ONLY" disabled={MDCATEMY_STATUS === 'coming-soon'} className="bg-[#1c1c1c]">
-                        Quiz Builder Student {` ${MDCATEMY_STATUS === 'coming-soon' ? ' - Coming Soon' : ''}`} 
-                    </option>
-                    <option value="TRIBE_MEMBER" className="bg-[#1c1c1c]">
-                        Study Tribe Student
+                    <option value="TRIBE_MEMBER" disabled={enrollmentCount === 0} className="bg-[#1c1c1c]">
+                        Bahadur Batch Student
                     </option>
                     <option value="TEST_ONLY" disabled={MDCATEMY_STATUS === 'coming-soon'} className="bg-[#1c1c1c]">
                         Test Series Student {` ${MDCATEMY_STATUS === 'coming-soon' ? ' - Coming Soon' : ''}`}
-                    </option>
-                    <option value="DUAL_ACCESS" disabled={MDCATEMY_STATUS === 'coming-soon'} className="bg-[#1c1c1c]">
-                        Quiz Builder + Test Series Student {` ${MDCATEMY_STATUS === 'coming-soon' ? ' - Coming Soon' : ''}`}
                     </option>
                     </select>
                 </div>
@@ -418,7 +417,7 @@ const SignUpForm = ({setStep}) => {
 
                             <div>
                                 <label htmlFor="fsc_year2" className="mb-2 block text-[11px] font-bold uppercase tracking-wider text-white/45">
-                                    Obtained FSC second year marks
+                                    Obtained FSC second year marks (Repeater Only)
                                 </label>
                                 <input
                                     value={fscMarks2Obtained}
@@ -435,7 +434,7 @@ const SignUpForm = ({setStep}) => {
 
                             <div>
                                 <label htmlFor="fsc_year2_total" className="mb-2 block text-[11px] font-bold uppercase tracking-wider text-white/45">
-                                    Total FSC second year marks
+                                    Total FSC second year marks (Repeater Only)
                                 </label>
                                 <input
                                     value={fscMarks2Total}
@@ -478,6 +477,34 @@ const SignUpForm = ({setStep}) => {
                 }
 
                 <div>
+                    <label htmlFor="target_score" className="mb-2 block text-[11px] font-bold uppercase tracking-wider text-white/45">
+                        MDCAT Target Score
+                    </label>
+                    <input
+                        readOnly={student}
+                        value={student?.target_marks ?? targetScore}
+                        onChange={e => {
+                            const val = e.target.value;
+
+                            if(val === "" || val < 0){
+                                setTargetScore("");
+                                return;
+                            }
+
+                            setTargetScore(Math.min(180, val));
+                        }}
+                        id="target_score"
+                        name="target_score"
+                        type="number"
+                        min={0}
+                        max={180}
+                        step={1}
+                        placeholder="e.g. 170"
+                        className="w-full rounded-xl border border-white/[0.1] bg-[#1c1c1c] px-4 py-3.5 text-sm text-white placeholder:text-white/30 outline-none transition focus:border-[#FFC600]/50 focus:ring-2 focus:ring-[#FFC600]/20"
+                    />
+                </div>
+
+                <div>
                     <label htmlFor="email" className="mb-2 block text-[11px] font-bold uppercase tracking-wider text-white/45">
                     Email address
                     </label>
@@ -499,25 +526,30 @@ const SignUpForm = ({setStep}) => {
                     <label htmlFor="password" className="mb-2 block text-[11px] font-bold uppercase tracking-wider text-white/45">
                     Password
                     </label>
-                    <input
-                    readOnly={student}
-                    value={password}
-                    onChange={e => setPassword(e.target.value)}
-                    id="password"
-                    name="password"
-                    type="password"
-                    autoComplete="new-password"
-                    required
-                    placeholder="••••••••"
-                    className="w-full rounded-xl border border-white/[0.1] bg-[#1c1c1c] px-4 py-3.5 text-sm text-white placeholder:text-white/30 outline-none transition focus:border-[#FFC600]/50 focus:ring-2 focus:ring-[#FFC600]/20"
-                    />
+                    <div className='flex items-center gap-2 justify-between relative'>
+                        <input
+                        readOnly={student}
+                        value={password}
+                        onChange={e => setPassword(e.target.value)}
+                        id="password"
+                        name="password"
+                        type={passwordVisible ? "text" : "password"}
+                        autoComplete="new-password"
+                        required
+                        placeholder="••••••••"
+                        className="w-full rounded-xl border border-white/[0.1] bg-[#1c1c1c] px-4 py-3.5 text-sm text-white placeholder:text-white/30 outline-none transition focus:border-[#FFC600]/50 focus:ring-2 focus:ring-[#FFC600]/20"
+                        />
+                        <span onClick={() => setPasswordVisible(prev => !prev)} className="cursor-pointer absolute right-4 top-1/2 -translate-y-1/2 text-white/35" aria-hidden="true" title="Visibility toggle needs JS">
+                            <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                        </span>
+                    </div>
                 </div>
 
                 <span className={`inline-block w-full text-center ${error ? 'text-red-500' : 'text-green-500'}`}>{errorMessage}</span>
 
-                <div className={`mt-2 grid gap-3 ${student?.pending_status === 'VERIFIED' ? 'sm:grid-cols-2': 'sm:grid-cols-1'}`}>
+                <div className={`mt-2 grid gap-3 ${student?.payment_status === 'VERIFIED' ? 'sm:grid-cols-2': 'sm:grid-cols-1'}`}>
                     {
-                        student?.pending_status === 'VERIFIED' ? 
+                        student?.payment_status === 'VERIFIED' ? 
                         <button
                             type="button"
                             onClick={upgradePlan}

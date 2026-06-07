@@ -11,7 +11,7 @@ const SignUpPage = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if(student){
+        if(student?.payment_status === 'VERIFIED'){
             navigate('/dashboard');
             return;
         }
