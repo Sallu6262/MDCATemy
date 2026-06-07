@@ -92,7 +92,7 @@ export const isPaymentVerified = handleAsyncError(async (req, res, next) => {
 
 
 export const signup = handleAsyncError(async (req, res, next) => {
-    let {name, father_name, gender, role, phone, email, password, academic_status, province, city, matric_percentage, fsc_percentage, prev_mdcat_score} = req.body;
+    let {name, father_name, gender, role, phone, email, password, academic_status, province, city, matric_percentage, fsc_percentage, prev_mdcat_score, target_marks} = req.body;
 
     if (!name || !father_name || !email || !password || !gender || !phone || !role || !province || !city || !matric_percentage || !fsc_percentage || !academic_status || !target_marks)
         return next(new AppError("Incomplete Data for Signup!", 400));

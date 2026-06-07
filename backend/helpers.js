@@ -1,7 +1,8 @@
-import pool from "./database.js";
+import fs from 'node:fs';
 import multer from "multer";
 import { Readable } from "stream";
 import { readSheet } from 'read-excel-file/node';
+import pool from "./database.js";
 
 export const wait = (seconds) => new Promise((res) => setTimeout(res, seconds*1000));
 
@@ -76,3 +77,15 @@ export const excelFileUpload = multer({storage: multer.memoryStorage(), fileFilt
         return cb(null, false);
     cb(null, true);
 }});
+
+export const makeReceiptsDirectory = () => {
+    const folderName = './receipts';
+    
+    try {
+        if (!fs.existsSync(folderName)) {
+            fs.mkdirSync(folderName);
+        }
+    } catch (err) {
+       console.error(err);
+    }
+}
