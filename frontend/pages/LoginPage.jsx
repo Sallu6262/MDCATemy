@@ -7,6 +7,8 @@ const LoginPage = () => {
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
 
+    const [passwordVisible, setPasswordVisible] = useState(false);
+
     const [message, setMessage] = useState('');
     const [error, setError] = useState(false);
 
@@ -99,9 +101,9 @@ const LoginPage = () => {
                     <span className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-white/35" aria-hidden="true">
                         <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
                     </span>
-                    <input value={password} onChange={e => setPassword(e.target.value)} id="password" name="password" type="password" autoComplete="current-password" placeholder="••••••••" required
+                    <input value={password} onChange={e => setPassword(e.target.value)} id="password" name="password" type={passwordVisible ? "text" : "password"} autoComplete="current-password" placeholder="••••••••" required
                         className="w-full rounded-xl border border-white/[0.1] bg-[#1c1c1c] py-3.5 pl-12 pr-12 text-sm text-white placeholder:text-white/30 outline-none focus:border-[#FFC600]/50 focus:ring-2 focus:ring-[#FFC600]/20" />
-                    <span className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-white/35" aria-hidden="true" title="Visibility toggle needs JS">
+                    <span onClick={() => setPasswordVisible(prev => !prev)} className="cursor-pointer absolute right-4 top-1/2 -translate-y-1/2 text-white/35" aria-hidden="true" title="Visibility toggle needs JS">
                         <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
                     </span>
                     </div>
@@ -117,7 +119,7 @@ const LoginPage = () => {
 
                 <p className="mt-10 text-center text-sm text-white/50">
                     New to MDCATEMY?{' '}
-                <Link to="/signup" className="font-semibold text-[#FFC600] hover:text-[#ffd54d]">Join the Tribe →</Link>
+                <Link to="/signup" className="font-semibold text-[#FFC600] hover:text-[#ffd54d]">Sign Up →</Link>
                 </p>
             </div>
         </main>

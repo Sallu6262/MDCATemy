@@ -297,7 +297,7 @@ const BatchEnrollmentLandingPage = () => {
             </p>
             <div className="mx-auto mb-4 h-0.5 w-10 bg-[#F6C90E]" />
             <p className="mb-6 flex-1 text-[0.85rem] leading-[1.7] text-[#555]">
-              4th semester CS student at Ghulam Ishaq Khan Institute. 15th on merit across all of KPK. GIK scholarship
+              4th semester CS student at Ghulam Ishaq Khan Institute. 15th on merit across all of Pakistan. GIK scholarship
               holder. Teaches Physics with a concept-first approach strictly within your MDCAT syllabus.
             </p>
             <a href="#" className={`${ctaBtn} w-full px-6 py-3.5 text-xs tracking-wide`}>

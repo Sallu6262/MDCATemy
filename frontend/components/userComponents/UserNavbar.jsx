@@ -34,9 +34,9 @@ const UserNavbar = () => {
       return roles.some(role => role === student?.role);
     }
 
-    const quizBuilderAllowedRoles = ['QUIZ_ONLY', 'DUAL_ACCESS'];
-    const testSeriesAllowedRoles = ['TEST_ONLY'];
-    const myCopyAllowedRoles = ['QUIZ_ONLY', 'DUAL_ACCESS', 'TEST_ONLY'];
+    const quizBuilderAllowedRoles = ['QUIZ_ONLY', 'DUAL_ACCESS', "TRIBE_MEMBER"];
+    const testSeriesAllowedRoles = ['TEST_ONLY', "TRIBE_MEMBER"];
+    const myCopyAllowedRoles = ['QUIZ_ONLY', 'DUAL_ACCESS', 'TEST_ONLY', "TRIBE_MEMBER"];
 
     return (
         <aside className="order-2 fixed bottom-0 left-0 right-0 z-40 w-full border-t border-[#2E302E] bg-[#222422] px-1 pb-[max(0.35rem,env(safe-area-inset-bottom))] pt-1.5 lg:static lg:order-1 lg:z-auto lg:max-w-[240px] lg:flex-shrink-0 lg:overflow-hidden lg:border-r lg:border-t-0 lg:bg-[#181A18] lg:p-0">

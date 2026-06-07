@@ -119,7 +119,7 @@ const Navbar = ({user, setUser, isLanding, isEnrollmentFinished}) => {
               <Link to="/login" style={{ border: "1px solid #FFC600", borderRadius: "8px", padding: "0.5rem 1.25rem", color: "#FFC600", fontSize: "0.875rem", fontWeight: 500, display: "inline-flex", alignItems: "center", height: "38px", textDecoration: "none" }}>Login</Link>
                 {
                   !isEnrollmentFinished ?
-                  <Link to="/batch-enrollment" style={{ background: "#FFC600", borderRadius: "8px", padding: "0.5rem 1.25rem", color: "#181A18", fontSize: "0.875rem", fontWeight: 600, display: "inline-flex", alignItems: "center", height: "38px", textDecoration: "none" }}>Enroll Now</Link>
+                  <Link to="/signup" style={{ background: "#FFC600", borderRadius: "8px", padding: "0.5rem 1.25rem", color: "#181A18", fontSize: "0.875rem", fontWeight: 600, display: "inline-flex", alignItems: "center", height: "38px", textDecoration: "none" }}>Sign Up</Link>
                   : ''
                 }
               </>
@@ -158,7 +158,7 @@ const Navbar = ({user, setUser, isLanding, isEnrollmentFinished}) => {
                   <Link to="/login" className="rounded-lg bg-[#FFC600] px-3 py-2 text-center text-sm font-black uppercase tracking-wide text-[#181A18]">Login</Link>
                   {
                     !isEnrollmentFinished ?
-                    <Link to="/batch-enrollment" className="rounded-lg bg-[#FFC600] px-3 py-2 text-center text-sm font-black uppercase tracking-wide text-[#181A18]">Enroll Now</Link>
+                    <Link to="/signup" className="rounded-lg bg-[#FFC600] px-3 py-2 text-center text-sm font-black uppercase tracking-wide text-[#181A18]">Sign Up</Link>
                     : ''
                   }
                   </>

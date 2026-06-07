@@ -16,7 +16,7 @@ const SignUpForm = ({setStep}) => {
     const [number, setNumber] = useState(student?.phone || '');
     const [province, setProvince] = useState(student?.province || '');
     const [city, setCity] = useState(student?.city || '');
-    const [studentType, setStudentType] = useState(student?.role || (enrollmentCount === 0 ? 'DUAL_ACCESS' : '') || localStorage.getItem("student-type") || '');
+    const [studentType, setStudentType] = useState(student?.role || (enrollmentCount === 0 ? 'TEST_ONLY' : '') || localStorage.getItem("student-type") || '');
     const [sscMarksObtained, setSSCMarksObtained] = useState('');
     const [sscMarksTotal, setSSCMarksTotal] = useState('');
     const [fscMarks1Obtained, setFSCMarks1Obtained] = useState('');
@@ -25,7 +25,8 @@ const SignUpForm = ({setStep}) => {
     const [fscMarks2Total, setFSCMarks2Total] = useState('');
     const [mdcatScore, setMdcatScore] = useState(student?.prev_mdcat_score || '');
     const [email, setEmail] = useState(student?.email || '');
-    const [password, setPassword] = useState(student?.password || '');
+    const [password, setPassword] = useState(student?.password || '');   
+    const [passwordVisible, setPasswordVisible] = useState(false);
     const [academicStatus, setAcademicStatus] = useState(student?.academic_status || '');
     const [targetScore, setTargetScore] = useState('');
 
@@ -46,7 +47,7 @@ const SignUpForm = ({setStep}) => {
 
         if(sscMarksObtained > sscMarksTotal ||
             fscMarks1Obtained > fscMarks1Total || 
-            fscMarks2Obtained > fscMarks2Total
+            (fscMarks2Obtained && fscMarks2Total && fscMarks2Obtained > fscMarks2Total)
         ){
             setError(true);
             setErrorMessage('Obtained marks cannot be greater than total marks');
@@ -306,17 +307,11 @@ const SignUpForm = ({setStep}) => {
                     <option value="" disabled className="bg-[#1c1c1c]">
                         Select student type
                     </option>
-                    <option value="QUIZ_ONLY" disabled={MDCATEMY_STATUS === 'coming-soon'} className="bg-[#1c1c1c]">
-                        Quiz Builder Student {` ${MDCATEMY_STATUS === 'coming-soon' ? ' - Coming Soon' : ''}`} 
-                    </option>
                     <option value="TRIBE_MEMBER" disabled={enrollmentCount === 0} className="bg-[#1c1c1c]">
-                        Study Tribe Student
+                        Bahadur Batch Student
                     </option>
                     <option value="TEST_ONLY" disabled={MDCATEMY_STATUS === 'coming-soon'} className="bg-[#1c1c1c]">
                         Test Series Student {` ${MDCATEMY_STATUS === 'coming-soon' ? ' - Coming Soon' : ''}`}
-                    </option>
-                    <option value="DUAL_ACCESS" disabled={MDCATEMY_STATUS === 'coming-soon'} className="bg-[#1c1c1c]">
-                        Quiz Builder + Test Series Student {` ${MDCATEMY_STATUS === 'coming-soon' ? ' - Coming Soon' : ''}`}
                     </option>
                     </select>
                 </div>
@@ -422,7 +417,7 @@ const SignUpForm = ({setStep}) => {
 
                             <div>
                                 <label htmlFor="fsc_year2" className="mb-2 block text-[11px] font-bold uppercase tracking-wider text-white/45">
-                                    Obtained FSC second year marks
+                                    Obtained FSC second year marks (Repeater Only)
                                 </label>
                                 <input
                                     value={fscMarks2Obtained}
@@ -439,7 +434,7 @@ const SignUpForm = ({setStep}) => {
 
                             <div>
                                 <label htmlFor="fsc_year2_total" className="mb-2 block text-[11px] font-bold uppercase tracking-wider text-white/45">
-                                    Total FSC second year marks
+                                    Total FSC second year marks (Repeater Only)
                                 </label>
                                 <input
                                     value={fscMarks2Total}
@@ -531,18 +526,23 @@ const SignUpForm = ({setStep}) => {
                     <label htmlFor="password" className="mb-2 block text-[11px] font-bold uppercase tracking-wider text-white/45">
                     Password
                     </label>
-                    <input
-                    readOnly={student}
-                    value={password}
-                    onChange={e => setPassword(e.target.value)}
-                    id="password"
-                    name="password"
-                    type="password"
-                    autoComplete="new-password"
-                    required
-                    placeholder="••••••••"
-                    className="w-full rounded-xl border border-white/[0.1] bg-[#1c1c1c] px-4 py-3.5 text-sm text-white placeholder:text-white/30 outline-none transition focus:border-[#FFC600]/50 focus:ring-2 focus:ring-[#FFC600]/20"
-                    />
+                    <div className='flex items-center gap-2 justify-between relative'>
+                        <input
+                        readOnly={student}
+                        value={password}
+                        onChange={e => setPassword(e.target.value)}
+                        id="password"
+                        name="password"
+                        type={passwordVisible ? "text" : "password"}
+                        autoComplete="new-password"
+                        required
+                        placeholder="••••••••"
+                        className="w-full rounded-xl border border-white/[0.1] bg-[#1c1c1c] px-4 py-3.5 text-sm text-white placeholder:text-white/30 outline-none transition focus:border-[#FFC600]/50 focus:ring-2 focus:ring-[#FFC600]/20"
+                        />
+                        <span onClick={() => setPasswordVisible(prev => !prev)} className="cursor-pointer absolute right-4 top-1/2 -translate-y-1/2 text-white/35" aria-hidden="true" title="Visibility toggle needs JS">
+                            <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                        </span>
+                    </div>
                 </div>
 
                 <span className={`inline-block w-full text-center ${error ? 'text-red-500' : 'text-green-500'}`}>{errorMessage}</span>

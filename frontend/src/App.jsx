@@ -43,21 +43,21 @@ const App = () => {
   const API_URL = import.meta.env.VITE_API_URL;
 
   useEffect(() => {
-        const fetchEnrollmentCount = async () => {
-            const res = await fetch(`${API_URL}/system/remaining-seats`);
+    const fetchEnrollmentCount = async () => {
+      const res = await fetch(`${API_URL}/system/remaining-seats`);
 
-            if(res.ok){
-                const data = await res.json();
+      if(res.ok){
+        const data = await res.json();
 
-                if(data.status === 'success'){
-                    const seats = data.data.seats;
-                    setEnrollmentCount(seats);
-                }
-            }
+        if(data.status === 'success'){
+          const seats = data.data.seats;
+          setEnrollmentCount(seats);
         }
+      }
+    } 
 
-        fetchEnrollmentCount();
-    }, []);
+    fetchEnrollmentCount();
+  }, []);
 
   const router = createBrowserRouter(
     createRoutesFromElements(
