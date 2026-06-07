@@ -50,7 +50,7 @@ const PrivacyPolicyPage = () => {
                     <li className="flex items-start gap-3 py-2 border-b border-[#f5f5f5] last:border-b-0"><span className="w-1.5 h-1.5 rounded-full bg-[#F6C90E] shrink-0 mt-2.5"></span><span className="text-base text-[#444] leading-[1.65]">Any information voluntarily submitted through our forms, messages, or support channels</span></li>
                 </ul>
                 <p className="text-base text-[#444] leading-[1.75] mb-4 last:mb-0">We may collect a parent or guardian&apos;s phone number only where required for communication, verification, student support, or administrative purposes.</p>
-                <p className="text-base text-[#444] leading-[1.75] mb-4 last:mb-0">Mdcatemy does not normally collect CNIC, B-form, or similar identity documents from students.</p>
+                <p className="text-base text-[#444] leading-[1.75] mb-4 last:mb-0">Mdcatemy may collect CNIC number, Form-B number, or similar identity information where required for student verification, account verification, payment verification, scholarship/discount verification, batch management, or administrative purposes. Mdcatemy will use this information only for necessary verification and operational purposes.</p>
                 </div>
 
 
@@ -144,6 +144,7 @@ const PrivacyPolicyPage = () => {
                     <li className="flex items-start gap-3 py-2 border-b border-[#f5f5f5] last:border-b-0"><span className="w-1.5 h-1.5 rounded-full bg-[#F6C90E] shrink-0 mt-2.5"></span><span className="text-base text-[#444] leading-[1.65]">To maintain platform security and integrity</span></li>
                     <li className="flex items-start gap-3 py-2 border-b border-[#f5f5f5] last:border-b-0"><span className="w-1.5 h-1.5 rounded-full bg-[#F6C90E] shrink-0 mt-2.5"></span><span className="text-base text-[#444] leading-[1.65]">To comply with legal, administrative, payment, or security requirements</span></li>
                     <li className="flex items-start gap-3 py-2 border-b border-[#f5f5f5] last:border-b-0"><span className="w-1.5 h-1.5 rounded-full bg-[#F6C90E] shrink-0 mt-2.5"></span><span className="text-base text-[#444] leading-[1.65]">To share important educational messages and service-related communication</span></li>
+                    <li className="flex items-start gap-3 py-2 border-b border-[#f5f5f5] last:border-b-0"><span className="w-1.5 h-1.5 rounded-full bg-[#F6C90E] shrink-0 mt-2.5"></span><span className="text-base text-[#444] leading-[1.65]">To verify student identity, scholarship eligibility, discounts, payment records, account ownership, or batch enrollment where required.</span></li>
                 </ul>
                 </div>
 

@@ -23,7 +23,7 @@ const SignUpPage = () => {
     },[]);
 
     return (
-        <section ref={sectionRef} className="flex flex-1 flex-col justify-start" onClick={sectionRef?.current?.scrollIntoView()}>
+        <section ref={sectionRef} className="flex flex-1 flex-col justify-start order-1 lg:order-2" onClick={sectionRef?.current?.scrollIntoView()}>
             {step == 1 ? <SignUpForm setStep={setStep} /> : ''}
             {step == 2 ? <PaymentForm/> : ''}
         </section>

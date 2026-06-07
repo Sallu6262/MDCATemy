@@ -18,7 +18,6 @@ const CustomTestMakerStep1 = ({nextStage, setIsTestCreated, selectedTestID, setS
 
             const data = await res.json();
 
-            // console.log(data.data);
             if(data.status === 'success'){
                 setPreviousTests(data.data);
             }
