@@ -1,4 +1,5 @@
 import '../../src/animation.css';
+import ambassadorVideo from "../../assets/ambassador.mp4";
 
 const CareersPage = () => {
     return (
@@ -30,30 +31,18 @@ const CareersPage = () => {
                 </h2>
             </div>
 
-            <div className="max-w-[380px] w-full mx-auto max-sm:max-w-full">
-                <div className="relative w-full pb-[177.78%] rounded-[20px] overflow-hidden shadow-[0_24px_80px_rgba(0,0,0,0.22)] bg-black">
-                <iframe
-                    src="https://www.instagram.com/reel/DWpCl95DCVt/embed"
-                    scrolling="no"
-                    allowTransparency="true"
-                    allow="encrypted-media; autoplay"
-                    title="Mdcatemy Ambassador Program Reel"
-                    className="absolute top-0 left-0 w-full h-full border-0"
-                />
+            <div className="mx-auto w-full max-w-[380px] md:max-w-[960px]">
+                <div className="relative aspect-[9/16] w-full overflow-hidden rounded-[20px] bg-black shadow-[0_24px_80px_rgba(0,0,0,0.22)] md:aspect-video">
+                    <video
+                        src={ambassadorVideo}
+                        controls
+                        playsInline
+                        preload="metadata"
+                        title="Mdcatemy Ambassador Program"
+                        className="absolute inset-0 h-full w-full object-cover"
+                    />
                 </div>
             </div>
-
-            <p className="text-center text-[0.82rem] mt-5 text-[#999]">
-                Can&apos;t see the reel?{' '}
-                <a
-                href="https://www.instagram.com/reel/DWpCl95DCVt/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="font-semibold text-[#1a1a1a] no-underline hover:text-[#F6C90E] transition-colors duration-200"
-                >
-                Open on Instagram →
-                </a>
-            </p>
             </div>
         </section>
 
