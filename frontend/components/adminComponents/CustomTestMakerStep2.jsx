@@ -5,13 +5,13 @@ const CustomTestMakerStep2 = ({selectedTest, setSelectedTest, nextStage}) => {
     // console.log(selectedTest);
     const [name, setName] = useState(selectedTest?.name || "");
     const [time, setTime] = useState(selectedTest?.time || "");
-    const [mcqCount, setMcqCount] = useState(selectedTest?.mcq_count || "");
+    const [mcqCount, setMcqCount] = useState(selectedTest?.total_mcqs || "");
     const [excelFile, setExcelFile] = useState(selectedTest?.file || "");
     const [date, setDate] = useState(new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString().split('T')[0]);
 
     const updateTest = (e) => {
         e.preventDefault();
-        setSelectedTest(prev => ({...prev, name, time, mcq_count: mcqCount, file: excelFile, date: new Date(date)}));
+        setSelectedTest(prev => ({...prev, name, time, total_mcqs: mcqCount, file: excelFile, date: new Date(date)}));
         nextStage();
     }
 
@@ -61,7 +61,7 @@ const CustomTestMakerStep2 = ({selectedTest, setSelectedTest, nextStage}) => {
                         <label className="mb-2 block text-xs font-semibold uppercase tracking-wide text-white/50" htmlFor="mcq-count">MCQ count</label>
                         <input value={mcqCount} onChange={e => {
                             setMcqCount(e.target.value);
-                        }} id="mcq-count" required name="mcq_count" type="number" min="1" placeholder="100" className="w-full rounded-xl border border-white/10 bg-[#121212] px-4 py-3 text-sm text-white placeholder:text-white/30 focus:border-[#FFC600]/50 focus:outline-none focus:ring-2 focus:ring-[#FFC600]/20" />
+                        }} id="mcq-count" required name="total_mcqs" type="number" min="1" placeholder="100" className="w-full rounded-xl border border-white/10 bg-[#121212] px-4 py-3 text-sm text-white placeholder:text-white/30 focus:border-[#FFC600]/50 focus:outline-none focus:ring-2 focus:ring-[#FFC600]/20" />
                     </div>
                     </div>
 

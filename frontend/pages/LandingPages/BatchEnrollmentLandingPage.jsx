@@ -1,8 +1,8 @@
 import nasrinFull from "../../assets/Images/nasrin-full.svg"
 import hayanCircle from "../../assets/Images/hayan-circle.svg"
-import hayanTeacher from "../../assets/Images/hayan-teacher.svg"
+import hayanTeacher from "../../assets/Images/Hayan.svg"
 import salmanTeacher from "../../assets/Images/salman-teacher.svg"
-import awaisTeacher from "../../assets/Images/awais-teacher.svg"
+import awaisTeacher from "../../assets/Images/awais-teacher.jpeg"
 import grammlogic from "../../assets/Images/grammlogic.svg"
 import tSaima from "../../assets/Images/t-saima.jpeg"
 import tSabah from "../../assets/Images/t-sabah.jpeg"
@@ -42,7 +42,7 @@ const chatTestimonials = [
   { img: tMaheen, name: "Maheen Nawab", badge: "MDCATEMY Student 2025", badgeStyle: "label" },
   { img: tAman, name: "Muhammad Aman", badge: "MDCATEMY Student 2025", badgeStyle: "label" },
   { img: tSalman, name: "Muhammad Salman", badge: "MDCATEMY Student 2025", badgeStyle: "label" },
-  { img: tNaeema, name: "NaetNaeema", badge: "MDCATEMY Student 2025", badgeStyle: "label" },
+  { img: tNaeema, name: "Naeema", badge: "MDCATEMY Student 2025", badgeStyle: "label" },
   { img: tSaddam, name: "Saddam Hussain", badge: "MDCATEMY Student 2025", badgeStyle: "label" },
   { img: tSahibzada, name: "Sahibzada Etminan", badge: "MDCATEMY Student 2025", badgeStyle: "label" },
   { img: tShumaila, name: "Shumaila", badge: "MDCATEMY Student 2025", badgeStyle: "label" },
@@ -148,16 +148,25 @@ const FaqItem = ({ question, answer }) => (
 
 const BatchEnrollmentLandingPage = () => {
   const [testimonialNo, setTestimonialNo] = useState(0);
-  const [displayedTestimonials, setDisplayedTestimonials] = useState(chatTestimonials.slice(testimonialNo, testimonialNo + 3));
+  const [testimonialsPerPage, setTestimonialsPerPage] = useState(3);
+  const [displayedTestimonials, setDisplayedTestimonials] = useState(chatTestimonials.slice(0, 3));
 
   const location = useLocation();
   const navigate = useNavigate();
   
   const {enrollmentCount} = useOutletContext();
+
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 639px)");
+    const updatePerPage = () => setTestimonialsPerPage(mq.matches ? 1 : 3);
+    updatePerPage();
+    mq.addEventListener("change", updatePerPage);
+    return () => mq.removeEventListener("change", updatePerPage);
+  }, []);
   
   useEffect(() => {
-    setDisplayedTestimonials(chatTestimonials.slice(testimonialNo, testimonialNo + 3));
-  }, [testimonialNo]);
+    setDisplayedTestimonials(chatTestimonials.slice(testimonialNo, testimonialNo + testimonialsPerPage));
+  }, [testimonialNo, testimonialsPerPage]);
 
   useEffect(() => {
     if(location?.state?.comingFromFooter){
@@ -169,20 +178,22 @@ const BatchEnrollmentLandingPage = () => {
   return (
     <div className="overflow-x-hidden font-[Inter] antialiased">
       {/* Eyebrow strip */}
-      <div className="flex items-center justify-center gap-2.5 bg-[#F6C90E] px-5 py-[13px] text-center text-sm font-bold text-[#1a1a1a]">
-        <span className="inline-block h-2.5 w-2.5 shrink-0 animate-pulse rounded-full bg-[#e8273a]" />
-        <span>
-          BAHADUR BATCH 2026 {enrollmentCount !== 0 && (`• ${enrollmentCount} Seats Remaining`)} 
-        </span>
+      <div className="overflow-x-auto bg-[#F6C90E]">
+        <div className="flex items-center justify-center gap-2 whitespace-nowrap px-5 py-2 text-center text-sm font-semibold text-[#1a1a1a]">
+          <span className="inline-block h-2 w-2 shrink-0 animate-pulse rounded-full bg-[#e8273a]" />
+          <span>
+            BAHADUR BATCH 2026 {enrollmentCount !== 0 && (`• ${enrollmentCount} Seats Remaining`)} 
+          </span>
+        </div>
       </div>
 
       {/* Hero */}
       <section className="relative bg-[#1e2428] px-6 pb-[72px] pt-20 text-center max-[600px]:px-5 max-[600px]:pb-14 max-[600px]:pt-[52px]">
         <nav className="absolute left-0 top-0 z-10 flex w-full items-center justify-center gap-9 px-6 py-4 max-[700px]:justify-start max-[700px]:gap-4 max-[700px]:overflow-x-auto max-[700px]:px-5 max-[700px]:py-3">
-          <Link className={navLink} onClick={() => document.getElementById("testimonials").scrollIntoView({behavior: 'smooth'})}>
+          <Link className={`${navLink} max-[700px]:hidden`} onClick={() => document.getElementById("testimonials").scrollIntoView({behavior: 'smooth'})}>
             Testimonials
           </Link>
-          <Link className={navLink} onClick={() => document.getElementById("teachers").scrollIntoView({behavior: 'smooth'})}>
+          <Link className={`${navLink} max-[700px]:hidden`} onClick={() => document.getElementById("teachers").scrollIntoView({behavior: 'smooth'})}>
             Our Teachers
           </Link>
           <Link className={navLink} onClick={() => document.getElementById("enroll").scrollIntoView({behavior: 'smooth'})}>
@@ -302,7 +313,7 @@ const BatchEnrollmentLandingPage = () => {
             </div>
 
             {
-              testimonialNo + 3 < chatTestimonials?.length &&
+              testimonialNo + testimonialsPerPage < chatTestimonials?.length &&
               <button
                 type="button"
                 onClick={() => setTestimonialNo(prev => prev + 1)}
@@ -339,7 +350,7 @@ const BatchEnrollmentLandingPage = () => {
               2nd year MBBS student at Bacha Khan Medical College. Scored 184 on MDCAT 2024. Teaches Biology strictly
               according to your syllabus with a focus on concepts that actually appear in the test.
             </p>
-            <a href="#" className={`${ctaBtn} w-full px-6 py-3.5 text-xs tracking-wide`}>
+            <a href="https://youtu.be/R6Xfh6LGIYw?si=Lm2BYWheZ0jC8lFp" target="_blank" className={`${ctaBtn} w-full px-6 py-3.5 text-xs tracking-wide`}>
               Watch Demo Lecture
             </a>
           </div>
@@ -359,7 +370,7 @@ const BatchEnrollmentLandingPage = () => {
               4th semester CS student at Ghulam Ishaq Khan Institute. 15th on merit across all of Pakistan. GIK scholarship
               holder. Teaches Physics with a concept-first approach strictly within your MDCAT syllabus.
             </p>
-            <a href="#" className={`${ctaBtn} w-full px-6 py-3.5 text-xs tracking-wide`}>
+            <a href="https://youtu.be/8qvBpusecGE" target="_blank" className={`${ctaBtn} w-full px-6 py-3.5 text-xs tracking-wide`}>
               Watch Demo Lecture
             </a>
           </div>
@@ -377,7 +388,7 @@ const BatchEnrollmentLandingPage = () => {
               PhD in Chemistry. The teacher who taught both Hayan and Salman during their own preparation. Now bringing
               that same expertise directly into your MDCAT preparation, strictly according to your syllabus.
             </p>
-            <a href="#" className={`${ctaBtn} w-full px-6 py-3.5 text-xs tracking-wide`}>
+            <a href="https://youtu.be/_SH627XBC4g?si=GUWtSNF2xRvEDhr6" target="_blank" className={`${ctaBtn} w-full px-6 py-3.5 text-xs tracking-wide`}>
               Watch Demo Lecture
             </a>
           </div>

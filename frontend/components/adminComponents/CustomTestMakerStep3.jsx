@@ -26,6 +26,8 @@ const CustomTestMakerStep3 = ({selectedTest, setSelectedTest, nextStage, isTestC
         });
     },[]);
 
+    // console.log(selectedTest);
+
     const submitTopics = async () => {
         let topicIDS = new Set();
 
@@ -69,7 +71,7 @@ const CustomTestMakerStep3 = ({selectedTest, setSelectedTest, nextStage, isTestC
             formData.append("test_name", selectedTest?.name);
             formData.append("test_time", selectedTest?.time);
             formData.append("test_date", selectedTest?.date?.toISOString());
-            formData.append("mcq_count", selectedTest?.mcq_count);
+            formData.append("mcq_count", selectedTest?.total_mcqs);
             formData.append("topics", topicIDsString);
 
             if(!isTestCreated){

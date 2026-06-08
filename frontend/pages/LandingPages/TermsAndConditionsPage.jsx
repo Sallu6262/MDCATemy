@@ -118,6 +118,7 @@ const TermsAndConditionsPage = () => {
                     <li className="flex items-start gap-3 py-2 border-b border-[#f5f5f5] last:border-b-0"><span className="w-1.5 h-1.5 rounded-full bg-[#F6C90E] shrink-0 mt-2.5"></span><span className="text-base text-[#444] leading-[1.65]">Using the platform in a way that harms Mdcatemy or other users</span></li>
                 </ul>
                 <p className="text-base text-[#444] leading-[1.75] mb-4 last:mb-0">Violation may result in warning, temporary suspension, permanent ban, access restriction, or denial of refund, depending on the seriousness of the violation and Mdcatemy&apos;s decision.</p>
+                <p className="text-base text-[#444] leading-[1.75] mb-4 last:mb-0">Users must provide accurate identity, contact, and academic information where required. Mdcatemy may restrict or suspend access if false, misleading, or incorrect information is provided.</p>
                 </div>
 
 
@@ -154,6 +155,7 @@ const TermsAndConditionsPage = () => {
                     <li className="flex items-start gap-3 py-2 border-b border-[#f5f5f5] last:border-b-0"><span className="w-1.5 h-1.5 rounded-full bg-[#F6C90E] shrink-0 mt-2.5"></span><span className="text-base text-[#444] leading-[1.65]">Sender account details</span></li>
                     <li className="flex items-start gap-3 py-2 border-b border-[#f5f5f5] last:border-b-0"><span className="w-1.5 h-1.5 rounded-full bg-[#F6C90E] shrink-0 mt-2.5"></span><span className="text-base text-[#444] leading-[1.65]">Other information needed for verification</span></li>
                 </ul>
+                <p className="text-base text-[#444] leading-[1.75] mb-4 last:mb-0">Mdcatemy may also request CNIC number, Form-B number, or similar identity information where required for verification, scholarship/discount confirmation, payment verification, account ownership, or administrative purposes.</p>
                 <p className="text-base text-[#444] leading-[1.75] mb-4 last:mb-0">Mdcatemy may verify payments manually before granting or continuing access.</p>
                 <p className="text-base text-[#444] leading-[1.75] mb-4 last:mb-0">Failure to pay the required fee or next installment on time may result in warning, temporary restriction, suspension, or termination of access.</p>
                 <p className="text-base text-[#444] leading-[1.75] mb-4 last:mb-0">Duplicate payments verified by Mdcatemy may be adjusted or refunded after verification.</p>

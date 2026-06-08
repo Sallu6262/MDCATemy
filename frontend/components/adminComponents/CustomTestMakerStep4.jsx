@@ -16,7 +16,7 @@ const CustomTestMakerStep4 = ({selectedTest, isTestCreated}) => {
     const [totalPages, setTotalPages] = useState(1);
     const [searchedMCQ, setSearchedMCQ] = useState("");
 
-    const [mcqsAddedCount, setMcqsAddedCount] = useState(0);
+    const [mcqsAddedCount, setMcqsAddedCount] = useState(selectedTest?.current_mcqs ?? 0);
 
     useEffect(() => {
         const fetchMCQs = async () => {
@@ -41,11 +41,8 @@ const CustomTestMakerStep4 = ({selectedTest, isTestCreated}) => {
                 let tempMcqs = [];
                 Object.keys(data.data.mcqs).forEach(difficulty => data.data?.mcqs[difficulty].forEach(mcq => tempMcqs.push(mcq)));
                 setMCQs(tempMcqs);
-                setMcqsToShow(tempMcqs);
+                setMcqsToShow(tempMcqs.slice(0, 10));
                 setTotalPages(Math.ceil(tempMcqs.length / 10));
-
-                const count = data.data.count;
-                setMcqsAddedCount(count.easy + count.medium + count.hard);
             }
         }
 
@@ -57,6 +54,8 @@ const CustomTestMakerStep4 = ({selectedTest, isTestCreated}) => {
             behavior: 'smooth',
             block: 'start'
         });
+
+        setMCQs(mcqs.slice((pageNumber - 1) * 10, (pageNumber) * 10));
     }, [pageNumber]);
 
     return (
@@ -94,7 +93,7 @@ const CustomTestMakerStep4 = ({selectedTest, isTestCreated}) => {
                     <section className="flex-1 space-y-5" aria-label="MCQ list">
                         {
                             mcqsToShow.length ? 
-                            mcqsToShow?.slice((pageNumber - 1) * 10, (pageNumber) * 10).map((mcq, i)=> <MCQCard key={i} mcq={mcq} mcqNo={i+(pageNumber-1)*10+1} isSearched={Number(searchedMCQ) === mcq.mcq_id} testID={selectedTest?.id} setMcqsAddedCount={setMcqsAddedCount}/>) :
+                            mcqsToShow?.map((mcq, i)=> <MCQCard key={i+(pageNumber-1)*10+1} mcq={mcq} mcqNo={i+(pageNumber-1)*10+1} testID={selectedTest?.id} setMcqsAddedCount={setMcqsAddedCount}/>) :
                             <div className='w-full text-center text-lg text-gray-400'>No mcqs found!</div>
                         }
                     </section>

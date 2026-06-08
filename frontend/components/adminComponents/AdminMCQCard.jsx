@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 
-const MCQCard = ({mcq, isSearched, mcqNo, testID, setMcqsAddedCount}) => {
-    // console.log(testID);
+const MCQCard = ({mcq, mcqNo, testID, setMcqsAddedCount}) => {
     const [isAdded, setIsAdded] = useState(false);
     const [isDeleted, setIsDeleted] = useState(false);
     const [addedLoading, setAddedLoading] = useState(false);
@@ -27,7 +26,7 @@ const MCQCard = ({mcq, isSearched, mcqNo, testID, setMcqsAddedCount}) => {
         });
 
         const data = await res.json();
-        
+
         if(data.status === 'success'){
             setIsAdded(true);
             setMessage("MCQ added to test!");
