@@ -8,7 +8,7 @@ export const isCouponValid = async (coupon) => {
 };
 
 export const getUnverifiedUsers = handleAsyncError(async (req, res, next) => {
-    const data = (await pool.query(" SELECT name, email, role, upgrade_role, academic_status, payment_status, upgrade_status, coupon FROM users INNER JOIN students ON students.student_id=users.user_id WHERE payment_status='PENDING' OR upgrade_status='PENDING' ORDER BY user_id ASC")).rows;
+    const data = (await pool.query("SELECT name, email, phone, role, upgrade_role, academic_status, payment_status, upgrade_status, coupon FROM users INNER JOIN students ON students.student_id=users.user_id WHERE payment_status='PENDING' OR upgrade_status='PENDING' ORDER BY user_id ASC")).rows;
     res.status(200).json({
         status: "success",
         data
