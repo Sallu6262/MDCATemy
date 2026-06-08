@@ -1,13 +1,9 @@
 After Finals:
-10. smart select in quiz builder
-11. re test all mistakes in mistakes copy
-12. change and fix landing page + other static pages
-15. accuracy needed from backend for subjects, chapters, topics
-16. check internet connection in exam taking screen.
-
-improvements:
-5. Track how many mcqs added to test by admin.
-14. temporary disabled role based access in user navbar for quiz builder, remember to correct it.
+1. fix exam taking screen  
+2. smart select in quiz builder
+3. re test all mistakes in mistakes copy
+4. change and fix landing page + other static pages
+5. check internet connection in exam taking screen.
 
 optional: 
 integrate skeleton UI

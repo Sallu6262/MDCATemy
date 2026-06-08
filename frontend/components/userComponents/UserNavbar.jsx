@@ -61,11 +61,11 @@ const UserNavbar = () => {
                     )}
                 </NavLink>
 
-                <NavLink to='/dashboard/quiz-builder' 
+                <NavLink to='/dashboard/quiz-builder'
                 onClick={(e) => {
                   if(!checkAccess(quizBuilderAllowedRoles)) e.preventDefault();
                 }} 
-                end className={({ isActive }) => `${tabBase} ${!checkAccess(quizBuilderAllowedRoles) ? 'cursor-not-allowed' : ''} ${isActive ? "bg-[#FFC600]/10 text-[#FFC600]" : "text-[#A8ACA8] hover:bg-[#2A2C2A]/40 hover:text-white"}`}>
+                className={({ isActive }) => `${tabBase} ${!checkAccess(quizBuilderAllowedRoles) ? 'cursor-not-allowed' : ''} ${isActive ? "bg-[#FFC600]/10 text-[#FFC600]" : "text-[#A8ACA8] hover:bg-[#2A2C2A]/40 hover:text-white"}`}>
                     {({ isActive }) => (
                       <>
                         <div className={`hidden lg:block absolute left-0 top-1/2 h-5 w-[3px] -translate-y-1/2 rounded-full ${isActive ? 'bg-[#FFC600]' : 'bg-transparent'}`} />

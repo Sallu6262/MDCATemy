@@ -99,6 +99,7 @@ const AdminPaymentsPage = () => {
             const data = await res.json();
             
             if(data.status === 'success'){
+                // console.log(data.data);
                 setUsers(data.data);
 
                 if(data.data?.length > 0){
@@ -138,7 +139,7 @@ const AdminPaymentsPage = () => {
                             <img
                             src={userReceipt}
                             alt="Payment proof"
-                            className="block h-[340px] w-full object-contain"
+                            className="block h-[400px] w-full object-contain"
                             />
                         </div>
 
@@ -182,6 +183,11 @@ const AdminPaymentsPage = () => {
                         <div className="rounded-lg border border-white/10 bg-white/[0.02] p-3">
                         <p className="text-[11px] uppercase tracking-wide text-white/45">Email</p>
                         <p className="mt-1 md:text-base text-sm text-white/90">{users[userNumber]?.email}</p>
+                        </div>
+
+                        <div className="rounded-lg border border-white/10 bg-white/[0.02] p-3">
+                        <p className="text-[11px] uppercase tracking-wide text-white/45">Phone</p>
+                        <p className="mt-1 md:text-base text-sm text-white/90">{users[userNumber]?.phone}</p>
                         </div>
 
                         <div className="rounded-lg border border-white/10 bg-white/[0.02] p-3">

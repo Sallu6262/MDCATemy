@@ -1,8 +1,9 @@
 import React from 'react'
 import { useState, useEffect } from 'react';
+import { accuracyToTextColor, formatName } from '../../../utils/HelperObjects';
 
 //could have directly sent filteredSyllabus[subject] which are chapters for that subject (did this in TopicSelectButton so better)
-const ChapterSelectButton = ({chapters, subject, colorClass, setSelectedChapters, selectedChapters}) => {
+const ChapterSelectButton = ({chapters, subject, colorClass, setSelectedChapters, selectedChapters, chapterAccuracy}) => {
     const [selectAll, setSelectAll] = useState(chapters.every(chapter => selectedChapters.has(chapter)));
 
     useEffect(() => {
@@ -51,8 +52,8 @@ const ChapterSelectButton = ({chapters, subject, colorClass, setSelectedChapters
                                         return newSet;
                                     })
                                 }} className={`cursor-pointer flex w-full items-center gap-3 rounded-xl border-2 ${isSelected ? 'border-[#FFC600] bg-[#FFC600]/10 text-white' : 'text-[#8B8E8B] hover:border-[#FFC600]/50'} px-4 py-3 text-left`}>
-                                    <span className="flex-1 [font-family:Poppins,sans-serif] text-sm font-black">{chapter.split('_').map(c => c[0].toUpperCase() + c.slice(1)).join(' ')}</span>
-                                    <span className="inline-flex items-center gap-1 rounded-full border border-emerald-400/25 bg-emerald-400/10 px-2 py-0.5 [font-family:Poppins,sans-serif] text-xs font-black text-emerald-400"><span className="h-1.5 w-1.5 rounded-full bg-emerald-400"></span>76%</span>
+                                    <span className="flex-1 [font-family:Poppins,sans-serif] text-sm font-black">{formatName(chapter)}</span>
+                                    <span className={`inline-flex items-center gap-1 rounded-full border ${accuracyToTextColor(chapter)} px-2 py-0.5 [font-family:Poppins,sans-serif] text-xs font-black `}>● {chapterAccuracy?.[chapter] ?? 0}%</span>
                                 </button>
                     })
                 }

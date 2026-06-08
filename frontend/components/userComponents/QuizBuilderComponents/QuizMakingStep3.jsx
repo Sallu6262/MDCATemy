@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import TopicSelectButton from './TopicSelectButton';
 
-const QuizMakingStep3 = ({filteredChapters, selectedTopics, setSelectedTopics, mcqDistributionPerTopic}) => {
+const QuizMakingStep3 = ({filteredChapters, selectedTopics, setSelectedTopics, mcqDistributionPerTopic, topicAccuracy}) => {
     // console.log(filteredChapters);
 
     return (
@@ -11,7 +11,7 @@ const QuizMakingStep3 = ({filteredChapters, selectedTopics, setSelectedTopics, m
         >
             {
                 Object.keys(filteredChapters).map((chapter, i) => {
-                    return <TopicSelectButton mcqDistributionPerTopic={mcqDistributionPerTopic} key={i} topics={filteredChapters[chapter]} selectedTopics={selectedTopics} setSelectedTopics={setSelectedTopics} chapter={chapter}/>
+                    return <TopicSelectButton topicAccuracy={topicAccuracy} mcqDistributionPerTopic={mcqDistributionPerTopic} key={i} topics={filteredChapters[chapter]} selectedTopics={selectedTopics} setSelectedTopics={setSelectedTopics} chapter={chapter}/>
                 })
             }
         </section>

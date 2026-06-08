@@ -6,6 +6,7 @@ import { formatName, subjectToColor } from '../../utils/HelperObjects';
 import { useNavigate, useOutletContext } from 'react-router-dom';
 import ExamResult from './ExamResult';
 import ExamLeavingWarning from './ExamLeavingWarning';
+import InternetConnectionLostPopUp from './InternetConnectionLostPopUp';
 
 const Navigator = ({ exam, setMcqNumber, flagged, submitted, mcqNumber, blindMode }) => {
   let chipNumber = 0;
@@ -125,8 +126,10 @@ const ExamTakingScreen = ({ isQuiz, exam, isExamHappening, setIsExamHappeningPar
 
   const [mcqs, setMcqs] = useState(exam?.mcqs);
   const [mcqNumber, setMcqNumber] = useState(1);
+
   const [timeRemaining, setTimeRemaining] = useState(exam?.test_time);
   const [sixtySecondCountdown, setSixtySecondCountDown] = useState(0);
+  const intervalRef = useRef(null);
 
   const [bookmarks, setBookmarks] = useState(() => new Set());
   const [flagged, setFlagged] = useState(() => new Set());
@@ -144,6 +147,9 @@ const ExamTakingScreen = ({ isQuiz, exam, isExamHappening, setIsExamHappeningPar
   const [examLeavingWarning, setExamLeavingWarning] = useState(false);
 
   const [changeTabCount, setChangeTabCount] = useState(0);
+
+  const [isOnline, setIsOnline] = useState(true);
+  const [connectionRestored, setConnectionRestored] = useState(false);
 
   const modeToAudio = {
     'Exam Hall' : '/assets/audios/exam_hall.mp3',
@@ -248,10 +254,6 @@ const ExamTakingScreen = ({ isQuiz, exam, isExamHappening, setIsExamHappeningPar
     setSubmitLoading(false);
   };
 
-  useEffect(() => {
-    setSelectedOption(null);
-  }, [mcqNumber]);
-
   const formatTime = (minutes) => {
     const hrs = minutes < 0 ? 0 : Math.floor(minutes / 60);
     const mins = minutes < 0 ? 0 : minutes % 60;
@@ -288,6 +290,11 @@ const ExamTakingScreen = ({ isQuiz, exam, isExamHappening, setIsExamHappeningPar
       setSubmitConfirmHidden(true);
       setIsExamHappeningParent(false);
 
+      localStorage.removeItem("exam");
+      localStorage.removeItem("reload");
+      localStorage.removeItem("reloadExam");
+      localStorage.removeItem("examTimer");
+
       if(exam?.test_mode !== 'Silent'){
         audioRef.current.pause();
         audioRef.current.currentTime = 0;
@@ -297,37 +304,80 @@ const ExamTakingScreen = ({ isQuiz, exam, isExamHappening, setIsExamHappeningPar
     if(!stopByTime) setSubmitExamLoading(false);
   };
 
+  const startTimer = () => {
+    if(intervalRef.current) return;
+
+    intervalRef.current = setInterval(() => {
+      setSixtySecondCountDown(prev => {
+        if (prev === 0) {
+          setTimeRemaining(t => {
+            if(t === 0){
+              stopTimer();
+              submitExam(true);
+            }
+            return t - 1;
+          });
+          return 59;
+        } else {
+          return prev - 1;
+        }
+      });
+    }, 1000);
+  }
+
+  const stopTimer = () => {
+    clearInterval(intervalRef.current);
+    intervalRef.current = null;
+  }
+
+  //first useEffect
+  useEffect(() => {
+    if(setIsExamHappeningParent) setIsExamHappeningParent(isExamHappening);
+
+    const reload = localStorage.getItem("reload");
+
+    if(reload === "true"){
+      const examDetails = JSON.parse(localStorage.getItem("reloadExam"));
+      const examTimer = JSON.parse(localStorage.getItem("examTimer"));
+
+      setCorrectMCQsCount(examDetails.correctMCQsCount);      
+      setWrongMCQsCount(examDetails.wrongMCQsCount);   
+      setSubmitted(new Set(examDetails.submitted));
+      setBookmarks(new Set(examDetails.bookmarks));
+      setSixtySecondCountDown(examTimer.sixtySecondCountdown);
+      setTimeRemaining(examTimer.timeRemaining);
+
+      localStorage.removeItem("reload");
+      localStorage.removeItem("reloadExam");
+    }
+  }, []);
+
+  useEffect(() => {
+    setSelectedOption(null);
+  }, [mcqNumber]);
+
+
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
 
-    if(setIsExamHappeningParent) setIsExamHappeningParent(isExamHappening);
-
-    if (isExamHappening && exam?.timer) {
+    if (isExamHappeningParent && exam?.timer) {
       if(exam?.test_mode !== 'Silent'){
         audioRef.current.loop = true;
         audioRef.current.play();
       }
 
-      const startCountDown = setInterval(() => {
-        setSixtySecondCountDown(prev => {
-          if (prev === 0) {
-            setTimeRemaining(t => {
-              if(t === 0){
-                clearInterval(startCountDown);
-                submitExam(true);
-              }
-              return t - 1;
-            });
-            return 59;
-          } else {
-            return prev - 1;
-          }
-        });
-      }, 1000);
+      startTimer();
 
-      return () => clearInterval(startCountDown);
+      return () => stopTimer();
     }
-  }, []);
+  }, [isExamHappeningParent]);
+
+  useEffect(() => {
+    localStorage.setItem("examTimer", JSON.stringify({
+      sixtySecondCountdown,
+      timeRemaining
+    }));
+  }, [timeRemaining, sixtySecondCountdown]);
 
   //1. detect tab switches / minimize / another app
   useEffect(() => {
@@ -355,27 +405,37 @@ const ExamTakingScreen = ({ isQuiz, exam, isExamHappening, setIsExamHappeningPar
     const handleBeforeUnload = e => {
       e.preventDefault();
       e.returnValue = "";
+      
+      localStorage.setItem("reload", "true");
+      localStorage.setItem("reloadExam", JSON.stringify({
+        isQuiz,
+        correctMCQsCount,
+        wrongMCQsCount,
+        submitted: [...submitted],
+        bookmarks: [...bookmarks],
+      }));
     }
 
-    const autoSubmitExamOnReload = () => {
-      submitExam(false, setSubmitExamLoading);
-    }
+    // const autoSubmitExamOnReload = () => {
+    //   if(!isQuiz) navigate('/dashboard/test-series');
+    // }
 
     if(!isExamHappeningParent) {
       window.removeEventListener("beforeunload", handleBeforeUnload);
-      window.removeEventListener("pagehide", autoSubmitExamOnReload);
+      // window.removeEventListener("pagehide", autoSubmitExamOnReload);
       return;
     }
 
     window.addEventListener("beforeunload", handleBeforeUnload);
-    window.addEventListener("pagehide", autoSubmitExamOnReload);
+    // window.addEventListener("pagehide", autoSubmitExamOnReload);
 
     return () => {
       window.removeEventListener("beforeunload", handleBeforeUnload);
-      window.removeEventListener("pagehide", autoSubmitExamOnReload);
+      // window.removeEventListener("pagehide", autoSubmitExamOnReload);
     }
   }, [isExamHappeningParent]);
 
+  //disabling page scrolling during exam
   useEffect(() => {
     if (!isExamHappeningParent) return;
 
@@ -428,8 +488,35 @@ const ExamTakingScreen = ({ isQuiz, exam, isExamHappening, setIsExamHappeningPar
     return () => document.removeEventListener("click", route);
   }, [isExamHappeningParent]);
 
+  //check if internet connection is lost
+  useEffect(() => {
+    const handleOffline = () => {
+      setIsOnline(false);
+      setConnectionRestored(false);
+      stopTimer();
+    }
+
+    const handleOnline = () => {
+      setConnectionRestored(true);
+    }
+
+    if(!isExamHappeningParent){
+      window.removeEventListener("offline", handleOffline);
+      window.removeEventListener("online", handleOnline);
+      return;
+    }
+
+    window.addEventListener("offline", handleOffline);
+    window.addEventListener("online", handleOnline);
+
+    return () => {
+      window.removeEventListener("offline", handleOffline);
+      window.removeEventListener("online", handleOnline);
+    }
+  }, [isExamHappeningParent]);
+
   const showSolution =
-    !isExamHappening || (exam.answerAfterEach && submitted.has(mcqNumber));
+    !isExamHappening || (exam?.answerAfterEach && submitted.has(mcqNumber));
   return (
     <>
       <style>{`
@@ -689,6 +776,17 @@ const ExamTakingScreen = ({ isQuiz, exam, isExamHappening, setIsExamHappeningPar
             ''
           }
 
+          {
+            !isOnline && 
+            <InternetConnectionLostPopUp 
+              connectionRestored={connectionRestored} 
+              isQuiz={isQuiz}
+              setIsOnline={setIsOnline}
+              setIsExamHappeningParent={setIsExamHappeningParent}
+              startTimer={startTimer}
+            /> 
+          }
+
           {submitConfirmHidden ? '' : 
           <SubmitExamConfirmation 
             unanswered={exam?.total_mcqs - submitted.size} 
@@ -702,7 +800,7 @@ const ExamTakingScreen = ({ isQuiz, exam, isExamHappening, setIsExamHappeningPar
           <section className="quiz-subbar flex flex-shrink-0 items-center justify-between px-4 lg:px-7">
             <div>
               <p className="text-sm font-bold leading-tight text-white lg:text-base">Mixed Subjects</p>
-              <p className="text-xs text-[#A8ACA8]">{exam.total_mcqs} MCQs</p>
+              <p className="text-xs text-[#A8ACA8]">{exam?.total_mcqs} MCQs</p>
             </div>
             <div className="flex items-center gap-2 rounded-lg border border-[#2E302E] bg-[#181A18] px-3 py-2">
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#A8ACA8" strokeWidth="2">
@@ -731,7 +829,7 @@ const ExamTakingScreen = ({ isQuiz, exam, isExamHappening, setIsExamHappeningPar
                     <div className="space-y-4">
                       <button
                         type="button"
-                        disabled={!isExamHappening}
+                        disabled={!isExamHappeningParent || submitted.has(mcqNumber)}
                         onClick={() => {focusOnButton('.submit-mcq-button','A')}}
                         className={`cursor-pointer option-card ${selectedOption === 'A' ? 'selected' : ''} ${colorOption('A')}`}
                       >
@@ -740,7 +838,7 @@ const ExamTakingScreen = ({ isQuiz, exam, isExamHappening, setIsExamHappeningPar
                       </button>
                       <button
                         type="button"
-                        disabled={!isExamHappening}
+                        disabled={!isExamHappeningParent || submitted.has(mcqNumber)}
                         onClick={() => {focusOnButton('.submit-mcq-button','B')}}
                         className={`cursor-pointer option-card ${selectedOption === 'B' ? 'selected' : ''} ${colorOption('B')}`}
                       >
@@ -749,7 +847,7 @@ const ExamTakingScreen = ({ isQuiz, exam, isExamHappening, setIsExamHappeningPar
                       </button>
                       <button
                         type="button"
-                        disabled={!isExamHappening}
+                        disabled={!isExamHappeningParent || submitted.has(mcqNumber)}
                         onClick={() => {focusOnButton('.submit-mcq-button','C')}}
                         className={`cursor-pointer option-card ${selectedOption === 'C' ? 'selected' : ''} ${colorOption('C')}`}
                       >
@@ -758,7 +856,7 @@ const ExamTakingScreen = ({ isQuiz, exam, isExamHappening, setIsExamHappeningPar
                       </button>
                       <button
                         type="button"
-                        disabled={!isExamHappening}
+                        disabled={!isExamHappeningParent || submitted.has(mcqNumber)}
                         onClick={() => {focusOnButton('.submit-mcq-button','D')}}
                         className={`cursor-pointer option-card ${selectedOption === 'D' ? 'selected' : ''} ${colorOption('D')}`}
                       >
