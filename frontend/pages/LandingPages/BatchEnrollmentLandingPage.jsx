@@ -220,7 +220,7 @@ const BatchEnrollmentLandingPage = () => {
         <div className="mx-auto aspect-video w-full max-w-[960px] overflow-hidden rounded-lg bg-black shadow-[0_24px_80px_rgba(0,0,0,0.5)]">
           <iframe
             className="block h-full w-full border-0"
-            src="https://www.youtube.com/embed/segTM8x2HWs?start=4142&autoplay=1&mute=0&rel=0&modestbranding=1"
+            src="https://www.youtube.com/embed/wJXLPLVrGcc"
             title="Bahadur Batch enrollment video"
             allow="encrypted-media; fullscreen"
           />
