@@ -1,12 +1,11 @@
 import dotenv from "dotenv";
 dotenv.config({path: ".env"});
-console.clear();
 
 import app from "./app.js";
 import { initialize, gracefulShutdown, makeReceiptsDirectory } from "./helpers.js";
 
-const server = app.listen(process.env.SERVER_PORT, process.env.SERVER_HOST, () => {
-   console.log("Server started...."); 
+const server = app.listen(process.env.PORT || 3000, "0.0.0.0", () => {
+   console.log(`Server running on port ${process.env.PORT || 3000} .....`);
 });
 
 initialize();

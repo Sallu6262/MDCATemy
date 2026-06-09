@@ -17,7 +17,7 @@ import cors from "cors";
 
 const app = express();
 
-app.use(cors({origin: 'http://localhost:5174', credentials: true}));
+app.use(cors({origin: ['https://mdcatemy.com', 'https://mdcatemy-rho.vercel.app', 'http://localhost:5174'], credentials: true}));
 
 // BODY PARSING
 app.set('query parser', 'extended');    
@@ -32,16 +32,15 @@ app.use(morgan("tiny"));
 app.use([xss(), helmet(), hpp({ whitelist: ['attempts', 'topic_ids', 'chapter_ids', 'subject_ids', 'topics'] })]);
 
 // Rate limiting
-// app.use(rateLimit({
-// 	windowMs: 15 * 60 * 1000, // 15 minutes
-// 	limit: 100,
-//     message: {
-//         status: "fail",
-//         statusCode: 429,
-//         message: "Too many requests, please try again later."
-//     }
-// }));
-
+app.use(rateLimit({
+	windowMs: 1 * 60 * 1000, // 1 minute
+	limit: 180,
+    message: {
+        status: "fail",
+        statusCode: 429,
+        message: "Too many requests, please try again later."
+    }
+}));
 
 // ROUTERS
 app.use("/api/v1/users/", userRouter);

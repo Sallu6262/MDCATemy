@@ -1,0 +1,22 @@
+app = "mdcatemy"
+primary_region = "bom"
+
+[build]
+
+[env]
+  MODE = "prod"
+  PORT = "3000"
+  PASSWORD_HASH_SECRET = "srj&N^U_F[,1Qf.z(zx_v^es)V4#sVe1oLbJe(;enPxRkdXydy"
+  JWT_SIGN_SECRET = "[i)CyE$+2-WICwgOIU.g-bs/zqj3Q6wt(B)cE9zylZuyfjil9b"
+
+[http_service]
+  internal_port = 3000
+  force_https = true
+  auto_stop_machines = "off"
+  auto_start_machines = true
+  min_machines_running = 1
+
+[[vm]]
+  memory = "1gb"
+  cpu_kind = "shared"
+  cpus = 1
