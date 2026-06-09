@@ -17,7 +17,7 @@ import cors from "cors";
 
 const app = express();
 
-app.use(cors({origin: ['https://mdcatemy.com', 'https://mdcatemy-rho.vercel.app', 'http://localhost:5174'], credentials: true}));
+app.use(cors({origin: ['https://mdcatemy.com', 'https://www.mdcatemy.com', 'https://mdcatemy-rho.vercel.app', 'http://localhost:5174'], credentials: true}));
 
 // BODY PARSING
 app.set('query parser', 'extended');    
