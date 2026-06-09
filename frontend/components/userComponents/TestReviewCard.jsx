@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import MCQPdf from '../MCQpdf';
+import MCQPdf from '../MCQPdf';
 import { pdf } from '@react-pdf/renderer';
 import jsPDF from 'jspdf';
 import { createRoot } from 'react-dom/client';
