@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import '../../src/animation.css';
 
@@ -6,7 +6,7 @@ const ExamResult = ({isQuiz, correct, wrong, saved, skipped, total, exam}) => {
     const percentage = parseInt((correct / total) * 100);
 
     const navigate = useNavigate();
-    console.log(exam);
+    // console.log(exam);
 
     return (
         <div className="fade-in flex min-w-0 flex-1 flex-col overflow-hidden">
@@ -55,8 +55,8 @@ const ExamResult = ({isQuiz, correct, wrong, saved, skipped, total, exam}) => {
                 <div className="grid grid-cols-2 gap-3">
                 <button type='button' 
                     onClick={() => {  
-                        if(isQuiz) navigate(0);
-                        else navigate('/dashboard');
+                        if(isQuiz) navigate('/dashboard/quiz-builder');
+                        else navigate('/dashboard/test-series');
                     }} 
                     className="cursor-pointer flex items-center justify-center gap-2 rounded-xl border border-[#2E302E] bg-[#2A2C2A]/30 px-4 py-3.5 text-[13px] font-black uppercase tracking-[0.08em] text-white transition-all hover:border-[#FFC600]/40">
                     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -65,7 +65,7 @@ const ExamResult = ({isQuiz, correct, wrong, saved, skipped, total, exam}) => {
                     <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16" />
                     <path d="M3 21v-5h5" />
                     </svg>
-                    {isQuiz ? 'New Quiz' : 'Back To Dashboard'}
+                    {isQuiz ? 'New Quiz' : 'Back To Test Series'}
                 </button>
 
                 <Link to={isQuiz ? `/dashboard/quiz-builder/previous-quiz/${exam?.test_id}` : `/dashboard/test-series/previous-tests/${exam?.test_id}`} 

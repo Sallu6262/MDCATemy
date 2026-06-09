@@ -18,6 +18,8 @@ const CustomTestMakerStep4 = ({selectedTest, isTestCreated}) => {
 
     const [mcqsAddedCount, setMcqsAddedCount] = useState(selectedTest?.current_mcqs ?? 0);
 
+    // console.log(mcqs);
+
     useEffect(() => {
         const fetchMCQs = async () => {
             const res = await fetch(`${API_URL}/quizzes/generate`, {
@@ -40,6 +42,8 @@ const CustomTestMakerStep4 = ({selectedTest, isTestCreated}) => {
                 // let tempMcqs = Object.keys(data.data?.mcqs).map(difficulty => data.data?.mcqs[difficulty].map(mcq_per_ => mcq_per_));
                 let tempMcqs = [];
                 Object.keys(data.data.mcqs).forEach(difficulty => data.data?.mcqs[difficulty].forEach(mcq => tempMcqs.push(mcq)));
+                tempMcqs = tempMcqs.filter(mcq => !selectedTest?.mcq_ids?.includes(mcq.mcq_id));
+                
                 setMCQs(tempMcqs);
                 setMcqsToShow(tempMcqs.slice(0, 10));
                 setTotalPages(Math.ceil(tempMcqs.length / 10));
@@ -76,7 +80,7 @@ const CustomTestMakerStep4 = ({selectedTest, isTestCreated}) => {
                         <input
                         onChange={e => {
                             if(/^\d*$/.test(e.target.value)){
-                                let tempMcqs = mcqs.filter(mcq => mcq.mcq_id === Number(e.target.value) || !e.target.value);
+                                let tempMcqs = mcqs.filter(mcq => !e.target.value || String(mcq.mcq_id).includes(String(e.target.value)));
                                 setMcqsToShow(tempMcqs);
                                 setTotalPages(tempMcqs.length / 10);
                             }
@@ -93,7 +97,7 @@ const CustomTestMakerStep4 = ({selectedTest, isTestCreated}) => {
                     <section className="flex-1 space-y-5" aria-label="MCQ list">
                         {
                             mcqsToShow.length ? 
-                            mcqsToShow?.map((mcq, i)=> <MCQCard key={i+(pageNumber-1)*10+1} mcq={mcq} mcqNo={i+(pageNumber-1)*10+1} testID={selectedTest?.id} setMcqsAddedCount={setMcqsAddedCount}/>) :
+                            mcqsToShow?.map((mcq, i)=> <MCQCard key={mcq.mcq_id} mcq={mcq} mcqNo={mcq.mcq_id} testID={selectedTest?.id} setMcqsAddedCount={setMcqsAddedCount}/>) :
                             <div className='w-full text-center text-lg text-gray-400'>No mcqs found!</div>
                         }
                     </section>

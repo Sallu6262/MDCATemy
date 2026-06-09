@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Link, useOutletContext, useParams } from 'react-router-dom'
+import { Link, useNavigate, useOutletContext, useParams } from 'react-router-dom'
 import '../../src/animation.css';
 import ExamTakingScreen from '../../components/userComponents/ExamTakingScreen';
 
@@ -27,7 +27,7 @@ const UserStartTestPage = () => {
   const [condition, setCondition] = useState(false);
   const [totalActualMcqs, setTotalActualMcqs] = useState(0);
 
-  const [testStarted, setTestStarted] = useState(false);
+  const navigate = useNavigate();
 
   const modes = {
     'Silent' : 0,
@@ -46,7 +46,7 @@ const UserStartTestPage = () => {
   const calculateWidth = (subjectCount) => {
     const numerator = subjectCount ?? 0;
     const denominator = totalActualMcqs || 1;
-    return parseInt((numerator / denominator) * 100);
+    return Math.round((numerator / denominator) * 100);
   }
 
   useEffect(() => {
@@ -73,8 +73,6 @@ const UserStartTestPage = () => {
 
   return (
     <>
-    {
-      !testStarted ? 
       <main className="fade-in flex-1 overflow-hidden pb-[58px] lg:pb-0">
         <div className="h-full overflow-y-auto">
 
@@ -334,7 +332,29 @@ const UserStartTestPage = () => {
 
             
             <div className="text-center pb-6">
-              <button onClick={() => setTestStarted(true)} disabled={!condition} className={`${condition ? 'cursor-pointer opacity-100' : 'cursor-not-allowed opacity-25'} inline-flex items-center gap-3 px-8 py-4 rounded-xl text-black text-[13px] font-[Inter] font-black uppercase tracking-[0.1em] shadow-lg shadow-[#FFC600]/30`}
+              <button 
+                onClick={() => {
+                  localStorage.setItem("exam", JSON.stringify({
+                    isQuiz: false,
+                    test_name: testToBegin?.test_name,
+                    total_mcqs: testToBegin?.total_mcqs,
+                    test_time: testToBegin?.test_time,
+                    mcqs: testToBegin?.mcqs,
+                    biology: testToBegin?.biology ?? 0,
+                    chemistry: testToBegin?.chemistry ?? 0,
+                    physics: testToBegin?.physics ?? 0,
+                    english: testToBegin?.english ?? 0,
+                    logical_reasoning: testToBegin?.logical_reasoning ?? 0,
+                    test_mode: numberToModes[testMode],
+                    blind_mode: blindMode,
+                    test_id: testID,
+                    answerAfterEach: false,
+                    timer: true,
+                  }));
+
+                  navigate(`/dashboard/test-series/exam/${testID}`);
+                }} 
+                disabled={!condition} className={`${condition ? 'cursor-pointer opacity-100' : 'cursor-not-allowed opacity-25'} inline-flex items-center gap-3 px-8 py-4 rounded-xl text-black text-[13px] font-[Inter] font-black uppercase tracking-[0.1em] shadow-lg shadow-[#FFC600]/30`}
                       style={{ background: 'linear-gradient(135deg, #FFE27A 0%, #FFC600 45%, #E5B200 100%)' }}>
                 <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
                   <polyline points="14.5 17.5 3 6 3 3 6 3 17.5 14.5"/>
@@ -354,29 +374,7 @@ const UserStartTestPage = () => {
 
           </div>
         </div>
-      </main> :
-      <ExamTakingScreen isQuiz={false} 
-        exam={{
-          test_name: testToBegin?.test_name,
-          total_mcqs: testToBegin?.total_mcqs,
-          test_time: testToBegin?.test_time,
-          mcqs: testToBegin?.mcqs,
-          biology: testToBegin?.biology ?? 0,
-          chemistry: testToBegin?.chemistry ?? 0,
-          physics: testToBegin?.physics ?? 0,
-          english: testToBegin?.english ?? 0,
-          logical_reasoning: testToBegin?.logical_reasoning ?? 0,
-          test_mode: numberToModes[testMode],
-          blind_mode: blindMode,
-          test_id: testID,
-          answerAfterEach: false,
-          timer: true
-        }}
-        isExamHappening={true}
-        setIsExamHappeningParent={setIsExamHappening}
-        isExamHappeningParent={isExamHappening}
-      />
-    }
+      </main>
     </>
   )
 }

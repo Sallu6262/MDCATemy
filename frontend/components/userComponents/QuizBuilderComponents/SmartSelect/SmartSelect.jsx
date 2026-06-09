@@ -6,7 +6,7 @@ import QuizMakingStep1 from '../QuizMakingStep1';
 import QuizMakingStep3 from '../QuizMakingStep3';
 import SmartSelectWeakestTopic from './SmartSelectWeakestTopic';
 
-const SmartSelect = ({filterChapterIDs, filterSubjectIDs, quizMakingStep, smartSelectHidden, resetData, setSmartSelectHidden, setQuizMakingStep, setSelectedSubjects, selectedSubjects, filteredSubjects, selectedChapters, setSelectedChapters, moveToNextStepAndFilter, filteredChapters, selectedTopics, setSelectedTopics, mcqDistributionPerTopic}) => {
+const SmartSelect = ({subjectAccuracy, chapterAccuracy, topicAccuracy, filterChapterIDs, filterSubjectIDs, quizMakingStep, smartSelectHidden, resetData, setSmartSelectHidden, setQuizMakingStep, setSelectedSubjects, selectedSubjects, filteredSubjects, selectedChapters, setSelectedChapters, moveToNextStepAndFilter, filteredChapters, selectedTopics, setSelectedTopics, mcqDistributionPerTopic}) => {
     //step is starting from zero to sync with quiz making without smart select.
     const [errorMessage, setErrorMessage] = useState("");
 
@@ -72,6 +72,7 @@ const SmartSelect = ({filterChapterIDs, filterSubjectIDs, quizMakingStep, smartS
                         smartSelectHidden={smartSelectHidden}
                         selectedSubjects={selectedSubjects}
                         setSelectedSubjects={setSelectedSubjects}
+                        subjectAccuracy={subjectAccuracy}
                     /> :
                     ''
                 }
@@ -81,6 +82,7 @@ const SmartSelect = ({filterChapterIDs, filterSubjectIDs, quizMakingStep, smartS
                         filteredSubjects={filteredSubjects}
                         selectedChapters={selectedChapters}
                         setSelectedChapters={setSelectedChapters}
+                        chapterAccuracy={chapterAccuracy}
                     />
                     : ''
                 }

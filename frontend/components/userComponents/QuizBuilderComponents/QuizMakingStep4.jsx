@@ -3,6 +3,7 @@ import CustomMixTestPopUp from './CustomMixTestPopUp';
 import '../../../src/animation.css';
 import sendErrorSuccessMessage from '../../../utils/sendErrorSuccessMessage';
 import { formatName } from '../../../utils/HelperObjects';
+import { useNavigate } from 'react-router-dom';
 
 const DifficultySelectButton = ({difficulty, difficultyToSet, isSelected, setDifficulty, setHidden, setDifficultyRatio}) => {
     return (
@@ -27,7 +28,7 @@ const DifficultySelectButton = ({difficulty, difficultyToSet, isSelected, setDif
     )
 }
 
-const QuizMakingStep4 = ({mcqDistributionPerTopic, selectedTopics, setQuizInfo, setStep, selectedSubjects}) => {
+const QuizMakingStep4 = ({mcqDistributionPerTopic, selectedTopics, setStep, selectedSubjects}) => {
     const [showTimer, setShowTimer] = useState(false);
     const [totalMcqs, setTotalMcqs] = useState([...selectedTopics].reduce((acc, topic) => acc + mcqDistributionPerTopic[topic], 0));
     const [maxMcqs, setMaxMcqs] = useState(Math.min(180, [...selectedTopics].reduce((acc, topic) => acc + mcqDistributionPerTopic[topic], 0)));
@@ -39,6 +40,8 @@ const QuizMakingStep4 = ({mcqDistributionPerTopic, selectedTopics, setQuizInfo, 
     const [hidden, setHidden] = useState(true);
 
     const [submitSettingsLoading, setSubmitSettingsLoading] = useState(false);
+
+    const navigate = useNavigate();
 
     // console.log(selectedSubjects);
 
@@ -97,7 +100,10 @@ const QuizMakingStep4 = ({mcqDistributionPerTopic, selectedTopics, setQuizInfo, 
                 else lrCount++;
             })
 
-            setQuizInfo({
+            sendErrorSuccessMessage('success','Creating quiz. Please wait....');
+
+            localStorage.setItem("exam", JSON.stringify({
+                isQuiz: true,
                 ...info, 
                 test_id: data.data.quiz_id,
                 mcqs,
@@ -106,9 +112,9 @@ const QuizMakingStep4 = ({mcqDistributionPerTopic, selectedTopics, setQuizInfo, 
                 physics: phyCount,
                 english: engCount,
                 logical_reasoning: lrCount
-            });
-            sendErrorSuccessMessage('success','Creating quiz. Please wait....');
-            setStep(5);
+            }));
+
+            navigate(`/dashboard/quiz-builder/exam/${data.data.quiz_id}`)
         }
 
         setSubmitSettingsLoading(false);

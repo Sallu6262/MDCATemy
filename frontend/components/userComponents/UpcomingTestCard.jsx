@@ -19,6 +19,8 @@ const UpcomingTestCard = ({upcomingTest}) => {
         year: "numeric",
     }); 
 
+    // console.log(upcomingTest);
+
     return (
         <>
         {
@@ -77,7 +79,7 @@ const UpcomingTestCard = ({upcomingTest}) => {
                             </svg>
                         </div>
                         <div className="min-w-0">
-                            <p className="font-[Poppins] font-black text-white text-[18px] leading-none">{upcomingTest?.total_mcqs}</p>
+                            <p className="font-[Poppins] font-black text-white text-[18px] leading-none">{upcomingTest?.mcq_count}</p>
                             <p className="text-[#A8ACA8] text-[9px] font-[Inter] uppercase tracking-[0.1em] mt-1">MCQs</p>
                         </div>
                         </div>

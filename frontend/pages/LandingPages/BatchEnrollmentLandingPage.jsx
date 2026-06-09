@@ -189,7 +189,7 @@ const BatchEnrollmentLandingPage = () => {
 
       {/* Hero */}
       <section className="relative bg-[#1e2428] px-6 pb-[72px] pt-20 text-center max-[600px]:px-5 max-[600px]:pb-14 max-[600px]:pt-[52px]">
-        <nav className="absolute left-0 top-0 z-10 flex w-full items-center justify-center gap-9 px-6 py-4 max-[700px]:justify-start max-[700px]:gap-4 max-[700px]:overflow-x-auto max-[700px]:px-5 max-[700px]:py-3">
+        <nav className="absolute left-0 top-0 z-10 flex w-full items-center justify-center gap-9 px-6 py-4 max-[700px]:gap-4 max-[700px]:overflow-x-auto max-[700px]:px-5 max-[700px]:py-3">
           <Link className={`${navLink} max-[700px]:hidden`} onClick={() => document.getElementById("testimonials").scrollIntoView({behavior: 'smooth'})}>
             Testimonials
           </Link>

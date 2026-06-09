@@ -56,21 +56,21 @@ const UserDashboardPage = () => {
         `}</style>
 
         <section className="fade-in bg-[#181A18] text-white/90 min-h-screen">
-            <div className="lg:hidden px-4 pt-6 pb-10 mx-auto max-w-lg space-y-4">
+            <div className="lg:hidden px-3 pt-5 pb-10 mx-auto max-w-lg space-y-3.5">
 
-                <div className="flex items-center justify-between gap-3 px-1">
-                <div className="flex items-center gap-3 min-w-0">
-                    <div className="w-[50px] h-[50px] rounded-full bg-[#FFC600]/20 border-2 border-[#FFC600]/50 flex items-center justify-center flex-shrink-0">
-                    <span className="font-['Poppins'] font-medium text-[#E0A800] text-[14px] leading-none">{initials}</span>
+                <div className="flex items-center justify-between gap-2 px-0.5">
+                <div className="flex items-center gap-2.5 min-w-0">
+                    <div className="w-10 h-10 rounded-full bg-[#FFC600]/20 border-2 border-[#FFC600]/50 flex items-center justify-center flex-shrink-0">
+                    <span className="font-['Poppins'] font-medium text-[#E0A800] text-[12px] leading-none">{initials}</span>
                     </div>
                     <div className="min-w-0">
-                    <p className="text-white/40 text-[15px] font-['Inter'] leading-tight">Welcome Warrior</p>
-                    <h2 className="font-['Poppins'] font-medium text-[24px] text-white/90 leading-tight truncate">{sa?.name}</h2>
+                    <p className="text-white/40 text-[12px] font-['Inter'] leading-tight">Welcome Warrior</p>
+                    <h2 className="font-['Poppins'] font-medium text-[18px] text-white/90 leading-tight truncate">{sa?.name}</h2>
                     <div className="flex items-center gap-1 mt-0.5">
                         
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#F97316" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>
-                        <span className="font-['Poppins'] font-medium text-[14px] text-orange-500 leading-none">{sa?.streak}</span>
-                        <span className="font-['Inter'] text-[14px] text-white/40">day streak</span>
+                        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#F97316" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>
+                        <span className="font-['Poppins'] font-medium text-[12px] text-orange-500 leading-none">{sa?.streak}</span>
+                        <span className="font-['Inter'] text-[11px] text-white/40">day streak</span>
                     </div>
                     </div>
                 </div>
@@ -91,65 +91,62 @@ const UserDashboardPage = () => {
                         <circle cx="100" cy="100" r="2.5" fill="#FFC600"/>
                         </svg>
                     </div>
-                    <span className="font-['Poppins'] font-medium text-[14px] leading-none" style={{ color: "#EAB308" }}>{(sa?.predicted_score ?? 0)}</span>
+                    <span className="font-['Poppins'] font-medium text-[12px] leading-none" style={{ color: "#EAB308" }}>{(sa?.predicted_score ?? 0)}</span>
                     </Link>
                     
-                    <div className="flex items-center gap-1 bg-white/[0.05] border border-white/[0.08] rounded-lg px-2 py-1.5">
-                    <span className="flex items-baseline gap-[2px]"><span className="font-['Poppins'] font-medium text-[14px] leading-none text-[#FFC600]">{mdcatTimeRemaining.days}</span><span className="font-['Inter'] text-[15px] text-white/40">d</span></span>
-                    <span className="text-white/30 text-[14px] mx-0.5">·</span>
-                    <span className="flex items-baseline gap-[2px]"><span className="font-['Poppins'] font-medium text-[14px] leading-none text-[#FFC600]">{mdcatTimeRemaining.hours}</span><span className="font-['Inter'] text-[15px] text-white/40">h</span></span>
-                    <span className="text-white/30 text-[14px] mx-0.5">·</span>
-                    <span className="flex items-baseline gap-[2px]"><span className="font-['Poppins'] font-medium text-[14px] leading-none text-[#FFC600]">{mdcatTimeRemaining.minutes}</span><span className="font-['Inter'] text-[15px] text-white/40">m</span></span>
+                    <div className="flex items-center gap-1 bg-white/[0.05] border border-white/[0.08] rounded-lg px-1.5 py-1">
+                    <span className="flex items-baseline gap-[2px]"><span className="font-['Poppins'] font-medium text-[12px] leading-none text-[#FFC600]">{mdcatTimeRemaining.days}</span><span className="font-['Inter'] text-[11px] text-white/40">d</span></span>
+                    <span className="text-white/30 text-[11px] mx-0.5">·</span>
+                    <span className="flex items-baseline gap-[2px]"><span className="font-['Poppins'] font-medium text-[12px] leading-none text-[#FFC600]">{mdcatTimeRemaining.hours}</span><span className="font-['Inter'] text-[11px] text-white/40">h</span></span>
+                    <span className="text-white/30 text-[11px] mx-0.5">·</span>
+                    <span className="flex items-baseline gap-[2px]"><span className="font-['Poppins'] font-medium text-[12px] leading-none text-[#FFC600]">{mdcatTimeRemaining.minutes}</span><span className="font-['Inter'] text-[11px] text-white/40">m</span></span>
                     </div>
                 </div>
                 </div>
 
-                <div className="border-l-[3px] border-[#FFC600] pl-3 py-0.5">
-                <p className="font-['Inter'] italic text-[14px] text-white/55 leading-relaxed">&ldquo;So, surely with hardship comes ease.&rdquo;</p>
-                <p className="font-['Inter'] text-[14px] text-white/40 mt-0.5">Surah Ash-Sharh 94:5</p>
+                <div className="border-l-[3px] border-[#FFC600] pl-2.5 py-0.5">
+                <p className="font-['Inter'] italic text-[12px] text-white/55 leading-relaxed">&ldquo;So, surely with hardship comes ease.&rdquo;</p>
+                <p className="font-['Inter'] text-[11px] text-white/40 mt-0.5">Surah Ash-Sharh 94:5</p>
                 </div>
 
-                <div className="flex items-center justify-between px-0.5">
-                <p className="font-['Inter'] font-semibold text-[14px] uppercase tracking-[0.12em] text-white/40">Overview</p>
-                <Link to="/dashboard/analytics" className="cursor-pointer flex items-center gap-1 font-['Inter'] font-semibold text-[15px] text-[#E0A800] hover:text-[#FFC600] transition-colors">
-                    See Detailed Analytics
-                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+                <div className="flex items-center justify-between gap-2 px-0.5">
+                <p className="font-['Inter'] font-semibold text-[11px] uppercase tracking-[0.1em] text-white/40 shrink-0">Overview</p>
+                <Link to="/dashboard/analytics" className="cursor-pointer flex items-center gap-0.5 font-['Inter'] font-semibold text-[11px] text-[#E0A800] hover:text-[#FFC600] transition-colors min-w-0">
+                    <span className="truncate">See Detailed Analytics</span>
+                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="shrink-0"><polyline points="9 18 15 12 9 6"/></svg>
                 </Link>
                 </div>
 
                 <div className="flex bg-white/[0.05] rounded-full p-0.5 border border-white/[0.06]">
-                <button onClick={() => setIsPerformance(true)} className={`flex-1 font-['Poppins'] font-medium text-[14px] py-2 rounded-full ${isPerformance ? 'bg-[#FFC600] text-[#111827] shadow-[0_1px_3px_rgba(0,0,0,0.12)]' : 'text-white/55'}`}>Performance</button>
-                <button onClick={() => setIsPerformance(false)} className={`flex-1 font-['Poppins'] font-medium text-[14px] py-2 rounded-full ${!isPerformance ? 'bg-[#FFC600] text-[#111827] shadow-[0_1px_3px_rgba(0,0,0,0.12)]' : 'text-white/55'}`}>Accuracy</button>
+                <button onClick={() => setIsPerformance(true)} className={`flex-1 font-['Poppins'] font-medium text-[12px] py-1.5 rounded-full ${isPerformance ? 'bg-[#FFC600] text-[#111827] shadow-[0_1px_3px_rgba(0,0,0,0.12)]' : 'text-white/55'}`}>Performance</button>
+                <button onClick={() => setIsPerformance(false)} className={`flex-1 font-['Poppins'] font-medium text-[12px] py-1.5 rounded-full ${!isPerformance ? 'bg-[#FFC600] text-[#111827] shadow-[0_1px_3px_rgba(0,0,0,0.12)]' : 'text-white/55'}`}>Accuracy</button>
                 </div>
 
-                <section className="card">
-                <div className="grid grid-cols-3 gap-2">
+                <section className="card !py-3 !px-3">
+                <div className="grid grid-cols-3 gap-1.5">
                     
-                    <div className="inner-tile rounded-xl p-3 flex flex-col items-center gap-1.5">
-                    <div className="w-9 h-9 rounded-xl flex items-center justify-center" style={{ background: "#FFC60018" }}>
-                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#FFC600" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+                    <div className="inner-tile rounded-lg p-2 flex flex-col items-center gap-1">
+                    <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: "#FFC60018" }}>
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#FFC600" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
                     </div>
-                    <span className="font-['Poppins'] font-medium text-[20px] leading-none" style={{ color: "#FFC600" }}>{sa?.total_attempt}</span>
-                    <span className="font-['Inter'] text-[15px] text-white/40 uppercase tracking-wide text-center leading-tight whitespace-pre-line">MCQs
-            Attempted</span>
-                    </div>
-                    
-                    <div className="inner-tile rounded-xl p-3 flex flex-col items-center gap-1.5">
-                    <div className="w-9 h-9 rounded-xl flex items-center justify-center" style={{ background: "#A78BFA18" }}>
-                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#A78BFA" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4"/><path d="M12 16h4"/><path d="M8 11h.01"/><path d="M8 16h.01"/></svg>
-                    </div>
-                    <span className="font-['Poppins'] font-medium text-[20px] leading-none" style={{ color: "#A78BFA" }}>{sa?.tests_attempted}</span>
-                    <span className="font-['Inter'] text-[15px] text-white/40 uppercase tracking-wide text-center leading-tight whitespace-pre-line">Tests
-            Attempted</span>
+                    <span className="font-['Poppins'] font-medium text-[16px] leading-none" style={{ color: "#FFC600" }}>{sa?.total_attempt}</span>
+                    <span className="font-['Inter'] text-[10px] text-white/40 uppercase tracking-wide text-center leading-tight">MCQs Attempted</span>
                     </div>
                     
-                    <div className="inner-tile rounded-xl p-3 flex flex-col items-center gap-1.5">
-                    <div className="w-9 h-9 rounded-xl flex items-center justify-center" style={{ background: "#10B98118" }}>
-                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#10B981" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+                    <div className="inner-tile rounded-lg p-2 flex flex-col items-center gap-1">
+                    <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: "#A78BFA18" }}>
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#A78BFA" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4"/><path d="M12 16h4"/><path d="M8 11h.01"/><path d="M8 16h.01"/></svg>
                     </div>
-                    <span className="font-['Poppins'] font-medium text-[20px] leading-none" style={{ color: "#10B981" }}>{sa?.total_attempt ? parseInt((sa?.total_correct / sa?.total_attempt) * 100) : 0}%</span>
-                    <span className="font-['Inter'] text-[15px] text-white/40 uppercase tracking-wide text-center leading-tight whitespace-pre-line">Overall
-            Accuracy</span>
+                    <span className="font-['Poppins'] font-medium text-[16px] leading-none" style={{ color: "#A78BFA" }}>{sa?.tests_attempted}</span>
+                    <span className="font-['Inter'] text-[10px] text-white/40 uppercase tracking-wide text-center leading-tight">Tests Attempted</span>
+                    </div>
+                    
+                    <div className="inner-tile rounded-lg p-2 flex flex-col items-center gap-1">
+                    <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: "#10B98118" }}>
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#10B981" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+                    </div>
+                    <span className="font-['Poppins'] font-medium text-[16px] leading-none" style={{ color: "#10B981" }}>{sa?.total_attempt ? parseInt((sa?.total_correct / sa?.total_attempt) * 100) : 0}%</span>
+                    <span className="font-['Inter'] text-[10px] text-white/40 uppercase tracking-wide text-center leading-tight">Overall Accuracy</span>
                     </div>
                 </div>
                 </section>
@@ -158,49 +155,49 @@ const UserDashboardPage = () => {
                     isPerformance ?
                     <>
                     <Link to="/dashboard/quiz-builder" className="cursor-pointer block">
-                        <div className="promo-quiz relative overflow-hidden rounded-2xl border border-[#FFC600]/25 px-5 py-4 shadow-[0_4px_20px_rgba(0,0,0,0.20),_0_8px_28px_rgba(255,198,0,0.10)] active:scale-[0.985] transition-all">
+                        <div className="promo-quiz relative overflow-hidden rounded-xl border border-[#FFC600]/25 px-3.5 py-3 shadow-[0_4px_20px_rgba(0,0,0,0.20),_0_8px_28px_rgba(255,198,0,0.10)] active:scale-[0.985] transition-all">
                             <div className="absolute -top-10 -right-10 w-28 h-28 bg-[#FFC600]/25 rounded-full blur-3xl pointer-events-none"></div>
                             <div className="absolute top-0 right-0 w-20 h-[2px] bg-gradient-to-r from-transparent to-[#FFC600] rotate-[-35deg] origin-right translate-y-3 -translate-x-2 pointer-events-none opacity-60"></div>
-                            <div className="relative flex items-center gap-3.5">
-                            <div className="w-[52px] h-[52px] rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: "linear-gradient(135deg,#FFC600,#E0A800)", boxShadow: "0 4px 12px rgba(255,198,0,0.40), inset 0 1px 0 rgba(255,255,255,0.30)" }}>
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#111827" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                            <div className="relative flex items-start gap-3">
+                            <div className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: "linear-gradient(135deg,#FFC600,#E0A800)", boxShadow: "0 4px 12px rgba(255,198,0,0.40), inset 0 1px 0 rgba(255,255,255,0.30)" }}>
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#111827" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
                             </div>
                             <div className="flex-1 min-w-0">
-                                <p className="font-['Inter'] font-bold text-[14px] uppercase tracking-[0.14em] text-[#E0A800] mb-0.5">Unlimited Practice</p>
-                                <h3 className="font-['Poppins'] font-bold text-[20px] text-white/95 leading-tight">Quiz Builder</h3>
-                                <p className="font-['Inter'] text-[14px] text-white/55 mt-0.5 leading-snug">Custom MCQ sessions by subject, chapter, or difficulty.</p>
+                                <p className="font-['Inter'] font-bold text-[10px] uppercase tracking-[0.1em] text-[#E0A800] mb-0.5">Unlimited Practice</p>
+                                <h3 className="font-['Poppins'] font-bold text-[16px] text-white/95 leading-tight">Quiz Builder</h3>
+                                <p className="font-['Inter'] text-[11px] text-white/55 mt-0.5 leading-snug">Custom MCQ sessions by subject, chapter, or difficulty.</p>
                             </div>
                             </div>
-                            <div className="relative mt-3.5 flex items-center justify-between">
-                            <span className="inline-flex items-center gap-1.5 font-['Poppins'] font-semibold text-[14px] text-[#111827] bg-[#FFC600] px-3.5 py-1.5 rounded-full shadow-[0_1px_4px_rgba(255,198,0,0.22)]">
+                            <div className="relative mt-3 flex flex-col gap-2">
+                            <span className="inline-flex w-full items-center justify-center gap-1 font-['Poppins'] font-semibold text-[12px] text-[#111827] bg-[#FFC600] px-3 py-2 rounded-full shadow-[0_1px_4px_rgba(255,198,0,0.22)]">
                                 Take a Quiz
-                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
                             </span>
-                            <span className="font-['Inter'] text-[14px] text-white/40">5 subjects · 10,000+ MCQs</span>
+                            <span className="font-['Inter'] text-[10px] text-white/40 text-center">5 subjects · 10,000+ MCQs</span>
                             </div>
                         </div>
                     </Link>
 
                     <Link to="/dashboard/test-series" className="cursor-pointer block">
-                        <div className="promo-test relative overflow-hidden rounded-2xl border border-white/[0.10] px-5 py-4 shadow-[0_4px_20px_rgba(0,0,0,0.30),_0_8px_28px_rgba(0,0,0,0.20)] active:scale-[0.985] transition-all">
+                        <div className="promo-test relative overflow-hidden rounded-xl border border-white/[0.10] px-3.5 py-3 shadow-[0_4px_20px_rgba(0,0,0,0.30),_0_8px_28px_rgba(0,0,0,0.20)] active:scale-[0.985] transition-all">
                             <div className="absolute left-0 top-4 bottom-4 w-[3px] rounded-full bg-gradient-to-b from-[#FFC600] via-[#FFC600] to-[#FFC600]/0"></div>
                             <div className="absolute inset-0 opacity-[0.04] pointer-events-none" style={{ backgroundImage: "repeating-linear-gradient(45deg,#FFC600 0 1px,transparent 1px 14px)" }}></div>
-                            <div className="relative flex items-center gap-3.5">
-                            <div className="w-[52px] h-[52px] rounded-xl bg-white/[0.05] border border-white/[0.10] flex items-center justify-center flex-shrink-0 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]">
-                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FFC600" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 12h-5"/><path d="M15 8h-5"/><path d="M19 17V5a2 2 0 0 0-2-2H4"/><path d="M8 21h12a2 2 0 0 0 2-2v-1a1 1 0 0 0-1-1H11a1 1 0 0 0-1 1v1a2 2 0 1 1-4 0V5a2 2 0 1 0-4 0v2a1 1 0 0 0 1 1h3"/></svg>
+                            <div className="relative flex items-start gap-3">
+                            <div className="w-10 h-10 rounded-lg bg-white/[0.05] border border-white/[0.10] flex items-center justify-center flex-shrink-0 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FFC600" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 12h-5"/><path d="M15 8h-5"/><path d="M19 17V5a2 2 0 0 0-2-2H4"/><path d="M8 21h12a2 2 0 0 0 2-2v-1a1 1 0 0 0-1-1H11a1 1 0 0 0-1 1v1a2 2 0 1 1-4 0V5a2 2 0 1 0-4 0v2a1 1 0 0 0 1 1h3"/></svg>
                             </div>
                             <div className="flex-1 min-w-0">
-                                <p className="font-['Inter'] font-bold text-[14px] uppercase tracking-[0.14em] text-[#FFC600] mb-0.5">Real Exam Simulation</p>
-                                <h3 className="font-['Poppins'] font-bold text-[20px] text-white leading-tight">Mock Test Sessions</h3>
-                                <p className="font-['Inter'] text-[14px] text-white/55 mt-0.5 leading-snug">Simulate official MDCAT under timed, exam-day conditions.</p>
+                                <p className="font-['Inter'] font-bold text-[10px] uppercase tracking-[0.1em] text-[#FFC600] mb-0.5">Real Exam Simulation</p>
+                                <h3 className="font-['Poppins'] font-bold text-[16px] text-white leading-tight">Mock Test Sessions</h3>
+                                <p className="font-['Inter'] text-[11px] text-white/55 mt-0.5 leading-snug">Simulate official MDCAT under timed, exam-day conditions.</p>
                             </div>
                             </div>
-                            <div className="relative mt-3.5 flex items-center justify-between">
-                            <span className="inline-flex items-center gap-1.5 font-['Poppins'] font-semibold text-[14px] text-[#FFC600] border border-[#FFC600]/40 px-3.5 py-1.5 rounded-full">
+                            <div className="relative mt-3 flex flex-col gap-2">
+                            <span className="inline-flex w-full items-center justify-center gap-1 font-['Poppins'] font-semibold text-[12px] text-[#FFC600] border border-[#FFC600]/40 px-3 py-2 rounded-full">
                                 Take a Test
-                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
                             </span>
-                            <span className="font-['Inter'] text-[14px] text-white/40">Timed · {sa?.tests_attempted} attempted</span>
+                            <span className="font-['Inter'] text-[10px] text-white/40 text-center">Timed · {sa?.tests_attempted} attempted</span>
                             </div>
                         </div>
                     </Link>
@@ -219,30 +216,28 @@ const UserDashboardPage = () => {
                     </>
                 }
 
-                <section className="card">
-                <div className="flex items-center gap-2 mb-3">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#E0A800" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/><path d="M10 10l2 2 4-4"/></svg>
-                    <h3 className="font-['Poppins'] font-medium text-white/80 text-[15px]">My Copy</h3>
+                <section className="card !py-3 !px-3">
+                <div className="flex items-center gap-1.5 mb-2">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#E0A800" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/><path d="M10 10l2 2 4-4"/></svg>
+                    <h3 className="font-['Poppins'] font-medium text-white/80 text-[13px]">My Copy</h3>
                 </div>
-                <div className="grid grid-cols-2 gap-2">
+                <div className="grid grid-cols-2 gap-1.5">
                     <Link to="/dashboard/my-copy" onClick={() => JSON.stringify(sessionStorage.setItem("isSavedCopy", false))} className="block">
-                    <div className="relative inner-tile rounded-xl p-3 flex flex-col items-center gap-1.5 active:scale-[0.97] transition-transform">
-                        <svg className="absolute top-2.5 right-2.5" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="rgb(var(--ui-text-rgb) / 0.30)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
-                        <div className="w-9 h-9 rounded-xl flex items-center justify-center" style={{ background: "#EF444418" }}>
-                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#EF4444" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5z"/><polyline points="14 2 14 8 20 8"/><line x1="9.5" y1="12.5" x2="14.5" y2="17.5"/><line x1="14.5" y1="12.5" x2="9.5" y2="17.5"/></svg>
+                    <div className="relative inner-tile rounded-lg p-2.5 flex flex-col items-center gap-1 active:scale-[0.97] transition-transform">
+                        <svg className="absolute top-2 right-2" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="rgb(var(--ui-text-rgb) / 0.30)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+                        <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: "#EF444418" }}>
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#EF4444" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5z"/><polyline points="14 2 14 8 20 8"/><line x1="9.5" y1="12.5" x2="14.5" y2="17.5"/><line x1="14.5" y1="12.5" x2="9.5" y2="17.5"/></svg>
                         </div>
-                        {/* <span className="font-['Poppins'] font-medium text-[22px] leading-none" style={{ color: "#EF4444" }}>31</span> */}
-                        <span className="font-['Inter'] text-[15px] text-white/40 uppercase tracking-wide text-center">My Mistakes</span>
+                        <span className="font-['Inter'] text-[11px] text-white/40 uppercase tracking-wide text-center">My Mistakes</span>
                     </div>
                     </Link>
                     <Link to="/dashboard/my-copy" onClick={() => JSON.stringify(sessionStorage.setItem("isSavedCopy", true))} className="block">
-                    <div className="relative inner-tile rounded-xl p-3 flex flex-col items-center gap-1.5 active:scale-[0.97] transition-transform">
-                        <svg className="absolute top-2.5 right-2.5" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="rgb(var(--ui-text-rgb) / 0.30)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
-                        <div className="w-9 h-9 rounded-xl flex items-center justify-center" style={{ background: "#38BDF818" }}>
-                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#38BDF8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+                    <div className="relative inner-tile rounded-lg p-2.5 flex flex-col items-center gap-1 active:scale-[0.97] transition-transform">
+                        <svg className="absolute top-2 right-2" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="rgb(var(--ui-text-rgb) / 0.30)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+                        <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: "#38BDF818" }}>
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#38BDF8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
                         </div>
-                        {/* <span className="font-['Poppins'] font-medium text-[22px] leading-none" style={{ color: "#38BDF8" }}>47</span> */}
-                        <span className="font-['Inter'] text-[15px] text-white/40 uppercase tracking-wide text-center">Bookmarks</span>
+                        <span className="font-['Inter'] text-[11px] text-white/40 uppercase tracking-wide text-center">Bookmarks</span>
                     </div>
                     </Link>
                 </div>

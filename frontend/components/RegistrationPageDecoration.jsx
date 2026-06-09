@@ -4,33 +4,75 @@ import '../src/animation.css';
 
 const REVIEWS = [
   {
-    id: 'ayesha',
+    id: 'nasrin',
     quote:
-      'The accountability was everything. My coach checked in on me every week. I never felt like I was preparing alone.',
-    name: 'Ayesha Tariq',
-    meta: 'MDCAT 2024 — 172/200',
+      'Assalamualaikum, My name is Nasrin Ghafoor and Alhamdulillah I scored 175/180 in MDCAT 2025. I joined Mdcatemy for my preparation and I can confidently say that it is the best online platform for test series and guided preparation. Their MCQs are precise MDCAT relevant and free from unnecessary confusion, focusing only on what truly matters. What I appreciated the most was their outstanding staff and management, especially the way they engage with students individually helping them overcome fears and strengthen weak areas. To every MDCAT aspirant: If you\'re confused or feel lost in your preparation, join MDCATemy. It will give you the direction and support you need. Special thanks to Hayan Khan whose constant motivation and personal guidance helped remove the fear of MDCAT and kept us moving forward with confidence.',
+    name: 'Nasrin Ghafoor',
+    meta: 'MDCAT 2025 — 175/180 · 4th Position, KPK KMU MDCAT',
   },
   {
-    id: 'hassan',
+    id: 'shumaila',
     quote:
-      'The drills felt like the real exam. By test day I already knew my pacing and weak chapters.',
-    name: 'Hassan Malik',
-    meta: 'MDCAT 2024 — 168/200',
+      'Walikum Aslam. Allhumdulillah it was really helpful for me. The way you guys put effort into explanations (written as well as YouTube videos) was superb, Masha Allah. Even though I joined another series, it didn\'t help me like that. May Allah be pleased with you guys for helping us.',
+    name: 'Shumaila',
   },
   {
-    id: 'fatima',
+    id: 'salman',
     quote:
-      'Mocks + analytics showed exactly where I was leaking marks. Two months later my bio section flipped.',
-    name: 'Fatima Noor',
-    meta: 'MDCAT 2023 — 181/200',
+      'Wa Alaikum Assalam! Thank you for organizing the MDCATemy Online FLPs Session 2025. MDCATemy\'s Online FLPs Session 2025 was amazing! The teachers were great, and the study materials were very helpful. I look forward to being part of MDCATemy\'s future initiatives!',
+    name: 'M. Salman',
   },
   {
-    id: 'bilal',
-    quote: 'Clear structure, no noise. I could study after FSc classes and still stay on track.',
-    name: 'Bilal Ahmed',
-    meta: 'MDCAT 2024 — 159/200',
+    id: 'sahibzada',
+    quote:
+      'Walaikum Salam! I would like to share my feedback. My experience with the academy was very great. The papers were challenging yet helpful, and they gave me a clear idea of where I stand. The tests really helped me identify my weak areas effectively. The team\'s efforts and dedication are truly appreciated. JazakAllah for arranging such a great learning opportunity!',
+    name: 'Sahibzada Etminan',
+  },
+  {
+    id: 'hajra',
+    quote:
+      'The FLPs for MDCAT preparation were very helpful. I found the material so useful that I even made photocopies and studied them again and again. The video lectures were also great and helped me understand everything better. I\'m really thankful for all the effort you put into making these tests and lectures. I hope this support continues in the future. Wishing you all the best and many blessings!',
+    name: 'Hajra Shabir',
+  },
+  {
+    id: 'saddam',
+    quote:
+      'Wa Alaikum Assalam, Bhai, my experience with MDCATemy has been very good. I learned a lot of new things, especially it helped me understand how well my preparation was going. Overall, I gained a lot of knowledge and built my concepts. MDCATemy should definitely be launched again next year. It will be very beneficial for many students. Thanks to the entire MDCATemy team for their efforts and especially to Hayan Bhai. JazakAllah.',
+    name: 'Saddam Hussain',
+  },
+  {
+    id: 'adnan',
+    quote:
+      'W Salam Hayan Sir! I\'m good. My experience with MDCATemy FLPs 2025 was outstanding. The tests were well-planned, concept-based, and helped me track my progress effectively. Each discussion cleared doubts and boosted my confidence. It truly felt like learning under mentors who understand what MDCAT demands. Thank you so much.',
+    name: 'Adnan Amin',
+  },
+  {
+    id: 'zeeshan',
+    quote:
+      'The FLPs were so good, so conceptual, and according to the PMDC syllabus. They were very helpful for me. FLPs were according to past papers. The Physics and Chemistry portions were very good and conceptual, but Biology was a little bit easy. InshaAllah, Allah will give you success in launching MDCATemy as an online academy. Thank you very much, sir.',
+    name: 'Zeeshan Khan',
+  },
+  {
+    id: 'moona',
+    quote:
+      'Thank you so much to all teachers. MDCATemy ke FLPs ne meri bahut help ki hai. Jitna main expect nahi kar rahi thi ke meri preparation achi ho jayegi MDCAT ke liye. Aur sabse jo beneficial mujhe laga wo test ki written explanations thin, jis ki wajah se mujhe MCQs achi tarah clear ho jate the, as our teachers explained them in a very clear way. Baqi teachers bahut cooperative the. Koi bhi problem hoti to wo solve kar lete the. Allah kare ke MDCATemy FLPs ka session isi tarah har saal ho taake students achi tarah se apni preparation kar saken MDCAT ke liye. JazakAllah Khair.',
+    name: 'Moona Andaleeb',
+  },
+  {
+    id: 'aliba',
+    quote:
+      'Alhamdulillah, my experience with the MDCATemy Online FLPs Session 2025 was amazing! The teachers were dedicated, the explanations were clear, and the practice really boosted my confidence. I truly felt guided throughout. I think that was the answer to my Istikhara. Respected Hayan Sir, Hasnain Sir, Mubasir Sir, Shayan Sir, and all the other teachers really guided me in the way it was needed. Practice tests were amazing. They actually taught us how to learn for MDCAT. JazakAllah Khair for all your efforts!!',
+    name: 'Aliba Ali',
+  },
+  {
+    id: 'naeema',
+    quote:
+      'Walikum Salam. Although you are our age fellow or only one year older than us, you literally manage everything perfectly. First of all, I would like to appreciate your support and efforts for us. The way you guided and made things easier for us was more than anything someone can do. The test sessions and even those few lectures which you uploaded were gems for MDCAT aspirants. Honestly speaking, I did not score too well in those tests, but they made me learn important concepts, and those were obviously more important than the marks. JazakAllah. May Allah help you the way you helped us.',
+    name: 'Naeema',
   },
 ]
+
+const REVIEW_INTERVAL_MS = 12000
 
 const RegistrationPageDecoration = () => {
   const [reviewNumber, setReviewNumber] = useState(0);
@@ -38,11 +80,11 @@ const RegistrationPageDecoration = () => {
   
   useEffect(() => {
     const interval = setInterval(() => {
-      setReviewNumber(prev => (prev + 1) %  REVIEWS.length);
-    }, 3000);
+      setReviewNumber(prev => (prev + 1) % REVIEWS.length);
+    }, REVIEW_INTERVAL_MS);
 
-    () => clearInterval(interval);
-  },[]);
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <aside className="fade-in relative flex flex-1 flex-col border-b border-white/[0.06] px-6 py-10 lg:max-w-[46%] lg:border-b-0 lg:border-r lg:px-12 lg:py-14 order-2 lg:order-1">
@@ -54,7 +96,7 @@ const RegistrationPageDecoration = () => {
 
           [data-review-panel] {
             will-change: opacity, transform;
-            animation: reviewSwap 3s ease-in-out infinite;
+            animation: reviewSwap 0.7s ease-out forwards;
           }
 
           @keyframes reviewSwap {
@@ -62,17 +104,9 @@ const RegistrationPageDecoration = () => {
               opacity: 0;
               transform: translateY(8px);
             }
-            12% {
-              opacity: 1;
-              transform: translateY(0);
-            }
-            78% {
-              opacity: 1;
-              transform: translateY(0);
-            }
             100% {
-              opacity: 0;
-              transform: translateY(-6px);
+              opacity: 1;
+              transform: translateY(0);
             }
           }
         `}
@@ -125,7 +159,7 @@ const RegistrationPageDecoration = () => {
                 fontSize="23"
                 fill="#FFC600"
               >
-                184
+                175
               </text>
               <text
                 x="100"
@@ -141,22 +175,24 @@ const RegistrationPageDecoration = () => {
               </text>
             </svg>
           </div>
-          <h1 className="mt-10 text-center text-2xl font-extrabold leading-tight tracking-tight text-white sm:text-3xl">
-            Train Like a Warrior.
+          <h1 className="mt-10 text-center text-xl font-extrabold leading-tight tracking-tight text-white sm:text-3xl">
+            EVERY WHITE COAT BEGINS
             <br />
-            <span className="text-[#FFC600]">Score Like a Legend.</span>
+            AS A
+            <br />
+            <span className="text-[#FFC600]">WARRIOR IN THE DARK.</span>
           </h1>
           <div className="mt-8 grid grid-cols-3 gap-2 text-center sm:gap-4">
             <div>
-              <p className="text-2xl font-black text-[#FFC600] sm:text-3xl">184</p>
+              <p className="text-2xl font-black text-[#FFC600] sm:text-3xl">175</p>
               <p className="mt-1 text-[9px] font-bold uppercase tracking-wider text-white/40">Top score</p>
             </div>
             <div>
-              <p className="text-2xl font-black text-[#FFC600] sm:text-3xl">100</p>
+              <p className="text-2xl font-black text-[#FFC600] sm:text-3xl">120</p>
               <p className="mt-1 text-[9px] font-bold uppercase tracking-wider text-white/40">Per batch</p>
             </div>
             <div>
-              <p className="text-2xl font-black text-[#FFC600] sm:text-3xl">2024</p>
+              <p className="text-2xl font-black text-[#FFC600] sm:text-3xl">2025</p>
               <p className="mt-1 text-[9px] font-bold uppercase tracking-wider text-white/40">Founded</p>
             </div>
           </div>
@@ -172,8 +208,8 @@ const RegistrationPageDecoration = () => {
             />
             <div className="min-w-0 flex-1 px-4 py-4 sm:px-5 sm:py-5">
               <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/40">From the tribe</p>
-              <div data-reviews-root className="relative mt-3 min-h-[8.5rem] sm:min-h-[9rem]">
-                <article data-review-panel data-review-index={0} className="relative z-10">
+              <div data-reviews-root className="relative mt-3 min-h-[10rem] sm:min-h-[11rem]">
+                <article key={review.id} data-review-panel className="relative z-10">
                   <blockquote className="border-none p-0">
                     <p className="text-[13px] leading-relaxed text-white/80 sm:text-sm">
                       <span className="font-semibold text-[#FFC600]">&ldquo;</span>
@@ -182,7 +218,9 @@ const RegistrationPageDecoration = () => {
                     </p>
                     <footer className="mt-4 flex flex-col gap-1 border-t border-white/[0.06] pt-4 sm:flex-row sm:items-end sm:justify-between sm:gap-2">
                       <cite className="not-italic text-sm font-bold text-[#FFC600]">{review.name}</cite>
-                      <span className="text-xs text-white/45">{review.meta}</span>
+                      {review.meta && (
+                        <span className="text-xs text-white/45">{review.meta}</span>
+                      )}
                     </footer>
                   </blockquote>
                 </article>

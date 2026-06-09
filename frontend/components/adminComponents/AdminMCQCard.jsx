@@ -69,14 +69,30 @@ const MCQCard = ({mcq, mcqNo, testID, setMcqsAddedCount}) => {
                     <p className="mt-1 text-xs text-white/40">Topics: {mcq.chapter_name} · {mcq.subject_name}</p>
                 </div>
             </div>
-            <div className="flex shrink-0 items-center gap-4 md:flex-row flex-col">
-                <p className={`text-base ${error ? 'text-red-500' : 'text-green-500'}`}>{message}</p>
-                {!isAdded ? <button onClick={addMCQToTest} disabled={addedLoading} type="button" className={`${addedLoading ? 'cursor-not-allowed' : 'cursor-pointer'} rounded-xl border border-[#FFC600]/35 bg-[#FFC600]/10 px-4 py-2 text-xs font-black uppercase tracking-wider text-[#FFC600] transition hover:bg-[#FFC600]/20`}>{addedLoading ? 'Processing....' : 'Add to test'}</button> : ''}
-                {
-                    !isDeleted ? <button type="button" onClick={deleteMCQFromBank} disabled={deleteLoading} className={`${deleteLoading ? 'cursor-not-allowed' : 'cursor-pointer'} rounded-xl border border-red-500/35 bg-red-500/10 px-4 py-2 text-xs font-black uppercase tracking-wider text-red-400 transition hover:bg-red-500/20`}>
-                                    {deleteLoading ? 'Processing....' : 'Delete from bank'}
-                                </button> : ''
-                }
+            <div className="flex w-full flex-1 flex-col items-stretch gap-2 sm:ml-8">
+                {message ? <p className={`text-right text-sm ${error ? 'text-red-500' : 'text-green-500'}`}>{message}</p> : null}
+                <div className="flex w-full items-center justify-between">
+                    {!isAdded ? (
+                        <button
+                            onClick={addMCQToTest}
+                            disabled={addedLoading}
+                            type="button"
+                            className={`${addedLoading ? 'cursor-not-allowed' : 'cursor-pointer'} rounded-xl border border-[#FFC600]/35 bg-[#FFC600]/10 px-4 py-2 text-xs font-black uppercase tracking-wider text-[#FFC600] transition hover:bg-[#FFC600]/20`}
+                        >
+                            {addedLoading ? 'Processing....' : 'Add to test'}
+                        </button>
+                    ) : <span />}
+                    {!isDeleted ? (
+                        <button
+                            type="button"
+                            onClick={deleteMCQFromBank}
+                            disabled={deleteLoading}
+                            className={`${deleteLoading ? 'cursor-not-allowed' : 'cursor-pointer'} shrink-0 rounded-lg border border-red-500/30 bg-red-500/10 px-2 py-1 text-[10px] font-bold uppercase tracking-wide text-red-400 transition hover:bg-red-500/20`}
+                        >
+                            {deleteLoading ? '...' : 'Delete from bank'}
+                        </button>
+                    ) : <span />}
+                </div>
             </div>
             </div>
             <p className="mt-4 text-sm leading-relaxed text-white/90">{mcq.question}</p>

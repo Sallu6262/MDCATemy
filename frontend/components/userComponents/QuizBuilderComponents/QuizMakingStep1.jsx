@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import SubjectSelectButton from './SubjectSelectButton'
 import { subjectToColor } from '../../../utils/HelperObjects'
 
-const QuizMakingStep1 = ({showAccuracy, smartSelectHidden, setSelectedSubjects, selectedSubjects}) => {
+const QuizMakingStep1 = ({showAccuracy, smartSelectHidden, setSelectedSubjects, selectedSubjects, subjectAccuracy}) => {
 
     return (
         <>
@@ -11,9 +11,9 @@ const QuizMakingStep1 = ({showAccuracy, smartSelectHidden, setSelectedSubjects, 
                 showAccuracy || !smartSelectHidden ?
                 <div className="flex flex-wrap items-center gap-3 border-b border-[#2D302D]/60 bg-[#0E0F0E]/20 px-4 py-3">
                     <span className="[font-family:Poppins,sans-serif] text-[11px] font-black uppercase tracking-[0.14em] text-[#8B8E8B]/50">Your Prep</span>
-                    <span className="flex items-center gap-1 text-xs text-emerald-400"><span className="h-1.5 w-1.5 rounded-full bg-emerald-400"></span>{'Strong >=75%'}</span>
-                    <span className="flex items-center gap-1 text-xs text-amber-400"><span className="h-1.5 w-1.5 rounded-full bg-amber-400"></span>Improving 50-74%</span>
-                    <span className="flex items-center gap-1 text-xs text-red-400"><span className="h-1.5 w-1.5 rounded-full bg-red-400"></span>{'Needs work <50%'}</span>
+                    <span className={`flex items-center gap-1 text-xs text-emerald-400`}>{'● Strong >=75%'}</span>
+                    <span className={`flex items-center gap-1 text-xs text-amber-400`}>● Improving 50-74%</span>
+                    <span className={`flex items-center gap-1 text-xs text-red-400`}>{'● Needs work <50%'}</span>
                 </div> : ''
             }
 
@@ -24,11 +24,11 @@ const QuizMakingStep1 = ({showAccuracy, smartSelectHidden, setSelectedSubjects, 
             </div>
 
             <div className="grid gap-2 lg:grid-cols-2 lg:gap-3">
-                <SubjectSelectButton showAccuracy={showAccuracy} smartSelectHidden={smartSelectHidden} subject={"Biology"} colorClass={subjectToColor["Biology"]} setSelectedSubjects={setSelectedSubjects} isSelected={selectedSubjects.has('biology')}/>
-                <SubjectSelectButton showAccuracy={showAccuracy} smartSelectHidden={smartSelectHidden} subject={"Chemistry"} colorClass={subjectToColor["Chemistry"]} setSelectedSubjects={setSelectedSubjects} isSelected={selectedSubjects.has('chemistry')}/>
-                <SubjectSelectButton showAccuracy={showAccuracy} smartSelectHidden={smartSelectHidden} subject={"Physics"} colorClass={subjectToColor["Physics"]} setSelectedSubjects={setSelectedSubjects} isSelected={selectedSubjects.has('physics')}/>
-                <SubjectSelectButton showAccuracy={showAccuracy} smartSelectHidden={smartSelectHidden} subject={"English"} colorClass={subjectToColor["English"]} setSelectedSubjects={setSelectedSubjects} isSelected={selectedSubjects.has('english')}/>
-                <SubjectSelectButton showAccuracy={showAccuracy} smartSelectHidden={smartSelectHidden} subject={"Logical Reasoning"} colorClass={subjectToColor["Logical Reasoning"]} setSelectedSubjects={setSelectedSubjects} isSelected={selectedSubjects.has('logical_reasoning')}/>
+                <SubjectSelectButton accuracy={subjectAccuracy?.["biology"] ?? 0} showAccuracy={showAccuracy} smartSelectHidden={smartSelectHidden} subject={"Biology"} colorClass={subjectToColor["Biology"]} setSelectedSubjects={setSelectedSubjects} isSelected={selectedSubjects.has('biology')}/>
+                <SubjectSelectButton accuracy={subjectAccuracy?.["chemistry"] ?? 0} showAccuracy={showAccuracy} smartSelectHidden={smartSelectHidden} subject={"Chemistry"} colorClass={subjectToColor["Chemistry"]} setSelectedSubjects={setSelectedSubjects} isSelected={selectedSubjects.has('chemistry')}/>
+                <SubjectSelectButton accuracy={subjectAccuracy?.["physics"] ?? 0} showAccuracy={showAccuracy} smartSelectHidden={smartSelectHidden} subject={"Physics"} colorClass={subjectToColor["Physics"]} setSelectedSubjects={setSelectedSubjects} isSelected={selectedSubjects.has('physics')}/>
+                <SubjectSelectButton accuracy={subjectAccuracy?.["english"] ?? 0} showAccuracy={showAccuracy} smartSelectHidden={smartSelectHidden} subject={"English"} colorClass={subjectToColor["English"]} setSelectedSubjects={setSelectedSubjects} isSelected={selectedSubjects.has('english')}/>
+                <SubjectSelectButton accuracy={subjectAccuracy?.["logical_reasoning"] ?? 0} showAccuracy={showAccuracy} smartSelectHidden={smartSelectHidden} subject={"Logical Reasoning"} colorClass={subjectToColor["Logical Reasoning"]} setSelectedSubjects={setSelectedSubjects} isSelected={selectedSubjects.has('logical_reasoning')}/>
             </div>
             </div>
         </section>

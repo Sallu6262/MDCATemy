@@ -31,14 +31,15 @@ import ComingSoonPage from '../pages/ComingSoonPage'
 import ReviewPreviousQuizMcqsPage from '../pages/userPages/ReviewPreviousQuizMcqsPage';
 import PrivacyPolicyPage from '../pages/LandingPages/PrivacyPolicyPage';
 import TermsAndConditionsPage from '../pages/LandingPages/TermsAndConditionsPage';
-import CareersPage from '../pages/LandingPages/CareersPage';
+import CareersPage from '../pages/CareersPage';
 import DetailedAnalyticsPage from '../pages/userPages/DetailedAnalyticsPage';
 import UserAnalyticsLayout from '../layout/UserAnalyticsLayout';
 import { useEffect, useState } from 'react';
+import ExamPage from '../pages/userPages/ExamPage';
 
 const App = () => {
   const MDCATEMY_STATUS = import.meta.env.VITE_MDCATEMY_STATUS;
-  const [enrollmentCount, setEnrollmentCount] = useState(100);
+  const [enrollmentCount, setEnrollmentCount] = useState(120);
   
   const API_URL = import.meta.env.VITE_API_URL;
 
@@ -100,6 +101,8 @@ const App = () => {
               <Route path=':subject' element={<DetailedAnalyticsPage isSubjectOrChapter={true}/>}/>
               <Route path=':subject/:chapter' element={<DetailedAnalyticsPage isSubjectOrChapter={false} />}/>
             </Route>
+
+            <Route path=':examType/exam/:examID' element={<ExamPage />}/>
           </Route>
 
           <Route path='/admin' element={<AdminDashboardLayout />}>

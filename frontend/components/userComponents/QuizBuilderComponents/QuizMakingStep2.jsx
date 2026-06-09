@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import ChapterSelectButton from './ChapterSelectButton';
 import { formatName, subjectToColor } from '../../../utils/HelperObjects';
 
-const QuizMakingStep2 = ({filteredSubjects, selectedChapters, setSelectedChapters}) => {
+const QuizMakingStep2 = ({filteredSubjects, selectedChapters, setSelectedChapters, chapterAccuracy}) => {
     // console.log(filteredSubjects);
     const [subject, setSubject] = useState(Object.keys(filteredSubjects)[0]);
     // console.log(selectedChapters);
@@ -41,7 +41,7 @@ const QuizMakingStep2 = ({filteredSubjects, selectedChapters, setSelectedChapter
             </div>
             <div className="flex flex-col gap-5 p-4 lg:p-6">
                 {
-                    <ChapterSelectButton subject={subject} chapters={Object.keys(filteredSubjects[subject])} setSelectedChapters={setSelectedChapters} selectedChapters={selectedChapters} colorClassName={`bg-[${subjectToColor[subject]}]`}/>
+                    <ChapterSelectButton chapterAccuracy={chapterAccuracy} subject={subject} chapters={Object.keys(filteredSubjects[subject])} setSelectedChapters={setSelectedChapters} selectedChapters={selectedChapters} colorClassName={`bg-[${subjectToColor[subject]}]`}/>
                 }
             </div>
         </section>
