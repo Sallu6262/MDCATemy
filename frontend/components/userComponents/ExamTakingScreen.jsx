@@ -266,7 +266,7 @@ const ExamTakingScreen = ({ isQuiz, exam, isExamHappening, setIsExamHappeningPar
     if(!stopByTime && setSubmitExamLoading) setSubmitExamLoading(true);
 
     let url = API_URL;
-
+    
     if(isQuiz) url += `/quizzes/result`;
     else url += '/tests/submit';
 

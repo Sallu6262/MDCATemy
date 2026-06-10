@@ -11,7 +11,7 @@ const SubjectCircleButton = ({accuracy, color, subject}) => {
                     <circle cx="28" cy="28" r="22" fill="none" stroke={color} strokeWidth="6" strokeLinecap="round" strokeDasharray="138.23" strokeDashoffset={String(138.23 - (accuracy ?? 0))}/>
                 </svg>
                 <div className="absolute inset-0 flex items-center justify-center">
-                    <span className="font-['Poppins'] font-medium text-[15px] leading-none" style={{ color: `${color}` }}>{accuracy}%</span>
+                    <span className="font-['Poppins'] font-medium text-[15px] leading-none" style={{ color: `${color}` }}>{Math.round(accuracy)}%</span>
                 </div>
             </div>
             <span
