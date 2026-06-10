@@ -237,7 +237,7 @@ export const uploadPaymentReceipt = handleAsyncError(async (req, res, next) => {
     
     if (coupon && await isCouponValid(coupon)) {
         try {
-            await pool.query(`BEGIN; UPDATE students SET coupon='${coupon}' WHERE student_id=${req.user.student_id}; DELETE FROM coupons WHERE code='${coupon}'; COMMIT`);
+            await pool.query(`BEGIN; UPDATE students SET coupon='${coupon}' WHERE student_id=${req.user.student_id}; DELETE FROM coupons WHERE coupon_id IN (SELECT coupon_id FROM coupons WHERE code='${coupon}' ORDER BY coupon_id LIMIT 1); COMMIT`);
         } catch(error) {
             await pool.query("ROLLBACK");
             next(error);
@@ -329,39 +329,12 @@ export const getUsersSubjectChapterTopicWisePerformance = handleAsyncError(async
 
 const fetchUsersSubjectChapterTopicWisePerformance = async (student_id) => {
     const subjects = {}, chapters = {}, topics = {};
-    const chapters_and_topics_prep_score = (await pool.query("SELECT subject_name, chapter_name, topic_name, chapter_weight, topic_weight, tmi FROM topic_mastery INNER JOIN topics ON topics.topic_id = topic_mastery.topic_id INNER JOIN chapters ON chapters.chapter_id = topic_mastery.chapter_id INNER JOIN subjects ON subjects.subject_id = topic_mastery.subject_id WHERE student_id=$1", [student_id])).rows;
-    const chapter_detail = {};
-
-    chapters_and_topics_prep_score.forEach(element => {
-        const chap = formatColumnName(element.chapter_name); 
-        const topic = formatColumnName(element.topic_name); 
-
-        if (!chapters[chap]) 
-            chapters[chap] = 0;
-
-        chapters[chap] += element.topic_weight * +element.tmi;
-
-        chapter_detail[chap] = {
-            subject: element.subject_name,
-            cmi: chapters[chap],
-            weight: +element.chapter_weight
-        }
-
-        topics[topic] = Math.round(+element.tmi);
-    });
-
-    Object.entries(chapter_detail).forEach(([chap, info]) => {
-        const subject = formatColumnName(info.subject);
-        chapters[chap] = Math.round(chapters[chap]);
-
-        if (!subjects[subject]) 
-            subjects[subject] = 0;        
-
-        subjects[subject] += info.cmi * info.weight;
-    });
-
-    Object.entries(subjects).forEach(([subject, sms]) => {
-        subjects[formatColumnName(subject)] = Math.round(sms);
+    const chapters_and_topics_prep_score = (await pool.query("SELECT subjects.subject_name, chapters.chapter_name, topics.topic_name, chapter_mastery.tmi, chapter_mastery.cms, SUM(chapter_mastery.cms * chapter_weight) OVER(PARTITION BY chapter_mastery.subject_id) / SUM(chapter_weight) OVER (PARTITION BY chapter_mastery.subject_id) AS sms FROM (SELECT topic_mastery.subject_id, topic_mastery.chapter_id, topic_mastery.topic_id, topic_mastery.tmi, (SUM(tmi * topic_weight) OVER(PARTITION BY topic_mastery.chapter_id) / SUM(topic_weight) OVER (PARTITION BY topic_mastery.chapter_id)) AS cms FROM topic_mastery INNER JOIN topics ON topics.topic_id = topic_mastery.topic_id WHERE student_id=$1) AS chapter_mastery INNER JOIN topics ON topics.topic_id = chapter_mastery.topic_id INNER JOIN chapters ON chapters.chapter_id = chapter_mastery.chapter_id INNER JOIN subjects ON subjects.subject_id = chapter_mastery.subject_id", [student_id])).rows;
+    
+    chapters_and_topics_prep_score.forEach(obj => {
+        subjects[formatColumnName(obj.subject_name)] = Math.round((obj.sms ?? 0) * 100) / 100;
+        chapters[formatColumnName(obj.chapter_name)] = Math.round((obj.cms ?? 0) * 100) / 100;
+        topics[formatColumnName(obj.topic_name)] = Math.round((obj.tmi ?? 0) * 100) / 100;
     });
 
     return [subjects, chapters, topics];
