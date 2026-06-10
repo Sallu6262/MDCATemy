@@ -1,9 +1,44 @@
 import React from 'react'
 import '../../src/animation.css'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
+import sendErrorSuccessMessage from '../../utils/sendErrorSuccessMessage'
 
-const InternetConnectionLostPopUp = ({ connectionRestored = false, isQuiz, setIsOnline, setIsExamHappeningParent, startTimer}) => {
+const InternetConnectionLostPopUp = ({ connectionRestored = false, isQuiz, setIsOnline, setIsExamHappeningParent, startTimer, exam}) => {
     const navigate = useNavigate();
+    const {examType} = useParams();
+    const API_URL = import.meta.env.VITE_API_URL;
+
+    const quizExam = async () => {
+        if(!isQuiz){
+            const res = await fetch(`${API_URL}/tests/discard`, {
+                method: "POST",
+                credentials: 'include',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    test_id: exam?.test_id
+                })
+            });
+
+            if(res.ok){
+                sendErrorSuccessMessage('success', `${isQuiz ? 'Quiz' : 'Test'} quitted. Redirecting...`);
+            }
+        }
+
+        setIsExamHappeningParent(false);
+        navigate(`/dashboard/${examType}`);
+    }
+
+    const submitOfflineExam = async () => {
+        localStorage.setItem("exam", JSON.stringify({
+            ...exam,
+            examStatus: "NOT_SUBMITTED"
+        }))
+
+        setIsExamHappeningParent(false);
+        navigate(`/dashboard/${examType}`);
+    }
 
     return (
         <div className="fade-in fixed inset-0 z-[95] flex items-center justify-center bg-black/75 px-4 backdrop-blur-sm">
@@ -54,16 +89,14 @@ const InternetConnectionLostPopUp = ({ connectionRestored = false, isQuiz, setIs
                         <div className="mt-5 grid grid-cols-2 gap-3">
                             <button
                                 type="button"
+                                onClick={submitOfflineExam}
                                 className="cursor-pointer rounded-xl border border-amber-500/40 bg-amber-500/15 px-4 py-3 text-sm font-black uppercase tracking-[0.08em] text-amber-300 transition-colors hover:bg-amber-500/25"
                             >
                                 Submit Quiz
                             </button>
                             <button
                                 type="button"
-                                onClick={() => {
-                                    setIsExamHappeningParent(false);
-                                    navigate(isQuiz ? '/dashboard/quiz-builder' : '/dashboard/test-series');
-                                }}
+                                onClick={quizExam}
                                 className="cursor-pointer rounded-xl border border-red-400/35 bg-red-500/15 px-4 py-3 text-sm font-black uppercase tracking-[0.08em] text-red-300 transition-colors hover:bg-red-500/25"
                             >
                                 Quit Quiz

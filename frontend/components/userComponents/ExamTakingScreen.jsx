@@ -42,7 +42,7 @@ const Navigator = ({ exam, setMcqNumber, flagged, submitted, mcqNumber, blindMod
                 document.querySelector('.desktop-navigator').style.display = "none";
                 document.querySelector('.overlay').style.display = "none";
               }} 
-              type="button" className={`sm:!hidden cursor-pointer w-8 h-8 rounded-lg flex items-center justify-center text-[#A8ACA8] hover:text-white hover:bg-[#2A2C2A]/30 transition-colors`}>
+              type="button" className={`sm:!hidden cursor-pointer w-8 h-8 rounded-lg flex items-center justify-center text-[#A8ACA8] hover:text-white hover:bg-white/[0.08] transition-colors`}>
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <line x1="18" y1="6" x2="6" y2="18" />
                   <line x1="6" y1="6" x2="18" y2="18" />
@@ -263,7 +263,7 @@ const ExamTakingScreen = ({ isQuiz, exam, isExamHappening, setIsExamHappeningPar
   };
 
   const submitExam = async (stopByTime, setSubmitExamLoading) => {
-    if(!stopByTime) setSubmitExamLoading(true);
+    if(!stopByTime && setSubmitExamLoading) setSubmitExamLoading(true);
 
     let url = API_URL;
 
@@ -291,9 +291,9 @@ const ExamTakingScreen = ({ isQuiz, exam, isExamHappening, setIsExamHappeningPar
       setIsExamHappeningParent(false);
 
       localStorage.removeItem("exam");
+      localStorage.removeItem("examTimer");
       localStorage.removeItem("reload");
       localStorage.removeItem("reloadExam");
-      localStorage.removeItem("examTimer");
 
       if(exam?.test_mode !== 'Silent'){
         audioRef.current.pause();
@@ -301,7 +301,7 @@ const ExamTakingScreen = ({ isQuiz, exam, isExamHappening, setIsExamHappeningPar
       }
     }
 
-    if(!stopByTime) setSubmitExamLoading(false);
+    if(!stopByTime && setSubmitExamLoading) setSubmitExamLoading(false);
   };
 
   const startTimer = () => {
@@ -355,7 +355,6 @@ const ExamTakingScreen = ({ isQuiz, exam, isExamHappening, setIsExamHappeningPar
   useEffect(() => {
     setSelectedOption(null);
   }, [mcqNumber]);
-
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -522,7 +521,7 @@ const ExamTakingScreen = ({ isQuiz, exam, isExamHappening, setIsExamHappeningPar
       <style>{`
         .font-poppins { font-family: "Poppins", sans-serif; }
 
-        .main-area { min-width: 0; flex: 1; display: flex; flex-direction: column; background: #181A18; color: #fff; font-family: "Inter", sans-serif; -webkit-font-smoothing: antialiased; }
+        .main-area { min-width: 0; flex: 1; display: flex; flex-direction: column; background: var(--ui-bg); color: var(--ui-text); font-family: "Inter", sans-serif; -webkit-font-smoothing: antialiased; }
         .exam-screen-layout {
           flex: 1;
           display: flex;
@@ -536,12 +535,12 @@ const ExamTakingScreen = ({ isQuiz, exam, isExamHappening, setIsExamHappeningPar
           height: 100%;
           max-height: 100%;
         }
-        .topbar { height: 72px; background: #222422; border-bottom: 1px solid #2E302E; flex-shrink: 0; }
+        .topbar { height: 72px; background: var(--ui-panel); border-bottom: 1px solid var(--ui-border); flex-shrink: 0; }
         .quiz-subbar {
           flex-shrink: 0;
           height: 76px;
-          background: #222422;
-          border-bottom: 1px solid #2E302E;
+          background: var(--ui-panel);
+          border-bottom: 1px solid var(--ui-border);
         }
         .exam-screen-layout .quiz-body {
           flex: 1 1 0%;
@@ -555,7 +554,7 @@ const ExamTakingScreen = ({ isQuiz, exam, isExamHappening, setIsExamHappeningPar
           min-height: 0;
           display: flex;
           flex-direction: column;
-          background: #181A18;
+          background: var(--ui-bg);
           overflow-x: hidden;
           overflow-y: auto;
           -webkit-overflow-scrolling: touch;
@@ -572,9 +571,9 @@ const ExamTakingScreen = ({ isQuiz, exam, isExamHappening, setIsExamHappeningPar
           display: flex;
           flex-direction: column;
           flex-shrink: 0;
-          border: 1px solid #2E302E;
+          border: 1px solid var(--ui-border);
           border-radius: 14px;
-          background: #1E201E;
+          background: var(--ui-panel-2);
           padding: 20px 22px;
         }
         .question-box-core {
@@ -584,21 +583,21 @@ const ExamTakingScreen = ({ isQuiz, exam, isExamHappening, setIsExamHappeningPar
           width: 240px;
           flex-shrink: 0;
           min-height: 0;
-          background: #222422;
-          border-left: 1px solid #2E302E;
+          background: var(--ui-panel);
+          border-left: 1px solid var(--ui-border);
           display: flex;
           flex-direction: column;
           overflow: hidden;
         }
         .bottom-bar {
           flex-shrink: 0;
-          background: #222422;
-          border-top: 1px solid #2E302E;
+          background: var(--ui-panel);
+          border-top: 1px solid var(--ui-border);
         }
         .option-card {
           min-height: 74px;
-          border: 1px solid #2E302E;
-          background: #222422;
+          border: 1px solid var(--ui-border);
+          background: var(--ui-panel);
           border-radius: 12px;
           display: flex;
           align-items: center;
@@ -606,7 +605,7 @@ const ExamTakingScreen = ({ isQuiz, exam, isExamHappening, setIsExamHappeningPar
           padding: 18px 20px;
           width: 100%;
           text-align: left;
-          color: #fff;
+          color: var(--ui-text);
         }
         .option-card.selected {
           border-color: #FFC600;
@@ -622,8 +621,8 @@ const ExamTakingScreen = ({ isQuiz, exam, isExamHappening, setIsExamHappeningPar
           width: 34px;
           height: 34px;
           border-radius: 8px;
-          background: #2A2C2A;
-          color: #A8ACA8;
+          background: rgb(var(--ui-text-rgb) / 0.08);
+          color: var(--ui-muted);
           display: flex;
           align-items: center;
           justify-content: center;
@@ -637,9 +636,9 @@ const ExamTakingScreen = ({ isQuiz, exam, isExamHappening, setIsExamHappeningPar
           width: 100%;
           height: 58px;
           border-radius: 14px;
-          border: 1px solid #2E302E;
-          background: rgba(42, 44, 42, 0.25);
-          color: #A8ACA8;
+          border: 1px solid var(--ui-border);
+          background: rgb(var(--ui-text-rgb) / 0.06);
+          color: var(--ui-muted);
           display: flex;
           flex-direction: column;
           align-items: center;
@@ -651,7 +650,6 @@ const ExamTakingScreen = ({ isQuiz, exam, isExamHappening, setIsExamHappeningPar
           letter-spacing: 0.08em;
         }
         .action-chip.submit {
-          // color: #FFC600;
           background: rgba(255, 198, 0, 0.11);
           border-color: rgba(255, 198, 0, 0.46);
         }
@@ -659,7 +657,7 @@ const ExamTakingScreen = ({ isQuiz, exam, isExamHappening, setIsExamHappeningPar
 
         .nav-scroll { flex: 1; overflow-y: auto; padding: 16px 14px; min-height: 0; }
         .nav-scroll::-webkit-scrollbar { width: 6px; }
-        .nav-scroll::-webkit-scrollbar-track { background: #181A18; }
+        .nav-scroll::-webkit-scrollbar-track { background: var(--ui-bg); }
         .nav-scroll::-webkit-scrollbar-thumb { background: #FFC600; border-radius: 999px; }
         .question-grid {
           display: grid;
@@ -670,9 +668,9 @@ const ExamTakingScreen = ({ isQuiz, exam, isExamHappening, setIsExamHappeningPar
           position: relative;
           height: 38px;
           border-radius: 7px;
-          border: 1px solid #2E302E;
-          background: #181A18;
-          color: #A8ACA8;
+          border: 1px solid var(--ui-border);
+          background: var(--ui-bg);
+          color: var(--ui-muted);
           display: flex;
           align-items: center;
           justify-content: center;
@@ -682,7 +680,7 @@ const ExamTakingScreen = ({ isQuiz, exam, isExamHappening, setIsExamHappeningPar
         }
         .q-chip.answered { background: #FFC600; border-color: #FFC600; color: #181A18; }
         .q-chip.flagged { background: rgba(251, 146, 60, 0.22); border-color: rgba(251, 146, 60, 0.65); color: #FB923C; }
-        .q-chip.skipped { background: #2A2C2A; color: #A8ACA8; }
+        .q-chip.skipped { background: rgb(var(--ui-text-rgb) / 0.08); color: var(--ui-muted); }
         .q-chip.current { border: 2px solid #FFC600; box-shadow: 0 0 0 1px rgba(255, 198, 0, 0.25); }
         .q-chip.flagged::after {
           content: "";
@@ -693,14 +691,14 @@ const ExamTakingScreen = ({ isQuiz, exam, isExamHappening, setIsExamHappeningPar
           height: 8px;
           border-radius: 999px;
           background: #FB923C;
-          border: 1px solid #222422;
+          border: 1px solid var(--ui-panel);
         }
         .subject-label {
           display: flex;
           align-items: center;
           justify-content: space-between;
           margin-bottom: 10px;
-          color: #A8ACA8;
+          color: var(--ui-muted);
           font-size: 10px;
           font-weight: 900;
           text-transform: uppercase;
@@ -711,8 +709,8 @@ const ExamTakingScreen = ({ isQuiz, exam, isExamHappening, setIsExamHappeningPar
 
         .solution-card {
           margin-top: 0;
-          border: 1px solid #2E302E;
-          background: #222422;
+          border: 1px solid var(--ui-border);
+          background: var(--ui-panel);
           border-radius: 12px;
           padding: 14px 16px;
           display: flex;
@@ -724,12 +722,12 @@ const ExamTakingScreen = ({ isQuiz, exam, isExamHappening, setIsExamHappeningPar
           font-weight: 900;
           text-transform: uppercase;
           letter-spacing: 0.08em;
-          color: #A8ACA8;
+          color: var(--ui-muted);
         }
         .solution-value {
           font-size: 15px;
           line-height: 1.6;
-          color: #FFFFFF;
+          color: var(--ui-text);
           font-weight: 600;
         }
         .solution-value.correct { color: #34D399; }
@@ -739,7 +737,7 @@ const ExamTakingScreen = ({ isQuiz, exam, isExamHappening, setIsExamHappeningPar
           .quiz-subbar { height: 56px; padding-left: 16px; padding-right: 16px; }
           .question-inner { padding: 20px 16px; }
           .question-box { padding: 14px 16px; border-radius: 12px; }
-          .option-card { min-height: 56px; padding: 12px 16px; border-radius: 10px; gap: 14px; background: #111411; }
+          .option-card { min-height: 56px; padding: 12px 16px; border-radius: 10px; gap: 14px; background: var(--ui-panel-2); }
           .option-key { width: 28px; height: 28px; font-size: 10px; }
           .action-chip { width: auto; flex: 1; height: 38px; border-radius: 10px; font-size: 8px; }
         }
@@ -784,6 +782,7 @@ const ExamTakingScreen = ({ isQuiz, exam, isExamHappening, setIsExamHappeningPar
               setIsOnline={setIsOnline}
               setIsExamHappeningParent={setIsExamHappeningParent}
               startTimer={startTimer}
+              exam={exam}
             /> 
           }
 
