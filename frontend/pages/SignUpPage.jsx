@@ -4,7 +4,7 @@ import PaymentForm from '../components/PaymentForm'
 import { useNavigate, useOutletContext } from 'react-router-dom';
 
 const SignUpPage = () => {
-    const [step, setStep] = useState(2);
+    const [step, setStep] = useState(1);
     const sectionRef = useRef(null);
 
     const {student, admin} = useOutletContext();
