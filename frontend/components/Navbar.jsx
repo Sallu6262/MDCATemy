@@ -4,7 +4,7 @@ import logoImg from "../assets/mdcat.svg"
 
 const Navbar = ({user, setUser, isLanding, isEnrollmentFinished}) => {
   let name = user?.name;
-  name = name?.split(' ')?.map(n => n[0].toUpperCase()).slice(0,2);
+  name = name?.split(' ')?.map(n => n?.[0]?.toUpperCase()).slice(0,2);
 
   const API_URL = import.meta.env.VITE_API_URL;
   const navigate = useNavigate();

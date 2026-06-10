@@ -26,7 +26,7 @@ const SubjectCircleButton = ({accuracy, color, subject}) => {
 
 const UserDashboardPage = () => {
     const {studentAnalytics : sa, leaderboard} = useOutletContext();
-    const initials = sa?.name?.split(' ').map(n => n.slice(0,1).toUpperCase()).join(' ');
+    const initials = sa?.name?.split(' ')?.map(n => n?.[0]?.toUpperCase())?.join(' ');
 
     const mdcatDate = new Date(import.meta.env.VITE_MDCAT_DATE);
 
@@ -477,7 +477,7 @@ const UserDashboardPage = () => {
                             return (
                                 <div key={i} className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl">
                                 <span className="font-['Poppins'] font-bold text-[13px] w-5 text-center text-white/40">{icon}</span>
-                                <div className="w-8 h-8 rounded-full flex items-center justify-center font-['Poppins'] font-bold text-[10px]" style={{ background: '#10B98122', color: '#10B981' }}>{score?.name.split(' ').map(n => n[0].toUpperCase()).join('')}</div>
+                                <div className="w-8 h-8 rounded-full flex items-center justify-center font-['Poppins'] font-bold text-[10px]" style={{ background: '#10B98122', color: '#10B981' }}>{score?.name?.split(' ')?.map(n => n?.[0]?.toUpperCase())?.join('')}</div>
                                 <span className="flex-1 font-['Inter'] text-[14px] truncate text-white/70">{score?.name}</span>
                                 <span className="font-['Poppins'] font-bold text-[15px]" style={{ color: '#22C55E' }}>{score?.predicted_score ?? 0}</span>
                                 </div>
