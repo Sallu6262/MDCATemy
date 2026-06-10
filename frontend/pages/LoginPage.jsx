@@ -48,14 +48,17 @@ const LoginPage = () => {
             if(data2.status === 'success'){
                 if(data2.data.payment_status && data2.data.payment_status !== 'VERIFIED'){
                     setStudent(data2.data);
+                    setAdmin(null);
                     navigate('/payment-status');
                 } else {
                     if(data2.data.role === 'ADMIN'){
                         setAdmin(data2.data);
+                        setStudent(null);
                         navigate('/admin');
                     }
                     else{
                         setStudent(data2.data);
+                        setAdmin(null);
                         navigate('/dashboard');
                     }
                 }

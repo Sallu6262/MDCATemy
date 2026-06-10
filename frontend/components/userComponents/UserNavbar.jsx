@@ -28,7 +28,7 @@ const LockIcon = () => {
 const UserNavbar = () => {
     const {student} = useOutletContext();
     let name = student?.name;
-    name = name?.split(' ')?.map(n => n[0].toUpperCase()).slice(0,2);
+    name = name?.split(' ')?.map(n => n?.[0]?.toUpperCase())?.slice(0,2);
 
     const checkAccess = (roles) => {
       return roles.some(role => role === student?.role);

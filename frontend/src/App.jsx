@@ -1,5 +1,6 @@
-import {Route, RouterProvider, createBrowserRouter, createRoutesFromElements} from 'react-router-dom';
-import {EnrollmentContext} from '../utils/EnrollmentContext';
+import { Route, RouterProvider, createBrowserRouter, createRoutesFromElements } from 'react-router-dom';
+import { EnrollmentContext } from '../utils/EnrollmentContext';
+import { useEffect, useState } from 'react';
 import MainLayout from '../layout/MainLayout';
 import MainLandingPage from '../pages/LandingPages/MainLandingPage';
 import BatchEnrollmentLandingPage from '../pages/LandingPages/BatchEnrollmentLandingPage';
@@ -34,7 +35,6 @@ import TermsAndConditionsPage from '../pages/LandingPages/TermsAndConditionsPage
 import CareersPage from '../pages/CareersPage';
 import DetailedAnalyticsPage from '../pages/userPages/DetailedAnalyticsPage';
 import UserAnalyticsLayout from '../layout/UserAnalyticsLayout';
-import { useEffect, useState } from 'react';
 import ExamPage from '../pages/userPages/ExamPage';
 
 const App = () => {
