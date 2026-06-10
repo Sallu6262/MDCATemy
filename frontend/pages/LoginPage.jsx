@@ -72,7 +72,7 @@ const LoginPage = () => {
     }
 
     useEffect(() => {
-        if(student && student.payment_status === 'VERIFIED') navigate('/dashboard');
+        if(student?.upgrade_status === "VERIFIED" || student?.payment_status === 'VERIFIED') navigate('/dashboard');
         if(admin) navigate('/admin');
     });
 

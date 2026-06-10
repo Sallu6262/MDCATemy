@@ -1,6 +1,6 @@
 import nasrinFull from "../../assets/Images/nasrin-full.svg"
 import hayanCircle from "../../assets/Images/hayan-circle.svg"
-import hayanTeacher from "../../assets/Images/Hayan.svg"
+import hayanTeacher from "../../assets/Images/hayan-teacher.svg"
 import salmanTeacher from "../../assets/Images/salman-teacher.svg"
 import awaisTeacher from "../../assets/Images/awais-teacher.jpeg"
 import grammlogic from "../../assets/Images/grammlogic.svg"
@@ -385,8 +385,7 @@ const BatchEnrollmentLandingPage = () => {
             </p>
             <div className="mx-auto mb-4 h-0.5 w-10 bg-[#F6C90E]" />
             <p className="mb-6 flex-1 text-[0.85rem] leading-[1.7] text-[#555]">
-              PhD in Chemistry. The teacher who taught both Hayan and Salman during their own preparation. Now bringing
-              that same expertise directly into your MDCAT preparation, strictly according to your syllabus.
+              PhD in Chemistry. The teacher who taught both Hayan and Salman during their own preparation. 15 years of teaching experience. An active member of Book Review committee
             </p>
             <a href="https://youtu.be/_SH627XBC4g?si=GUWtSNF2xRvEDhr6" target="_blank" className={`${ctaBtn} w-full px-6 py-3.5 text-xs tracking-wide`}>
               Watch Demo Lecture
@@ -434,9 +433,15 @@ const BatchEnrollmentLandingPage = () => {
                   <br />
                   Bahadur Batch
                 </h2>
-                <p className="mb-1 text-[1.05rem] font-extrabold text-[#111]">PKR 19,999 &nbsp;—&nbsp; One-time fee</p>
+                <div className="mb-2 flex flex-wrap flex-col lg:flex-row items-center gap-2">
+                  <span className="text-[1.05rem] font-extrabold text-black line-through decoration-black">PKR 20,000</span>
+                  <span className="rounded-full border border-[#FFC600]/30 bg-[#F6C90E] px-2.5 py-0.5 text-[0.72rem] font-bold uppercase tracking-wide text-black">
+                    Hayan's Birthday Discount (10% Off)
+                  </span>
+                </div>
+                <p className="mb-1 text-[1.05rem] font-extrabold text-[#111]">PKR 18000 &nbsp;—&nbsp; One-time fee</p>
                 <p className="mb-5 text-[0.92rem] font-semibold text-[#111]">
-                  Installment plan is available for deserving students
+                  Installment plan is available for students
                 </p>
                 <Link to="/signup" 
                   onClick={(e) => {
@@ -467,7 +472,7 @@ const BatchEnrollmentLandingPage = () => {
             </ul>
 
             <div className="border-t border-[#efefef] px-[52px] py-11 pb-12 text-center max-[700px]:px-6 max-[700px]:py-9">
-              <p className="mb-1.5 text-[1.6rem] font-black text-[#111]">PKR 19,999</p>
+              <p className="mb-1.5 text-[1.6rem] font-black text-[#111]">PKR 18000</p>
               <p className="mb-8 text-[0.92rem] font-semibold text-[#111]">
                 2 months instalment plan available for deserving students
               </p>

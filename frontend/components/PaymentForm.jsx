@@ -12,13 +12,13 @@ const PaymentForm = () => {
         'QUIZ_ONLY' : 3000,
         'TEST_ONLY' : 2000,
         'DUAL_ACCESS' : 5000,
-        'TRIBE_MEMBER' : 19999
+        'TRIBE_MEMBER' : 18000
     }
 
     const API_URL = import.meta.env.VITE_API_URL;
     const navigate = useNavigate();
 
-    const [payment, setPayment] = useState(paymentType[student?.role]);
+    const [payment, setPayment] = useState(paymentType[student?.role ?? "DUAL_ACCESS"]);
     const [paymentProof, setPaymentProof] = useState('');
     const [coupon, setCoupon] = useState('');
     const [tempCoupon, setTempCoupon] = useState('');
@@ -28,6 +28,9 @@ const PaymentForm = () => {
     const [isCouponCorrect, setIsCouponCorrect] = useState('');
     const [applyLoading, setApplyLoading] = useState(false);
     const [paymentLoading, setPaymentLoading] = useState(false);
+
+    const [paymentError, setPaymentError] = useState(false);
+    const [paymentMessage, setPaymentMessage] = useState('');
 
     const verifyCoupon = async () => {
         if(coupon?.length === 0) return;
@@ -66,7 +69,6 @@ const PaymentForm = () => {
         const formData = new FormData();
         formData.append("receipt", paymentProof);
         formData.append("coupon", tempCoupon);
-        formData.append("upgrade_role", upgradedRole);
 
         const res = await fetch(`${API_URL}/users/receipt`,{
             method: "POST",
@@ -77,9 +79,13 @@ const PaymentForm = () => {
         const data = await res.json();
         
         if(data.status === 'success'){
+            setPaymentMessage('');
+            setPaymentError(false);
             navigate('/payment-status');
         } else {
             sendErrorSuccessMessage('error', data.message);
+            setPaymentMessage(data.message);
+            setPaymentError(true);
         }
 
         setPaymentLoading(false);
@@ -127,6 +133,7 @@ const PaymentForm = () => {
 
                 <div>
                 <label htmlFor="total_payment" className="mb-2 block text-[11px] font-bold uppercase tracking-wider text-white/45">Total payment (Rs)</label>
+                {payment === paymentType["TRIBE_MEMBER"] && <p className="mb-2 text-base font-bold text-red-500 line-through decoration-red-500">Rs 20000</p>}
                 <input
                     id="total_payment"
                     name="total_payment"
@@ -194,18 +201,33 @@ const PaymentForm = () => {
 
                 <div className="rounded-xl border border-white/[0.1] bg-[#141414]/90 p-4 sm:p-5">
                 <p className="text-xs font-bold uppercase tracking-[0.18em] text-white/45">Transfer to this account</p>
-                <div className="mt-4 space-y-3">
+                <div className="mt-4 space-y-5">
+                    <div className="space-y-3">
+                    <p className="text-[11px] font-bold uppercase tracking-wider text-[#FFC600]">Easypaisa / JazzCash</p>
                     <div className="rounded-lg border border-white/[0.08] bg-[#1c1c1c] px-4 py-3">
                     <p className="text-[11px] font-semibold uppercase tracking-wider text-white/40">Account name</p>
-                    <p className="mt-1 text-sm font-semibold text-white/90">MDCATEMY (PVT) LTD</p>
+                    <p className="mt-1 text-sm font-semibold text-white/90">Muhammad Hayan Khan</p>
                     </div>
                     <div className="rounded-lg border border-white/[0.08] bg-[#1c1c1c] px-4 py-3">
                     <p className="text-[11px] font-semibold uppercase tracking-wider text-white/40">Account number</p>
-                    <p className="mt-1 text-sm font-semibold text-white/90">0102-7865-4471-00</p>
+                    <p className="mt-1 text-sm font-semibold text-white/90">03058697159</p>
+                    </div>
+                    </div>
+
+                    <div className="space-y-3">
+                    <p className="text-[11px] font-bold uppercase tracking-wider text-[#FFC600]">Bank Transfer</p>
+                    <div className="rounded-lg border border-white/[0.08] bg-[#1c1c1c] px-4 py-3">
+                    <p className="text-[11px] font-semibold uppercase tracking-wider text-white/40">Bank</p>
+                    <p className="mt-1 text-sm font-semibold text-white/90">Meezan Bank</p>
                     </div>
                     <div className="rounded-lg border border-white/[0.08] bg-[#1c1c1c] px-4 py-3">
-                    <p className="text-[11px] font-semibold uppercase tracking-wider text-white/40">Account IBAN</p>
-                    <p className="mt-1 break-all text-sm font-semibold text-white/90">PK36HABB0001027865447100</p>
+                    <p className="text-[11px] font-semibold uppercase tracking-wider text-white/40">Account title</p>
+                    <p className="mt-1 text-sm font-semibold text-white/90">MUHAMMAD HAYAN KHAN</p>
+                    </div>
+                    <div className="rounded-lg border border-white/[0.08] bg-[#1c1c1c] px-4 py-3">
+                    <p className="text-[11px] font-semibold uppercase tracking-wider text-white/40">Account number</p>
+                    <p className="mt-1 text-sm font-semibold text-white/90">00300114286728</p>
+                    </div>
                     </div>
                 </div>
                 </div>
@@ -257,6 +279,8 @@ const PaymentForm = () => {
                     </label>
                     <input onChange={e => setPaymentProof(e.target.files[0])} id="payment_screenshot" name="payment_screenshot" type="file" accept="image/*" required className="sr-only" />
                     </div>
+
+                    <span className={`inline-block text-lg text-center ${paymentError ? 'text-red-500' : 'text-green-500'}`}>{paymentMessage}</span>
 
                     <button
                     type="submit"

@@ -39,7 +39,7 @@ import ExamPage from '../pages/userPages/ExamPage';
 
 const App = () => {
   const MDCATEMY_STATUS = import.meta.env.VITE_MDCATEMY_STATUS;
-  const [enrollmentCount, setEnrollmentCount] = useState(120);
+  const [enrollmentCount, setEnrollmentCount] = useState(85);
   
   const API_URL = import.meta.env.VITE_API_URL;
 
