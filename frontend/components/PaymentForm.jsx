@@ -109,7 +109,10 @@ const PaymentForm = () => {
     useEffect(() => {
         const baseAmount = paymentType[student?.role ?? "DUAL_ACCESS"];
         let amount = isInstallment && student?.role === "TRIBE_MEMBER" ? baseAmount / 2 : baseAmount;
-        if (isCouponCorrect === 'true') amount *= 0.8;
+        if (isCouponCorrect === 'true'){
+            if(discountCoupon10.has(coupon)) amount *= 0.9;
+            else amount *= 0.8;
+        }
         setPayment(amount);
     }, [isInstallment, student?.role, isCouponCorrect]);
 
