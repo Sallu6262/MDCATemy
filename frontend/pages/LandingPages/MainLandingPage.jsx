@@ -163,9 +163,9 @@ const MainLandingPage = () => {
                 It&apos;s Free
               </span>
               <h3 className="mb-5 text-center text-base font-black uppercase leading-[1.25] tracking-[-0.2px] text-[#1a1a1a]">
-                WHY 90% OF MDCAT
+                60 DAY MDCAT
                 <br />
-                STUDENTS FAIL
+                STUDY PLANNER
               </h3>
               <div className="mb-5 flex h-[200px] w-[200px] items-center justify-center">
                 <img src={webinarImg} alt="Why 90% of MDCAT Students Fail Webinar" className="h-full w-full object-contain" />
@@ -183,32 +183,6 @@ const MainLandingPage = () => {
               </a>
             </div>
           </div>
-        </div>
-      </section>
-
-      {/* Free MDCAT Counseling */}
-      <section className="bg-[#1a1a1a] px-6 py-16 text-center">
-        <div className="max-w-[600px] mx-auto">
-          <span className="inline-block text-[11px] font-extrabold tracking-[2px] uppercase text-[#ffffff] mb-[18px]">
-            100% Free &nbsp;·&nbsp; No Commitment
-          </span>
-          <h2 className="text-[2rem] font-black text-[#ffffff] tracking-[-1px] uppercase leading-[1.05] mb-3.5 max-[640px]:text-[1.65rem]">
-            GET FREE MDCAT COUNSELING
-          </h2>
-          <p className="text-base text-[rgba(255,255,255,0.55)] leading-[1.7] mb-8">
-            Send your details and questions and we will answer you within 24 hours.
-          </p>
-          <a
-            href="https://forms.gle/zbeoaP1UmkFEh6fRA"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-block bg-[#F6C90E] text-[#1a1a1a] text-[15px] font-black tracking-[1.5px] uppercase no-underline px-[52px] py-5 rounded-full transition-all duration-200 hover:bg-[#ffffff] hover:text-[#1a1a1a] hover:-translate-y-px max-[640px]:w-full max-[640px]:px-6 max-[640px]:py-[18px]"
-          >
-            Get Free Counseling
-          </a>
-          <p className="text-[0.78rem] text-[rgba(255,255,255,0.25)] mt-3.5 tracking-[0.3px]">
-            Fill out a quick form — takes less than 2 minutes
-          </p>
         </div>
       </section>
 

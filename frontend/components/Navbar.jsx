@@ -4,7 +4,7 @@ import logoImg from "../assets/mdcat.svg"
 
 const Navbar = ({user, setUser, isLanding, isEnrollmentFinished}) => {
   let name = user?.name;
-  name = name?.split(' ')?.map(n => n[0].toUpperCase()).slice(0,2);
+  name = name?.split(' ')?.map(n => n?.[0]?.toUpperCase()).slice(0,2);
 
   const API_URL = import.meta.env.VITE_API_URL;
   const navigate = useNavigate();
@@ -146,9 +146,9 @@ const Navbar = ({user, setUser, isLanding, isEnrollmentFinished}) => {
                 }
                 <div className="my-1 h-px bg-white/10"></div>
                 {
-                  user?.payment_status === 'VERIFIED' ? 
+                  user?.payment_status === 'VERIFIED' || user?.role === 'ADMIN' ? 
                   <>
-                    <button type="button" className="rounded-lg border border-white/20 bg-white/[0.04] px-3 py-2 text-sm font-semibold text-white/80 transition hover:bg-white/[0.08] hover:text-white">Logout</button>
+                    <button type="button" onClick={logOutWebsite} className="rounded-lg border border-white/20 bg-white/[0.04] px-3 py-2 text-sm font-semibold text-white/80 transition hover:bg-white/[0.08] hover:text-white">Logout</button>
                     <button type="button" className="mt-1 inline-flex items-center justify-center gap-2 rounded-lg border border-[#FFC600]/40 bg-[#FFC600]/10 px-3 py-2 text-sm font-semibold text-[#FFC600]" aria-label="Profile initials">
                       <span className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-[#FFC600]/40 bg-[#FFC600]/15 text-xs font-black">{name}</span>
                       <span>Profile</span>

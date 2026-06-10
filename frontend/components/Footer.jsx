@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom"
+import mdcatSvg from '../assets/mdcat.svg';
 
 const Footer = () => {
   const navigateToComponent = (id) => {
@@ -20,7 +21,7 @@ const Footer = () => {
         <div className="grid grid-cols-2 lg:grid-cols-5 gap-10">
 
           <div className="col-span-2">
-            <img src="/../assets/mdcat.svg" alt="MDCATEMY" style={{ height: "32px", width: "auto", marginBottom: "1.25rem" }} />
+            <img src={mdcatSvg} alt="MDCATEMY" style={{ height: "32px", width: "auto", marginBottom: "1.25rem" }} />
             <p className="max-w-xs text-sm leading-relaxed text-[#A8ACA8]">Pakistan&apos;s most intensive MDCAT preparation system. Built by a warrior, for warriors.</p>
             <div className="flex items-center gap-4 mt-6">
               <a href="https://instagram.com/mdcatemy" target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-xl flex items-center justify-center transition-all duration-200 hover:bg-white/10" style={{ background: "rgb(var(--ui-text-rgb) / 0.06)", border: "1px solid rgb(var(--ui-text-rgb) / 0.1)", color: "rgb(var(--ui-text-rgb) / 0.6)" }} aria-label="Instagram">
@@ -36,6 +37,7 @@ const Footer = () => {
           </div>
 
           <div>
+            <p className="text-white font-bold text-xs uppercase tracking-widest mb-5">Quick Links</p>
             <ul className="space-y-3">
               <li><Link to="/batch-enrollment" className="text-sm transition-colors duration-200 hover:text-white" style={{ color: "rgb(var(--ui-text-rgb) / 0.45)", textDecoration: "none" }}>Batch Enrollment</Link></li>
               <li><Link to="/" onClick={() => document.getElementById("study-material").scrollIntoView({behavior: 'smooth'})} className="text-sm transition-colors duration-200 hover:text-white" style={{ color: "rgb(var(--ui-text-rgb) / 0.45)", textDecoration: "none" }}>Study Material</Link></li>
