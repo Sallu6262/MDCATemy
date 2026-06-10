@@ -20,7 +20,7 @@ CREATE TABLE chapters(
 
 CREATE TABLE topics(
     topic_id SERIAL PRIMARY KEY,
-    topic_name VARCHAR(50) NOT NULL,
+    topic_name VARCHAR(100) NOT NULL,
     subject_id INT NOT NULL,
     chapter_id INT NOT NULL,
     topic_weight NUMERIC(5,2),
@@ -53,7 +53,7 @@ CREATE TABLE students (
     fsc_percentage NUMERIC(10,2) NOT NULL,
     prev_mdcat_score INT CHECK(prev_mdcat_score >= 0),
     target_marks INT NOT NULL,
-    predicted_score INT NOT NULL DEFAULT 80,
+    predicted_score INT NOT NULL DEFAULT 95,
     coupon VARCHAR(10),
     payment_status PAYMENT_STATUS NOT NULL DEFAULT 'PENDING',
     upgrade_status PAYMENT_STATUS,
@@ -211,7 +211,8 @@ CREATE TABLE topic_mastery (
 );
 
 CREATE TABLE coupons (
-    code VARCHAR(10) NOT NULL UNIQUE
+    coupon_id SERIAL PRIMARY KEY,
+    code VARCHAR(10) NOT NULL
 );
 
 
