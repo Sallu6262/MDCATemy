@@ -16,7 +16,7 @@ const UserDashboardLayout = () => {
     
     useEffect(() => {
         // console.log('here in dashboard');
-        if(!student || student?.payment_status === 'REJECTED'){
+        if(!student || student?.payment_status !== 'VERIFIED'){
             navigate('/');
             return;
         } 

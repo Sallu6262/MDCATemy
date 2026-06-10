@@ -11,7 +11,7 @@ const PaymentForm = () => {
     const paymentType = {
         'QUIZ_ONLY' : 3000,
         'TEST_ONLY' : 2000,
-        'DUAL_ACCESS' : 5000,
+        'DUAL_ACCESS' : 3500,
         'TRIBE_MEMBER' : 18000
     }
 

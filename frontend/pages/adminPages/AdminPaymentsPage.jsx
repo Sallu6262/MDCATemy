@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useEffect } from 'react';
 import ErrorComponent from '../../components/ErrorComponent'
 import { useNavigate, useOutletContext } from 'react-router-dom';
+import sendErrorSuccessMessage from '../../utils/sendErrorSuccessMessage';
 
 const AdminPaymentsPage = () => {
     const [users, setUsers] = useState([]);
@@ -52,12 +53,15 @@ const AdminPaymentsPage = () => {
         });
 
         if(res.status === 200){
+            sendErrorSuccessMessage('success',`Payment verified for user: ${users[userNumber]?.name}`);
             setUsers(prev => {
                 const updated = prev.filter(user => user.email !== prev[userNumber]?.email);
                 fetchUserReceipt(updated, 0);
                 return updated;
             });
             setUserNumber(0);
+        } else {
+            sendErrorSuccessMessage('error','Operation Failed!');
         }
 
         setVerifyLoading(false);
@@ -78,12 +82,15 @@ const AdminPaymentsPage = () => {
         });
 
         if(res.status === 200){
+            sendErrorSuccessMessage('success',`Payment rejected for user: ${users[userNumber]?.name}`);
             setUsers(prev => {
                 const updated = prev.filter(user => user.email !== prev[userNumber]?.email);
                 fetchUserReceipt(updated, 0);
                 return updated;
             });
             setUserNumber(0);
+        } else {
+            sendErrorSuccessMessage('error','Operation Failed!');
         }
 
         setRejectLoading(false);

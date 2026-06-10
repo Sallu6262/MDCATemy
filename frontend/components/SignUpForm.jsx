@@ -310,7 +310,7 @@ const SignUpForm = ({setStep}) => {
                     <option value="TRIBE_MEMBER" disabled={enrollmentCount === 0} className="bg-[#1c1c1c]">
                         Bahadur Batch Student
                     </option>
-                    <option value="TEST_ONLY" disabled={MDCATEMY_STATUS === 'coming-soon'} className="bg-[#1c1c1c]">
+                    <option value="DUAL_ACCESS" disabled={MDCATEMY_STATUS === 'coming-soon'} className="bg-[#1c1c1c]">
                         Test Series Student {` ${MDCATEMY_STATUS === 'coming-soon' ? ' - Coming Soon' : ''}`}
                     </option>
                     </select>
