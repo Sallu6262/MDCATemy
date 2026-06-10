@@ -255,7 +255,7 @@ export const uploadPaymentReceipt = handleAsyncError(async (req, res, next) => {
 
     res.status(200).json({
         status: "success",
-        payment_status: req.user.payment_status,
+        payment_status: req.user.payment_status === "REJECTED" ? "PENDING" : req.user.payment_status,
         upgrade_status: req.user.payment_status === "VERIFIED" ? "PENDING" : undefined,
     });
 });
