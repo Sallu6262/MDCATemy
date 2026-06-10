@@ -124,30 +124,35 @@ const PaymentForm = () => {
             <p className="mt-2 text-sm text-white/50">Apply coupon, transfer amount to the account below, then upload proof screenshot.</p>
 
             <div className="mt-8 space-y-6" >
-                <label htmlFor="coupon_code" className="mb-2 block text-[11px] font-bold uppercase tracking-wider text-white/45">Coupon code</label>
-                <div className='flex flex-col gap-2 justify-between'>
-                <div className="flex flex-col gap-3 sm:flex-row">
-                    <input
-                        value={coupon}
-                        onChange={e => setCoupon(e.target.value)}
-                        id="coupon_code"
-                        name="coupon_code"
-                        type="text"
-                        placeholder="Enter coupon code"
-                        className="w-full rounded-xl border border-white/[0.1] bg-[#1c1c1c] px-4 py-3.5 text-sm text-white placeholder:text-white/30 outline-none focus:border-[#FFC600]/50 focus:ring-2 focus:ring-[#FFC600]/20"
-                        />
-                    <button
-                    type="button"
-                    disabled={applyLoading}
-                    onClick={verifyCoupon}
-                    className={`${applyLoading ? 'cursor-not-allowed' : 'cursor-pointer'} inline-flex items-center justify-center rounded-xl border border-[#FFC600]/55 bg-[#FFC600]/10 px-6 py-3.5 text-sm font-black uppercase tracking-wider text-[#FFC600] hover:bg-[#FFC600]/15`}
-                    >
-                        {applyLoading ? 'Processing....' : 'Apply'}
-                    </button>
-                </div>
-                {isCouponCorrect == 'true' ? <p className='text-sm text-green-500'>&nbsp; Coupon verified! Check New Payment!</p> : ''}
-                {isCouponCorrect == 'false' ? <p className='text-sm text-red-500'>&nbsp; Invalid Coupon!</p> : ''}
-                </div>
+                {
+                    student?.role === "TRIBE_MEMBER" &&
+                    <>
+                    <label htmlFor="coupon_code" className="mb-2 block text-[11px] font-bold uppercase tracking-wider text-white/45">Coupon code</label>
+                    <div className='flex flex-col gap-2 justify-between'>
+                    <div className="flex flex-col gap-3 sm:flex-row">
+                        <input
+                            value={coupon}
+                            onChange={e => setCoupon(e.target.value)}
+                            id="coupon_code"
+                            name="coupon_code"
+                            type="text"
+                            placeholder="Enter coupon code"
+                            className="w-full rounded-xl border border-white/[0.1] bg-[#1c1c1c] px-4 py-3.5 text-sm text-white placeholder:text-white/30 outline-none focus:border-[#FFC600]/50 focus:ring-2 focus:ring-[#FFC600]/20"
+                            />
+                        <button
+                        type="button"
+                        disabled={applyLoading}
+                        onClick={verifyCoupon}
+                        className={`${applyLoading ? 'cursor-not-allowed' : 'cursor-pointer'} inline-flex items-center justify-center rounded-xl border border-[#FFC600]/55 bg-[#FFC600]/10 px-6 py-3.5 text-sm font-black uppercase tracking-wider text-[#FFC600] hover:bg-[#FFC600]/15`}
+                        >
+                            {applyLoading ? 'Processing....' : 'Apply'}
+                        </button>
+                    </div>
+                    {isCouponCorrect == 'true' ? <p className='text-sm text-green-500'>&nbsp; Coupon verified! Check New Payment!</p> : ''}
+                    {isCouponCorrect == 'false' ? <p className='text-sm text-red-500'>&nbsp; Invalid Coupon!</p> : ''}
+                    </div>
+                    </>
+                }
 
                 <div>
                 {
