@@ -28,6 +28,7 @@ const PaymentForm = () => {
     const [tempCoupon, setTempCoupon] = useState('');
     const [upgradedRole, setUpgradedRole] = useState(student?.role || '');
     const [selectedStartDate, setSelectedStartDate] = useState('2026-06-15');
+    const [discount, setDiscount] = useState(0.8);
 
     const [isCouponCorrect, setIsCouponCorrect] = useState('');
     const [applyLoading, setApplyLoading] = useState(false);
@@ -44,6 +45,7 @@ const PaymentForm = () => {
 
         if(discountCoupon10.has(coupon)){
             setIsCouponCorrect("true");
+            setDiscount(0.9);
         } else {
             const res = await fetch(`${API_URL}/payments/verify-coupon`,{
                 method: 'POST',
@@ -58,6 +60,7 @@ const PaymentForm = () => {
     
             if(res.status === 200){
                 setIsCouponCorrect("true");
+                setDiscount(0.8);
             } else {
                 setIsCouponCorrect("false");
             }
@@ -110,8 +113,7 @@ const PaymentForm = () => {
         const baseAmount = paymentType[student?.role ?? "DUAL_ACCESS"];
         let amount = isInstallment && student?.role === "TRIBE_MEMBER" ? baseAmount / 2 : baseAmount;
         if (isCouponCorrect === 'true'){
-            if(discountCoupon10.has(coupon)) amount *= 0.9;
-            else amount *= 0.8;
+            amount *= discount;
         }
         setPayment(amount);
     }, [isInstallment, student?.role, isCouponCorrect]);
