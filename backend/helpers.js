@@ -4,6 +4,10 @@ import { Readable } from "stream";
 import { readSheet } from 'read-excel-file/node';
 import pool from "./database.js";
 
+export const studentRoles = ["TRIBE_MEMBER", "DUAL_ACCESS", "QUIZ_ONLY", "TEST_ONLY"];
+export const quizStudentRoles = ["TRIBE_MEMBER", "DUAL_ACCESS", "QUIZ_ONLY"];
+export const testStudentRoles = ["TRIBE_MEMBER", "DUAL_ACCESS", "TEST_ONLY"];
+
 export const wait = (seconds) => new Promise((res) => setTimeout(res, seconds*1000));
 
 export const isString = (str) => Object.prototype.toString.call(str) === '[object String]' && (str instanceof String || typeof str === 'string');
