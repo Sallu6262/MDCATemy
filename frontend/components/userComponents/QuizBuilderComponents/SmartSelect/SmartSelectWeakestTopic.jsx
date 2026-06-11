@@ -118,10 +118,10 @@ const SmartSelectWeakestTopic = ({topicsCache, setTopicsCache, selectedSubjects,
                             <input
                                 type="number"
                                 min={1}
-                                max={20}
+                                max={15}
                                 step={1}
                                 value={numberOfWeakestTopics}
-                                onChange={e => setNumberOfWeakestTopics(Math.min(+e.target.value, 20))}
+                                onChange={e => setNumberOfWeakestTopics(Math.min(+e.target.value, 15))}
                                 className="h-9 w-16 rounded-lg border border-[#2D302D] bg-[#181A18] px-3 text-center [font-family:Poppins,sans-serif] text-sm font-black text-white focus:border-[#FFC600] focus:outline-none"
                                 aria-label="Custom number of weakest topics"
                             />

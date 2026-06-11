@@ -3,8 +3,7 @@ After Finals:
 2. smart select in quiz builder
 3. re test all mistakes in mistakes copy
 4. change and fix landing page + other static pages
-5. check internet connection in exam taking screen.
-6. aggregate calculator
+5. aggregate calculator
 
 optional: 
 integrate skeleton UI

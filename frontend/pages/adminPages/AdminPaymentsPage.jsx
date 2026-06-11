@@ -29,7 +29,9 @@ const AdminPaymentsPage = () => {
 
     const fetchUserReceipt = async(usersArray, index) => {
         if(index >= 0 && index < usersArray?.length){
-            const res = await fetch(`${API_URL}/payments/receipt/${usersArray[index]?.email}`);
+            const res = await fetch(`${API_URL}/payments/receipt/${usersArray[index]?.email}`,{
+                credentials: 'include'
+            });
             const image = await res.blob();
             setUserReceipt(URL.createObjectURL(image));
         } else {
