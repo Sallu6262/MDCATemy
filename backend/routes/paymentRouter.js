@@ -12,9 +12,9 @@ router.post("/verify-coupon", protect, verifyCoupon);
 
 
 // Admin functions.
-router.get("/pending", /* restrictTo("admin"), */ getUnverifiedUsers);
-router.get("/receipt/:email", /* restrictTo("admin"), */ getPendingPaymentReceipt);
-router.post("/verify", /* restrictTo("admin"), */ verifyPayment);
-router.delete("/reject", /* restrictTo("admin"), */ rejectPayment);
+router.get("/pending", protect, restrictTo("ADMIN"), getUnverifiedUsers);
+router.get("/receipt/:email", protect, restrictTo("ADMIN"), getPendingPaymentReceipt);
+router.post("/verify", protect, restrictTo("ADMIN"), verifyPayment);
+router.delete("/reject", protect, restrictTo("ADMIN"), rejectPayment);
 
 export default router;

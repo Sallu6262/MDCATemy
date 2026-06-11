@@ -215,6 +215,9 @@ CREATE TABLE coupons (
     code VARCHAR(10) NOT NULL
 );
 
+CREATE TABLE global_variables (
+    remaining_seats INT NOT NULL
+);
 
 CREATE OR REPLACE FUNCTION update_predicted_score(p_student_id INT)
 RETURNS VOID AS $$
