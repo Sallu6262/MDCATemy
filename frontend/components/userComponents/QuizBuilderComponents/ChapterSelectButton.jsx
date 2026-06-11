@@ -53,7 +53,7 @@ const ChapterSelectButton = ({chapters, subject, colorClass, setSelectedChapters
                                     })
                                 }} className={`cursor-pointer flex w-full items-center gap-3 rounded-xl border-2 ${isSelected ? 'border-[#FFC600] bg-[#FFC600]/10 text-white' : 'text-[#8B8E8B] hover:border-[#FFC600]/50'} px-4 py-3 text-left`}>
                                     <span className="flex-1 [font-family:Poppins,sans-serif] text-sm font-black">{formatName(chapter)}</span>
-                                    <span className={`inline-flex items-center gap-1 rounded-full border ${accuracyToTextColor(chapter)} px-2 py-0.5 [font-family:Poppins,sans-serif] text-xs font-black `}>● {chapterAccuracy?.[chapter] ?? 0}%</span>
+                                    <span className={`inline-flex items-center gap-1 rounded-full border ${accuracyToTextColor(chapterAccuracy?.[chapter] ?? 0)} px-2 py-0.5 [font-family:Poppins,sans-serif] text-xs font-black `}>● {chapterAccuracy?.[chapter] ?? 0}%</span>
                                 </button>
                     })
                 }

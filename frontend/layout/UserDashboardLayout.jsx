@@ -15,6 +15,23 @@ const UserDashboardLayout = () => {
     const API_URL = import.meta.env.VITE_API_URL;
 
     useEffect(() => {
+        // console.log('here in dashboard');
+        if(!student || student?.payment_status !== 'VERIFIED'){
+            navigate('/');
+            return;
+        } 
+
+        if(student?.payment_status !== 'VERIFIED'){
+            navigate('/payment-status');
+        }
+
+        if(admin){
+            navigate('/admin');
+            return;
+        }
+    }, []);
+
+    useEffect(() => {
         const submitPendingExam = async () => {
             const exam = JSON.parse(localStorage.getItem("exam"));
 
@@ -53,23 +70,6 @@ const UserDashboardLayout = () => {
         window.addEventListener("online", submitPendingExam);
 
         return () => window.removeEventListener("online", submitPendingExam);
-    }, []);
-    
-    useEffect(() => {
-        // console.log('here in dashboard');
-        if(!student || student?.payment_status !== 'VERIFIED'){
-            navigate('/');
-            return;
-        } 
-
-        if(student?.payment_status !== 'VERIFIED'){
-            navigate('/payment-status');
-        }
-
-        if(admin){
-            navigate('/admin');
-            return;
-        }
     }, []);
 
     useEffect(() => {

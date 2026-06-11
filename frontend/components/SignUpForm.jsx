@@ -329,7 +329,6 @@ const SignUpForm = ({setStep}) => {
                         type="number"
                         required
                         min={0}
-                        max={student?.matric_percentage ? 100 : 1100}
                         step={1}
                         placeholder="e.g. 1050"
                         className="w-full rounded-xl border border-white/[0.1] bg-[#1c1c1c] px-4 py-3.5 text-sm text-white placeholder:text-white/30 outline-none transition focus:border-[#FFC600]/50 focus:ring-2 focus:ring-[#FFC600]/20"
@@ -467,7 +466,7 @@ const SignUpForm = ({setStep}) => {
                         type="number"
                         required
                         min={0}
-                        max={200}
+                        max={180}
                         step={1}
                         placeholder="e.g 150"
                         className="w-full rounded-xl border border-white/[0.1] bg-[#1c1c1c] px-4 py-3.5 text-sm text-white placeholder:text-white/30 outline-none transition focus:border-[#FFC600]/50 focus:ring-2 focus:ring-[#FFC600]/20"

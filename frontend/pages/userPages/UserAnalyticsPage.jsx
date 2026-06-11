@@ -416,7 +416,7 @@ const UserAnalyticsPage = () => {
                                         freqToAccess = perf.prev_month_increase ?? 0;
                                     }
 
-                                    const percentage = sa?.subjects[perf.subject_name.replace(' ', '_').toLowerCase()] ?? 0;
+                                    const percentage = (sa?.subjects[perf.subject_name.replace(' ', '_').toLowerCase()]) ?? 0;
 
                                     return (
                                         <Link key={i} to={`/dashboard/analytics/${perf.subject_name.toLowerCase().replace(' ','-')}`} className="group block w-[30%] md:w-[17%]">

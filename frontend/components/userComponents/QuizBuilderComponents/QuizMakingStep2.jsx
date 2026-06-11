@@ -12,11 +12,6 @@ const QuizMakingStep2 = ({filteredSubjects, selectedChapters, setSelectedChapter
         <section
           className="overflow-hidden rounded-2xl border-2 border-[#2D302D] bg-[#181A18]"
         >
-          <div
-            className="border-b border-[#2D302D]/60 px-4 py-3 text-xs text-[#8B8E8B]"
-          >
-            Your Prep legend visible
-          </div>
             <div className="flex border-b-2 border-[#2E302E] overflow-x-auto">
                 {
                     Object.keys(filteredSubjects).map((sub, i) => {

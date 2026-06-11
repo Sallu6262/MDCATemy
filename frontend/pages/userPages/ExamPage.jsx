@@ -9,11 +9,6 @@ const ExamPage = () => {
     const {examType} = useParams();
 
     useEffect(() => {
-        if(examType !== "quiz-builder" && examType !== "test-series"){
-            navigate('/dashboard');
-            return;
-        }
-
         const getExam = JSON.parse(localStorage.getItem("exam"));
         const reload = localStorage.getItem("reload");
 
