@@ -113,7 +113,9 @@ const AdminPaymentsPage = () => {
                 setUsers(data.data);
 
                 if(data.data?.length > 0){
-                    const res = await fetch(`${API_URL}/payments/receipt/${data.data?.[0].email}`);
+                    const res = await fetch(`${API_URL}/payments/receipt/${data.data?.[0].email}`,{
+                        credentials: 'include'
+                    });
                     const image = await res.blob();
                     setUserReceipt(URL.createObjectURL(image));
                 }
