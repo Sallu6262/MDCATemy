@@ -499,6 +499,7 @@ const SignUpForm = ({setStep}) => {
                         min={0}
                         max={180}
                         step={1}
+                        required
                         placeholder="e.g. 170"
                         className="w-full rounded-xl border border-white/[0.1] bg-[#1c1c1c] px-4 py-3.5 text-sm text-white placeholder:text-white/30 outline-none transition focus:border-[#FFC600]/50 focus:ring-2 focus:ring-[#FFC600]/20"
                     />

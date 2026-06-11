@@ -15,6 +15,10 @@ const PaymentForm = () => {
         'TRIBE_MEMBER' : 18000
     }
 
+    const discountCoupon10 = new Set(['MDAM001','MDAM002','MDAM003','MDAM004','MDAM005'
+        ,'MDAM006','MDAM007','MDAM009','MDAM010','MDAM011'
+    ]);
+
     const API_URL = import.meta.env.VITE_API_URL;
     const navigate = useNavigate();
 
@@ -24,10 +28,12 @@ const PaymentForm = () => {
     const [tempCoupon, setTempCoupon] = useState('');
     const [upgradedRole, setUpgradedRole] = useState(student?.role || '');
     const [selectedStartDate, setSelectedStartDate] = useState('2026-06-15');
+    const [discount, setDiscount] = useState(0.8);
 
     const [isCouponCorrect, setIsCouponCorrect] = useState('');
     const [applyLoading, setApplyLoading] = useState(false);
     const [paymentLoading, setPaymentLoading] = useState(false);
+    const [isInstallment, setIsInstallment] = useState(false);
 
     const [paymentError, setPaymentError] = useState(false);
     const [paymentMessage, setPaymentMessage] = useState('');
@@ -37,22 +43,27 @@ const PaymentForm = () => {
 
         setApplyLoading(true);
 
-        const res = await fetch(`${API_URL}/users/verify-coupon`,{
-            method: 'POST',
-            credentials: 'include',
-            headers: {
-                'Content-Type' : 'application/json'
-            },
-            body: JSON.stringify({
-                coupon
-            })
-        });
-
-        if(res.status === 200){
+        if(discountCoupon10.has(coupon)){
             setIsCouponCorrect("true");
-            setPayment(prev => 0.8 * prev);
+            setDiscount(0.9);
         } else {
-            setIsCouponCorrect("false");
+            const res = await fetch(`${API_URL}/payments/verify-coupon`,{
+                method: 'POST',
+                credentials: 'include',
+                headers: {
+                    'Content-Type' : 'application/json'
+                },
+                body: JSON.stringify({
+                    coupon
+                })
+            });
+    
+            if(res.status === 200){
+                setIsCouponCorrect("true");
+                setDiscount(0.8);
+            } else {
+                setIsCouponCorrect("false");
+            }
         }
 
         setTempCoupon(coupon);
@@ -98,6 +109,15 @@ const PaymentForm = () => {
             navigate('/dashboard');
     });
 
+    useEffect(() => {
+        const baseAmount = paymentType[student?.role ?? "DUAL_ACCESS"];
+        let amount = isInstallment && student?.role === "TRIBE_MEMBER" ? baseAmount / 2 : baseAmount;
+        if (isCouponCorrect === 'true'){
+            amount *= discount;
+        }
+        setPayment(amount);
+    }, [isInstallment, student?.role, isCouponCorrect]);
+
     return (
         <main className="fade-in mx-auto w-full max-w-3xl px-5 py-10 sm:px-8 sm:py-14">
             <section className="rounded-2xl border border-white/[0.1] bg-[#181818] p-5 shadow-[0_20px_70px_rgba(0,0,0,0.35)] sm:p-8">
@@ -106,34 +126,95 @@ const PaymentForm = () => {
             <p className="mt-2 text-sm text-white/50">Apply coupon, transfer amount to the account below, then upload proof screenshot.</p>
 
             <div className="mt-8 space-y-6" >
-                <label htmlFor="coupon_code" className="mb-2 block text-[11px] font-bold uppercase tracking-wider text-white/45">Coupon code</label>
-                <div className='flex flex-col gap-2 justify-between'>
-                <div className="flex flex-col gap-3 sm:flex-row">
-                    <input
-                        value={coupon}
-                        onChange={e => setCoupon(e.target.value)}
-                        id="coupon_code"
-                        name="coupon_code"
-                        type="text"
-                        placeholder="Enter coupon code"
-                        className="w-full rounded-xl border border-white/[0.1] bg-[#1c1c1c] px-4 py-3.5 text-sm text-white placeholder:text-white/30 outline-none focus:border-[#FFC600]/50 focus:ring-2 focus:ring-[#FFC600]/20"
-                        />
-                    <button
-                    type="button"
-                    disabled={applyLoading}
-                    onClick={verifyCoupon}
-                    className={`${applyLoading ? 'cursor-not-allowed' : 'cursor-pointer'} inline-flex items-center justify-center rounded-xl border border-[#FFC600]/55 bg-[#FFC600]/10 px-6 py-3.5 text-sm font-black uppercase tracking-wider text-[#FFC600] hover:bg-[#FFC600]/15`}
-                    >
-                        {applyLoading ? 'Processing....' : 'Apply'}
-                    </button>
-                </div>
-                {isCouponCorrect == 'true' ? <p className='text-sm text-green-500'>&nbsp; Coupon verified! Check New Payment!</p> : ''}
-                {isCouponCorrect == 'false' ? <p className='text-sm text-red-500'>&nbsp; Invalid Coupon!</p> : ''}
-                </div>
+                {
+                    student?.role === "TRIBE_MEMBER" &&
+                    <>
+                    <label htmlFor="coupon_code" className="mb-2 block text-[11px] font-bold uppercase tracking-wider text-white/45">Coupon code</label>
+                    <div className='flex flex-col gap-2 justify-between'>
+                    <div className="flex flex-col gap-3 sm:flex-row">
+                        <input
+                            value={coupon}
+                            onChange={e => setCoupon(e.target.value)}
+                            id="coupon_code"
+                            name="coupon_code"
+                            type="text"
+                            placeholder="Enter coupon code"
+                            className="w-full rounded-xl border border-white/[0.1] bg-[#1c1c1c] px-4 py-3.5 text-sm text-white placeholder:text-white/30 outline-none focus:border-[#FFC600]/50 focus:ring-2 focus:ring-[#FFC600]/20"
+                            />
+                        <button
+                        type="button"
+                        disabled={applyLoading}
+                        onClick={verifyCoupon}
+                        className={`${applyLoading ? 'cursor-not-allowed' : 'cursor-pointer'} inline-flex items-center justify-center rounded-xl border border-[#FFC600]/55 bg-[#FFC600]/10 px-6 py-3.5 text-sm font-black uppercase tracking-wider text-[#FFC600] hover:bg-[#FFC600]/15`}
+                        >
+                            {applyLoading ? 'Processing....' : 'Apply'}
+                        </button>
+                    </div>
+                    {isCouponCorrect == 'true' ? <p className='text-sm text-green-500'>&nbsp; Coupon verified! Check New Payment!</p> : ''}
+                    {isCouponCorrect == 'false' ? <p className='text-sm text-red-500'>&nbsp; Invalid Coupon!</p> : ''}
+                    </div>
+                    </>
+                }
 
                 <div>
+                {
+                    student?.role === "TRIBE_MEMBER" &&
+                    <>
+                    <p className="mb-2 block text-[11px] font-bold uppercase tracking-wider text-white/45">Payment plan</p>
+                    <div className="mb-5 space-y-3">
+                        <label
+                        htmlFor="payment-one-time"
+                        className={`block cursor-pointer rounded-2xl border p-4 transition ${
+                            !isInstallment
+                            ? 'border-[#FFC600] bg-[#FFC600]/10'
+                            : 'border-white/[0.12] bg-white/[0.03] hover:border-white/[0.22]'
+                        }`}
+                        >
+                        <div className="flex items-center gap-4">
+                            <input
+                            id="payment-one-time"
+                            type="radio"
+                            name="payment_plan"
+                            checked={!isInstallment}
+                            onChange={() => setIsInstallment(false)}
+                            className="h-5 w-5 accent-[#FFC600]"
+                            />
+                            <div>
+                            <p className="text-[1.05rem] font-extrabold text-white/85">One time fee</p>
+                            <p className="mt-1 text-sm font-semibold text-white/65">Pay the full amount in a single transfer</p>
+                            </div>
+                        </div>
+                        </label>
+
+                        <label
+                        htmlFor="payment-installment"
+                        className={`block cursor-pointer rounded-2xl border p-4 transition ${
+                            isInstallment
+                            ? 'border-[#FFC600] bg-[#FFC600]/10'
+                            : 'border-white/[0.12] bg-white/[0.03] hover:border-white/[0.22]'
+                        }`}
+                        >
+                        <div className="flex items-center gap-4">
+                            <input
+                            id="payment-installment"
+                            type="radio"
+                            name="payment_plan"
+                            checked={isInstallment}
+                            onChange={() => setIsInstallment(true)}
+                            className="h-5 w-5 accent-[#FFC600]"
+                            />
+                            <div>
+                            <p className="text-[1.05rem] font-extrabold text-white/85">Pay in Installment</p>
+                            <p className="mt-1 text-sm font-semibold text-white/65">Pay half now — remaining half due later</p>
+                            </div>
+                        </div>
+                        </label>
+                    </div>
+                    </>
+                }
+
                 <label htmlFor="total_payment" className="mb-2 block text-[11px] font-bold uppercase tracking-wider text-white/45">Total payment (Rs)</label>
-                {payment === paymentType["TRIBE_MEMBER"] && <p className="mb-2 text-base font-bold text-red-500 line-through decoration-red-500">Rs 20000</p>}
+                {!isInstallment && payment === paymentType["TRIBE_MEMBER"] && <p className="mb-2 text-base font-bold text-red-500 line-through decoration-red-500">Rs 20000</p>}
                 <input
                     id="total_payment"
                     name="total_payment"

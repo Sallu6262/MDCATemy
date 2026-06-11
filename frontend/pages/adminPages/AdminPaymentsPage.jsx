@@ -77,7 +77,8 @@ const AdminPaymentsPage = () => {
                 'Content-Type' : 'application/json'
             },
             body: JSON.stringify({
-                email: users[userNumber]?.email
+                email: users[userNumber]?.email,
+                payment_status: users[userNumber]?.payment_status
             })
         });
 
