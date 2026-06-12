@@ -346,7 +346,7 @@ const captureSubjectMasterySnapshot = async (student_id) => {
 
 const fetchWeakestNTopics = async (student_id, n, ids, isSubjectIds) => {
     if (!ids)
-        return (await pool.query("SELECT subject_name, chapter_name, topic_name, ROUND(tmi)::INT AS tmi FROM topic_mastery INNER JOIN topics ON topic_mastery.topic_id=topics.topic_id INNER JOIN chapters ON topic_mastery.chapter_id=chapters.chapter_id INNER JOIN subjects ON topic_mastery.subject_id=subjects.subject_id WHERE student_id=$1 ORDER BY tmi ASC LIMIT $2", [student_id, n])).rows;
+        return (await pool.query("SELECT topics.topic_id, subject_name, chapter_name, topic_name, ROUND(tmi)::INT AS tmi FROM topic_mastery INNER JOIN topics ON topic_mastery.topic_id=topics.topic_id INNER JOIN chapters ON topic_mastery.chapter_id=chapters.chapter_id INNER JOIN subjects ON topic_mastery.subject_id=subjects.subject_id WHERE student_id=$1 ORDER BY tmi ASC LIMIT $2", [student_id, n])).rows;
     else
         return (await pool.query(`SELECT topics.topic_id, topic_name, chapter_name, subject_name, ROUND(tmi)::INT AS tmi FROM topic_mastery INNER JOIN topics ON topic_mastery.topic_id=topics.topic_id INNER JOIN chapters ON topic_mastery.chapter_id=chapters.chapter_id INNER JOIN subjects ON topic_mastery.subject_id=subjects.subject_id WHERE student_id=$1 AND ${isSubjectIds ? "subjects.subject_id" : "chapters.chapter_id"} = ANY ($3) ORDER BY tmi ASC LIMIT $2`, [student_id, n, ids])).rows
 }
