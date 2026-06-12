@@ -212,7 +212,8 @@ CREATE TABLE topic_mastery (
 
 CREATE TABLE coupons (
     coupon_id SERIAL PRIMARY KEY,
-    code VARCHAR(10) NOT NULL
+    code VARCHAR(10) NOT NULL,
+    discount INT NOT NULL DEFAULT 10
 );
 
 CREATE TABLE global_variables (

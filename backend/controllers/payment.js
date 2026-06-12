@@ -79,8 +79,17 @@ export const getPaymentStatus = (req, res, next) => {
 };
 
 export const verifyCoupon = handleAsyncError(async (req, res, next) => {
-    const flag = await isCouponValid(req.body.coupon); 
-    res.status(flag ? 200 : 404).json({
-        status: flag ? "success" : "fail"
-    });
+    const coupon = (await pool.query("SELECT discount FROM coupons WHERE code=$1 LIMIT 1", [req.body.coupon])).rows[0];
+    if (coupon) {
+        res.status(200).json({
+            status: "success",
+            data: {
+                discount: coupon.discount
+            }
+        });
+    } else {
+        res.status(404).json({
+            status: "fail"
+        });
+    }
 });
