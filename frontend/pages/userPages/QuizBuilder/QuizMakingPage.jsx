@@ -144,12 +144,22 @@ const QuizMakingPage = () => {
                     })
                     setFilteredChapters(Object.assign({}, ...chapterSet));
 
+                    // Object.keys(filteredSubjects).forEach(subject => {
+                    //     Object.keys(filteredSubjects[subject]).forEach(chapter => {
+                    //         // console.log(filteredChapters)
+                    //         if(!(selectedChapters.has(chapter)) && (chapter in filteredChapters)){
+                    //             filteredChapters[chapter].forEach(topic => {
+                    //                 selectedTopics.delete(topic.id);
+                    //             })
+                    //         }
+                    //     })
+                    // })
+
                     Object.keys(filteredSubjects).forEach(subject => {
                         Object.keys(filteredSubjects[subject]).forEach(chapter => {
-                            // console.log(filteredChapters)
-                            if(!(selectedChapters.has(chapter)) && (chapter in filteredChapters)){
-                                filteredChapters[chapter].forEach(topic => {
-                                    selectedTopics.delete(topic.id);
+                            if(selectedChapters.has(chapter)){
+                                filteredSubjects[subject][chapter].forEach(topic => {
+                                    selectedTopics.add(topic.id);
                                 })
                             }
                         })
@@ -273,7 +283,7 @@ const QuizMakingPage = () => {
 
                         {step === 1 || !smartSelectHidden ? <QuizMakingStep1 subjectAccuracy={performance?.subjects} showAccuracy={showAccuracy} smartSelectHidden={smartSelectHidden} selectedSubjects={selectedSubjects} setSelectedSubjects={setSelectedSubjects}/> : ''}
                         {step === 2 && smartSelectHidden ? <QuizMakingStep2 chapterAccuracy={performance?.chapters} filteredSubjects={filteredSubjects} selectedChapters={selectedChapters} setSelectedChapters={setSelectedChapters}/> : ''}
-                        {step === 3 && smartSelectHidden ? <QuizMakingStep3 topicAccuracy={performance?.topics} filteredChapters={filteredChapters} selectedTopics={selectedTopics} setSelectedTopics={setSelectedTopics} mcqDistributionPerTopic={mcqDistributionPerTopic}/> : ''}
+                        {step === 3 && smartSelectHidden ? <QuizMakingStep3 filteredSubjects={filteredSubjects} topicAccuracy={performance?.topics} filteredChapters={filteredChapters} selectedTopics={selectedTopics} setSelectedTopics={setSelectedTopics} mcqDistributionPerTopic={mcqDistributionPerTopic}/> : ''}
                         {step === 4 && smartSelectHidden ? <QuizMakingStep4 selectedTopics={selectedTopics} mcqDistributionPerTopic={mcqDistributionPerTopic} setStep={setStep} selectedSubjects={filterSubjectIDs()}/> : ''}
 
                         {

@@ -151,6 +151,8 @@ const ExamTakingScreen = ({ isQuiz, exam, isExamHappening, setIsExamHappeningPar
   const [isOnline, setIsOnline] = useState(true);
   const [connectionRestored, setConnectionRestored] = useState(false);
 
+  const [showScreenOnReload, setShowScreenOnReload] = useState(false);
+
   const modeToAudio = {
     'Exam Hall' : '/assets/audios/exam_hall.mp3',
     'Focus Rain' : '/assets/audios/rain.mp3',
@@ -262,11 +264,11 @@ const ExamTakingScreen = ({ isQuiz, exam, isExamHappening, setIsExamHappeningPar
     return `${hrs.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
   };
 
-  const submitExam = async (stopByTime, setSubmitExamLoading) => {
+  const submitExam = async (stopByTime, setSubmitExamLoading, onTabChange = false) => {
     if(!stopByTime && setSubmitExamLoading) setSubmitExamLoading(true);
 
     let url = API_URL;
-
+    
     if(isQuiz) url += `/quizzes/result`;
     else url += '/tests/submit';
 
@@ -294,11 +296,7 @@ const ExamTakingScreen = ({ isQuiz, exam, isExamHappening, setIsExamHappeningPar
       localStorage.removeItem("examTimer");
       localStorage.removeItem("reload");
       localStorage.removeItem("reloadExam");
-
-      if(exam?.test_mode !== 'Silent'){
-        audioRef.current.pause();
-        audioRef.current.currentTime = 0;
-      }
+      if(!onTabChange) window.history.back();
     }
 
     if(!stopByTime && setSubmitExamLoading) setSubmitExamLoading(false);
@@ -337,6 +335,8 @@ const ExamTakingScreen = ({ isQuiz, exam, isExamHappening, setIsExamHappeningPar
     const reload = localStorage.getItem("reload");
 
     if(reload === "true"){
+      window.history.back();
+      
       const examDetails = JSON.parse(localStorage.getItem("reloadExam"));
       const examTimer = JSON.parse(localStorage.getItem("examTimer"));
 
@@ -346,9 +346,12 @@ const ExamTakingScreen = ({ isQuiz, exam, isExamHappening, setIsExamHappeningPar
       setBookmarks(new Set(examDetails.bookmarks));
       setSixtySecondCountDown(examTimer.sixtySecondCountdown);
       setTimeRemaining(examTimer.timeRemaining);
+      setChangeTabCount(examTimer.changeTabCount);
 
       localStorage.removeItem("reload");
       localStorage.removeItem("reloadExam");
+
+      setShowScreenOnReload(true);
     }
   }, []);
 
@@ -358,32 +361,42 @@ const ExamTakingScreen = ({ isQuiz, exam, isExamHappening, setIsExamHappeningPar
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (isExamHappeningParent && !showScreenOnReload) {
+      if(exam?.timer) startTimer();
 
-    if (isExamHappeningParent && exam?.timer) {
       if(exam?.test_mode !== 'Silent'){
-        audioRef.current.loop = true;
         audioRef.current.play();
+        audioRef.current.loop = true;
       }
 
-      startTimer();
+      return () => {
+        if(exam?.timer) stopTimer();
 
-      return () => stopTimer();
+        if(exam?.test_mode !== 'Silent'){
+          audioRef.current.pause();
+          audioRef.current.currentTime = 0;
+        }
+      }
     }
-  }, [isExamHappeningParent]);
+  }, [isExamHappeningParent, showScreenOnReload]);
 
   useEffect(() => {
+    if(!isExamHappeningParent) return;
+    
     localStorage.setItem("examTimer", JSON.stringify({
       sixtySecondCountdown,
-      timeRemaining
+      timeRemaining,
+      changeTabCount
     }));
-  }, [timeRemaining, sixtySecondCountdown]);
+
+  }, [timeRemaining, sixtySecondCountdown, isExamHappeningParent, changeTabCount]);
 
   //1. detect tab switches / minimize / another app
   useEffect(() => {
     const handleVisiblity = () => {
       if(document.hidden){
         setChangeTabCount(prev => {
-          if(prev === 2) submitExam(false, setSubmitExamLoading);
+          if(prev === 2) submitExam(false, setSubmitExamLoading, true);
           return prev < 3 ? prev + 1 : prev;
         });
       }
@@ -786,14 +799,22 @@ const ExamTakingScreen = ({ isQuiz, exam, isExamHappening, setIsExamHappeningPar
             /> 
           }
 
-          {submitConfirmHidden ? '' : 
-          <SubmitExamConfirmation 
-            unanswered={exam?.total_mcqs - submitted.size} 
-            answered={submitted.size} 
-            flagged={flagged.size} 
-            setHidden={setSubmitConfirmHidden}
-            submitExam={submitExam}
-          />
+          {
+            submitConfirmHidden ? '' : 
+            <SubmitExamConfirmation 
+              unanswered={exam?.total_mcqs - submitted.size} 
+              answered={submitted.size} 
+              flagged={flagged.size} 
+              setHidden={setSubmitConfirmHidden}
+              submitExam={submitExam}
+            />
+          }
+
+          {
+            showScreenOnReload &&
+            <div onClick={() => setShowScreenOnReload(false)} className='reload-overlay cursor-pointer inset-0 fixed w-full h-full z-[150] bg-black/90 flex items-center justify-center' >
+              <span className='inline-block text-3xl px-4 py-4 text-center'>Click anywhere on this screen to continue exam.</span>
+            </div>
           }
 
           <section className="quiz-subbar flex flex-shrink-0 items-center justify-between px-4 lg:px-7">

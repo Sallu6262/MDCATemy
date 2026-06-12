@@ -29,7 +29,9 @@ const AdminPaymentsPage = () => {
 
     const fetchUserReceipt = async(usersArray, index) => {
         if(index >= 0 && index < usersArray?.length){
-            const res = await fetch(`${API_URL}/payments/receipt/${usersArray[index]?.email}`);
+            const res = await fetch(`${API_URL}/payments/receipt/${usersArray[index]?.email}`,{
+                credentials: 'include'
+            });
             const image = await res.blob();
             setUserReceipt(URL.createObjectURL(image));
         } else {
@@ -111,7 +113,9 @@ const AdminPaymentsPage = () => {
                 setUsers(data.data);
 
                 if(data.data?.length > 0){
-                    const res = await fetch(`${API_URL}/payments/receipt/${data.data?.[0].email}`);
+                    const res = await fetch(`${API_URL}/payments/receipt/${data.data?.[0].email}`,{
+                        credentials: 'include'
+                    });
                     const image = await res.blob();
                     setUserReceipt(URL.createObjectURL(image));
                 }

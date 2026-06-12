@@ -13,7 +13,7 @@ const UserDashboardLayout = () => {
     const [syllabusAndIDs, setSyllabusAndIDs] = useState({});
 
     const API_URL = import.meta.env.VITE_API_URL;
-    
+
     useEffect(() => {
         // console.log('here in dashboard');
         if(!student || student?.payment_status !== 'VERIFIED'){
@@ -29,6 +29,47 @@ const UserDashboardLayout = () => {
             navigate('/admin');
             return;
         }
+    }, []);
+
+    useEffect(() => {
+        const submitPendingExam = async () => {
+            const exam = JSON.parse(localStorage.getItem("exam"));
+
+            if(exam?.examStatus !== "NOT_SUBMITTED") return;
+
+            let url = API_URL;
+
+            if(exam?.isQuiz) url += `/quizzes/result`;
+            else url += '/tests/submit';
+
+            const res = await fetch(url, {
+                method: "POST",
+                credentials: 'include',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    quiz_id: exam?.test_id,
+                    test_id: exam?.test_id,
+                    correct_count: exam?.correctMCQsCount
+                })
+            });
+
+            const data = await res.json();
+
+            if(data.status === 'success'){
+                localStorage.removeItem("exam");
+                localStorage.removeItem("examTimer");
+                localStorage.removeItem("reload");
+                localStorage.removeItem("reloadExam");
+            }
+        }
+
+        submitPendingExam();
+
+        window.addEventListener("online", submitPendingExam);
+
+        return () => window.removeEventListener("online", submitPendingExam);
     }, []);
 
     useEffect(() => {
