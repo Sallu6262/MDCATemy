@@ -125,11 +125,11 @@ CREATE TABLE test_topics (
 
 CREATE TABLE mcq_bank(
     mcq_id SERIAL PRIMARY KEY,
-    question VARCHAR(300) NOT NULL,
-    option_a VARCHAR(100) NOT NULL,
-    option_b VARCHAR(100) NOT NULL,
-    option_c VARCHAR(100) NOT NULL,
-    option_d VARCHAR(100) NOT NULL,
+    question VARCHAR(500) NOT NULL,
+    option_a VARCHAR(500) NOT NULL,
+    option_b VARCHAR(500) NOT NULL,
+    option_c VARCHAR(500) NOT NULL,
+    option_d VARCHAR(500) NOT NULL,
     correct_option CHAR(1) NOT NULL,
     explanation VARCHAR(3500),
     attempt_count INT DEFAULT 0,
