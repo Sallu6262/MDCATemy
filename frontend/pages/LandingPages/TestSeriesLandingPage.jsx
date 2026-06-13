@@ -13,7 +13,7 @@ const TestSeriesLandingPage = () => {
 
             {/* Nav */}
             <nav className="sticky top-0 z-[99] flex h-[68px] items-center justify-center border-b border-[rgba(255,255,255,0.07)] bg-[#1a1a1a] px-8 max-[640px]:px-4">
-                <div className="hidden items-center gap-7 min-[641px]:flex">
+                <div className="items-center gap-7 flex">
                     <button type="button" onClick={() => scrollToComponent("syllabus", "start")} className="text-[0.85rem] cursor-pointer font-semibold text-[rgba(255,255,255,255)] no-underline transition-colors duration-200 hover:text-[#FFC600]">Syllabus</button>
                     <button type="button" onClick={() => scrollToComponent("pricing", "start")} className="text-[0.85rem] cursor-pointer font-semibold text-[rgba(255,255,255,255)] no-underline transition-colors duration-200 hover:text-[#FFC600]">Pricing</button>
                     <Link to="/batch-enrollment" className="text-[0.85rem] cursor-pointer font-semibold text-[rgba(255,255,255,255)] no-underline transition-colors duration-200 hover:text-[#FFC600]">Bahadur Batch</Link>

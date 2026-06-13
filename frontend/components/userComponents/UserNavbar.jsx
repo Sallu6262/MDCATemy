@@ -35,7 +35,7 @@ const UserNavbar = () => {
     }
 
     const quizBuilderAllowedRoles = ["TEST_ONLY", 'QUIZ_ONLY', 'DUAL_ACCESS', "TRIBE_MEMBER"];
-    const testSeriesAllowedRoles = ['TEST_ONLY', "TRIBE_MEMBER"];
+    const testSeriesAllowedRoles = ['TEST_ONLY', "TRIBE_MEMBER", "DUAL_ACCESS"];
     const myCopyAllowedRoles = ['QUIZ_ONLY', 'DUAL_ACCESS', 'TEST_ONLY', "TRIBE_MEMBER"];
 
     return (
