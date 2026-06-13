@@ -16,11 +16,21 @@ export const uploadMCQs = handleAsyncError(async (req, res, next) => {
         return next(new AppError("No file uploaded.", 400));
 
     const data = await readDataFromExcelFile(req.file.buffer);
-    console.log(data);
 
-    await pool.query("INSERT INTO mcq_bank(mcq_id, question, option_a, option_b, option_c, option_d, correct_option, explanation, difficulty, subject_id, chapter_id, topic_id) VALUES " + data.map(mcq => `(${mcq.mcq_id}, '${mcq.question}', '${mcq.option_a}', '${mcq.option_b}', '${mcq.option_c}', '${mcq.option_d}', '${mcq.correct_option}', '${mcq.explanation}', '${mcq.difficulty}', ${mcq.subject_id}, ${mcq.chapter_id}, ${mcq.topic_id})`).join(", "))
+    const query = "INSERT INTO mcq_bank(mcq_id, question, option_a, option_b, option_c, option_d, correct_option, explanation, difficulty, subject_id, chapter_id, topic_id) VALUES " + data.map(mcq => {
+        mcq.question = mcq.question.replace(/'/g, "''");
+        mcq.option_a = mcq.option_a.replace(/'/g, "''");
+        mcq.option_b = mcq.option_b.replace(/'/g, "''");
+        mcq.option_c = mcq.option_c.replace(/'/g, "''");
+        mcq.option_d = mcq.option_d.replace(/'/g, "''");
+        mcq.correct_option = mcq.correct_option.replace(/'/g, "''");
+        mcq.explanation = mcq.explanation.replace(/'/g, "''");
+        return `(${mcq.mcq_id}, '${mcq.question}', '${mcq.option_a}', '${mcq.option_b}', '${mcq.option_c}', '${mcq.option_d}', '${mcq.correct_option}', '${mcq.explanation}', '${mcq.difficulty}', ${mcq.subject_id}, ${mcq.chapter_id}, ${mcq.topic_id})`;
+    }).join(", ");
 
-    res.status(200).json({
+    await pool.query(query);
+
+    res.status(204).json({
         status: "success"
     });
 });
