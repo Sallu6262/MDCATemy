@@ -16,26 +16,27 @@ import SignUpPage from '../pages/SignUpPage';
 import getUserLoader from '../utils/getUserLoader';
 import PaymentErrorPage from '../pages/PaymentErrorPage';
 import UserDashboardLayout from '../layout/UserDashboardLayout';
-import AllPreviousTestsPage from '../pages/userPages/AllPreviousTestsPage';
+import AllPreviousTestsPage from '../pages/userPages/TestSeries/AllPreviousTestsPage';
 import UserDashboardPage from '../pages/userPages/UserDashboardPage';
-import UserTestSeriesPage from '../pages/userPages/UserTestSeriesPage';
+import UserTestSeriesPage from '../pages/userPages/TestSeries/UserTestSeriesPage';
 import UserTestSeriesLayout from '../layout/UserTestSeriesLayout';
-import AllUpcomingTestsPage from '../pages/userPages/AllUpcomingTestsPage';
+import AllUpcomingTestsPage from '../pages/userPages/TestSeries/AllUpcomingTestsPage';
 import UserCopyPage from '../pages/userPages/UserCopyPage';
-import UserStartTestPage from '../pages/userPages/UserStartTestPage';
-import ScorePredictorPage from '../pages/userPages/ScorePredictorPage';
-import UserAnalyticsPage from '../pages/userPages/UserAnalyticsPage';
+import UserStartTestPage from '../pages/userPages/TestSeries/UserStartTestPage';
+import ScorePredictorPage from '../pages/userPages/Analytics/ScorePredictorPage';
+import UserAnalyticsPage from '../pages/userPages/Analytics/UserAnalyticsPage';
 import QuizMakingPage from '../pages/userPages/QuizBuilder/QuizMakingPage';
-import ReviewPreviousTestMcqsPage from '../pages/userPages/ReviewPreviousTestMcqsPage';
 import LandingPageLayout from '../layout/LandingPageLayout';
 import ComingSoonPage from '../pages/ComingSoonPage'
-import ReviewPreviousQuizMcqsPage from '../pages/userPages/ReviewPreviousQuizMcqsPage';
+import TestSeriesLandingPage from '../pages/LandingPages/TestSeriesLandingPage'
 import PrivacyPolicyPage from '../pages/LandingPages/PrivacyPolicyPage';
 import TermsAndConditionsPage from '../pages/LandingPages/TermsAndConditionsPage';
 import CareersPage from '../pages/CareersPage';
-import DetailedAnalyticsPage from '../pages/userPages/DetailedAnalyticsPage';
+import DetailedAnalyticsPage from '../pages/userPages/Analytics/DetailedAnalyticsPage';
 import UserAnalyticsLayout from '../layout/UserAnalyticsLayout';
 import ExamPage from '../pages/userPages/ExamPage';
+import ReviewPreviousExamPage from '../pages/userPages/ReviewPreviousExamPage';
+import AggregateCalculatorPage from '../pages/userPages/AggregateCalculatorPage';
 
 const App = () => {
   const MDCATEMY_STATUS = import.meta.env.VITE_MDCATEMY_STATUS;
@@ -60,6 +61,20 @@ const App = () => {
     fetchEnrollmentCount();
   }, []);
 
+  useEffect(() => {
+    const closeHamburger = (e) => {
+      const hamburger = e.target.closest(".hamburger");
+      
+      if(hamburger) return;
+
+      document.querySelector(".hamburger").removeAttribute("open");
+    }
+
+    document.body.addEventListener("click", closeHamburger);
+
+    return () => document.body.removeEventListener("click", closeHamburger);
+  }, []);
+
   const router = createBrowserRouter(
     createRoutesFromElements(
       <>
@@ -69,12 +84,12 @@ const App = () => {
           <Route path='/privacy-policy' element={<PrivacyPolicyPage />}/>
           <Route path='/terms-and-conditions' element={<TermsAndConditionsPage />}/>
           <Route path='/careers' element={<CareersPage />}/>
-          <Route path='/test-series-enrollment' element={<ComingSoonPage />}/>
+          <Route path='/test-series-enrollment' element={<TestSeriesLandingPage />}/>
+          <Route path='/mdcat-aggregate-calculator' element={<AggregateCalculatorPage />}/>
         </Route>
 
         <Route element={<MainLayout />} id='root' loader={getUserLoader}>
-
-          <Route element={<RegistrationLayout/>}>
+          <Route element={<RegistrationLayout />}>
             <Route path='/login' element={<LoginPage />}/>
             <Route path='/signup' element={<SignUpPage />}/>
           </Route>
@@ -84,12 +99,10 @@ const App = () => {
             <Route path='score-predictor' element={<ScorePredictorPage />}/>
 
             <Route path='quiz-builder' element={<QuizMakingPage />}/>
-            <Route path='quiz-builder/previous-quiz/:quizID' element={<ReviewPreviousQuizMcqsPage />}/>
 
             <Route path='test-series' element={<UserTestSeriesLayout />}>
               <Route index element={<UserTestSeriesPage />}/>
               <Route path='previous-tests' element={<AllPreviousTestsPage />}/> 
-              <Route path='previous-tests/:testID' element={<ReviewPreviousTestMcqsPage />}/>
               <Route path='all-upcoming-tests' element={<AllUpcomingTestsPage />}/>
               <Route path='start-test/:testID' element={<UserStartTestPage />}/>
             </Route>
@@ -102,6 +115,7 @@ const App = () => {
               <Route path=':subject/:chapter' element={<DetailedAnalyticsPage isSubjectOrChapter={false} />}/>
             </Route>
 
+            <Route path=':examType/previous-exam/:examID' element={<ReviewPreviousExamPage />}/>
             <Route path=':examType/exam/:examID' element={<ExamPage />}/>
           </Route>
 
@@ -113,9 +127,10 @@ const App = () => {
           </Route>
 
           <Route path='/payment-status' element={<PaymentErrorPage />}/>
+          
+          <Route path='*' element={<NotFoundPage />}/>  
         </Route>
 
-        <Route path='*' element={<NotFoundPage />}/>
       </>
     )
   );

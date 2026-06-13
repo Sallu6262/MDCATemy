@@ -8,16 +8,20 @@ const selectChevron =
 
 const PaymentForm = () => {
     const {student} = useOutletContext();
+
     const paymentType = {
         'QUIZ_ONLY' : 3000,
         'TEST_ONLY' : 2000,
-        'DUAL_ACCESS' : 3500,
+        'DUAL_ACCESS' : 2500,
         'TRIBE_MEMBER' : 18000
     }
 
-    const discountCoupon10 = new Set(['MDAM001','MDAM002','MDAM003','MDAM004','MDAM005'
-        ,'MDAM006','MDAM007','MDAM009','MDAM010','MDAM011'
-    ]);
+    const originalPrice = {
+        'QUIZ_ONLY' : 3000,
+        'TEST_ONLY' : 2000,
+        'DUAL_ACCESS' : 3000,
+        'TRIBE_MEMBER' : 20000
+    }
 
     const API_URL = import.meta.env.VITE_API_URL;
     const navigate = useNavigate();
@@ -28,12 +32,12 @@ const PaymentForm = () => {
     const [tempCoupon, setTempCoupon] = useState('');
     const [upgradedRole, setUpgradedRole] = useState(student?.role || '');
     const [selectedStartDate, setSelectedStartDate] = useState('2026-06-15');
-    const [discount, setDiscount] = useState(0.8);
 
     const [isCouponCorrect, setIsCouponCorrect] = useState('');
     const [applyLoading, setApplyLoading] = useState(false);
     const [paymentLoading, setPaymentLoading] = useState(false);
     const [isInstallment, setIsInstallment] = useState(false);
+    const [discount, setDiscount] = useState(0.8);
 
     const [paymentError, setPaymentError] = useState(false);
     const [paymentMessage, setPaymentMessage] = useState('');
@@ -43,27 +47,26 @@ const PaymentForm = () => {
 
         setApplyLoading(true);
 
-        if(discountCoupon10.has(coupon)){
-            setIsCouponCorrect("true");
-            setDiscount(0.9);
-        } else {
-            const res = await fetch(`${API_URL}/payments/verify-coupon`,{
-                method: 'POST',
-                credentials: 'include',
-                headers: {
-                    'Content-Type' : 'application/json'
-                },
-                body: JSON.stringify({
-                    coupon
-                })
-            });
-    
-            if(res.status === 200){
+        const res = await fetch(`${API_URL}/payments/verify-coupon`,{
+            method: 'POST',
+            credentials: 'include',
+            headers: {
+                'Content-Type' : 'application/json'
+            },
+            body: JSON.stringify({
+                coupon
+            })
+        });
+
+        if(res.ok){
+            const data = await res.json();
+
+            if(data.status === 'success'){
                 setIsCouponCorrect("true");
-                setDiscount(0.8);
-            } else {
-                setIsCouponCorrect("false");
+                setDiscount(1 - (data.data.discount / 100).toFixed(1));
             }
+        } else {
+            setIsCouponCorrect("false");
         }
 
         setTempCoupon(coupon);
@@ -214,7 +217,7 @@ const PaymentForm = () => {
                 }
 
                 <label htmlFor="total_payment" className="mb-2 block text-[11px] font-bold uppercase tracking-wider text-white/45">Total payment (Rs)</label>
-                {!isInstallment && payment === paymentType["TRIBE_MEMBER"] && <p className="mb-2 text-base font-bold text-red-500 line-through decoration-red-500">Rs 20000</p>}
+                {!isInstallment && <p className="mb-2 text-base font-bold text-red-500 line-through decoration-red-500">Rs {originalPrice[student?.role ?? "DUAL_ACCESS"]}</p>}
                 <input
                     id="total_payment"
                     name="total_payment"
@@ -283,18 +286,6 @@ const PaymentForm = () => {
                 <div className="rounded-xl border border-white/[0.1] bg-[#141414]/90 p-4 sm:p-5">
                 <p className="text-xs font-bold uppercase tracking-[0.18em] text-white/45">Transfer to this account</p>
                 <div className="mt-4 space-y-5">
-                    <div className="space-y-3">
-                    <p className="text-[11px] font-bold uppercase tracking-wider text-[#FFC600]">Easypaisa / JazzCash</p>
-                    <div className="rounded-lg border border-white/[0.08] bg-[#1c1c1c] px-4 py-3">
-                    <p className="text-[11px] font-semibold uppercase tracking-wider text-white/40">Account name</p>
-                    <p className="mt-1 text-sm font-semibold text-white/90">Muhammad Hayan Khan</p>
-                    </div>
-                    <div className="rounded-lg border border-white/[0.08] bg-[#1c1c1c] px-4 py-3">
-                    <p className="text-[11px] font-semibold uppercase tracking-wider text-white/40">Account number</p>
-                    <p className="mt-1 text-sm font-semibold text-white/90">03058697159</p>
-                    </div>
-                    </div>
-
                     <div className="space-y-3">
                     <p className="text-[11px] font-bold uppercase tracking-wider text-[#FFC600]">Bank Transfer</p>
                     <div className="rounded-lg border border-white/[0.08] bg-[#1c1c1c] px-4 py-3">

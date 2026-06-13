@@ -52,6 +52,9 @@ html[data-theme] .text-\[\#8B8E8B\] { color: var(--ui-muted) !important; }
 html[data-theme="light"] .custom-mix-overlay { background-color: rgb(var(--ui-text-rgb) / 0.35) !important; }
 html[data-theme="light"] .smart-select-overlay { background-color: rgb(var(--ui-text-rgb) / 0.4) !important; }
 html[data-theme] .bg-\[\#0E0F0E\]\/40 { background-color: rgb(var(--ui-inner-rgb) / 0.4) !important; }
+html[data-theme] .bg-\[\#0E0F0E\]\/30 { background-color: rgb(var(--ui-inner-rgb) / 0.3) !important; }
+html[data-theme] .bg-\[\#0E0F0E\]\/20 { background-color: rgb(var(--ui-inner-rgb) / 0.2) !important; }
+html[data-theme] .bg-\[\#0E0F0E\] { background-color: var(--ui-bg) !important; }
 html[data-theme] .text-\[\#8B8E8B\]\/70 { color: rgb(var(--ui-muted-rgb) / 0.7) !important; }
 html[data-theme] .text-\[\#8B8E8B\]\/60 { color: rgb(var(--ui-muted-rgb) / 0.6) !important; }
 html[data-theme] .text-\[\#8B8E8B\]\/40 { color: rgb(var(--ui-muted-rgb) / 0.4) !important; }
@@ -131,6 +134,619 @@ html[data-theme="light"] .\[color-scheme\:dark\] { color-scheme: light; }
 /* Keep brand yellow unchanged */
 html[data-theme] .bg-\[\#FFC600\] { background-color: #FFC600 !important; }
 html[data-theme] .text-\[\#FFC600\] { color: #FFC600 !important; }
+
+/* Quiz Builder & User Dashboard — theme-aware controls */
+html[data-theme="light"] .quiz-making-page .quiz-btn-secondary,
+html[data-theme="light"] .user-dashboard-page .quiz-btn-secondary,
+html[data-theme="light"] .my-copy-page .quiz-btn-secondary,
+html[data-theme="light"] .exam-flow-page .quiz-btn-secondary {
+  background-color: #ffffff !important;
+  border-color: #000000 !important;
+  color: #111827 !important;
+}
+
+html[data-theme="light"] .quiz-making-page .quiz-btn-secondary:hover,
+html[data-theme="light"] .user-dashboard-page .quiz-btn-secondary:hover,
+html[data-theme="light"] .my-copy-page .quiz-btn-secondary:hover,
+html[data-theme="light"] .exam-flow-page .quiz-btn-secondary:hover {
+  border-color: #000000 !important;
+  background-color: rgba(255, 198, 0, 0.1) !important;
+  color: #111827 !important;
+}
+
+html[data-theme="light"] .quiz-making-page .quiz-select-btn:not(.quiz-select-btn--selected),
+html[data-theme="light"] .user-dashboard-page .quiz-select-btn:not(.quiz-select-btn--selected) {
+  background-color: #ffffff !important;
+  border-color: #000000 !important;
+  color: #374151 !important;
+}
+
+html[data-theme="light"] .quiz-making-page .quiz-step-inactive,
+html[data-theme="light"] .user-dashboard-page .quiz-step-inactive {
+  background-color: #ffffff !important;
+  border-color: #000000 !important;
+  color: #6b7280 !important;
+}
+
+html[data-theme="light"] .quiz-making-page .quiz-toggle-off,
+html[data-theme="light"] .user-dashboard-page .quiz-toggle-off {
+  background-color: #e5e7eb !important;
+  border: 1px solid #000000 !important;
+}
+
+html[data-theme="light"] .quiz-making-page .quiz-input-field,
+html[data-theme="light"] .user-dashboard-page .quiz-input-field {
+  background-color: #ffffff !important;
+  border-color: #000000 !important;
+  color: #111827 !important;
+}
+
+html[data-theme="light"] .quiz-making-page .quiz-diff-btn:not(.quiz-diff-btn--selected),
+html[data-theme="light"] .user-dashboard-page .quiz-diff-btn:not(.quiz-diff-btn--selected) {
+  background-color: #ffffff !important;
+  border-color: #000000 !important;
+  color: #374151 !important;
+}
+
+html[data-theme="light"] .quiz-making-page .quiz-answer-inactive,
+html[data-theme="light"] .user-dashboard-page .quiz-answer-inactive,
+html[data-theme="light"] .my-copy-page .quiz-answer-inactive {
+  background-color: #ffffff !important;
+  border-color: #000000 !important;
+  color: #374151 !important;
+}
+
+html[data-theme="light"] .quiz-making-page .quiz-segment-group,
+html[data-theme="light"] .user-dashboard-page .quiz-segment-group {
+  border-color: #000000 !important;
+}
+
+html[data-theme="light"] .quiz-making-page .text-gray-200,
+html[data-theme="light"] .user-dashboard-page .text-gray-200 {
+  color: #374151 !important;
+}
+
+/* Quiz Builder & User Dashboard — darker status colours in light mode */
+html[data-theme="light"] .quiz-making-page .text-emerald-400,
+html[data-theme="light"] .user-dashboard-page .text-emerald-400,
+html[data-theme="light"] .my-copy-page .text-emerald-400 {
+  color: #047857 !important;
+}
+
+html[data-theme="light"] .quiz-making-page .border-emerald-400,
+html[data-theme="light"] .user-dashboard-page .border-emerald-400 {
+  border-color: #047857 !important;
+}
+
+html[data-theme="light"] .quiz-making-page .text-amber-400,
+html[data-theme="light"] .user-dashboard-page .text-amber-400,
+html[data-theme="light"] .my-copy-page .text-amber-400 {
+  color: #b45309 !important;
+}
+
+html[data-theme="light"] .quiz-making-page .border-amber-400,
+html[data-theme="light"] .user-dashboard-page .border-amber-400 {
+  border-color: #b45309 !important;
+}
+
+html[data-theme="light"] .quiz-making-page .text-red-400,
+html[data-theme="light"] .quiz-making-page .text-red-500,
+html[data-theme="light"] .user-dashboard-page .text-red-400,
+html[data-theme="light"] .user-dashboard-page .text-red-500,
+html[data-theme="light"] .my-copy-page .text-red-400,
+html[data-theme="light"] .my-copy-page .text-red-500 {
+  color: #b91c1c !important;
+}
+
+html[data-theme="light"] .quiz-making-page .border-red-400,
+html[data-theme="light"] .user-dashboard-page .border-red-400 {
+  border-color: #b91c1c !important;
+}
+
+html[data-theme="light"] .quiz-making-page .bg-emerald-400,
+html[data-theme="light"] .user-dashboard-page .bg-emerald-400,
+html[data-theme="light"] .my-copy-page .bg-emerald-400 {
+  background-color: #059669 !important;
+}
+
+html[data-theme="light"] .quiz-making-page .bg-amber-400,
+html[data-theme="light"] .user-dashboard-page .bg-amber-400,
+html[data-theme="light"] .my-copy-page .bg-amber-400 {
+  background-color: #d97706 !important;
+}
+
+html[data-theme="light"] .quiz-making-page .bg-red-400,
+html[data-theme="light"] .user-dashboard-page .bg-red-400,
+html[data-theme="light"] .my-copy-page .bg-red-400 {
+  background-color: #dc2626 !important;
+}
+
+html[data-theme="light"] .quiz-making-page .bg-emerald-400\/10,
+html[data-theme="light"] .quiz-making-page .bg-emerald-400\/15,
+html[data-theme="light"] .user-dashboard-page .bg-emerald-400\/10,
+html[data-theme="light"] .user-dashboard-page .bg-emerald-400\/15 {
+  background-color: rgba(5, 150, 105, 0.14) !important;
+}
+
+html[data-theme="light"] .quiz-making-page .bg-amber-400\/10,
+html[data-theme="light"] .user-dashboard-page .bg-amber-400\/10,
+html[data-theme="light"] .my-copy-page .bg-amber-400\/10 {
+  background-color: rgba(217, 119, 6, 0.14) !important;
+}
+
+html[data-theme="light"] .quiz-making-page .bg-red-500\/10,
+html[data-theme="light"] .user-dashboard-page .bg-red-500\/10 {
+  background-color: rgba(220, 38, 38, 0.12) !important;
+}
+
+/* User Dashboard — accents, surfaces, tabs */
+html[data-theme="light"] .user-dashboard-page .card,
+html[data-theme="light"] .user-dashboard-page .card-sm,
+html[data-theme="light"] .score-predictor-page .card {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06), 0 8px 24px rgba(0, 0, 0, 0.04) !important;
+}
+
+html[data-theme="light"] .score-predictor-page .card {
+  background: #ffffff !important;
+  border-color: #000000 !important;
+}
+
+html[data-theme="light"] .user-dashboard-page .inner-tile {
+  background: #ffffff !important;
+  border-color: #000000 !important;
+}
+
+html[data-theme="light"] .user-dashboard-page .dashboard-tab-inactive {
+  background-color: #ffffff !important;
+  border: 1px solid #000000 !important;
+  color: #374151 !important;
+}
+
+html[data-theme="light"] .user-dashboard-page .dashboard-surface-btn {
+  background-color: #ffffff !important;
+  border-color: #000000 !important;
+}
+
+html[data-theme="light"] .user-dashboard-page .dashboard-icon-tile {
+  background-color: #ffffff !important;
+  border-color: #000000 !important;
+}
+
+html[data-theme="light"] .user-dashboard-page .text-orange-500 {
+  color: #c2410c !important;
+}
+
+html[data-theme="light"] .user-dashboard-page .border-orange-500\/20 {
+  border-color: rgba(194, 65, 12, 0.35) !important;
+}
+
+html[data-theme="light"] .user-dashboard-page .bg-orange-500\/10 {
+  background-color: rgba(194, 65, 12, 0.12) !important;
+}
+
+.user-dashboard-page .dash-accent-emerald { color: #10B981; }
+.user-dashboard-page .dash-accent-sky { color: #38BDF8; }
+.user-dashboard-page .dash-accent-violet { color: #A78BFA; }
+.user-dashboard-page .dash-accent-teal { color: #2DD4BF; }
+.user-dashboard-page .dash-accent-orange { color: #FB923C; }
+.user-dashboard-page .dash-accent-red { color: #EF4444; }
+.user-dashboard-page .dash-accent-amber { color: #EAB308; }
+.user-dashboard-page .dash-bg-emerald { background-color: #10B98118; }
+.user-dashboard-page .dash-bg-violet { background-color: #A78BFA18; }
+.user-dashboard-page .dash-bg-sky { background-color: #38BDF818; }
+.user-dashboard-page .dash-bg-red { background-color: #EF444418; }
+
+html[data-theme="light"] .user-dashboard-page .dash-accent-emerald { color: #047857 !important; }
+html[data-theme="light"] .user-dashboard-page .dash-accent-sky { color: #0369a1 !important; }
+html[data-theme="light"] .user-dashboard-page .dash-accent-violet { color: #6d28d9 !important; }
+html[data-theme="light"] .user-dashboard-page .dash-accent-teal { color: #0f766e !important; }
+html[data-theme="light"] .user-dashboard-page .dash-accent-orange { color: #c2410c !important; }
+
+/* Subject preparation circles — keep vivid dark-mode colors in light mode */
+html[data-theme="light"] .user-dashboard-page .subject-circle-btn.dash-accent-emerald { color: #10B981 !important; }
+html[data-theme="light"] .user-dashboard-page .subject-circle-btn.dash-accent-sky { color: #38BDF8 !important; }
+html[data-theme="light"] .user-dashboard-page .subject-circle-btn.dash-accent-violet { color: #A78BFA !important; }
+html[data-theme="light"] .user-dashboard-page .subject-circle-btn.dash-accent-teal { color: #2DD4BF !important; }
+html[data-theme="light"] .user-dashboard-page .subject-circle-btn.dash-accent-orange { color: #FB923C !important; }
+html[data-theme="light"] .user-dashboard-page .dash-accent-red { color: #b91c1c !important; }
+html[data-theme="light"] .user-dashboard-page .dash-accent-amber { color: #b45309 !important; }
+html[data-theme="light"] .user-dashboard-page .dash-bg-emerald { background-color: rgba(5, 150, 105, 0.14) !important; }
+html[data-theme="light"] .user-dashboard-page .dash-bg-violet { background-color: rgba(109, 40, 217, 0.12) !important; }
+html[data-theme="light"] .user-dashboard-page .dash-bg-sky { background-color: rgba(3, 105, 161, 0.12) !important; }
+html[data-theme="light"] .user-dashboard-page .dash-bg-red { background-color: rgba(185, 28, 28, 0.12) !important; }
+
+html[data-theme="light"] .user-dashboard-page .dash-gauge-red { fill: #b91c1c !important; }
+html[data-theme="light"] .user-dashboard-page .dash-gauge-orange { fill: #c2410c !important; }
+html[data-theme="light"] .user-dashboard-page .dash-gauge-amber { fill: #b45309 !important; }
+html[data-theme="light"] .user-dashboard-page .dash-gauge-green { fill: #047857 !important; }
+
+.user-dashboard-page .dash-gauge-needle { fill: rgba(255, 255, 255, 0.85); }
+html[data-theme="light"] .user-dashboard-page .dash-gauge-needle { fill: #111827 !important; }
+
+.user-dashboard-page .dash-subject-name {
+  color: rgb(var(--ui-text-rgb) / 0.55);
+}
+
+.user-dashboard-page .dash-copy-label,
+.user-dashboard-page .dash-goal-text,
+.user-dashboard-page .dash-quote-text,
+.user-dashboard-page .dash-quote-cite {
+  color: rgb(var(--ui-text-rgb) / 0.4);
+}
+
+.user-dashboard-page .dash-quote-text {
+  color: rgb(var(--ui-text-rgb) / 0.55);
+}
+
+html[data-theme="light"] .user-dashboard-page .dash-subject-name,
+html[data-theme="light"] .user-dashboard-page .dash-copy-label,
+html[data-theme="light"] .user-dashboard-page .dash-goal-text,
+html[data-theme="light"] .user-dashboard-page .dash-quote-text,
+html[data-theme="light"] .user-dashboard-page .dash-quote-cite {
+  color: #374151 !important;
+}
+
+/* My Copy — MCQ cards */
+html[data-theme="light"] .my-copy-page .copy-mcq-card {
+  background: #ffffff !important;
+  border-color: #000000 !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06), 0 4px 16px rgba(0, 0, 0, 0.04) !important;
+}
+
+html[data-theme="light"] .my-copy-page .copy-callout {
+  background: #ffffff !important;
+  border: 1px solid #000000 !important;
+  border-left: 3px solid #FFC600 !important;
+}
+
+html[data-theme="light"] .my-copy-page .copy-chapter-pill {
+  background: #ffffff !important;
+  border: 1px solid #000000 !important;
+}
+
+html[data-theme="light"] .my-copy-page .copy-option-badge-inactive {
+  background: #ffffff !important;
+  border: 1px solid #000000 !important;
+  color: #374151 !important;
+}
+
+html[data-theme="light"] .my-copy-page .copy-answer-toggle {
+  background: #ffffff !important;
+  border-top-color: #000000 !important;
+}
+
+html[data-theme="light"] .my-copy-page .copy-action-btn {
+  background-color: #ffffff !important;
+  border-color: #000000 !important;
+  color: #047857 !important;
+}
+
+html[data-theme="light"] .my-copy-page .copy-action-btn:hover {
+  background-color: rgba(5, 150, 105, 0.1) !important;
+}
+
+html[data-theme="light"] .my-copy-page .text-emerald-300 { color: #047857 !important; }
+html[data-theme="light"] .my-copy-page .text-red-300 { color: #b91c1c !important; }
+html[data-theme="light"] .my-copy-page .text-green-400 { color: #15803d !important; }
+html[data-theme="light"] .my-copy-page .text-yellow-400 { color: #a16207 !important; }
+html[data-theme="light"] .my-copy-page .text-violet-400 { color: #6d28d9 !important; }
+html[data-theme="light"] .my-copy-page .text-sky-400 { color: #0369a1 !important; }
+html[data-theme="light"] .my-copy-page .text-pink-400 { color: #be185d !important; }
+html[data-theme="light"] .my-copy-page .text-green-500 { color: #15803d !important; }
+html[data-theme="light"] .my-copy-page .bg-emerald-500 { background-color: #059669 !important; }
+html[data-theme="light"] .my-copy-page .bg-red-500 { background-color: #dc2626 !important; }
+html[data-theme="light"] .my-copy-page .bg-green-400\/10 { background-color: rgba(21, 128, 61, 0.12) !important; }
+html[data-theme="light"] .my-copy-page .bg-yellow-400\/10 { background-color: rgba(161, 98, 7, 0.12) !important; }
+html[data-theme="light"] .my-copy-page .bg-violet-400\/10 { background-color: rgba(109, 40, 217, 0.12) !important; }
+html[data-theme="light"] .my-copy-page .bg-sky-400\/10 { background-color: rgba(3, 105, 161, 0.12) !important; }
+html[data-theme="light"] .my-copy-page .bg-pink-400\/10 { background-color: rgba(190, 24, 93, 0.12) !important; }
+html[data-theme="light"] .my-copy-page .bg-emerald-500\/5,
+html[data-theme="light"] .my-copy-page .bg-emerald-500\/8,
+html[data-theme="light"] .my-copy-page .bg-emerald-500\/10 { background-color: rgba(5, 150, 105, 0.12) !important; }
+html[data-theme="light"] .my-copy-page .bg-red-500\/5,
+html[data-theme="light"] .my-copy-page .bg-red-500\/8 { background-color: rgba(220, 38, 38, 0.1) !important; }
+html[data-theme="light"] .my-copy-page .border-emerald-500\/25,
+html[data-theme="light"] .my-copy-page .border-emerald-500\/30,
+html[data-theme="light"] .my-copy-page .border-emerald-500\/40 { border-color: rgba(5, 150, 105, 0.45) !important; }
+html[data-theme="light"] .my-copy-page .border-red-500\/25,
+html[data-theme="light"] .my-copy-page .border-red-500\/30 { border-color: rgba(220, 38, 38, 0.4) !important; }
+html[data-theme="light"] .my-copy-page .border-green-400\/25 { border-color: rgba(21, 128, 61, 0.4) !important; }
+html[data-theme="light"] .my-copy-page .border-yellow-400\/25 { border-color: rgba(161, 98, 7, 0.4) !important; }
+html[data-theme="light"] .my-copy-page .border-red-400\/25 { border-color: rgba(185, 28, 28, 0.4) !important; }
+html[data-theme="light"] .my-copy-page .bg-\[\#FFC600\]\/5 { background-color: rgba(255, 198, 0, 0.08) !important; }
+
+/* Exam flow — submit confirmation & result */
+html[data-theme="light"] .exam-flow-page .exam-flow-card,
+html[data-theme="light"] .exam-result-page .card {
+  background: #ffffff !important;
+  border-color: #000000 !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06), 0 8px 24px rgba(0, 0, 0, 0.04) !important;
+}
+
+html[data-theme="light"] .exam-result-page .card {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06), 0 8px 24px rgba(0, 0, 0, 0.04) !important;
+}
+
+html[data-theme="light"] .exam-flow-page .exam-flow-stat-tile {
+  background: #ffffff !important;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05) !important;
+}
+
+html[data-theme="light"] .exam-flow-page .exam-flow-stat-tile--neutral {
+  border-color: #000000 !important;
+}
+
+html[data-theme="light"] .exam-flow-page .exam-flow-alert {
+  background: rgba(217, 119, 6, 0.08) !important;
+  border-color: rgba(217, 119, 6, 0.35) !important;
+}
+
+html[data-theme="light"] .exam-flow-page .exam-flow-icon-badge {
+  background: rgba(217, 119, 6, 0.1) !important;
+  border-color: rgba(217, 119, 6, 0.35) !important;
+}
+
+html[data-theme="light"] .exam-flow-page .exam-flow-submit-btn {
+  background: #ffffff !important;
+  border-color: #000000 !important;
+  color: #b45309 !important;
+}
+
+html[data-theme="light"] .exam-flow-page .exam-flow-submit-btn:hover {
+  background: rgba(255, 198, 0, 0.12) !important;
+}
+
+.exam-flow-page .exam-result-ring-bg { stroke: #2A2C2A; }
+html[data-theme="light"] .exam-flow-page .exam-result-ring-bg { stroke: #d1d5db !important; }
+.exam-flow-page .exam-result-ring-progress { stroke: #D9534F; }
+html[data-theme="light"] .exam-flow-page .exam-result-ring-progress { stroke: #b91c1c !important; }
+
+html[data-theme="light"] .exam-flow-page .text-emerald-400 { color: #047857 !important; }
+html[data-theme="light"] .exam-flow-page .text-red-400 { color: #b91c1c !important; }
+html[data-theme="light"] .exam-flow-page .text-amber-400 { color: #b45309 !important; }
+html[data-theme="light"] .exam-flow-page .text-amber-300 { color: #b45309 !important; }
+html[data-theme="light"] .exam-flow-page .text-orange-400 { color: #c2410c !important; }
+html[data-theme="light"] .exam-flow-page .bg-emerald-500\/5 { background-color: rgba(5, 150, 105, 0.12) !important; }
+html[data-theme="light"] .exam-flow-page .bg-red-500\/5 { background-color: rgba(220, 38, 38, 0.1) !important; }
+html[data-theme="light"] .exam-flow-page .bg-red-400\/10 { background-color: rgba(220, 38, 38, 0.12) !important; }
+html[data-theme="light"] .exam-flow-page .border-emerald-500\/20 { border-color: rgba(5, 150, 105, 0.35) !important; }
+html[data-theme="light"] .exam-flow-page .border-red-500\/20 { border-color: rgba(220, 38, 38, 0.35) !important; }
+html[data-theme="light"] .exam-flow-page .border-red-400 { border-color: #b91c1c !important; }
+html[data-theme="light"] .exam-flow-page .border-\[\#FFC600\]\/20 { border-color: rgba(255, 198, 0, 0.45) !important; }
+html[data-theme="light"] .exam-flow-page .bg-\[\#FFC600\]\/5 { background-color: rgba(255, 198, 0, 0.08) !important; }
+html[data-theme="light"] .exam-flow-page .bg-amber-500\/10 { background-color: rgba(217, 119, 6, 0.12) !important; }
+html[data-theme="light"] .exam-flow-page .bg-amber-500\/\[0\.08\] { background-color: rgba(217, 119, 6, 0.08) !important; }
+html[data-theme="light"] .exam-flow-page .border-amber-500\/20 { border-color: rgba(217, 119, 6, 0.35) !important; }
+html[data-theme="light"] .exam-flow-page .border-amber-500\/30 { border-color: rgba(217, 119, 6, 0.4) !important; }
+html[data-theme="light"] .exam-flow-page .border-amber-500\/40 { border-color: rgba(217, 119, 6, 0.45) !important; }
+
+/* Aggregate calculator — fixed landing palette; global theme toggle must not remap colors */
+.aggregate-calculator-page {
+  color-scheme: light;
+  background-color: #f5f5f5 !important;
+  color: #1a1a1a;
+}
+
+html[data-theme] .aggregate-calculator-page .text-\[\#ffffff\] {
+  color: #ffffff !important;
+}
+
+html[data-theme] .aggregate-calculator-page .text-\[rgba\(255\,255\,255\,0\.4\)\] {
+  color: rgba(255, 255, 255, 0.4) !important;
+}
+
+html[data-theme] .aggregate-calculator-page .text-\[rgba\(255\,255\,255\,0\.5\)\] {
+  color: rgba(255, 255, 255, 0.5) !important;
+}
+
+html[data-theme] .aggregate-calculator-page .bg-\[\#ffffff\] {
+  background-color: #ffffff !important;
+}
+
+html[data-theme] .aggregate-calculator-page .bg-\[\#1a1a1a\] {
+  background-color: #1a1a1a !important;
+}
+
+html[data-theme] .aggregate-calculator-page .bg-\[\#1e2428\] {
+  background-color: #1e2428 !important;
+}
+
+html[data-theme] .aggregate-calculator-page .text-\[\#1a1a1a\] {
+  color: #1a1a1a !important;
+}
+
+html[data-theme] .aggregate-calculator-page .text-\[\#444\] {
+  color: #444444 !important;
+}
+
+html[data-theme] .aggregate-calculator-page .text-\[\#555\] {
+  color: #555555 !important;
+}
+
+html[data-theme] .aggregate-calculator-page .text-\[\#666\] {
+  color: #666666 !important;
+}
+
+html[data-theme] .aggregate-calculator-page .text-\[\#888\] {
+  color: #888888 !important;
+}
+
+/* Test series landing — fixed landing palette; global theme toggle must not remap colors */
+.test-series-landing-page {
+  color-scheme: light;
+  background-color: #ffffff !important;
+  color: #1a1a1a;
+}
+
+html[data-theme] .test-series-landing-page .text-\[\#ffffff\] {
+  color: #ffffff !important;
+}
+
+html[data-theme] .test-series-landing-page .text-\[\#1a1a1a\] {
+  color: #1a1a1a !important;
+}
+
+html[data-theme] .test-series-landing-page .text-\[\#333333\] {
+  color: #333333 !important;
+}
+
+html[data-theme] .test-series-landing-page .text-\[\#555555\] {
+  color: #555555 !important;
+}
+
+html[data-theme] .test-series-landing-page .text-\[\#666666\] {
+  color: #666666 !important;
+}
+
+html[data-theme] .test-series-landing-page .text-\[\#888888\] {
+  color: #888888 !important;
+}
+
+html[data-theme] .test-series-landing-page .text-\[\#F6C90E\] {
+  color: #F6C90E !important;
+}
+
+html[data-theme] .test-series-landing-page .text-\[\#16a34a\] {
+  color: #16a34a !important;
+}
+
+html[data-theme] .test-series-landing-page .text-\[rgba\(255\,255\,255\,0\.55\)\] {
+  color: rgba(255, 255, 255, 0.55) !important;
+}
+
+html[data-theme] .test-series-landing-page .text-\[rgba\(255\,255\,255\,0\.6\)\] {
+  color: rgba(255, 255, 255, 0.6) !important;
+}
+
+html[data-theme] .test-series-landing-page .text-\[rgba\(255\,255\,255\,0\.35\)\] {
+  color: rgba(255, 255, 255, 0.35) !important;
+}
+
+html[data-theme] .test-series-landing-page .text-\[rgba\(255\,255\,255\,0\.28\)\] {
+  color: rgba(255, 255, 255, 0.28) !important;
+}
+
+html[data-theme] .test-series-landing-page .text-\[rgba\(255\,255\,255\,0\.18\)\] {
+  color: rgba(255, 255, 255, 0.18) !important;
+}
+
+html[data-theme] .test-series-landing-page .text-\[rgba\(255\,255\,255\,0\.3\)\] {
+  color: rgba(255, 255, 255, 0.3) !important;
+}
+
+html[data-theme] .test-series-landing-page .bg-\[\#ffffff\] {
+  background-color: #ffffff !important;
+}
+
+html[data-theme] .test-series-landing-page .bg-\[\#1a1a1a\] {
+  background-color: #1a1a1a !important;
+}
+
+html[data-theme] .test-series-landing-page .bg-\[\#1e2428\] {
+  background-color: #1e2428 !important;
+}
+
+html[data-theme] .test-series-landing-page .bg-\[\#F6C90E\] {
+  background-color: #F6C90E !important;
+}
+
+html[data-theme] .test-series-landing-page .bg-\[\#f5f5f5\] {
+  background-color: #f5f5f5 !important;
+}
+
+html[data-theme] .test-series-landing-page .bg-\[\#fafafa\] {
+  background-color: #fafafa !important;
+}
+
+html[data-theme] .test-series-landing-page .bg-\[\#16a34a\] {
+  background-color: #16a34a !important;
+}
+
+html[data-theme] .test-series-landing-page .bg-\[\#e8273a\] {
+  background-color: #e8273a !important;
+}
+
+html[data-theme] .test-series-landing-page .border-\[\#F6C90E\] {
+  border-color: #F6C90E !important;
+}
+
+html[data-theme] .test-series-landing-page .border-\[\#1a1a1a\] {
+  border-color: #1a1a1a !important;
+}
+
+html[data-theme] .test-series-landing-page .border-\[\#e8e8e8\] {
+  border-color: #e8e8e8 !important;
+}
+
+html[data-theme] .test-series-landing-page .border-\[\#efefef\] {
+  border-color: #efefef !important;
+}
+
+html[data-theme] .test-series-landing-page .border-\[\#eeeeee\] {
+  border-color: #eeeeee !important;
+}
+
+html[data-theme] .test-series-landing-page .border-\[\#f0f0f0\] {
+  border-color: #f0f0f0 !important;
+}
+
+html[data-theme] .test-series-landing-page .decoration-\[\#e8273a\] {
+  text-decoration-color: #e8273a !important;
+}
+
+/* Site navbar — always dark; theme toggle does not apply */
+.site-navbar {
+  color-scheme: dark;
+  background-color: #121212 !important;
+}
+
+html[data-theme="light"] .site-navbar .text-white\/80 {
+  color: rgba(255, 255, 255, 0.8) !important;
+}
+
+html[data-theme="light"] .site-navbar .text-white\/90 {
+  color: rgba(255, 255, 255, 0.9) !important;
+}
+
+html[data-theme="light"] .site-navbar .hover\:text-white:hover {
+  color: #ffffff !important;
+}
+
+html[data-theme="light"] .site-navbar .bg-white\/\[0\.04\] {
+  background-color: rgba(255, 255, 255, 0.04) !important;
+}
+
+html[data-theme="light"] .site-navbar .hover\:bg-white\/\[0\.06\]:hover {
+  background-color: rgba(255, 255, 255, 0.06) !important;
+}
+
+html[data-theme="light"] .site-navbar .hover\:bg-white\/\[0\.08\]:hover {
+  background-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+html[data-theme="light"] .site-navbar .bg-white\/90 {
+  background-color: rgba(255, 255, 255, 0.9) !important;
+}
+
+html[data-theme="light"] .site-navbar .border-white\/10 {
+  border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+html[data-theme="light"] .site-navbar .border-white\/15 {
+  border-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+html[data-theme="light"] .site-navbar .border-white\/20 {
+  border-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+html[data-theme="light"] .site-navbar .bg-white\/10 {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+html[data-theme="light"] .site-navbar .bg-\[\#161616\] {
+  background-color: #161616 !important;
+}
 
 /* Site footer — always dark; theme toggle does not apply */
 .site-footer {

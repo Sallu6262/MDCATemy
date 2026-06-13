@@ -2,11 +2,13 @@ import React, { useEffect, useRef, useState } from 'react'
 // import '../../src/animation.css';
 import '../../src/animation.css'
 import SubmitExamConfirmation from '../../components/userComponents/SubmitExamConfirmation';
-import { formatName, subjectToColor } from '../../utils/HelperObjects';
-import { useNavigate, useOutletContext } from 'react-router-dom';
+import { formatName, subjectToColor, clearLocalStorage } from '../../utils/HelperObjects';
+import { useNavigate, useOutletContext, useParams } from 'react-router-dom';
 import ExamResult from './ExamResult';
 import ExamLeavingWarning from './ExamLeavingWarning';
 import InternetConnectionLostPopUp from './InternetConnectionLostPopUp';
+import QuitExamWarning from './QuitExamWarning';
+import sendErrorSuccessMessage from '../../utils/sendErrorSuccessMessage';
 
 const Navigator = ({ exam, setMcqNumber, flagged, submitted, mcqNumber, blindMode }) => {
   let chipNumber = 0;
@@ -134,6 +136,7 @@ const ExamTakingScreen = ({ isQuiz, exam, isExamHappening, setIsExamHappeningPar
   const [bookmarks, setBookmarks] = useState(() => new Set());
   const [flagged, setFlagged] = useState(() => new Set());
   const [submitted, setSubmitted] = useState(() => new Set());
+  const [selectedOptions, setSelectedOptions] = useState(exam?.selectedOptions ?? {});
 
   const [saveLoading, setSaveLoading] = useState(false);
   const [submitLoading, setSubmitLoading] = useState(false);
@@ -143,6 +146,7 @@ const ExamTakingScreen = ({ isQuiz, exam, isExamHappening, setIsExamHappeningPar
 
   const [submitConfirmHidden, setSubmitConfirmHidden] = useState(true);
   const [submitExamLoading, setSubmitExamLoading] = useState(false);
+  const [quitExamPopupHidden, setQuitExamPopupHidden] = useState(true);
   const [showResult, setShowResult] = useState(false);
   const [examLeavingWarning, setExamLeavingWarning] = useState(false);
 
@@ -157,22 +161,45 @@ const ExamTakingScreen = ({ isQuiz, exam, isExamHappening, setIsExamHappeningPar
     'Exam Hall' : '/assets/audios/exam_hall.mp3',
     'Focus Rain' : '/assets/audios/rain.mp3',
     'Full Chaos' : '/assets/audios/full_chaos.mp3'
-  }
+  };
 
   const audioRef = useRef(new Audio(modeToAudio[exam?.test_mode]));
 
   const API_URL = import.meta.env.VITE_API_URL;
   const navigate = useNavigate();
+  const {examType} = useParams();
+
+  const quitExam = async (setLoading) => {
+    if(setLoading) setLoading(true);
+
+    if(!isQuiz){
+      const res = await fetch(`${API_URL}/tests/discard`, {
+        method: "POST",
+        credentials: 'include',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            test_id: exam?.test_id
+        })
+      });
+
+      if(res.ok){
+        if(setLoading) setLoading(false);
+        sendErrorSuccessMessage('success', `${isQuiz ? 'Quiz' : 'Test'} quitted. Redirecting...`);
+        clearLocalStorage();
+      }
+    }
+
+    setIsExamHappeningParent(false);
+    navigate(`/dashboard/${examType}`);
+  }
 
   const colorOption = (option) => {
-    if(!isExamHappeningParent){
-      if(option === mcqs[mcqNumber-1]?.correct_option)
-        return '!bg-emerald-500/8 !border-emerald-500 !text-emerald-400';
-    }
-    else if(exam?.answerAfterEach && submitted.has(mcqNumber)){
+    if((exam?.answerAfterEach && submitted.has(mcqNumber)) || !isExamHappeningParent){
         if(option === mcqs[mcqNumber-1]?.correct_option)
           return '!bg-emerald-500/8 !border-emerald-500 !text-emerald-400';
-        else if(selectedOption === option)
+        else if(selectedOptions[mcqNumber] === option)
           return '!bg-red-500/8 !border-red-500 !text-red-400';
     }
     return '';
@@ -221,6 +248,39 @@ const ExamTakingScreen = ({ isQuiz, exam, isExamHappening, setIsExamHappeningPar
     setSubmitLoading(true);
 
     const currentMcq = mcqs[mcqNumber - 1];
+
+    //if the exam is from mistake copy
+    if (exam?.isMistakeCopyExam) {
+      if(exam?.removeMCQAfterCorrection && currentMcq?.correct_option === selectedOption){
+        const res = await fetch(`${API_URL}/users/mistakes/${currentMcq?.mcq_id}`,{
+          method: 'DELETE',
+          credentials: 'include'
+        });
+
+        if(res.ok){
+          setSubmitted(prev => {
+            const newSet = new Set(prev);
+            newSet.add(mcqNumber);
+            return newSet;
+          });
+    
+          setCorrectMCQsCount(prev => prev + 1);
+        }
+      }
+      else setWrongMCQsCount(prev => prev + 1);
+
+      setSubmitted(prev => {
+        const newSet = new Set(prev);
+        newSet.add(mcqNumber);
+        return newSet;
+      });
+
+      setSelectedOptions(prev => ({...prev, [mcqNumber]: selectedOption}));
+
+      setSubmitLoading(false);
+      return;
+    }
+
     const res = await fetch(`${API_URL}/${isQuiz ? 'quizzes' : 'tests'}/record-answer`, {
       method: 'POST',
       credentials: 'include',
@@ -248,6 +308,8 @@ const ExamTakingScreen = ({ isQuiz, exam, isExamHappening, setIsExamHappeningPar
         return newSet;
       });
 
+      setSelectedOptions(prev => ({...prev, [mcqNumber]: selectedOption}));
+
       if (mcqs[mcqNumber - 1]?.correct_option === selectedOption)
         setCorrectMCQsCount(prev => prev + 1);
       else setWrongMCQsCount(prev => prev + 1);
@@ -265,6 +327,17 @@ const ExamTakingScreen = ({ isQuiz, exam, isExamHappening, setIsExamHappeningPar
   };
 
   const submitExam = async (stopByTime, setSubmitExamLoading, onTabChange = false) => {
+    if(exam?.isMistakeCopyExam){
+      setShowResult(true);
+      setSubmitConfirmHidden(true);
+      setIsExamHappeningParent(false);
+
+      clearLocalStorage();
+      if(!onTabChange) window.history.back();
+
+      return;
+    }
+
     if(!stopByTime && setSubmitExamLoading) setSubmitExamLoading(true);
 
     let url = API_URL;
@@ -292,10 +365,7 @@ const ExamTakingScreen = ({ isQuiz, exam, isExamHappening, setIsExamHappeningPar
       setSubmitConfirmHidden(true);
       setIsExamHappeningParent(false);
 
-      localStorage.removeItem("exam");
-      localStorage.removeItem("examTimer");
-      localStorage.removeItem("reload");
-      localStorage.removeItem("reloadExam");
+      clearLocalStorage();
       if(!onTabChange) window.history.back();
     }
 
@@ -335,21 +405,25 @@ const ExamTakingScreen = ({ isQuiz, exam, isExamHappening, setIsExamHappeningPar
     const reload = localStorage.getItem("reload");
 
     if(reload === "true"){
-      window.history.back();
+      // window.history.back();
       
-      const examDetails = JSON.parse(localStorage.getItem("reloadExam"));
       const examTimer = JSON.parse(localStorage.getItem("examTimer"));
+      const submit = JSON.parse(localStorage.getItem("submitted"));
+      const bookmark = JSON.parse(localStorage.getItem("bookmarks"));
+      const flag = JSON.parse(localStorage.getItem("flagged"));
+      const selected = JSON.parse(localStorage.getItem("selectedOptions"));
+      const correct = JSON.parse(localStorage.getItem("correct"));
+      const wrong = JSON.parse(localStorage.getItem("wrong"));
 
-      setCorrectMCQsCount(examDetails.correctMCQsCount);      
-      setWrongMCQsCount(examDetails.wrongMCQsCount);   
-      setSubmitted(new Set(examDetails.submitted));
-      setBookmarks(new Set(examDetails.bookmarks));
+      setSubmitted(new Set(submit.submitted));
+      setBookmarks(new Set(bookmark.bookmarks));
+      setFlagged(new Set(flag.flagged));
+      setSelectedOptions(selected);
+      setCorrectMCQsCount(correct);
+      setWrongMCQsCount(wrong);
       setSixtySecondCountDown(examTimer.sixtySecondCountdown);
       setTimeRemaining(examTimer.timeRemaining);
       setChangeTabCount(examTimer.changeTabCount);
-
-      localStorage.removeItem("reload");
-      localStorage.removeItem("reloadExam");
 
       setShowScreenOnReload(true);
     }
@@ -379,6 +453,30 @@ const ExamTakingScreen = ({ isQuiz, exam, isExamHappening, setIsExamHappeningPar
       }
     }
   }, [isExamHappeningParent, showScreenOnReload]);
+
+  useEffect(() => {
+    localStorage.setItem('submitted',JSON.stringify({submitted: [...submitted]}));
+  }, [submitted.size]);
+
+  useEffect(() => {
+    localStorage.setItem('bookmarks',JSON.stringify({bookmarks: [...bookmarks]}));
+  }, [bookmarks.size]);
+
+  useEffect(() => {
+    localStorage.setItem('flagged',JSON.stringify({flagged: [...flagged]}));
+  }, [flagged.size]);
+
+  useEffect(() => {
+    localStorage.setItem('selectedOptions',JSON.stringify(selectedOptions));
+  }, [selectedOptions]);
+
+  useEffect(() => {
+    localStorage.setItem('correct',JSON.stringify(correctMCQsCount));
+  }, [correctMCQsCount]);
+
+  useEffect(() => {
+    localStorage.setItem('wrong',JSON.stringify(wrongMCQsCount));
+  }, [wrongMCQsCount]);
 
   useEffect(() => {
     if(!isExamHappeningParent) return;
@@ -419,13 +517,6 @@ const ExamTakingScreen = ({ isQuiz, exam, isExamHappening, setIsExamHappeningPar
       e.returnValue = "";
       
       localStorage.setItem("reload", "true");
-      localStorage.setItem("reloadExam", JSON.stringify({
-        isQuiz,
-        correctMCQsCount,
-        wrongMCQsCount,
-        submitted: [...submitted],
-        bookmarks: [...bookmarks],
-      }));
     }
 
     // const autoSubmitExamOnReload = () => {
@@ -471,7 +562,13 @@ const ExamTakingScreen = ({ isQuiz, exam, isExamHappening, setIsExamHappeningPar
       return;
     }
 
-    window.history.pushState(null, "", window.location.href);
+    const reload = localStorage.getItem("reload");
+
+    if(reload === "true"){
+      localStorage.removeItem("reload");
+    } else {
+      window.history.pushState(null, "", window.location.href);
+    }
 
     window.addEventListener("popstate", handlePopState);
 
@@ -529,6 +626,10 @@ const ExamTakingScreen = ({ isQuiz, exam, isExamHappening, setIsExamHappeningPar
 
   const showSolution =
     !isExamHappening || (exam?.answerAfterEach && submitted.has(mcqNumber));
+
+  const tabChancesRemaining = Math.max(0, 3 - changeTabCount);
+  const showTabSwitchWarning = isExamHappeningParent && changeTabCount > 0;
+
   return (
     <>
       <style>{`
@@ -668,6 +769,80 @@ const ExamTakingScreen = ({ isQuiz, exam, isExamHappening, setIsExamHappeningPar
         }
         .action-chip:disabled { cursor: not-allowed; opacity: 0.5; }
 
+        .nav-btn-prev,
+        .nav-btn-next {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          border-radius: 12px;
+          padding: 12px 24px;
+          font-weight: 900;
+          text-transform: uppercase;
+          letter-spacing: 0.05em;
+          transition: border-color 0.2s, background-color 0.2s, opacity 0.2s;
+        }
+        .nav-btn-prev {
+          border: 1px solid var(--ui-border);
+          background: var(--ui-panel);
+          color: var(--ui-text);
+          box-shadow: 0 2px 8px rgb(0 0 0 / 0.12);
+        }
+        .nav-btn-prev:hover:not(:disabled) {
+          border-color: rgb(var(--ui-text-rgb) / 0.28);
+          background: rgb(var(--ui-text-rgb) / 0.06);
+        }
+        .nav-btn-prev:disabled {
+          opacity: 0.4;
+          cursor: not-allowed;
+        }
+        .nav-btn-next {
+          border: 1px solid #E5B200;
+          background: #FFC600;
+          color: #181A18;
+          box-shadow: 0 4px 14px rgb(255 198 0 / 0.28);
+        }
+        .nav-btn-next:hover:not(:disabled) {
+          background: #FFE27A;
+        }
+        .nav-btn-next:disabled {
+          opacity: 0.4;
+          cursor: not-allowed;
+        }
+
+        .tab-switch-warning {
+          flex-shrink: 0;
+          display: flex;
+          align-items: flex-start;
+          gap: 12px;
+          padding: 12px 16px;
+          border-bottom: 1px solid rgba(251, 146, 60, 0.4);
+          background: rgba(251, 146, 60, 0.12);
+        }
+        .tab-switch-warning__icon {
+          flex-shrink: 0;
+          margin-top: 1px;
+          color: #FB923C;
+        }
+        .tab-switch-warning__title {
+          font-family: "Inter", sans-serif;
+          font-size: 13px;
+          font-weight: 900;
+          text-transform: uppercase;
+          letter-spacing: 0.06em;
+          color: #FB923C;
+          margin-bottom: 2px;
+        }
+        .tab-switch-warning__text {
+          font-family: "Inter", sans-serif;
+          font-size: 13px;
+          line-height: 1.5;
+          color: var(--ui-text);
+        }
+        .tab-switch-warning__count {
+          font-weight: 900;
+          color: #FB923C;
+        }
+
         .nav-scroll { flex: 1; overflow-y: auto; padding: 16px 14px; min-height: 0; }
         .nav-scroll::-webkit-scrollbar { width: 6px; }
         .nav-scroll::-webkit-scrollbar-track { background: var(--ui-bg); }
@@ -753,6 +928,8 @@ const ExamTakingScreen = ({ isQuiz, exam, isExamHappening, setIsExamHappeningPar
           .option-card { min-height: 56px; padding: 12px 16px; border-radius: 10px; gap: 14px; background: var(--ui-panel-2); }
           .option-key { width: 28px; height: 28px; font-size: 10px; }
           .action-chip { width: auto; flex: 1; height: 38px; border-radius: 10px; font-size: 8px; }
+          .nav-btn-prev,
+          .nav-btn-next { padding: 10px 18px; border-radius: 10px; font-size: 12px; }
         }
 
         @media (max-width: 640px) {
@@ -770,7 +947,7 @@ const ExamTakingScreen = ({ isQuiz, exam, isExamHappening, setIsExamHappeningPar
         skipped={exam?.total_mcqs - submitted.size}
         saved={bookmarks.size}
         total={exam?.total_mcqs}
-        exam={exam}
+        exam={{...exam, selectedOptions}}
         /> :
 
         <main
@@ -796,6 +973,7 @@ const ExamTakingScreen = ({ isQuiz, exam, isExamHappening, setIsExamHappeningPar
               setIsExamHappeningParent={setIsExamHappeningParent}
               startTimer={startTimer}
               exam={exam}
+              quitExam={quitExam}
             /> 
           }
 
@@ -817,6 +995,14 @@ const ExamTakingScreen = ({ isQuiz, exam, isExamHappening, setIsExamHappeningPar
             </div>
           }
 
+          {
+            !quitExamPopupHidden &&
+            <QuitExamWarning
+              setQuitExamPopupHidden={setQuitExamPopupHidden}
+              quitExam={quitExam}
+            />
+          }
+
           <section className="quiz-subbar flex flex-shrink-0 items-center justify-between px-4 lg:px-7">
             <div>
               <p className="text-sm font-bold leading-tight text-white lg:text-base">Mixed Subjects</p>
@@ -836,6 +1022,27 @@ const ExamTakingScreen = ({ isQuiz, exam, isExamHappening, setIsExamHappeningPar
               Q <span className="font-poppins text-lg text-white">{mcqNumber}</span> / {exam?.total_mcqs}
             </p>
           </section>
+
+          {
+            showTabSwitchWarning &&
+            <div className="tab-switch-warning" role="alert">
+              <svg className="tab-switch-warning__icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+                <line x1="12" y1="9" x2="12" y2="13" />
+                <line x1="12" y1="17" x2="12.01" y2="17" />
+              </svg>
+              <div>
+                <p className="tab-switch-warning__title">Tab switch detected</p>
+                <p className="tab-switch-warning__text">
+                  You have changed tab{' '}
+                  <span className="tab-switch-warning__count">{changeTabCount}</span>
+                  {' '}time{changeTabCount === 1 ? '' : 's'}.{' '}
+                  <span className="tab-switch-warning__count">{tabChancesRemaining}</span>
+                  {' '}chance{tabChancesRemaining === 1 ? '' : 's'} remaining before your test is auto-submitted.
+                </p>
+              </div>
+            </div>
+          }
 
           <div className="quiz-body">
             <section className="question-pane">
@@ -999,12 +1206,29 @@ const ExamTakingScreen = ({ isQuiz, exam, isExamHappening, setIsExamHappeningPar
                 </svg>
               {submitExamLoading ? 'Processing....' : 'Finish'}
               </button>
+
+              {
+                !isQuiz && !exam?.isMistakeCopyExam &&
+                <button
+                  type="button"
+                  onClick={() => setQuitExamPopupHidden(false)}
+                  disabled={!isExamHappeningParent}
+                  className={`action-chip submit cursor-pointer`}
+                >
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <line x1="22" y1="2" x2="11" y2="13" />
+                    <polygon points="22 2 15 22 11 13 2 9 22 2" />
+                  </svg>
+                Quit Exam
+                </button>
+              }
             </div>
             <div className="flex items-center gap-4 border-t border-[#2E302E] px-4 py-3 lg:px-7">
               <button
                 type="button"
                 onClick={() => setMcqNumber(prev => (prev > 1 ? prev - 1 : prev))}
-                className="flex cursor-pointer items-center gap-2 rounded-xl px-5 py-3 font-black uppercase tracking-wide text-[#A8ACA8] opacity-40"
+                disabled={mcqNumber <= 1}
+                className="nav-btn-prev cursor-pointer"
               >
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <polyline points="15 18 9 12 15 6" />
@@ -1031,7 +1255,8 @@ const ExamTakingScreen = ({ isQuiz, exam, isExamHappening, setIsExamHappeningPar
                   document.querySelector('.question-box').scrollIntoView({behavior: 'smooth'});
                   setMcqNumber(prev => (prev < exam?.total_mcqs ? prev + 1 : prev));
                 }}
-                className="flex cursor-pointer items-center gap-2 rounded-xl bg-[#FFC600] px-6 py-3 font-black uppercase tracking-wide text-[#181A18] shadow-lg"
+                disabled={mcqNumber >= exam?.total_mcqs}
+                className="nav-btn-next cursor-pointer"
               >
                 Next
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">

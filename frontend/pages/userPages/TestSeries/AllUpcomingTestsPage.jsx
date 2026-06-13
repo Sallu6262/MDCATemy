@@ -1,14 +1,14 @@
 import React, { useState } from 'react'
 import { useOutletContext, Link } from 'react-router-dom';
-import UpcomingTestCard from '../../components/userComponents/UpcomingTestCard';
-import '../../src/animation.css';
+import UpcomingTestCard from '../../../components/userComponents/UpcomingTestCard';
+import '../../../src/animation.css';
 
 const AllUpcomingTestsPage = () => {
     const {upcomingTests} = useOutletContext();
     // console.log(typeof setStartTest);
 
     return (
-        <main className="fade-in relative flex-1 overflow-hidden pb-[58px] lg:pb-0 w-full">
+        <main className="fade-in relative flex-1 overflow-hidden lg:pb-0 w-full">
             <div className="h-full overflow-y-auto w-full">
                 <div className="w-full px-4 pt-4 pb-6 space-y-5 lg:max-w-5xl lg:mx-auto lg:px-8">
                     <Link to="/dashboard/test-series" className="inline-flex items-center gap-1.5 text-[#A8ACA8] text-[14px] font-[Inter] hover:text-white transition-colors">

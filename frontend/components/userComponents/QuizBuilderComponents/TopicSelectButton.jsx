@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { accuracyToTextColor } from '../../../utils/HelperObjects';
 
-const TopicSelectButton = ({topics, selectedTopics, setSelectedTopics, chapter, mcqDistributionPerTopic, topicAccuracy}) => {
+const TopicSelectButton = ({showAccuracy, topics, selectedTopics, setSelectedTopics, chapter, mcqDistributionPerTopic, topicAccuracy}) => {
     const [selectAll, setSelectAll] = useState(topics.every(topic => selectedTopics.has(topic.id)));
 
     useEffect(() => {
@@ -43,9 +43,9 @@ const TopicSelectButton = ({topics, selectedTopics, setSelectedTopics, chapter, 
 
                             return newSet;
                         });
-                    }} className={`cursor-pointer flex w-full items-center gap-3 rounded-xl border-2 ${isSelected ? 'border-[#FFC600] bg-[#FFC600]/10 text-white' : 'text-[#8B8E8B] hover:border-[#FFC600]/50'} px-4 py-3 text-left`}>
+                    }} className={`quiz-select-btn cursor-pointer flex w-full items-center gap-3 rounded-xl border-2 px-4 py-3 text-left ${isSelected ? 'quiz-select-btn--selected border-[#FFC600] bg-[#FFC600]/10 text-white' : 'text-[#8B8E8B] hover:border-[#FFC600]/50'}`}>
                         <span className="flex-1 text-sm font-black">{topic.name}</span>
-                        <span className={`inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-xs font-black ${accuracyToTextColor(topicAccuracy?.[topic.name?.replaceAll(' ','_').toLowerCase()])}`}>● {topicAccuracy?.[topic.name?.replaceAll(' ','_').toLowerCase()] ?? 0}%</span>
+                        {showAccuracy && <span className={`inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-xs font-black ${accuracyToTextColor(topicAccuracy?.[topic.name?.replaceAll(' ','_').toLowerCase()])}`}>● {topicAccuracy?.[topic.name?.replaceAll(' ','_').toLowerCase()] ?? 0}%</span>}
                         <span className="inline-flex items-center gap-1 rounded-full border  pr-2 py-0.5 text-xs font-black text-gray-200"><span className="h-1.5 w-1.5 rounded-full"></span>{mcqDistributionPerTopic[topic.id]}</span>
                     </button>
                 })

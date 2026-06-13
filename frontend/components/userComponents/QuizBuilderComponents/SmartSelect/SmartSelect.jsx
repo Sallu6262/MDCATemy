@@ -6,7 +6,7 @@ import QuizMakingStep1 from '../QuizMakingStep1';
 import QuizMakingStep3 from '../QuizMakingStep3';
 import SmartSelectWeakestTopic from './SmartSelectWeakestTopic';
 
-const SmartSelect = ({subjectAccuracy, chapterAccuracy, topicAccuracy, filterChapterIDs, filterSubjectIDs, quizMakingStep, smartSelectHidden, resetData, setSmartSelectHidden, setQuizMakingStep, setSelectedSubjects, selectedSubjects, filteredSubjects, selectedChapters, setSelectedChapters, moveToNextStepAndFilter, filteredChapters, selectedTopics, setSelectedTopics, mcqDistributionPerTopic}) => {
+const SmartSelect = ({setExamCreatedFromSmartSelect, subjectAccuracy, chapterAccuracy, topicAccuracy, filterChapterIDs, filterSubjectIDs, quizMakingStep, smartSelectHidden, resetData, setSmartSelectHidden, setQuizMakingStep, setSelectedSubjects, selectedSubjects, filteredSubjects, selectedChapters, setSelectedChapters, moveToNextStepAndFilter, filteredChapters, selectedTopics, setSelectedTopics, mcqDistributionPerTopic}) => {
     //step is starting from zero to sync with quiz making without smart select.
     const [errorMessage, setErrorMessage] = useState("");
 
@@ -15,9 +15,9 @@ const SmartSelect = ({subjectAccuracy, chapterAccuracy, topicAccuracy, filterCha
     //2 means user selected weakest by chapter
     const [isWeakestChapterOrSubject, setIsWeakestChapterOrSubject] = useState(0);
 
-    const [subjectCache, setSubjectCache] = useState(() => new Set());
-    const [chapterCache, setChapterCache] = useState(() => new Set());
-    const [topicsCache, setTopicsCache] = useState([]);
+    const [subjectIDsCache, setSubjectIDsCache] = useState(() => new Set());
+    const [chapterIDsCache, setChapterIDsCache] = useState(() => new Set());
+    const [weakTopics, setWeakTopics] = useState([]);
     // console.log(selectedSubjects);
     
     return (
@@ -67,41 +67,41 @@ const SmartSelect = ({subjectAccuracy, chapterAccuracy, topicAccuracy, filterCha
                 }
                 
                 {
-                    quizMakingStep === 1 ? 
+                    quizMakingStep === 1 &&
                     <QuizMakingStep1 
                         smartSelectHidden={smartSelectHidden}
                         selectedSubjects={selectedSubjects}
                         setSelectedSubjects={setSelectedSubjects}
                         subjectAccuracy={subjectAccuracy}
-                    /> :
-                    ''
+                    />
                 }
                 {
-                    quizMakingStep === 2 ? 
+                    quizMakingStep === 2 &&
                     <QuizMakingStep2 
                         filteredSubjects={filteredSubjects}
                         selectedChapters={selectedChapters}
                         setSelectedChapters={setSelectedChapters}
                         chapterAccuracy={chapterAccuracy}
                     />
-                    : ''
                 }
                 {
-                    quizMakingStep === 3 ?
+                    quizMakingStep === 3 &&
                     <SmartSelectWeakestTopic 
-                        subjectCache={subjectCache}
-                        chapterCache={chapterCache}
-                        setSubjectCache={setSubjectCache}
-                        setChapterCache={setChapterCache}
+                        subjectIDsCache={subjectIDsCache}
+                        chapterIDsCache={chapterIDsCache}
+                        weakTopics={weakTopics}
+                        setWeakTopics={setWeakTopics}
+                        setSubjectIDsCache={setSubjectIDsCache}
+                        setChapterIDsCache={setChapterIDsCache}
                         setQuizMakingStep={setQuizMakingStep}
-                        selectedTopics={selectedTopics}
                         setSelectedTopics={setSelectedTopics}
                         mcqDistributionPerTopic={mcqDistributionPerTopic}
                         filterChapterIDs={filterChapterIDs}
                         filterSubjectIDs={filterSubjectIDs}
-                        topicsCache={topicsCache}
-                        setTopicsCache={setTopicsCache}
-                    /> : ''
+                        isWeakestChapterOrSubject={isWeakestChapterOrSubject}
+                        setSmartSelectHidden={setSmartSelectHidden}
+                        setExamCreatedFromSmartSelect={setExamCreatedFromSmartSelect}
+                    />
                 }
 
                 <div className='w-full flex flex-col items-center justify-center gap-4 pl-4 pr-4 mt-4'>
@@ -114,7 +114,7 @@ const SmartSelect = ({subjectAccuracy, chapterAccuracy, topicAccuracy, filterCha
                                     setErrorMessage("");
                                     setQuizMakingStep(prev => prev > 0 ? (isWeakestChapterOrSubject === 1 && quizMakingStep === 3 ? prev - 2 : prev - 1) : prev);
                                 }}
-                                className="inline-block cursor-pointer items-center rounded-xl border-2 border-[#2D302D] px-5 py-3 [font-family:Poppins,sans-serif] text-sm font-black uppercase tracking-[0.08em] text-[#8B8E8B]"
+                                className="quiz-btn-secondary inline-block cursor-pointer items-center rounded-xl border-2 border-[#2D302D] px-5 py-3 [font-family:Poppins,sans-serif] text-sm font-black uppercase tracking-[0.08em] text-[#8B8E8B]"
                                 >Back
                             </button> : ''
                         }

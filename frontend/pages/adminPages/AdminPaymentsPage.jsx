@@ -5,6 +5,8 @@ import { useEffect } from 'react';
 import ErrorComponent from '../../components/ErrorComponent'
 import { useNavigate, useOutletContext } from 'react-router-dom';
 import sendErrorSuccessMessage from '../../utils/sendErrorSuccessMessage';
+import Skeleton from '../../components/skeletonComponents/Skeleton';
+import PaymentReviewSkeleton from '../../components/skeletonComponents/PaymentReviewSkeleton'
 
 const AdminPaymentsPage = () => {
     const [users, setUsers] = useState([]);
@@ -13,6 +15,8 @@ const AdminPaymentsPage = () => {
 
     const [verifyLoading, setVerifyLoading] = useState(false);
     const [rejectLoading, setRejectLoading] = useState(false);
+
+    const [loading, setLoading] = useState(true);
 
     const API_URL = import.meta.env.VITE_API_URL;
     const navigate = useNavigate();
@@ -29,11 +33,13 @@ const AdminPaymentsPage = () => {
 
     const fetchUserReceipt = async(usersArray, index) => {
         if(index >= 0 && index < usersArray?.length){
+            setLoading(true);
             const res = await fetch(`${API_URL}/payments/receipt/${usersArray[index]?.email}`,{
                 credentials: 'include'
             });
             const image = await res.blob();
             setUserReceipt(URL.createObjectURL(image));
+            setLoading(false);
         } else {
             setUserReceipt(' ');
         }
@@ -119,6 +125,8 @@ const AdminPaymentsPage = () => {
                     const image = await res.blob();
                     setUserReceipt(URL.createObjectURL(image));
                 }
+
+                setLoading(false);
             }
         }
 
@@ -138,106 +146,110 @@ const AdminPaymentsPage = () => {
                 </p>
 
                 {
-                    users?.length > 0 ? 
-                    <div className="mt-6 grid gap-6 xl:grid-cols-[1.2fr_0.8fr]">
-                    <article className="rounded-xl border border-white/10 bg-[#121212] p-4">
-                    <div className="mb-4 flex items-center justify-between">
-                        <p className="text-sm font-semibold text-white/80">Payment Screenshot</p>
-                        <p className="text-xs text-white/45">Image {userNumber + 1} of {users?.length}</p>
-                    </div>
+                    loading ? 
+                    <PaymentReviewSkeleton/> :
+                    (
+                        users?.length > 0 ? 
+                        <div className="mt-6 grid gap-6 xl:grid-cols-[1.2fr_0.8fr]">
+                            <article className="rounded-xl border border-white/10 bg-[#121212] p-4">
+                            <div className="mb-4 flex items-center justify-between">
+                                <p className="text-sm font-semibold text-white/80">Payment Screenshot</p>
+                                <p className="text-xs text-white/45">Image {userNumber + 1} of {users?.length}</p>
+                            </div>
 
-                    <div>
-                        <div className="overflow-hidden rounded-xl border border-white/10 bg-black/30">
-                            <img
-                            src={userReceipt}
-                            alt="Payment proof"
-                            className="block h-[400px] w-full object-contain"
-                            />
-                        </div>
+                            <div>
+                                <div className="overflow-hidden rounded-xl border border-white/10 bg-black/30">
+                                    <img
+                                    src={userReceipt}
+                                    alt="Payment proof"
+                                    className="block h-[400px] w-full object-contain"
+                                    />
+                                </div>
 
-                        <div className="mt-4 flex items-center justify-center gap-6">
-                            {
-                                userNumber > 0 ?
+                                <div className="mt-4 flex items-center justify-center gap-6">
+                                    {
+                                        userNumber > 0 ?
+                                        <button
+                                            onClick={decrementUser}
+                                            type="button"
+                                            aria-label="Previous image"
+                                            className="cursor-pointer flex h-12 w-12 items-center justify-center rounded-full border border-[#FFC600]/40 bg-[#FFC600] text-lg font-black text-[#181A18] shadow-[0_8px_24px_rgba(0,0,0,0.45)] transition hover:opacity-90"
+                                            >
+                                            ‹
+                                        </button> : ''
+                                    }
+
+                                    {
+                                        userNumber < users?.length - 1 ?
+                                        <button
+                                            onClick={incrementUser}
+                                            type="button"
+                                            aria-label="Next image"
+                                            className="cursor-pointer flex h-12 w-12 items-center justify-center rounded-full border border-[#FFC600]/40 bg-[#FFC600] text-lg font-black text-[#181A18] shadow-[0_8px_24px_rgba(0,0,0,0.45)] transition hover:opacity-90"
+                                            >
+                                            ›
+                                        </button> : ''
+                                    }
+                                </div>
+                            </div>
+                            </article>
+
+                            <article className="rounded-xl border border-white/10 bg-[#121212] p-5">
+                            <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[#FFC600]">User details</p>
+
+                            <div className="mt-4 space-y-3">
+                                <div className="rounded-lg border border-white/10 bg-white/[0.02] p-3">
+                                <p className="text-[11px] uppercase tracking-wide text-white/45">Name</p>
+                                <p className="mt-1 md:text-base text-sm text-white/90">{users[userNumber]?.name}</p>
+                                </div>
+
+                                <div className="rounded-lg border border-white/10 bg-white/[0.02] p-3">
+                                <p className="text-[11px] uppercase tracking-wide text-white/45">Email</p>
+                                <p className="mt-1 md:text-base text-sm text-white/90">{users[userNumber]?.email}</p>
+                                </div>
+
+                                <div className="rounded-lg border border-white/10 bg-white/[0.02] p-3">
+                                <p className="text-[11px] uppercase tracking-wide text-white/45">Phone</p>
+                                <p className="mt-1 md:text-base text-sm text-white/90">{users[userNumber]?.phone}</p>
+                                </div>
+
+                                <div className="rounded-lg border border-white/10 bg-white/[0.02] p-3">
+                                <p className="text-[11px] uppercase tracking-wide text-white/45">Coupon</p>
+                                <p className="mt-1 md:text-base text-sm text-white/90">{users[userNumber]?.coupon || 'User entered invalid coupon OR no coupon for this user'}</p>
+                                </div>
+
+                                <div className="rounded-lg border border-white/10 bg-white/[0.02] p-3">
+                                <p className="text-[11px] uppercase tracking-wide text-white/45">Upgrade Role</p>
+                                <p className="mt-1 md:text-base text-sm text-white/90">{users[userNumber]?.upgrade_role ? 'This user wants to upgrade' : 'This is a new user'}</p>
+                                </div>
+                            </div>
+
+                            <div className="mt-5 grid gap-3 sm:grid-cols-2">
                                 <button
-                                    onClick={decrementUser}
-                                    type="button"
-                                    aria-label="Previous image"
-                                    className="cursor-pointer flex h-12 w-12 items-center justify-center rounded-full border border-[#FFC600]/40 bg-[#FFC600] text-lg font-black text-[#181A18] shadow-[0_8px_24px_rgba(0,0,0,0.45)] transition hover:opacity-90"
-                                    >
-                                    ‹
-                                </button> : ''
-                            }
-
-                            {
-                                userNumber < users?.length - 1 ?
+                                onClick={verifyPayment}
+                                type="button"
+                                className={`${verifyLoading ? 'cursor-not-allowed' : 'cursor-pointer'} rounded-lg bg-[#FFC600] px-5 py-3 text-sm font-black uppercase tracking-wider text-[#181A18] transition hover:opacity-90`}
+                                >
+                                {users[userNumber]?.upgrade_status === "PENDING" ? `${verifyLoading ? 'Processing...' : 'Upgrade'}` : `${verifyLoading ? 'Processing...' : 'Verify'}`}
+                                </button>
                                 <button
-                                    onClick={incrementUser}
-                                    type="button"
-                                    aria-label="Next image"
-                                    className="cursor-pointer flex h-12 w-12 items-center justify-center rounded-full border border-[#FFC600]/40 bg-[#FFC600] text-lg font-black text-[#181A18] shadow-[0_8px_24px_rgba(0,0,0,0.45)] transition hover:opacity-90"
-                                    >
-                                    ›
-                                </button> : ''
-                            }
+                                onClick={rejectPayment}
+                                type="button"
+                                className={`${verifyLoading ? 'cursor-not-allowed' : 'cursor-pointer'} rounded-lg border border-red-400/50 bg-red-500/10 px-5 py-3 text-sm font-black uppercase tracking-wider text-red-200 transition hover:bg-red-500/20`}
+                                >
+                                Reject
+                                </button>
+                            </div>
+                            </article>
+                        </div> :
+                        <div className="mt-6 rounded-xl border border-white/10 bg-[#121212] p-10 text-center">
+                            <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[#FFC600]">All Caught Up</p>
+                            <h4 className="mt-3 text-lg font-bold text-white">No pending payments right now</h4>
+                            <p className="mt-2 text-sm leading-relaxed text-white/60">
+                                There are currently no users with pending payments.
+                            </p>
                         </div>
-                    </div>
-                    </article>
-
-                    <article className="rounded-xl border border-white/10 bg-[#121212] p-5">
-                    <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[#FFC600]">User details</p>
-
-                    <div className="mt-4 space-y-3">
-                        <div className="rounded-lg border border-white/10 bg-white/[0.02] p-3">
-                        <p className="text-[11px] uppercase tracking-wide text-white/45">Name</p>
-                        <p className="mt-1 md:text-base text-sm text-white/90">{users[userNumber]?.name}</p>
-                        </div>
-
-                        <div className="rounded-lg border border-white/10 bg-white/[0.02] p-3">
-                        <p className="text-[11px] uppercase tracking-wide text-white/45">Email</p>
-                        <p className="mt-1 md:text-base text-sm text-white/90">{users[userNumber]?.email}</p>
-                        </div>
-
-                        <div className="rounded-lg border border-white/10 bg-white/[0.02] p-3">
-                        <p className="text-[11px] uppercase tracking-wide text-white/45">Phone</p>
-                        <p className="mt-1 md:text-base text-sm text-white/90">{users[userNumber]?.phone}</p>
-                        </div>
-
-                        <div className="rounded-lg border border-white/10 bg-white/[0.02] p-3">
-                        <p className="text-[11px] uppercase tracking-wide text-white/45">Coupon</p>
-                        <p className="mt-1 md:text-base text-sm text-white/90">{users[userNumber]?.coupon || 'User entered invalid coupon OR no coupon for this user'}</p>
-                        </div>
-
-                        <div className="rounded-lg border border-white/10 bg-white/[0.02] p-3">
-                        <p className="text-[11px] uppercase tracking-wide text-white/45">Upgrade Role</p>
-                        <p className="mt-1 md:text-base text-sm text-white/90">{users[userNumber]?.upgrade_role ? 'This user wants to upgrade' : 'This is a new user'}</p>
-                        </div>
-                    </div>
-
-                    <div className="mt-5 grid gap-3 sm:grid-cols-2">
-                        <button
-                        onClick={verifyPayment}
-                        type="button"
-                        className={`${verifyLoading ? 'cursor-not-allowed' : 'cursor-pointer'} rounded-lg bg-[#FFC600] px-5 py-3 text-sm font-black uppercase tracking-wider text-[#181A18] transition hover:opacity-90`}
-                        >
-                        {users[userNumber]?.upgrade_status === "PENDING" ? `${verifyLoading ? 'Processing...' : 'Upgrade'}` : `${verifyLoading ? 'Processing...' : 'Verify'}`}
-                        </button>
-                        <button
-                        onClick={rejectPayment}
-                        type="button"
-                        className={`${verifyLoading ? 'cursor-not-allowed' : 'cursor-pointer'} rounded-lg border border-red-400/50 bg-red-500/10 px-5 py-3 text-sm font-black uppercase tracking-wider text-red-200 transition hover:bg-red-500/20`}
-                        >
-                        Reject
-                        </button>
-                    </div>
-                    </article>
-                </div> :
-                <div className="mt-6 rounded-xl border border-white/10 bg-[#121212] p-10 text-center">
-                    <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[#FFC600]">All Caught Up</p>
-                    <h4 className="mt-3 text-lg font-bold text-white">No pending payments right now</h4>
-                    <p className="mt-2 text-sm leading-relaxed text-white/60">
-                        There are currently no users with pending payments.
-                    </p>
-                </div>
+                    )
                 }
                 
                 </section>

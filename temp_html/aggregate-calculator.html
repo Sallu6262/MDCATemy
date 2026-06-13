@@ -256,7 +256,6 @@
             <div id="mdTot-err" class="err-msg">Must be greater than 0.</div>
           </div>
         </div>
-        <p style="font-size:.75rem;color:#999;margin-top:8px;">Default is 180. Change if PMC updates the MDCAT total marks.</p>
       </div>
 
       <button class="calc-btn" onclick="calculateAggregate()">Calculate My Aggregate</button>
@@ -294,137 +293,7 @@
   </div>
 </section>
 
-<!-- ── MERIT COMPARISON ── -->
-<section style="background:#f5f5f5;padding:64px 24px;">
-  <div style="max-width:760px;margin:0 auto;">
 
-    <div style="margin-bottom:32px;">
-      <p style="font-size:11px;font-weight:800;letter-spacing:3px;text-transform:uppercase;color:#F6C90E;margin-bottom:10px;">Secondary Section</p>
-      <h2 class="sec-h">COMPARE YOUR AGGREGATE<br>WITH PREVIOUS MERITS</h2>
-      <p class="sec-sub">Select program, category, and province to compare against previous admission closing merits.</p>
-    </div>
-
-    <!-- Filters -->
-    <div class="card" style="padding:28px 32px;margin-bottom:24px;">
-      <div style="display:flex;flex-wrap:wrap;gap:24px;align-items:flex-end;">
-
-        <div>
-          <div style="font-size:.7rem;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:#888;margin-bottom:10px;">Program</div>
-          <select id="programSelect" class="filter-select" onchange="setProgram(this.value)">
-            <option value="MBBS">MBBS</option>
-            <option value="BDS">BDS</option>
-          </select>
-        </div>
-
-        <div>
-          <div style="font-size:.7rem;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:#888;margin-bottom:10px;">Category</div>
-          <select id="categorySelect" class="filter-select" onchange="setCategory(this.value)">
-            <option value="Open Merit">Open Merit</option>
-            <option value="Self Finance">Self Finance</option>
-          </select>
-        </div>
-
-        <div>
-          <div style="font-size:.7rem;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:#888;margin-bottom:10px;">Province</div>
-          <select id="provinceSelect" class="province-select" onchange="setProvince(this.value)">
-            <option value="All">All Verified Provinces</option>
-            <option value="Punjab">Punjab</option>
-            <option value="KPK">KPK</option>
-            <option value="Federal">Federal</option>
-            <option value="Sindh">Sindh</option>
-            <option value="Balochistan">Balochistan</option>
-          </select>
-        </div>
-
-      </div>
-      <p style="font-size:.75rem;color:#999;font-style:italic;margin-top:16px;">Province-wise eligibility may depend on domicile and official admission rules.</p>
-    </div>
-
-    <!-- Comparison result -->
-    <div id="comparisonCard" class="card hidden" style="padding:32px;margin-bottom:16px;">
-
-      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:24px;">
-        <div id="statusBadge"></div>
-        <div style="font-size:.75rem;color:#999;">Session: 2024-25 (Demo Data)</div>
-      </div>
-
-      <div class="four-col" style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px;">
-        <div class="stat-cell">
-          <div class="stat-label">Your Aggregate</div>
-          <div class="stat-val" id="cYourAgg">—</div>
-        </div>
-        <div class="stat-cell">
-          <div class="stat-label">Target Aggregate</div>
-          <div class="stat-val" id="cTarget">—</div>
-        </div>
-        <div class="stat-cell">
-          <div class="stat-label">Gap</div>
-          <div class="stat-val" id="cGap">—</div>
-        </div>
-        <div class="stat-cell">
-          <div class="stat-label">Req. MDCAT Marks</div>
-          <div class="stat-val" id="cReqMdcat">—</div>
-        </div>
-      </div>
-
-      <div id="statusMessage" style="font-size:.9rem;color:#444;line-height:1.7;padding:18px 20px;background:#fff8e8;border-left:3px solid #F6C90E;border-radius:0 10px 10px 0;margin-bottom:20px;"></div>
-
-      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
-        <button class="toggle-tbl" id="toggleTblBtn" onclick="toggleTable()">
-          <span>▼</span><span class="toggle-arrow" id="toggleArrow"></span>
-          View College-wise Closing Merits
-        </button>
-      </div>
-
-      <div id="tableWrap" class="hidden">
-        <div style="font-size:.72rem;color:#999;font-style:italic;margin-top:14px;margin-bottom:8px;">Safer target is an estimated +0.50 buffer — not an official merit. Sorted highest to lowest.</div>
-        <div class="tbl-wrap">
-          <table class="merit-table" id="meritTable">
-            <thead>
-              <tr>
-                <th>Province</th>
-                <th>College</th>
-                <th>Program</th>
-                <th>Category</th>
-                <th>Closing Merit</th>
-                <th class="safer-td" style="background:#7a6000;">Safer Target</th>
-                <th>Source</th>
-              </tr>
-            </thead>
-            <tbody id="meritTableBody"></tbody>
-          </table>
-        </div>
-      </div>
-
-    </div>
-
-    <div id="noDataMsg" class="hidden" style="text-align:center;padding:32px;color:#999;font-size:.9rem;">
-      Verified closing merit data is not available for this selection yet.
-    </div>
-
-    <div id="calcFirstMsg" class="card" style="padding:24px;text-align:center;color:#999;font-size:.9rem;">
-      Enter your marks above and click <strong style="color:#1a1a1a;">Calculate My Aggregate</strong> to see the merit comparison.
-    </div>
-
-    <!-- Disclaimer -->
-    <div style="background:#1a1a1a;border-radius:16px;padding:28px 32px;margin-top:32px;">
-      <div style="font-size:.7rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:#F6C90E;margin-bottom:10px;">⚠️ &nbsp;Disclaimer</div>
-      <p style="font-size:.88rem;color:rgba(255,255,255,.5);line-height:1.75;">This calculator is for estimation only. It does not confirm admission. Final admission depends on official merit lists, domicile, seat category, eligibility criteria, college preferences, available seats, and document verification. Previous closing merits can change every year. Always verify from official admission bodies (UHS, KMU, SZABMU, DUHS, etc.).</p>
-    </div>
-
-  </div>
-</section>
-
-<!-- ── COUNSELING CTA ── -->
-<section id="counselingCta" class="hidden" style="background:#1a1a1a;padding:60px 24px;text-align:center;">
-  <div style="max-width:580px;margin:0 auto;">
-    <div style="color:#ffffff;font-size:11px;font-weight:800;letter-spacing:3px;text-transform:uppercase;margin-bottom:16px;">100% Free &nbsp;·&nbsp; No Commitment</div>
-    <h2 style="font-size:clamp(1.6rem,4vw,2.2rem);font-weight:900;color:#fff;text-transform:uppercase;letter-spacing:-0.5px;line-height:1.05;margin-bottom:14px;">GET FREE MDCAT COUNSELING</h2>
-    <p style="font-size:1rem;color:#ffffff;line-height:1.7;margin-bottom:28px;">Send us a message with your details and questions and we will respond within 24 hours.</p>
-    <a href="https://forms.gle/zbeoaP1UmkFEh6fRA" target="_blank" style="display:inline-block;background:#F6C90E;color:#1a1a1a;text-decoration:none;font-size:.9rem;font-weight:900;letter-spacing:1.5px;text-transform:uppercase;padding:18px 48px;border-radius:50px;transition:background .2s,color .2s" onmouseover="this.style.background='#fff'" onmouseout="this.style.background='#F6C90E'">Get Free Counseling</a>
-    <p style="font-size:.75rem;color:rgba(255,255,255,.55);margin-top:12px;">Fill out a quick form — takes less than 2 minutes</p>
-  </div>
-</section>
 
 <!-- ── SEO CONTENT ── -->
 <section style="background:#fff;padding:64px 24px;">
@@ -441,17 +310,19 @@
     <h3>How to Calculate MDCAT Aggregate</h3>
     <p>Enter your Matric marks (e.g., 1050/1100), FSc marks (e.g., 1050/1100), and MDCAT marks (e.g., 170/180) in the calculator above. The tool instantly computes your aggregate and shows each component's contribution. For example: Matric contribution = 1050/1100 × 10 = 9.55%, FSc contribution = 1050/1100 × 40 = 38.18%, MDCAT contribution = 170/180 × 50 = 47.22%, giving an aggregate of 94.95%.</p>
 
-    <h3>Difference Between Aggregate and Closing Merit</h3>
-    <p>Your aggregate is the number you calculate from your own marks. Closing merit is the aggregate of the last student who was admitted to a specific college in a given year. If your aggregate is above a college's closing merit, you are generally eligible for that college — subject to seat availability, domicile, and eligibility rules.</p>
-
-    <h3>Why MBBS and BDS Closing Merits Differ</h3>
-    <p>MBBS has far more applicants than available seats, making it more competitive and pushing closing merits higher. BDS programs typically have fewer applicants relative to seats, so closing merits tend to be slightly lower. However, this varies by province and college.</p>
-
-    <h3>Why Provincial Closing Merits Are Different</h3>
-    <p>Each province has its own admitting body (UHS for Punjab, KMU for KPK, SZABMU for Federal, etc.) with different numbers of seats, domicile quotas, and applicant pools. Provinces with more competition like Punjab and KPK tend to have higher closing merits than Balochistan or rural Sindh.</p>
-
-    <h3>How to Calculate Required MDCAT Marks</h3>
-    <p>Use the merit comparison section above. After entering your Matric and FSc marks, select your target program and province. The calculator will show you exactly how many MDCAT marks you need to match the previous closing merit, along with a safe-side target to give yourself a buffer.</p>
+    <h3>How to Calculate Your Target MDCAT Marks</h3>
+    <p>Once you know your target aggregate (e.g., the previous year's closing merit for your desired college), you can work backwards to find exactly how many MDCAT marks you need. Use the following formula:</p>
+    <p style="margin-top:14px;"><strong>Required MDCAT Marks = MDCAT Total × (Target Aggregate − Matric Contribution − FSc Contribution) ÷ 50</strong></p>
+    <p style="margin-top:14px;">Where:</p>
+    <ul style="margin-top:8px;margin-left:20px;font-size:.95rem;color:#444;line-height:2;">
+      <li><strong>Matric Contribution</strong> = (Matric Obtained ÷ Matric Total) × 10</li>
+      <li><strong>FSc Contribution</strong> = (FSc Obtained ÷ FSc Total) × 40</li>
+      <li><strong>Target Aggregate</strong> = the closing merit of your target college (e.g., 91.50%)</li>
+    </ul>
+    <p style="margin-top:14px;"><strong>Example:</strong> Matric 1050/1100, FSc 1050/1100, MDCAT total 180, target aggregate 91.50%.</p>
+    <p style="margin-top:8px;">Matric Contribution = (1050 ÷ 1100) × 10 = 9.55 &nbsp;|&nbsp; FSc Contribution = (1050 ÷ 1100) × 40 = 38.18</p>
+    <p style="margin-top:6px;">Required MDCAT = 180 × (91.50 − 9.55 − 38.18) ÷ 50 = 180 × 43.77 ÷ 50 = <strong>157.57 ≈ 158 marks</strong></p>
+    <p style="margin-top:10px;">Always add a buffer of 2–4 extra marks on top of this number as your practical preparation target, to account for exam-day variation and rounding.</p>
 
   </div>
 </section>
@@ -497,36 +368,20 @@
         <div class="faq-ans"><div class="faq-ans-inner">No. This calculator is an estimation tool only. Actual admission depends on official merit lists released by admitting bodies, your domicile, seat category, available seats, eligibility verification, and document review. Closing merits can also change every year.</div></div>
       </div>
 
-      <div class="faq-item">
+      <div class="faq-item" style="border-bottom:none;">
         <button class="faq-q" onclick="toggleFaq(this)">
           How can I calculate my target MDCAT score?
           <span class="faq-arrow">▼</span>
         </button>
         <div class="faq-ans"><div class="faq-ans-inner">
-          <p style="margin-bottom:10px;">Use the merit comparison section of this calculator. Here is the step-by-step approach:</p>
-          <p style="margin-bottom:8px;"><strong>Step 1 — Find your target aggregate.</strong> Look up the previous year's closing merit for your target province and college using the comparison section above. Add 1% as a safety buffer on top of that closing merit. For example, if last year's closing merit for your target was 91.50%, set your personal target at 92.50%.</p>
-          <p style="margin-bottom:8px;"><strong>Step 2 — Use the required MDCAT formula.</strong> Once you have your target aggregate and your Matric and FSc marks are fixed, the formula to find the required MDCAT marks is:</p>
+          <p style="margin-bottom:10px;">Once your Matric and FSc marks are fixed, use this formula to find the exact MDCAT marks you need for a given target aggregate:</p>
           <div style="background:#f5f5f5;border-radius:8px;padding:12px 14px;font-family:monospace;font-size:.82rem;color:#1a1a1a;margin-bottom:10px;">Required MDCAT = MDCAT Total × (Target Aggregate − Matric Contribution − FSc Contribution) ÷ 50</div>
-          <p style="margin-bottom:8px;">Where Matric Contribution = (Matric Obtained ÷ Matric Total) × 10 and FSc Contribution = (FSc Obtained ÷ FSc Total) × 40.</p>
-          <p style="margin-bottom:8px;"><strong>Step 3 — Add a safe-side buffer.</strong> Add 2 to 4 marks on top of the required MDCAT score as your practical preparation target. This accounts for minor variations in exam difficulty and rounding.</p>
-          <p>This calculator automatically does all of this for you in the merit comparison section — just enter your marks, select your province and program, and the required MDCAT score with a safe-side target is shown instantly.</p>
+          <p style="margin-bottom:8px;">Where:</p>
+          <p style="margin-bottom:6px;">• <strong>Matric Contribution</strong> = (Matric Obtained ÷ Matric Total) × 10</p>
+          <p style="margin-bottom:6px;">• <strong>FSc Contribution</strong> = (FSc Obtained ÷ FSc Total) × 40</p>
+          <p style="margin-bottom:8px;">• <strong>Target Aggregate</strong> = the closing merit of your desired college (e.g., 91.50%)</p>
+          <p>Always add 2–4 marks on top of the result as a buffer for exam-day variation and rounding.</p>
         </div></div>
-      </div>
-
-      <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this)">
-          Can I compare my aggregate with previous closing merits?
-          <span class="faq-arrow">▼</span>
-        </button>
-        <div class="faq-ans"><div class="faq-ans-inner">Yes — use the merit comparison section on this page. Select your program (MBBS/BDS), category (Open Merit/Self Finance), and province, and the tool will compare your aggregate against the lowest previous closing merit for that filter, giving you an indication of where you stand. Remember that closing merits change every year.</div></div>
-      </div>
-
-      <div class="faq-item" style="border-bottom:none;">
-        <button class="faq-q" onclick="toggleFaq(this)">
-          How many MDCAT marks do I need for my target aggregate?
-          <span class="faq-arrow">▼</span>
-        </button>
-        <div class="faq-ans"><div class="faq-ans-inner">Enter your Matric and FSc marks, then use the merit comparison section to select your target province and program. The calculator will automatically compute the exact MDCAT marks you need to match the previous closing merit, along with a safe-side target of 2–4 additional marks as a buffer.</div></div>
       </div>
 
     </div>
@@ -547,53 +402,8 @@
 </footer>
 
 <script>
-/* ══════════════ MERIT DATA ══════════════ */
-const meritData = [
-  // KPK
-  {session:"2024-25",province:"KPK",admittingBody:"KMU",program:"MBBS",category:"Open Merit",collegeName:"Khyber Medical College, Peshawar",exactClosingMerit:94.7727,sourceLabel:"KMU Closing Merit List 2024-25",verified:true},
-  {session:"2024-25",province:"KPK",admittingBody:"KMU",program:"MBBS",category:"Open Merit",collegeName:"Ayub Medical College, Abbottabad",exactClosingMerit:91.5234,sourceLabel:"KMU Closing Merit List 2024-25",verified:true},
-  {session:"2024-25",province:"KPK",admittingBody:"KMU",program:"MBBS",category:"Open Merit",collegeName:"Saidu Medical College, Swat",exactClosingMerit:88.3456,sourceLabel:"KMU Closing Merit List 2024-25",verified:true},
-  {session:"2024-25",province:"KPK",admittingBody:"KMU",program:"MBBS",category:"Open Merit",collegeName:"Gomal Medical College, D.I. Khan",exactClosingMerit:85.2341,sourceLabel:"KMU Closing Merit List 2024-25",verified:true},
-  {session:"2024-25",province:"KPK",admittingBody:"KMU",program:"MBBS",category:"Self Finance",collegeName:"Khyber Medical College, Peshawar",exactClosingMerit:89.2341,sourceLabel:"KMU Closing Merit List 2024-25",verified:true},
-  {session:"2024-25",province:"KPK",admittingBody:"KMU",program:"MBBS",category:"Self Finance",collegeName:"Ayub Medical College, Abbottabad",exactClosingMerit:86.4523,sourceLabel:"KMU Closing Merit List 2024-25",verified:true},
-  {session:"2024-25",province:"KPK",admittingBody:"KMU",program:"BDS",category:"Open Merit",collegeName:"Khyber College of Dentistry, Peshawar",exactClosingMerit:93.0748,sourceLabel:"KMU Closing Merit List 2024-25",verified:true},
-  {session:"2024-25",province:"KPK",admittingBody:"KMU",program:"BDS",category:"Open Merit",collegeName:"Abbottabad International Dental College",exactClosingMerit:86.3421,sourceLabel:"KMU Closing Merit List 2024-25",verified:true},
-  {session:"2024-25",province:"KPK",admittingBody:"KMU",program:"BDS",category:"Self Finance",collegeName:"Khyber College of Dentistry, Peshawar",exactClosingMerit:85.6789,sourceLabel:"KMU Closing Merit List 2024-25",verified:true},
-  // Punjab
-  {session:"2024-25",province:"Punjab",admittingBody:"UHS",program:"MBBS",category:"Open Merit",collegeName:"King Edward Medical University, Lahore",exactClosingMerit:93.4521,sourceLabel:"UHS Closing Merit List 2024-25",verified:true},
-  {session:"2024-25",province:"Punjab",admittingBody:"UHS",program:"MBBS",category:"Open Merit",collegeName:"Allama Iqbal Medical College, Lahore",exactClosingMerit:90.2345,sourceLabel:"UHS Closing Merit List 2024-25",verified:true},
-  {session:"2024-25",province:"Punjab",admittingBody:"UHS",program:"MBBS",category:"Open Merit",collegeName:"Fatima Jinnah Medical University, Lahore",exactClosingMerit:89.7654,sourceLabel:"UHS Closing Merit List 2024-25",verified:true},
-  {session:"2024-25",province:"Punjab",admittingBody:"UHS",program:"MBBS",category:"Open Merit",collegeName:"Services Institute of Medical Sciences, Lahore",exactClosingMerit:88.5432,sourceLabel:"UHS Closing Merit List 2024-25",verified:true},
-  {session:"2024-25",province:"Punjab",admittingBody:"UHS",program:"MBBS",category:"Open Merit",collegeName:"Rawalpindi Medical University",exactClosingMerit:87.3456,sourceLabel:"UHS Closing Merit List 2024-25",verified:true},
-  {session:"2024-25",province:"Punjab",admittingBody:"UHS",program:"MBBS",category:"Self Finance",collegeName:"King Edward Medical University, Lahore",exactClosingMerit:88.7654,sourceLabel:"UHS Closing Merit List 2024-25",verified:true},
-  {session:"2024-25",province:"Punjab",admittingBody:"UHS",program:"MBBS",category:"Self Finance",collegeName:"Allama Iqbal Medical College, Lahore",exactClosingMerit:85.4321,sourceLabel:"UHS Closing Merit List 2024-25",verified:true},
-  {session:"2024-25",province:"Punjab",admittingBody:"UHS",program:"BDS",category:"Open Merit",collegeName:"King Edward Medical University, Lahore",exactClosingMerit:89.3456,sourceLabel:"UHS Closing Merit List 2024-25",verified:true},
-  {session:"2024-25",province:"Punjab",admittingBody:"UHS",program:"BDS",category:"Open Merit",collegeName:"De Montmorency College of Dentistry, Lahore",exactClosingMerit:87.6543,sourceLabel:"UHS Closing Merit List 2024-25",verified:true},
-  {session:"2024-25",province:"Punjab",admittingBody:"UHS",program:"BDS",category:"Self Finance",collegeName:"King Edward Medical University, Lahore",exactClosingMerit:84.5678,sourceLabel:"UHS Closing Merit List 2024-25",verified:true},
-  // Federal
-  {session:"2024-25",province:"Federal",admittingBody:"SZABMU",program:"MBBS",category:"Open Merit",collegeName:"SZABMU / PIMS, Islamabad",exactClosingMerit:92.3456,sourceLabel:"SZABMU Closing Merit List 2024-25",verified:true},
-  {session:"2024-25",province:"Federal",admittingBody:"SZABMU",program:"MBBS",category:"Open Merit",collegeName:"Federal Medical & Dental College, Islamabad",exactClosingMerit:89.4567,sourceLabel:"SZABMU Closing Merit List 2024-25",verified:true},
-  {session:"2024-25",province:"Federal",admittingBody:"SZABMU",program:"MBBS",category:"Self Finance",collegeName:"SZABMU / PIMS, Islamabad",exactClosingMerit:87.5432,sourceLabel:"SZABMU Closing Merit List 2024-25",verified:true},
-  {session:"2024-25",province:"Federal",admittingBody:"SZABMU",program:"BDS",category:"Open Merit",collegeName:"Federal Medical & Dental College, Islamabad",exactClosingMerit:88.2345,sourceLabel:"SZABMU Closing Merit List 2024-25",verified:true},
-  {session:"2024-25",province:"Federal",admittingBody:"SZABMU",program:"BDS",category:"Self Finance",collegeName:"Federal Medical & Dental College, Islamabad",exactClosingMerit:83.4567,sourceLabel:"SZABMU Closing Merit List 2024-25",verified:true},
-  // Sindh
-  {session:"2024-25",province:"Sindh",admittingBody:"DUHS",program:"MBBS",category:"Open Merit",collegeName:"Dow Medical College, Karachi",exactClosingMerit:90.4567,sourceLabel:"DUHS Closing Merit List 2024-25",verified:true},
-  {session:"2024-25",province:"Sindh",admittingBody:"DUHS",program:"MBBS",category:"Open Merit",collegeName:"Sindh Medical College, Karachi",exactClosingMerit:87.3456,sourceLabel:"Sindh Closing Merit List 2024-25",verified:true},
-  {session:"2024-25",province:"Sindh",admittingBody:"DUHS",program:"MBBS",category:"Open Merit",collegeName:"Liaquat University of Medical & Health Sciences, Jamshoro",exactClosingMerit:84.5678,sourceLabel:"LUMHS Closing Merit List 2024-25",verified:true},
-  {session:"2024-25",province:"Sindh",admittingBody:"DUHS",program:"MBBS",category:"Self Finance",collegeName:"Dow Medical College, Karachi",exactClosingMerit:85.7654,sourceLabel:"DUHS Closing Merit List 2024-25",verified:true},
-  {session:"2024-25",province:"Sindh",admittingBody:"DUHS",program:"BDS",category:"Open Merit",collegeName:"Dow International Dental College, Karachi",exactClosingMerit:86.2345,sourceLabel:"DUHS Closing Merit List 2024-25",verified:true},
-  {session:"2024-25",province:"Sindh",admittingBody:"DUHS",program:"BDS",category:"Self Finance",collegeName:"Dow International Dental College, Karachi",exactClosingMerit:81.3456,sourceLabel:"DUHS Closing Merit List 2024-25",verified:true},
-  // Balochistan
-  {session:"2024-25",province:"Balochistan",admittingBody:"BMC",program:"MBBS",category:"Open Merit",collegeName:"Bolan Medical College, Quetta",exactClosingMerit:82.3456,sourceLabel:"Bolan Medical College Merit List 2024-25",verified:true},
-  {session:"2024-25",province:"Balochistan",admittingBody:"BMC",program:"MBBS",category:"Self Finance",collegeName:"Bolan Medical College, Quetta",exactClosingMerit:78.6543,sourceLabel:"Bolan Medical College Merit List 2024-25",verified:true},
-  {session:"2024-25",province:"Balochistan",admittingBody:"BMC",program:"BDS",category:"Open Merit",collegeName:"Bolan Dental College, Quetta",exactClosingMerit:79.5432,sourceLabel:"Bolan Medical College Merit List 2024-25",verified:true},
-  {session:"2024-25",province:"Balochistan",admittingBody:"BMC",program:"BDS",category:"Self Finance",collegeName:"Bolan Dental College, Quetta",exactClosingMerit:75.2345,sourceLabel:"Bolan Medical College Merit List 2024-25",verified:true},
-];
-
 /* ══════════════ STATE ══════════════ */
 let userAggregate = null, matricContrib = null, fscContrib = null, mdcatContrib = null, mdcatTotalVal = 180;
-let selectedProgram = 'MBBS', selectedCategory = 'Open Merit', selectedProvince = 'All';
-let tableVisible = false;
 
 /* ══════════════ VALIDATE + CALCULATE ══════════════ */
 function getNum(id){ return parseFloat(document.getElementById(id).value) || null; }
@@ -630,125 +440,6 @@ function calculateAggregate(){
   const card = document.getElementById('resultCard');
   card.classList.remove('hidden');
   card.scrollIntoView({behavior:'smooth', block:'nearest'});
-  document.getElementById('counselingCta').classList.remove('hidden');
-
-  updateComparison();
-}
-
-/* ══════════════ MERIT COMPARISON ══════════════ */
-function updateComparison(){
-  const calcFirst = document.getElementById('calcFirstMsg');
-  const noData    = document.getElementById('noDataMsg');
-  const compCard  = document.getElementById('comparisonCard');
-
-  if(userAggregate===null){
-    calcFirst.classList.remove('hidden');
-    noData.classList.add('hidden');
-    compCard.classList.add('hidden');
-    return;
-  }
-  calcFirst.classList.add('hidden');
-
-  let filtered = meritData.filter(d =>
-    d.program === selectedProgram &&
-    d.category === selectedCategory &&
-    d.verified === true &&
-    (selectedProvince === 'All' || d.province === selectedProvince)
-  );
-
-  if(filtered.length === 0){
-    noData.classList.remove('hidden');
-    compCard.classList.add('hidden');
-    return;
-  }
-  noData.classList.add('hidden');
-  compCard.classList.remove('hidden');
-
-  // Sort ascending to find lowest (threshold)
-  const sorted = [...filtered].sort((a,b) => a.exactClosingMerit - b.exactClosingMerit);
-  const lowest = sorted[0].exactClosingMerit;
-  const gap    = lowest - userAggregate;
-
-  // Required MDCAT
-  let reqMdcat = mdcatTotalVal * (lowest - matricContrib - fscContrib) / 50;
-  let reqMdcatDisplay, safeSide, notAchievable = false;
-  if(reqMdcat < 0){ reqMdcat = 0; reqMdcatDisplay = '0 / '+mdcatTotalVal; safeSide='Already reachable'; }
-  else if(reqMdcat > mdcatTotalVal){ notAchievable = true; reqMdcatDisplay='N/A'; safeSide='N/A'; }
-  else{
-    reqMdcat = Math.round(reqMdcat);
-    reqMdcatDisplay = reqMdcat+' / '+mdcatTotalVal;
-    const safe1 = Math.min(reqMdcat+2, mdcatTotalVal);
-    const safe2 = Math.min(reqMdcat+4, mdcatTotalVal);
-    safeSide = safe1===safe2 ? safe1+'/'+mdcatTotalVal : safe1+'–'+safe2+' / '+mdcatTotalVal;
-  }
-
-  // Populate stat cells
-  document.getElementById('cYourAgg').textContent  = userAggregate.toFixed(2)+'%';
-  document.getElementById('cTarget').textContent   = lowest.toFixed(4)+'%';
-  const gapEl = document.getElementById('cGap');
-  gapEl.textContent = (gap>0?'+':'')+gap.toFixed(2)+'%';
-  gapEl.className   = 'stat-val '+(gap>0?'red':'green');
-  document.getElementById('cReqMdcat').textContent = reqMdcatDisplay;
-
-  // Status badge
-  const badge = document.getElementById('statusBadge');
-  if(gap <= 0){
-    badge.innerHTML = '<span class="status-above">✦ Above Previous Merit</span>';
-  } else {
-    badge.innerHTML = '<span class="status-below">↓ Below Previous Merit</span>';
-  }
-
-  // Message
-  const msgEl = document.getElementById('statusMessage');
-  if(notAchievable){
-    msgEl.style.background = '#fff0f0';
-    msgEl.style.borderLeftColor = '#dc2626';
-    msgEl.innerHTML = `<div style="font-size:.85rem;font-weight:800;color:#dc2626;margin-bottom:8px;">⚠️ &nbsp;Not Achievable Through MDCAT Alone</div>
-      <p style="font-size:.88rem;color:#444;line-height:1.65;">With your current Matric and FSc marks, reaching this target through MDCAT alone is not possible even with a perfect score. Consider targeting colleges with lower closing merits, or focus on improving your FSc marks in improvement exams.</p>`;
-  } else if(gap <= 0){
-    msgEl.style.background = '#f0fff4';
-    msgEl.style.borderLeftColor = '#16a34a';
-    msgEl.innerHTML = `<div style="font-size:.85rem;font-weight:800;color:#16a34a;margin-bottom:8px;">✓ &nbsp;Looking Good!</div>
-      <p style="font-size:.88rem;color:#444;line-height:1.65;">Your aggregate of <strong>${userAggregate.toFixed(2)}%</strong> is <strong>${Math.abs(gap).toFixed(2)}% above</strong> the lowest previous closing merit for this selection. You appear competitive — keep your preparation consistent. Final admission depends on official merit lists, domicile, and seat availability.</p>`;
-  } else {
-    msgEl.style.background = '#fff8e8';
-    msgEl.style.borderLeftColor = '#F6C90E';
-    msgEl.innerHTML = `<div style="font-size:.85rem;font-weight:800;color:#b8920a;margin-bottom:8px;">📊 &nbsp;Room for Improvement</div>
-      <p style="font-size:.88rem;color:#444;line-height:1.65;margin-bottom:12px;">Your aggregate of <strong>${userAggregate.toFixed(2)}%</strong> is <strong style="color:#dc2626;">${gap.toFixed(2)}% below</strong> the selected previous closing merit of <strong>${lowest.toFixed(4)}%</strong>. To strengthen your chances, consider:</p>
-      <p style="font-size:.88rem;color:#333;line-height:1.65;margin-bottom:8px;"><strong>• Improving your MDCAT score</strong> — You need approximately <strong>${reqMdcatDisplay}</strong> marks to reach this target (safe-side: <strong>${safeSide}</strong>). Even a few extra marks significantly boost your aggregate since MDCAT carries 50% weight.</p>
-      <p style="font-size:.88rem;color:#333;line-height:1.65;"><strong>• Improving your FSc marks</strong> — If possible through improvement exams, a higher FSc score directly adds to your aggregate since FSc contributes 40% weight. Every 1% improvement in FSc adds approximately 0.40% to your final aggregate.</p>`;
-  }
-
-  // Build table (sorted highest to lowest)
-  const tableSorted = [...filtered].sort((a,b) => b.exactClosingMerit - a.exactClosingMerit);
-  const tbody = document.getElementById('meritTableBody');
-  tbody.innerHTML = tableSorted.map(d => {
-    const safer = (d.exactClosingMerit + 0.50).toFixed(2);
-    return `<tr>
-      <td>${d.province}</td>
-      <td>${d.collegeName}</td>
-      <td>${d.program}</td>
-      <td>${d.category}</td>
-      <td><strong>${d.exactClosingMerit.toFixed(4)}%</strong></td>
-      <td class="safer-td">${safer}%</td>
-      <td style="color:#888;font-size:.72rem;">${d.sourceLabel}</td>
-    </tr>`;
-  }).join('');
-}
-
-/* ══════════════ FILTERS ══════════════ */
-function setProgram(val){ selectedProgram = val; updateComparison(); }
-function setCategory(val){ selectedCategory = val; updateComparison();
-}
-function setProvince(val){ selectedProvince = val; updateComparison(); }
-
-/* ══════════════ TABLE TOGGLE ══════════════ */
-function toggleTable(){
-  tableVisible = !tableVisible;
-  document.getElementById('tableWrap').classList.toggle('hidden', !tableVisible);
-  const arrow = document.getElementById('toggleArrow');
-  arrow.classList.toggle('open', tableVisible);
-  document.getElementById('toggleTblBtn').querySelector('span').textContent = tableVisible ? '▲' : '▼';
 }
 
 /* ══════════════ COPY RESULT ══════════════ */

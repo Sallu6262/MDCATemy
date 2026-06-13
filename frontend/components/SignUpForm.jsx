@@ -45,12 +45,12 @@ const SignUpForm = ({setStep}) => {
             return;
         }
 
-        if(sscMarksObtained > sscMarksTotal ||
-            fscMarks1Obtained > fscMarks1Total || 
-            (fscMarks2Obtained && fscMarks2Total && fscMarks2Obtained > fscMarks2Total)
+        if((Number(sscMarksObtained) > Number(sscMarksTotal)) ||
+            (Number(fscMarks1Obtained) > Number(fscMarks1Total)) || 
+            (Number(fscMarks2Obtained) > Number(fscMarks2Total))
         ){
             setError(true);
-            setErrorMessage('Obtained marks cannot be greater than total marks');
+            setErrorMessage('Obtained marks cannot be greater than total marks.');
             return;
         }
 
@@ -131,7 +131,7 @@ const SignUpForm = ({setStep}) => {
                     type="text"
                     autoComplete="name"
                     required
-                    placeholder="As on CNIC / B-form"
+                    placeholder="Enter full name"
                     className="w-full rounded-xl border border-white/[0.1] bg-[#1c1c1c] px-4 py-3.5 text-sm text-white placeholder:text-white/30 outline-none transition focus:border-[#FFC600]/50 focus:ring-2 focus:ring-[#FFC600]/20"
                     />
                 </div>
@@ -318,7 +318,7 @@ const SignUpForm = ({setStep}) => {
 
                 <div>
                     <label htmlFor="ssc_year" className="mb-2 block text-[11px] font-bold uppercase tracking-wider text-white/45">
-                        {student?.matric_percentage ? 'SSC Percentage' : 'Obtained SSC Marks'}
+                        {student?.matric_percentage ? 'Matric Percentage' : 'Obtained Matric Marks'}
                     </label>
                     <input
                         readOnly={student}
@@ -339,7 +339,7 @@ const SignUpForm = ({setStep}) => {
                     !student ?
                     <div>
                         <label htmlFor="ssc_year_total" className="mb-2 block text-[11px] font-bold uppercase tracking-wider text-white/45">
-                            Total SSC Marks
+                            Total Matric Marks
                         </label>
                         <input
                             readOnly={student}
@@ -565,7 +565,7 @@ const SignUpForm = ({setStep}) => {
                             type="submit"
                             className={`${loading ? 'cursor-not-allowed' : 'cursor-pointer'} inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#FFC600] py-4 text-sm font-black uppercase tracking-wider text-[#181A18] shadow-[0_8px_32px_rgba(255,198,0,0.25)] transition hover:brightness-105`}
                         >
-                            {loading ? 'Processing...' : 'Next'}
+                            {loading ? 'Processing...' : (!student ? 'Create Account' : 'Verify Payment')}
                             <span aria-hidden="true">→</span>
                         </button>
                     }

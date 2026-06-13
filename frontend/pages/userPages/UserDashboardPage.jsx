@@ -1,22 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import { Link, Outlet, useNavigate, useOutletContext } from "react-router-dom"
 import '../../src/animation.css';
+import ImagePopUp from '../../components/ImagePopUp';
 
-const SubjectCircleButton = ({accuracy, color, subject}) => {
+const SubjectCircleButton = ({accuracy, accentClass, subject}) => {
     return (
-        <div className="flex flex-col items-center gap-1">
+        <div className={`subject-circle-btn flex flex-col items-center gap-1 ${accentClass}`}>
             <div className="relative" style={{ width: "56px", height: "56px" }}>
                 <svg width="56" height="56" style={{ transform: "rotate(-90deg)" }}>
                     <circle cx="28" cy="28" r="22" fill="none" stroke="rgb(var(--ui-text-rgb) / 0.08)" strokeWidth="6"/>
-                    <circle cx="28" cy="28" r="22" fill="none" stroke={color} strokeWidth="6" strokeLinecap="round" strokeDasharray="138.23" strokeDashoffset={String(138.23 - (accuracy ?? 0))}/>
+                    <circle cx="28" cy="28" r="22" fill="none" stroke="currentColor" strokeWidth="6" strokeLinecap="round" strokeDasharray="138.23" strokeDashoffset={String(138.23 - (accuracy ?? 0))}/>
                 </svg>
                 <div className="absolute inset-0 flex items-center justify-center">
-                    <span className="font-['Poppins'] font-medium text-[15px] leading-none" style={{ color: `${color}` }}>{Math.round(accuracy)}%</span>
+                    <span className="font-['Poppins'] font-medium text-[15px] leading-none">{Math.round(accuracy)}%</span>
                 </div>
             </div>
             <span
-              className="font-['Inter'] font-medium text-[14px] text-center leading-tight max-w-[72px]"
-              style={{ color: "rgb(var(--ui-text-rgb) / 0.55)" }}
+              className="dash-subject-name font-['Inter'] font-medium text-[14px] text-center leading-tight max-w-[72px]"
             >
               {subject}
             </span>
@@ -25,13 +25,14 @@ const SubjectCircleButton = ({accuracy, color, subject}) => {
 }
 
 const UserDashboardPage = () => {
-    const {studentAnalytics : sa, leaderboard} = useOutletContext();
+    const {studentAnalytics : sa, leaderboard, student} = useOutletContext();
     const initials = sa?.name?.split(' ')?.map(n => n?.[0]?.toUpperCase())?.join(' ');
 
     const mdcatDate = new Date(import.meta.env.VITE_MDCAT_DATE);
 
     const [mdcatTimeRemaining, setMdcatTimeRemaining] = useState({days: '00', hours: '00', minutes: '00'});
     const [isPerformance, setIsPerformance] = useState(true);
+    const [popUpHidden, setPopUpHidden] = useState(true);
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -55,8 +56,13 @@ const UserDashboardPage = () => {
             .promo-test { background: linear-gradient(135deg, var(--ui-panel-2), var(--ui-panel), var(--ui-bg)); }
         `}</style>
 
-        <section className="fade-in bg-[#181A18] text-white/90 min-h-screen">
-            <div className="lg:hidden px-3 pt-5 pb-10 mx-auto max-w-lg space-y-3.5">
+        {
+          !popUpHidden &&
+          <ImagePopUp setPopUpHidden={setPopUpHidden}/>
+        }
+
+        <section className="fade-in user-dashboard-page bg-[#181A18] text-white/90 min-h-screen">
+            <div className="lg:hidden px-3 pt-5 pb-3 mx-auto max-w-lg space-y-3.5">
 
                 <div className="flex items-center justify-between gap-2 px-0.5">
                 <div className="flex items-center gap-2.5 min-w-0">
@@ -76,25 +82,25 @@ const UserDashboardPage = () => {
                 </div>
                 <div className="flex flex-col items-end gap-1.5 flex-shrink-0">
                     
-                    <Link to="/dashboard/score-predictor" className="cursor-pointer flex items-center gap-1.5 bg-white/[0.05] border border-white/[0.08] rounded-lg px-2 py-1.5">
+                    <Link to="/dashboard/score-predictor" style={{animation: "vibrate 2s linear infinite"}} className="quiz-btn-secondary dashboard-surface-btn cursor-pointer flex items-center gap-1.5 rounded-lg border bg-white/[0.05] border-white/[0.08] px-2 py-1.5">
                     <div className="w-[26px] flex-shrink-0">
                         
                         <svg viewBox="0 0 200 108" className="w-full">
-                        <path d="M 14.00 100.00 A 86 86 0 0 1 39.21 39.21 L 52.62 52.62 A 67 67 0 0 0 33.00 100.00 Z" fill="#EF4444"/>
-                        <path d="M 39.21 39.21 A 86 86 0 0 1 100.00 14.00 L 100.00 33.00 A 67 67 0 0 0 52.62 52.62 Z" fill="#F97316"/>
-                        <path d="M 100.00 14.00 A 86 86 0 0 1 160.79 39.21 L 147.38 52.62 A 67 67 0 0 0 100.00 33.00 Z" fill="#EAB308"/>
-                        <path d="M 160.79 39.21 A 86 86 0 0 1 186.00 100.00 L 167.00 100.00 A 67 67 0 0 0 147.38 52.62 Z" fill="#22C55E"/>
+                        <path className="dash-gauge-red" d="M 14.00 100.00 A 86 86 0 0 1 39.21 39.21 L 52.62 52.62 A 67 67 0 0 0 33.00 100.00 Z" fill="#EF4444"/>
+                        <path className="dash-gauge-orange" d="M 39.21 39.21 A 86 86 0 0 1 100.00 14.00 L 100.00 33.00 A 67 67 0 0 0 52.62 52.62 Z" fill="#F97316"/>
+                        <path className="dash-gauge-amber" d="M 100.00 14.00 A 86 86 0 0 1 160.79 39.21 L 147.38 52.62 A 67 67 0 0 0 100.00 33.00 Z" fill="#EAB308"/>
+                        <path className="dash-gauge-green" d="M 160.79 39.21 A 86 86 0 0 1 186.00 100.00 L 167.00 100.00 A 67 67 0 0 0 147.38 52.62 Z" fill="#22C55E"/>
                         <g transform={`translate(100 100) rotate(${-90 + (sa?.predicted_score ?? 0)})`}>
-                            <path d="M 3,0 C 2.2,-28 1,-60 0,-62 C -1,-60 -2.2,-28 -3,0 C -1.5,3 1.5,3 3,0 Z" fill="rgba(255,255,255,0.85)"/>
+                            <path className="dash-gauge-needle" d="M 3,0 C 2.2,-28 1,-60 0,-62 C -1,-60 -2.2,-28 -3,0 C -1.5,3 1.5,3 3,0 Z"/>
                         </g>
-                        <circle cx="100" cy="100" r="5.5" fill="rgba(255,255,255,0.85)"/>
+                        <circle className="dash-gauge-needle" cx="100" cy="100" r="5.5"/>
                         <circle cx="100" cy="100" r="2.5" fill="#FFC600"/>
                         </svg>
                     </div>
-                    <span className="font-['Poppins'] font-medium text-[12px] leading-none" style={{ color: "#EAB308" }}>{(sa?.predicted_score ?? 0)}</span>
+                    <span className="dash-accent-amber font-['Poppins'] font-medium text-[12px] leading-none">{(sa?.predicted_score ?? 0)}</span>
                     </Link>
                     
-                    <div className="flex items-center gap-1 bg-white/[0.05] border border-white/[0.08] rounded-lg px-1.5 py-1">
+                    <div className="quiz-btn-secondary dashboard-surface-btn flex items-center gap-1 rounded-lg border bg-white/[0.05] border-white/[0.08] px-1.5 py-1">
                     <span className="flex items-baseline gap-[2px]"><span className="font-['Poppins'] font-medium text-[12px] leading-none text-[#FFC600]">{mdcatTimeRemaining.days}</span><span className="font-['Inter'] text-[11px] text-white/40">d</span></span>
                     <span className="text-white/30 text-[11px] mx-0.5">·</span>
                     <span className="flex items-baseline gap-[2px]"><span className="font-['Poppins'] font-medium text-[12px] leading-none text-[#FFC600]">{mdcatTimeRemaining.hours}</span><span className="font-['Inter'] text-[11px] text-white/40">h</span></span>
@@ -105,8 +111,8 @@ const UserDashboardPage = () => {
                 </div>
 
                 <div className="border-l-[3px] border-[#FFC600] pl-2.5 py-0.5">
-                <p className="font-['Inter'] italic text-[12px] text-white/55 leading-relaxed">&ldquo;So, surely with hardship comes ease.&rdquo;</p>
-                <p className="font-['Inter'] text-[11px] text-white/40 mt-0.5">Surah Ash-Sharh 94:5</p>
+                <p className="dash-quote-text font-['Inter'] italic text-[12px] leading-relaxed">&ldquo;So, surely with hardship comes ease.&rdquo;</p>
+                <p className="dash-quote-cite font-['Inter'] text-[11px] mt-0.5">Surah Ash-Sharh 94:5</p>
                 </div>
 
                 <div className="flex items-center justify-between gap-2 px-0.5">
@@ -118,8 +124,8 @@ const UserDashboardPage = () => {
                 </div>
 
                 <div className="flex bg-white/[0.05] rounded-full p-0.5 border border-white/[0.06]">
-                <button onClick={() => setIsPerformance(true)} className={`flex-1 font-['Poppins'] font-medium text-[12px] py-1.5 rounded-full ${isPerformance ? 'bg-[#FFC600] text-[#111827] shadow-[0_1px_3px_rgba(0,0,0,0.12)]' : 'text-white/55'}`}>Performance</button>
-                <button onClick={() => setIsPerformance(false)} className={`flex-1 font-['Poppins'] font-medium text-[12px] py-1.5 rounded-full ${!isPerformance ? 'bg-[#FFC600] text-[#111827] shadow-[0_1px_3px_rgba(0,0,0,0.12)]' : 'text-white/55'}`}>Accuracy</button>
+                <button onClick={() => setIsPerformance(true)} className={`flex-1 font-['Poppins'] font-medium text-[12px] py-1.5 rounded-full ${isPerformance ? 'bg-[#FFC600] text-[#111827] shadow-[0_1px_3px_rgba(0,0,0,0.12)]' : 'dashboard-tab-inactive text-white/55'}`}>Performance</button>
+                <button onClick={() => setIsPerformance(false)} className={`flex-1 font-['Poppins'] font-medium text-[12px] py-1.5 rounded-full ${!isPerformance ? 'bg-[#FFC600] text-[#111827] shadow-[0_1px_3px_rgba(0,0,0,0.12)]' : 'dashboard-tab-inactive text-white/55'}`}>Accuracy</button>
                 </div>
 
                 <section className="card !py-3 !px-3">
@@ -134,18 +140,18 @@ const UserDashboardPage = () => {
                     </div>
                     
                     <div className="inner-tile rounded-lg p-2 flex flex-col items-center gap-1">
-                    <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: "#A78BFA18" }}>
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#A78BFA" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4"/><path d="M12 16h4"/><path d="M8 11h.01"/><path d="M8 16h.01"/></svg>
+                    <div className="dash-bg-violet w-7 h-7 rounded-lg flex items-center justify-center">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="dash-accent-violet"><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4"/><path d="M12 16h4"/><path d="M8 11h.01"/><path d="M8 16h.01"/></svg>
                     </div>
-                    <span className="font-['Poppins'] font-medium text-[16px] leading-none" style={{ color: "#A78BFA" }}>{sa?.tests_attempted}</span>
+                    <span className="dash-accent-violet font-['Poppins'] font-medium text-[16px] leading-none">{sa?.tests_attempted}</span>
                     <span className="font-['Inter'] text-[10px] text-white/40 uppercase tracking-wide text-center leading-tight">Tests Attempted</span>
                     </div>
                     
                     <div className="inner-tile rounded-lg p-2 flex flex-col items-center gap-1">
-                    <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: "#10B98118" }}>
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#10B981" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+                    <div className="dash-bg-emerald w-7 h-7 rounded-lg flex items-center justify-center">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="dash-accent-emerald"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
                     </div>
-                    <span className="font-['Poppins'] font-medium text-[16px] leading-none" style={{ color: "#10B981" }}>{sa?.total_attempt ? parseInt((sa?.total_correct / sa?.total_attempt) * 100) : 0}%</span>
+                    <span className="dash-accent-emerald font-['Poppins'] font-medium text-[16px] leading-none">{sa?.total_attempt ? parseInt((sa?.total_correct / sa?.total_attempt) * 100) : 0}%</span>
                     <span className="font-['Inter'] text-[10px] text-white/40 uppercase tracking-wide text-center leading-tight">Overall Accuracy</span>
                     </div>
                 </div>
@@ -183,7 +189,7 @@ const UserDashboardPage = () => {
                             <div className="absolute left-0 top-4 bottom-4 w-[3px] rounded-full bg-gradient-to-b from-[#FFC600] via-[#FFC600] to-[#FFC600]/0"></div>
                             <div className="absolute inset-0 opacity-[0.04] pointer-events-none" style={{ backgroundImage: "repeating-linear-gradient(45deg,#FFC600 0 1px,transparent 1px 14px)" }}></div>
                             <div className="relative flex items-start gap-3">
-                            <div className="w-10 h-10 rounded-lg bg-white/[0.05] border border-white/[0.10] flex items-center justify-center flex-shrink-0 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]">
+                            <div className="dashboard-icon-tile flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg border border-white/[0.10] bg-white/[0.05] shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]">
                                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FFC600" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 12h-5"/><path d="M15 8h-5"/><path d="M19 17V5a2 2 0 0 0-2-2H4"/><path d="M8 21h12a2 2 0 0 0 2-2v-1a1 1 0 0 0-1-1H11a1 1 0 0 0-1 1v1a2 2 0 1 1-4 0V5a2 2 0 1 0-4 0v2a1 1 0 0 0 1 1h3"/></svg>
                             </div>
                             <div className="flex-1 min-w-0">
@@ -193,7 +199,7 @@ const UserDashboardPage = () => {
                             </div>
                             </div>
                             <div className="relative mt-3 flex flex-col gap-2">
-                            <span className="inline-flex w-full items-center justify-center gap-1 font-['Poppins'] font-semibold text-[12px] text-[#FFC600] border border-[#FFC600]/40 px-3 py-2 rounded-full">
+                            <span className="quiz-btn-secondary inline-flex w-full items-center justify-center gap-1 rounded-full border border-[#FFC600]/40 px-3 py-2 font-['Poppins'] font-semibold text-[12px] text-[#FFC600]">
                                 Take a Test
                                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
                             </span>
@@ -205,13 +211,13 @@ const UserDashboardPage = () => {
                     :
                     <>
                         <div>
-                            <SubjectCircleButton subject={"Biology"} color={"#10B981"} accuracy={sa?.subjects['biology']}/>
+                            <SubjectCircleButton subject={"Biology"} accentClass="dash-accent-emerald" accuracy={sa?.subjects['biology']}/>
                         </div>
                         <div className="grid grid-cols-2 gap-5">
-                            <SubjectCircleButton subject={"Chemistry"} color={"#38BDF8"} accuracy={sa?.subjects['chemistry']}/>
-                            <SubjectCircleButton subject={"Physics"} color={"#A78BFA"} accuracy={sa?.subjects['physics']}/>
-                            <SubjectCircleButton subject={"English"} color={"#2DD4BF"} accuracy={sa?.subjects['english']}/>
-                            <SubjectCircleButton subject={"Logical Reasoning"} color={"#FB923C"} accuracy={sa?.subjects['logical_reasoning']}/>
+                            <SubjectCircleButton subject={"Chemistry"} accentClass="dash-accent-sky" accuracy={sa?.subjects['chemistry']}/>
+                            <SubjectCircleButton subject={"Physics"} accentClass="dash-accent-violet" accuracy={sa?.subjects['physics']}/>
+                            <SubjectCircleButton subject={"English"} accentClass="dash-accent-teal" accuracy={sa?.subjects['english']}/>
+                            <SubjectCircleButton subject={"Logical Reasoning"} accentClass="dash-accent-orange" accuracy={sa?.subjects['logical_reasoning']}/>
                         </div>
                     </>
                 }
@@ -225,19 +231,19 @@ const UserDashboardPage = () => {
                     <Link to="/dashboard/my-copy" onClick={() => JSON.stringify(sessionStorage.setItem("isSavedCopy", false))} className="block">
                     <div className="relative inner-tile rounded-lg p-2.5 flex flex-col items-center gap-1 active:scale-[0.97] transition-transform">
                         <svg className="absolute top-2 right-2" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="rgb(var(--ui-text-rgb) / 0.30)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
-                        <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: "#EF444418" }}>
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#EF4444" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5z"/><polyline points="14 2 14 8 20 8"/><line x1="9.5" y1="12.5" x2="14.5" y2="17.5"/><line x1="14.5" y1="12.5" x2="9.5" y2="17.5"/></svg>
+                        <div className="dash-bg-red flex h-7 w-7 items-center justify-center rounded-lg">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="dash-accent-red"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5z"/><polyline points="14 2 14 8 20 8"/><line x1="9.5" y1="12.5" x2="14.5" y2="17.5"/><line x1="14.5" y1="12.5" x2="9.5" y2="17.5"/></svg>
                         </div>
-                        <span className="font-['Inter'] text-[11px] text-white/40 uppercase tracking-wide text-center">My Mistakes</span>
+                        <span className="dash-copy-label font-['Inter'] text-[11px] uppercase tracking-wide text-center">My Mistakes</span>
                     </div>
                     </Link>
                     <Link to="/dashboard/my-copy" onClick={() => JSON.stringify(sessionStorage.setItem("isSavedCopy", true))} className="block">
                     <div className="relative inner-tile rounded-lg p-2.5 flex flex-col items-center gap-1 active:scale-[0.97] transition-transform">
                         <svg className="absolute top-2 right-2" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="rgb(var(--ui-text-rgb) / 0.30)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
-                        <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: "#38BDF818" }}>
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#38BDF8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+                        <div className="dash-bg-sky flex h-7 w-7 items-center justify-center rounded-lg">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="dash-accent-sky"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
                         </div>
-                        <span className="font-['Inter'] text-[11px] text-white/40 uppercase tracking-wide text-center">Bookmarks</span>
+                        <span className="dash-copy-label font-['Inter'] text-[11px] uppercase tracking-wide text-center">Bookmarks</span>
                     </div>
                     </Link>
                 </div>
@@ -278,21 +284,21 @@ const UserDashboardPage = () => {
                     </div>
                     
                     <div className="flex-1 flex items-center gap-2.5 border-l border-white/[0.06] pl-4">
-                    <div className="w-9 h-9 rounded-xl flex items-center justify-center" style={{ background: "#A78BFA18" }}>
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#A78BFA" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/></svg>
+                    <div className="dash-bg-violet flex h-9 w-9 items-center justify-center rounded-xl">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="dash-accent-violet"><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/></svg>
                     </div>
                     <div>
-                        <span className="font-['Poppins'] font-medium text-[19px] leading-none block" style={{ color: "#A78BFA" }}>{sa?.tests_attempted}</span>
+                        <span className="dash-accent-violet block font-['Poppins'] font-medium text-[19px] leading-none">{sa?.tests_attempted}</span>
                         <span className="font-['Inter'] text-[15px] text-white/40 uppercase tracking-wide">Tests Attempted</span>
                     </div>
                     </div>
                     
                     <div className="flex-1 flex items-center gap-2.5 border-l border-white/[0.06] pl-4">
-                    <div className="w-9 h-9 rounded-xl flex items-center justify-center" style={{ background: "#10B98118" }}>
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#10B981" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+                    <div className="dash-bg-emerald flex h-9 w-9 items-center justify-center rounded-xl">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="dash-accent-emerald"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
                     </div>
                     <div>
-                        <span className="font-['Poppins'] font-medium text-[19px] leading-none block" style={{ color: "#10B981" }}>{sa?.total_attempt ? parseInt((sa?.total_correct / sa?.total_attempt) * 100) : 0}%</span>
+                        <span className="dash-accent-emerald block font-['Poppins'] font-medium text-[19px] leading-none">{sa?.total_attempt ? parseInt((sa?.total_correct / sa?.total_attempt) * 100) : 0}%</span>
                         <span className="font-['Inter'] text-[15px] text-white/40 uppercase tracking-wide">Overall Accuracy</span>
                     </div>
                     </div>
@@ -334,11 +340,11 @@ const UserDashboardPage = () => {
                     <div className="border-t border-white/[0.06] pt-2 flex-1 flex items-center justify-around">
                         
                         <div className="flex flex-col items-center md:flex-row gap-10">
-                            <SubjectCircleButton subject={"Biology"} color={"#10B981"} accuracy={sa?.subjects['biology']}/>
-                            <SubjectCircleButton subject={"Chemistry"} color={"#38BDF8"} accuracy={sa?.subjects['chemistry']}/>
-                            <SubjectCircleButton subject={"Physics"} color={"#A78BFA"} accuracy={sa?.subjects['physics']}/>
-                            <SubjectCircleButton subject={"English"} color={"#2DD4BF"} accuracy={sa?.subjects['english']}/>
-                            <SubjectCircleButton subject={"Logical Reasoning"} color={"#FB923C"} accuracy={sa?.subjects['logical_reasoning']}/>
+                            <SubjectCircleButton subject={"Biology"} accentClass="dash-accent-emerald" accuracy={sa?.subjects['biology']}/>
+                            <SubjectCircleButton subject={"Chemistry"} accentClass="dash-accent-sky" accuracy={sa?.subjects['chemistry']}/>
+                            <SubjectCircleButton subject={"Physics"} accentClass="dash-accent-violet" accuracy={sa?.subjects['physics']}/>
+                            <SubjectCircleButton subject={"English"} accentClass="dash-accent-teal" accuracy={sa?.subjects['english']}/>
+                            <SubjectCircleButton subject={"Logical Reasoning"} accentClass="dash-accent-orange" accuracy={sa?.subjects['logical_reasoning']}/>
                         </div>
 
                     </div>
@@ -372,7 +378,7 @@ const UserDashboardPage = () => {
                         <div className="absolute left-0 top-4 bottom-4 w-[3px] rounded-full bg-gradient-to-b from-[#FFC600] via-[#FFC600] to-[#FFC600]/0"></div>
                         <div className="absolute inset-0 opacity-[0.04] pointer-events-none" style={{ backgroundImage: "repeating-linear-gradient(45deg,#FFC600 0 1px,transparent 1px 14px)" }}></div>
                         <div className="relative flex items-center gap-3.5 flex-1">
-                        <div className="w-[52px] h-[52px] rounded-xl bg-white/[0.05] border border-white/[0.10] flex items-center justify-center flex-shrink-0">
+                        <div className="dashboard-icon-tile flex h-[52px] w-[52px] flex-shrink-0 items-center justify-center rounded-xl border border-white/[0.10] bg-white/[0.05]">
                             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FFC600" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 12h-5"/><path d="M15 8h-5"/><path d="M19 17V5a2 2 0 0 0-2-2H4"/><path d="M8 21h12a2 2 0 0 0 2-2v-1a1 1 0 0 0-1-1H11a1 1 0 0 0-1 1v1a2 2 0 1 1-4 0V5a2 2 0 1 0-4 0v2a1 1 0 0 0 1 1h3"/></svg>
                         </div>
                         <div className="flex-1 min-w-0">
@@ -382,7 +388,7 @@ const UserDashboardPage = () => {
                         </div>
                         </div>
                         <div className="relative mt-3 flex items-center justify-between">
-                        <span className="inline-flex items-center gap-1.5 font-['Poppins'] font-semibold text-[14px] text-[#FFC600] border border-[#FFC600]/40 px-3.5 py-1.5 rounded-full">
+                        <span className="quiz-btn-secondary inline-flex items-center gap-1.5 rounded-full border border-[#FFC600]/40 px-3.5 py-1.5 font-['Poppins'] font-semibold text-[14px] text-[#FFC600]">
                             Take a Test
                             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
                         </span>
@@ -399,22 +405,22 @@ const UserDashboardPage = () => {
                     <div className="grid grid-cols-2 gap-3 flex-1 min-h-0">
                         <Link to="/dashboard/my-copy" onClick={() => JSON.stringify(sessionStorage.setItem("isSavedCopy", false))} className="flex">
                         <div className="relative flex-1 inner-tile rounded-xl flex flex-col items-center justify-center gap-1.5 py-3 px-2">
-                            <div className="w-9 h-9 rounded-xl flex items-center justify-center" style={{ background: "#EF444418" }}>
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#EF4444" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5z"/><line x1="9.5" y1="12.5" x2="14.5" y2="17.5"/><line x1="14.5" y1="12.5" x2="9.5" y2="17.5"/></svg>
+                            <div className="dash-bg-red flex h-9 w-9 items-center justify-center rounded-xl">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="dash-accent-red"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5z"/><line x1="9.5" y1="12.5" x2="14.5" y2="17.5"/><line x1="14.5" y1="12.5" x2="9.5" y2="17.5"/></svg>
                             </div>
-                            <span className="font-['Inter'] text-[15px] text-white/40 uppercase tracking-wide">My Mistakes</span>
-                            <span className="inline-flex items-center gap-0.5 font-['Inter'] font-medium text-[14px] px-2 py-1 rounded-md" style={{ color: "#EF4444", background: "#EF444418" }}>
+                            <span className="dash-copy-label font-['Inter'] text-[15px] uppercase tracking-wide">My Mistakes</span>
+                            <span className="dash-accent-red dash-bg-red inline-flex items-center gap-0.5 rounded-md px-2 py-1 font-['Inter'] font-medium text-[14px]">
                             Review Now <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
                             </span>
                         </div>
                         </Link>
                         <Link to="/dashboard/my-copy" onClick={() => JSON.stringify(sessionStorage.setItem("isSavedCopy", true))} className="flex">
                         <div className="relative flex-1 inner-tile rounded-xl flex flex-col items-center justify-center gap-1.5 py-3 px-2">
-                            <div className="w-9 h-9 rounded-xl flex items-center justify-center" style={{ background: "#38BDF818" }}>
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#38BDF8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+                            <div className="dash-bg-sky flex h-9 w-9 items-center justify-center rounded-xl">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="dash-accent-sky"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
                             </div>
-                            <span className="font-['Inter'] text-[15px] text-white/40 uppercase tracking-wide">Bookmarks</span>
-                            <span className="inline-flex items-center gap-0.5 font-['Inter'] font-medium text-[14px] px-2 py-1 rounded-md" style={{ color: "#38BDF8", background: "#38BDF818" }}>
+                            <span className="dash-copy-label font-['Inter'] text-[15px] uppercase tracking-wide">Bookmarks</span>
+                            <span className="dash-accent-sky dash-bg-sky inline-flex items-center gap-0.5 rounded-md px-2 py-1 font-['Inter'] font-medium text-[14px]">
                             Practice Now <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
                             </span>
                         </div>
@@ -429,15 +435,15 @@ const UserDashboardPage = () => {
                     <div className="card-sm flex flex-col flex-shrink-0">
                     <div className="flex-shrink-0 mb-1">
                         <h3 className="font-['Poppins'] font-medium text-white/80 text-[15px]">Score predictor</h3>
-                        <p className="font-['Inter'] text-[15px] text-white/40">Your goal should be to reach {sa?.target_marks ?? 0} / 180</p>
-                        <a href="#" className="mt-1.5 flex items-center justify-center gap-1 w-full py-1.5 rounded-lg border border-[#FFC600]/20 bg-[#FFC600]/[0.05] font-['Inter'] font-semibold text-[14px] text-center text-[#E0A800] hover:bg-[#FFC600]/[0.11] transition-colors">
-                        Understand Score Predictor Algorithm
+                        <p className="dash-goal-text font-['Inter'] text-[15px]">Your goal should be to reach {sa?.target_marks ?? 0} / 180</p>
+                        <button type='button' onClick={() => setPopUpHidden(false)} className="cursor-pointer quiz-btn-secondary dashboard-surface-btn mt-1.5 flex w-full items-center justify-center gap-1 rounded-lg border border-[#FFC600]/20 bg-[#FFC600]/[0.05] py-1.5 text-center font-['Inter'] text-[14px] font-semibold text-[#E0A800] transition-colors hover:bg-[#FFC600]/[0.11]">
+                            Understand Score Predictor Algorithm
                         {/* <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"/></svg> */}
-                        </a>
+                        </button>
                     </div>
                     <div className="flex items-center gap-2 flex-1 min-h-0">
                         <div className="flex-shrink-0 w-[40%]">
-                        <span className="font-['Poppins'] font-medium leading-none block" style={{ color: "#EAB308", fontSize: "62px" }}>{(sa?.predicted_score ?? 0)}</span>
+                        <span className="dash-accent-amber block font-['Poppins'] font-medium leading-none" style={{ fontSize: "62px" }}>{(sa?.predicted_score ?? 0)}</span>
                         <span className="font-['Inter'] text-[15px] text-white/40 mt-1 block">Your Predicted Score</span>
                         </div>
                         <div className="w-[60%] flex-shrink-0">
@@ -452,9 +458,9 @@ const UserDashboardPage = () => {
                             <text x="160.79" y="39.21" textAnchor="start" dominantBaseline="middle" fontSize="8" fontFamily="Inter,sans-serif" fontWeight="500" fill="rgb(var(--ui-text-rgb) / 0.38)">135</text>
                             <text x="186" y="100" textAnchor="start" dominantBaseline="middle" fontSize="8" fontFamily="Inter,sans-serif" fontWeight="500" fill="rgb(var(--ui-text-rgb) / 0.38)">180</text>
                             <g transform={`translate(100 100) rotate(${-90 + (sa?.predicted_score ?? 0)})`}>
-                            <path d="M 3,0 C 2.2,-28 1,-60 0,-62 C -1,-60 -2.2,-28 -3,0 C -1.5,3 1.5,3 3,0 Z" fill="rgba(255,255,255,0.85)"/>
+                            <path className="dash-gauge-needle" d="M 3,0 C 2.2,-28 1,-60 0,-62 C -1,-60 -2.2,-28 -3,0 C -1.5,3 1.5,3 3,0 Z"/>
                             </g>
-                            <circle cx="100" cy="100" r="6" fill="rgba(255,255,255,0.85)"/>
+                            <circle className="dash-gauge-needle" cx="100" cy="100" r="6"/>
                             <circle cx="100" cy="100" r="2.8" fill="#FFC600"/>
                         </svg>
                         </div>
@@ -475,11 +481,11 @@ const UserDashboardPage = () => {
                             else if(i === 2) icon = '🥉';
 
                             return (
-                                <div key={i} className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl">
-                                <span className="font-['Poppins'] font-bold text-[13px] w-5 text-center text-white/40">{icon}</span>
-                                <div className="w-8 h-8 rounded-full flex items-center justify-center font-['Poppins'] font-bold text-[10px]" style={{ background: '#10B98122', color: '#10B981' }}>{score?.name?.split(' ')?.map(n => n?.[0]?.toUpperCase())?.join('')}</div>
-                                <span className="flex-1 font-['Inter'] text-[14px] truncate text-white/70">{score?.name}</span>
-                                <span className="font-['Poppins'] font-bold text-[15px]" style={{ color: '#22C55E' }}>{score?.predicted_score ?? 0}</span>
+                                <div key={score.id} className={`flex items-center gap-2.5 px-3 py-2.5 rounded-xl ${student.id === score.id && '!bg-[#FFC600]/10 border !border-[#FFC600]'}`}>
+                                    <span className="font-['Poppins'] font-bold text-[13px] w-5 text-center text-white/40">{icon}</span>
+                                    <div className="dash-bg-emerald dash-accent-emerald flex h-8 w-8 items-center justify-center rounded-full font-['Poppins'] text-[10px] font-bold">{score?.name?.split(' ')?.map(n => n?.[0]?.toUpperCase())?.join('')}</div>
+                                    <span className="flex-1 font-['Inter'] text-[14px] truncate text-white/70">{score?.name}</span>
+                                    <span className="dash-accent-emerald font-['Poppins'] text-[15px] font-bold">{score?.predicted_score ?? 0}</span>
                                 </div>
                             )
                             })

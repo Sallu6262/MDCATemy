@@ -49,7 +49,7 @@ const TestReviewCard = ({test, setTestReviewHidden, attempted}) => {
       else lrCount++;
     });
 
-    localStorage.setItem("previous-test-mcqs", JSON.stringify({
+    localStorage.setItem("previous-exam-mcqs", JSON.stringify({
       test_id: test.test_id,
       test_name: test.test_name,
       total_mcqs: test.mcq_count,
@@ -65,7 +65,7 @@ const TestReviewCard = ({test, setTestReviewHidden, attempted}) => {
       answerAfterEach: true
     }));
 
-    navigate(`${test?.test_id}`);
+    navigate(`/dashboard/test-series/previous-exam/${test?.test_id}`);
   }
   
   useEffect(() => {

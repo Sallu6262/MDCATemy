@@ -42,6 +42,7 @@ const Footer = () => {
               <li><Link to="/batch-enrollment" className="text-sm transition-colors duration-200 hover:text-white" style={{ color: "rgb(var(--ui-text-rgb) / 0.45)", textDecoration: "none" }}>Batch Enrollment</Link></li>
               <li><Link to="/" onClick={() => document.getElementById("study-material").scrollIntoView({behavior: 'smooth'})} className="text-sm transition-colors duration-200 hover:text-white" style={{ color: "rgb(var(--ui-text-rgb) / 0.45)", textDecoration: "none" }}>Study Material</Link></li>
               <li><Link to="/test-series-enrollment" className="text-sm transition-colors duration-200 hover:text-white" style={{ color: "rgb(var(--ui-text-rgb) / 0.45)", textDecoration: "none" }}>Test Session</Link></li>
+              <li><Link to="/mdcat-aggregate-calculator" className="text-sm transition-colors duration-200 hover:text-white" style={{ color: "rgb(var(--ui-text-rgb) / 0.45)", textDecoration: "none" }}>Aggregate Calculator</Link></li>
             </ul>
           </div>
 

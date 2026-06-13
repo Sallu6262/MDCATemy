@@ -21,7 +21,7 @@ const DifficultySelectButton = ({difficulty, difficultyToSet, isSelected, setDif
                 } 
                 else if(difficultyToSet === 4) setHidden(false);
             }}
-            className={`cursor-pointer rounded-lg border border-[#2D302D] px-4 py-2 text-sm ${isSelected ? 'bg-[#FFC600] font-semibold text-[#0E0F0E]' : 'text-[#8B8E8B]'}`}
+            className={`quiz-diff-btn cursor-pointer rounded-lg border border-[#2D302D] px-4 py-2 text-sm ${isSelected ? 'quiz-diff-btn--selected bg-[#FFC600] font-semibold text-[#0E0F0E]' : 'text-[#8B8E8B]'}`}
             >
             {difficulty}
         </button>
@@ -121,6 +121,10 @@ const QuizMakingStep4 = ({mcqDistributionPerTopic, selectedTopics, setStep, sele
     }
 
     const generateMCQs = async () => {
+        const easy = Math.round((difficultyRatio.easy / 100) * totalMcqs);
+        const medium = Math.round((difficultyRatio.medium / 100) * totalMcqs);
+        const hard = totalMcqs - easy - medium;
+
         const res = await fetch(`${API_URL}/quizzes/generate`,{
             method: "POST",
             credentials: 'include',
@@ -129,9 +133,9 @@ const QuizMakingStep4 = ({mcqDistributionPerTopic, selectedTopics, setStep, sele
             },
             body: JSON.stringify({
                 topic_ids: [...selectedTopics],
-                easy: difficultyRatio.easy,
-                medium: difficultyRatio.medium,
-                hard: difficultyRatio.hard
+                easy,
+                medium,
+                hard,
             })
         });
 
@@ -167,7 +171,7 @@ const QuizMakingStep4 = ({mcqDistributionPerTopic, selectedTopics, setStep, sele
                     <div className="flex items-center gap-2">
                         <button
                         onClick={() => setTotalMcqs(prev => prev > 1 ? prev - 1 : prev)}
-                        className="cursor-pointer h-10 w-10 rounded-xl border-2 border-[#2D302D] bg-[#0E0F0E]/30 text-xl text-[#8B8E8B]"
+                        className="quiz-btn-secondary cursor-pointer h-10 w-10 rounded-xl border-2 border-[#2D302D] bg-[#0E0F0E]/30 text-xl text-[#8B8E8B]"
                         >
                         -</button
                         ><input
@@ -175,12 +179,15 @@ const QuizMakingStep4 = ({mcqDistributionPerTopic, selectedTopics, setStep, sele
                         min="1"
                         max="180"
                         value={totalMcqs}
-                        onChange={e => setTotalMcqs(Math.max(1, Math.min(e.target.value, 180, maxMcqs)))}
-                        className="h-10 flex justify-center items-center flex-1 rounded-xl border-2 border-[#2D302D] bg-[#0E0F0E] text-center [font-family:Poppins,sans-serif] text-xl font-black text-[#FFC600]"
+                        onChange={e => {
+                            const val = e.target.value;
+                            setTotalMcqs(val ? Math.max(1, Math.min(val, 180, maxMcqs)) : "")
+                        }}
+                        className="quiz-input-field h-10 flex justify-center items-center flex-1 rounded-xl border-2 border-[#2D302D] bg-[#0E0F0E] text-center [font-family:Poppins,sans-serif] text-xl font-black text-[#FFC600]"
                         />
                         <button
                         onClick={() => setTotalMcqs(prev => prev < maxMcqs ? prev + 1 : prev)}
-                        className="cursor-pointer h-10 w-10 rounded-xl border-2 border-[#2D302D] bg-[#0E0F0E]/30 text-xl text-[#8B8E8B]"
+                        className="quiz-btn-secondary cursor-pointer h-10 w-10 rounded-xl border-2 border-[#2D302D] bg-[#0E0F0E]/30 text-xl text-[#8B8E8B]"
                         >
                         +
                         </button>
@@ -205,7 +212,7 @@ const QuizMakingStep4 = ({mcqDistributionPerTopic, selectedTopics, setStep, sele
                         className="text-xs font-black uppercase tracking-[0.12em] text-[#8B8E8B]"
                         >Timer</label
                         >
-                        <button onClick={() => setShowTimer(prev => !prev)} className={`cursor-pointer relative h-5 w-9 rounded-full ${showTimer ? 'bg-[#FFC600]' : 'bg-gray-800'}`}><span className={`absolute ${showTimer ? 'left-[18px]' : 'left-[0px]'} top-[3px] h-3.5 w-3.5 rounded-full bg-white`}></span></button>
+                        <button onClick={() => setShowTimer(prev => !prev)} className={`cursor-pointer relative h-5 w-9 rounded-full ${showTimer ? 'bg-[#FFC600]' : 'quiz-toggle-off bg-gray-800'}`}><span className={`absolute ${showTimer ? 'left-[18px]' : 'left-[0px]'} top-[3px] h-3.5 w-3.5 rounded-full bg-white`}></span></button>
                     </div>
                     
                     {
@@ -213,7 +220,7 @@ const QuizMakingStep4 = ({mcqDistributionPerTopic, selectedTopics, setStep, sele
                         <div className="overflow-hidden">
                             <div className="flex items-center gap-2 mt-1">
                                 <input type="number" min="5" max="180" value={time} onChange={e => setTime(e.target.value)}
-                                    className="w-16 h-9 bg-[#181A18] border border-[#2E302E] rounded-lg px-3 text-white font-inter text-sm text-center focus:outline-none focus:border-[#FFC600]" />
+                                    className="quiz-input-field w-16 h-9 bg-[#181A18] border border-[#2E302E] rounded-lg px-3 text-white font-inter text-sm text-center focus:outline-none focus:border-[#FFC600]" />
                                 <span className="text-[#A8ACA8] text-[12px] font-inter">minutes</span>
                             </div>
                         </div> : ''
@@ -226,13 +233,13 @@ const QuizMakingStep4 = ({mcqDistributionPerTopic, selectedTopics, setStep, sele
                         >Show Answer</label
                     >
                     <div
-                        className="flex overflow-hidden rounded-lg border border-[#2D302D]"
+                        className="quiz-segment-group flex overflow-hidden rounded-lg border border-[#2D302D]"
                     >
-                        <button onClick={() => setAnswerAfterEach(true)} className={`cursor-pointer flex-1 py-2 text-sm font-bold ${answerAfterEach ? 'bg-[#FFC600] font-semibold text-[#0E0F0E]' : 'text-[#8B8E8B]'}`}>
+                        <button onClick={() => setAnswerAfterEach(true)} className={`cursor-pointer flex-1 py-2 text-sm font-bold ${answerAfterEach ? 'bg-[#FFC600] font-semibold text-[#0E0F0E]' : 'quiz-answer-inactive text-[#8B8E8B]'}`}>
                         After each</button
                         ><button
                         onClick={() => setAnswerAfterEach(false)}
-                        className={`cursor-pointer flex-1 py-2 text-sm ${!answerAfterEach ? 'bg-[#FFC600] font-semibold text-[#0E0F0E]' : 'text-[#8B8E8B]'}`}
+                        className={`cursor-pointer flex-1 py-2 text-sm ${!answerAfterEach ? 'bg-[#FFC600] font-semibold text-[#0E0F0E]' : 'quiz-answer-inactive text-[#8B8E8B]'}`}
                         >
                         At the end
                         </button>

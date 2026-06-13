@@ -15,3 +15,19 @@ export const accuracyToTextColor = (accuracy) => {
     else if(accuracy >= 50 && accuracy <= 74) return 'text-amber-400 border-amber-400';
     return 'text-red-400 border-red-400';
 }
+
+export const clearLocalStorage = () => {
+    localStorage.removeItem("exam");
+    localStorage.removeItem("examTimer");
+    localStorage.removeItem("reload");
+    localStorage.removeItem("submitted");
+    localStorage.removeItem("bookmarks");
+    localStorage.removeItem("flagged");
+    localStorage.removeItem("selectedOptions");
+    localStorage.removeItem("correct");
+    localStorage.removeItem("wrong");
+}
+
+export const scrollToComponent = (id, block) => {
+    document.getElementById(id).scrollIntoView({behavior: 'smooth', block: block});
+}

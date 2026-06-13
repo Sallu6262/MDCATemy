@@ -13,7 +13,7 @@ const SubmitExamConfirmation = ({unanswered, answered, flagged, setHidden, submi
       `}</style>
 
       <div
-        className="fade-in fixed inset-0 z-[60] bg-black/75 backdrop-blur-sm"
+        className="custom-mix-overlay fade-in fixed inset-0 z-[60] bg-black/75 backdrop-blur-sm"
         aria-hidden="true"
       />
 
@@ -21,9 +21,9 @@ const SubmitExamConfirmation = ({unanswered, answered, flagged, setHidden, submi
         role="dialog"
         aria-modal="true"
         aria-labelledby="submit-exam-title"
-        className="fade-in sec-modal-scroll fixed bottom-3 left-3 right-3 z-[70] max-h-[90vh] overflow-y-auto rounded-2xl border border-[#2E302E] bg-[#222422] p-5 shadow-2xl lg:inset-auto lg:left-1/2 lg:top-1/2 lg:w-[380px] lg:-translate-x-1/2 lg:-translate-y-1/2"
+        className="exam-flow-page exam-flow-card fade-in sec-modal-scroll fixed bottom-3 left-3 right-3 z-[70] max-h-[90vh] overflow-y-auto rounded-2xl border border-[#2E302E] bg-[#222422] p-5 shadow-2xl lg:inset-auto lg:left-1/2 lg:top-1/2 lg:w-[380px] lg:-translate-x-1/2 lg:-translate-y-1/2"
       >
-        <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full border border-amber-500/30 bg-amber-500/10">
+        <div className="exam-flow-icon-badge mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full border border-amber-500/30 bg-amber-500/10">
           <svg
             width="20"
             height="20"
@@ -47,7 +47,7 @@ const SubmitExamConfirmation = ({unanswered, answered, flagged, setHidden, submi
           Submit Exam?
         </h3>
 
-        <div className="mb-5 flex items-start gap-2.5 rounded-xl border border-amber-500/20 bg-amber-500/[0.08] px-4 py-3">
+        <div className="exam-flow-alert mb-5 flex items-start gap-2.5 rounded-xl border border-amber-500/20 bg-amber-500/[0.08] px-4 py-3">
           <svg
             width="14"
             height="14"
@@ -69,15 +69,15 @@ const SubmitExamConfirmation = ({unanswered, answered, flagged, setHidden, submi
         </div>
 
         <div className="mb-5 grid grid-cols-3 gap-2">
-          <div className="rounded-lg border border-[#2E302E] bg-[#181A18] py-2 text-center">
+          <div className="exam-flow-stat-tile exam-flow-stat-tile--neutral rounded-lg border border-[#2E302E] bg-[#181A18] py-2 text-center">
             <p className="text-lg font-black leading-none text-emerald-400 [font-family:Poppins,sans-serif]">{answered}</p>
             <p className="mt-0.5 text-[9px] text-[#A8ACA8] [font-family:Inter,sans-serif]">Answered</p>
           </div>
-          <div className="rounded-lg border border-[#2E302E] bg-[#181A18] py-2 text-center">
+          <div className="exam-flow-stat-tile exam-flow-stat-tile--neutral rounded-lg border border-[#2E302E] bg-[#181A18] py-2 text-center">
             <p className="text-lg font-black leading-none text-amber-400 [font-family:Poppins,sans-serif]">{unanswered}</p>
             <p className="mt-0.5 text-[9px] text-[#A8ACA8] [font-family:Inter,sans-serif]">Unanswered</p>
           </div>
-          <div className="rounded-lg border border-[#2E302E] bg-[#181A18] py-2 text-center">
+          <div className="exam-flow-stat-tile exam-flow-stat-tile--neutral rounded-lg border border-[#2E302E] bg-[#181A18] py-2 text-center">
             <p className="text-lg font-black leading-none text-orange-400 [font-family:Poppins,sans-serif]">{flagged}</p>
             <p className="mt-0.5 text-[9px] text-[#A8ACA8] [font-family:Inter,sans-serif]">Flagged</p>
           </div>
@@ -87,7 +87,7 @@ const SubmitExamConfirmation = ({unanswered, answered, flagged, setHidden, submi
           <button
             type="button"
             onClick={() => setHidden(true)}
-            className="cursor-pointer flex-1 rounded-xl border border-[#2E302E] bg-[#2A2C2A]/30 px-4 py-2.5 text-[13px] font-bold text-white transition-colors [font-family:Inter,sans-serif] hover:border-[#A8ACA8]/50"
+            className="quiz-btn-secondary cursor-pointer flex-1 rounded-xl border px-4 py-2.5 text-[13px] font-bold transition-colors [font-family:Inter,sans-serif]"
           >
             Keep Going
           </button>
@@ -95,7 +95,7 @@ const SubmitExamConfirmation = ({unanswered, answered, flagged, setHidden, submi
             type="button"
             onClick={() => submitExam(false, setSubmitExamLoading)}
             disabled={submitExamLoading}
-            className={`${submitExamLoading ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'} flex flex-1 items-center justify-center gap-2 rounded-xl border border-amber-500/40 bg-amber-500/15 px-4 py-2.5 text-[13px] font-bold text-amber-300 transition-colors [font-family:Inter,sans-serif] hover:bg-amber-500/25`}
+            className={`exam-flow-submit-btn ${submitExamLoading ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'} flex flex-1 items-center justify-center gap-2 rounded-xl border border-amber-500/40 bg-amber-500/15 px-4 py-2.5 text-[13px] font-bold text-amber-300 transition-colors [font-family:Inter,sans-serif] hover:bg-amber-500/25`}
           >
             <svg
               width="13"

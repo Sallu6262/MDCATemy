@@ -46,11 +46,10 @@ const Navbar = ({user, setUser, isLanding, isEnrollmentFinished}) => {
 
   return (
     <nav
-      className="sticky top-0 left-0 right-0 z-100"
+      className="site-navbar sticky top-0 left-0 right-0 z-[100] border-b border-white/10"
       style={{
-        background: isLanding ? "#121212" : "rgb(var(--ui-bg-rgb, 18 18 18) / 1)",
+        background: "#121212",
         backdropFilter: "blur(24px) saturate(180%)",
-        borderBottom: "1px solid rgb(var(--ui-text-rgb) / 0.08)",
         boxShadow: "0 4px 24px rgba(0,0,0,0.25)",
       }}
     >
@@ -74,8 +73,8 @@ const Navbar = ({user, setUser, isLanding, isEnrollmentFinished}) => {
           {
             isLanding ?
             <div className="hidden lg:flex items-center gap-8 ml-auto">
-              <Link to="/" onClick={() => document.getElementById("about").scrollIntoView({behavior: 'smooth'})} className="text-sm font-medium hover:text-white transition-colors" style={{ color: "white", textDecoration: "none" }}>About</Link>
-              <Link to="/test-series-enrollment" className="text-sm font-medium hover:text-white transition-colors" style={{ color: "white", textDecoration: "none" }}>Test Session</Link>
+              <Link to="/" onClick={() => document.getElementById("about").scrollIntoView({behavior: 'smooth'})} className="text-sm font-medium text-white/80 no-underline transition-colors hover:text-white">About</Link>
+              <Link to="/test-series-enrollment" className="text-sm font-medium text-white/80 no-underline transition-colors hover:text-white">Test Session</Link>
             </div> 
             : 
             <button
@@ -105,11 +104,11 @@ const Navbar = ({user, setUser, isLanding, isEnrollmentFinished}) => {
             </button>
           }
 
-          <div className="hidden lg:flex items-center gap-3 ml-6">
+          <div className="hidden z-[100] lg:flex items-center gap-3 ml-6">
             {
-              user?.payment_status === 'VERIFIED' || user?.role === 'ADMIN' ?
+              user && !window.location.href.includes('/login') ?
               <>
-                <button onClick={logOutWebsite} type="button" style={{backgroundColor: theme === 'dark' ? "" : "#FFC600", cursor: 'pointer' ,border: `1px solid ${theme === 'dark' ? "#FFC600" : "#000000"}`, borderRadius: "8px", padding: "0.5rem 1.25rem", color: theme === 'dark' ? "#FFC600" : "#000000", fontSize: "0.875rem", fontWeight: 500, display: "inline-flex", alignItems: "center", height: "38px", textDecoration: "none" }}>Logout</button>
+                <button onClick={logOutWebsite} type="button" style={{backgroundColor: "transparent", cursor: 'pointer', border: "1px solid #FFC600", borderRadius: "8px", padding: "0.5rem 1.25rem", color: "#FFC600", fontSize: "0.875rem", fontWeight: 500, display: "inline-flex", alignItems: "center", height: "38px", textDecoration: "none" }}>Logout</button>
                 <button type="button" className="cursor-pointer inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#FFC600]/40 bg-[#FFC600]/15 text-sm font-black text-[#FFC600]" aria-label="Profile initials">
                   {name}
                 </button>
@@ -126,7 +125,7 @@ const Navbar = ({user, setUser, isLanding, isEnrollmentFinished}) => {
             }
           </div>
 
-          <details className="relative lg:hidden">
+          <details className="relative lg:hidden hamburger">
             <summary className="list-none cursor-pointer rounded-lg border border-white/15 bg-white/[0.04] p-2 text-white/90 transition hover:bg-white/[0.08]" aria-label="Open menu">
               <span className="flex h-6 w-6 flex-col items-center justify-center gap-1">
                 <span className="block h-0.5 w-5 rounded bg-white/90"></span>
@@ -141,12 +140,12 @@ const Navbar = ({user, setUser, isLanding, isEnrollmentFinished}) => {
                   isLanding ?
                   <>
                     <Link to="/" onClick={() => document.getElementById("about").scrollIntoView({behavior: 'smooth'})} className="rounded-lg px-3 py-2 text-sm font-medium text-white/80 transition hover:bg-white/[0.06] hover:text-white">About</Link>
-                    <Link to="/test-series-enrollment" className="text-sm font-medium hover:text-white transition-colors" style={{ color: "white", textDecoration: "none" }}>Test Session</Link>
+                    <Link to="/test-series-enrollment" className="rounded-lg px-3 py-2 text-sm font-medium text-white/80 no-underline transition hover:bg-white/[0.06] hover:text-white">Test Session</Link>
                   </> : ''
                 }
                 <div className="my-1 h-px bg-white/10"></div>
                 {
-                  user?.payment_status === 'VERIFIED' || user?.role === 'ADMIN' ? 
+                  user && !window.location.href.includes('/login') ? 
                   <>
                     <button type="button" onClick={logOutWebsite} className="rounded-lg border border-white/20 bg-white/[0.04] px-3 py-2 text-sm font-semibold text-white/80 transition hover:bg-white/[0.08] hover:text-white">Logout</button>
                     <button type="button" className="mt-1 inline-flex items-center justify-center gap-2 rounded-lg border border-[#FFC600]/40 bg-[#FFC600]/10 px-3 py-2 text-sm font-semibold text-[#FFC600]" aria-label="Profile initials">

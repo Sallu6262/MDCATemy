@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { accuracyToTextColor, formatName } from '../../../utils/HelperObjects';
 
 //could have directly sent filteredSyllabus[subject] which are chapters for that subject (did this in TopicSelectButton so better)
-const ChapterSelectButton = ({chapters, subject, colorClass, setSelectedChapters, selectedChapters, chapterAccuracy}) => {
+const ChapterSelectButton = ({chapters, subject, colorClass, setSelectedChapters, selectedChapters, chapterAccuracy, showAccuracy}) => {
     const [selectAll, setSelectAll] = useState(chapters.every(chapter => selectedChapters.has(chapter)));
 
     useEffect(() => {
@@ -51,9 +51,9 @@ const ChapterSelectButton = ({chapters, subject, colorClass, setSelectedChapters
                                         newSet.has(chapter) ? newSet.delete(chapter) : newSet.add(chapter);
                                         return newSet;
                                     })
-                                }} className={`cursor-pointer flex w-full items-center gap-3 rounded-xl border-2 ${isSelected ? 'border-[#FFC600] bg-[#FFC600]/10 text-white' : 'text-[#8B8E8B] hover:border-[#FFC600]/50'} px-4 py-3 text-left`}>
+                                }} className={`quiz-select-btn cursor-pointer flex w-full items-center gap-3 rounded-xl border-2 px-4 py-3 text-left ${isSelected ? 'quiz-select-btn--selected border-[#FFC600] bg-[#FFC600]/10 text-white' : 'text-[#8B8E8B] hover:border-[#FFC600]/50'}`}>
                                     <span className="flex-1 [font-family:Poppins,sans-serif] text-sm font-black">{formatName(chapter)}</span>
-                                    <span className={`inline-flex items-center gap-1 rounded-full border ${accuracyToTextColor(chapterAccuracy?.[chapter] ?? 0)} px-2 py-0.5 [font-family:Poppins,sans-serif] text-xs font-black `}>● {chapterAccuracy?.[chapter] ?? 0}%</span>
+                                    {showAccuracy && <span className={`inline-flex items-center gap-1 rounded-full border ${accuracyToTextColor(chapterAccuracy?.[chapter] ?? 0)} px-2 py-0.5 [font-family:Poppins,sans-serif] text-xs font-black `}>● {chapterAccuracy?.[chapter] ?? 0}%</span>}
                                 </button>
                     })
                 }

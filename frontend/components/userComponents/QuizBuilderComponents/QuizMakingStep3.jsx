@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { subjectToColor, formatName } from '../../../utils/HelperObjects';
 import TopicSelectButton from './TopicSelectButton';
 
-const QuizMakingStep3 = ({filteredSubjects, filteredChapters, selectedTopics, setSelectedTopics, mcqDistributionPerTopic, topicAccuracy}) => {
+const QuizMakingStep3 = ({filteredSubjects, filteredChapters, selectedTopics, setSelectedTopics, mcqDistributionPerTopic, topicAccuracy, showAccuracy}) => {
     // console.log(filteredChapters);
     const [subject, setSubject] = useState(Object.keys(filteredSubjects)[0]);
     const [chaptersPerSubject, setChaptersPerSubject] = useState(filteredSubjects[subject]);
@@ -16,8 +16,6 @@ const QuizMakingStep3 = ({filteredSubjects, filteredChapters, selectedTopics, se
         });
         setChaptersPerSubject(tempData);
     }, [subject]);
-
-    console.log(chaptersPerSubject);
 
     return (
         <>
@@ -45,7 +43,7 @@ const QuizMakingStep3 = ({filteredSubjects, filteredChapters, selectedTopics, se
                     <span className='inline-block text-center'>No chapters selected for {formatName(subject)}</span> :
 
                     Object.keys(chaptersPerSubject).map((chapter, i) => { 
-                        return <TopicSelectButton topicAccuracy={topicAccuracy} mcqDistributionPerTopic={mcqDistributionPerTopic} key={i} topics={chaptersPerSubject[chapter]} selectedTopics={selectedTopics} setSelectedTopics={setSelectedTopics} chapter={chapter}/>
+                        return <TopicSelectButton showAccuracy={showAccuracy} topicAccuracy={topicAccuracy} mcqDistributionPerTopic={mcqDistributionPerTopic} key={i} topics={chaptersPerSubject[chapter]} selectedTopics={selectedTopics} setSelectedTopics={setSelectedTopics} chapter={chapter}/>
                     })
                 }
             </div>
