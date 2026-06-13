@@ -47,7 +47,7 @@ const LoginPage = () => {
             const data2 = await res2.json();
 
             if(data2.status === 'success'){
-                if(data2?.data?.payment_status !== 'VERIFIED'){
+                if(data2?.data?.role !== "ADMIN" && data2?.data?.payment_status !== 'VERIFIED'){
                     setStudent(data2.data);
                     setAdmin(null);
                     navigate('/payment-status');
