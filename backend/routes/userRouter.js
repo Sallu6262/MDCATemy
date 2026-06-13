@@ -45,6 +45,6 @@ router.post("/receipt", protect, restrictTo(...studentRoles), upload.single("rec
 // Both student and admin functions
 router.post("/signup", signup);
 router.post("/login", login);
-router.post("/logout", protect, isPaymentVerified, logout);
+router.post("/logout", protect, logout);
 
 export default router;
