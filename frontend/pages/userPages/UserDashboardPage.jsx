@@ -474,7 +474,7 @@ const UserDashboardPage = () => {
                     </div>
                     <div className="border-t border-white/[0.06] pt-2 flex-1 overflow-y-auto min-h-0 space-y-1">
                         {
-                            leaderboard?.map((score, i) => {
+                            leaderboard?.slice(0,10).map((score, i) => {
                             let icon = i + 1;
                             if(i === 0) icon = '🥇';
                             else if(i === 1) icon = '🥈';

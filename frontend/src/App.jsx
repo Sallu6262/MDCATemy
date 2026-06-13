@@ -84,7 +84,7 @@ const App = () => {
           <Route path='/privacy-policy' element={<PrivacyPolicyPage />}/>
           <Route path='/terms-and-conditions' element={<TermsAndConditionsPage />}/>
           <Route path='/careers' element={<CareersPage />}/>
-          <Route path='/test-series-enrollment' element={<TestSeriesLandingPage />}/>
+          <Route path='/test-series-enrollment' element={<ComingSoonPage />}/>
           <Route path='/mdcat-aggregate-calculator' element={<AggregateCalculatorPage />}/>
         </Route>
 
@@ -127,7 +127,7 @@ const App = () => {
           </Route>
 
           <Route path='/payment-status' element={<PaymentErrorPage />}/>
-          
+
           <Route path='*' element={<NotFoundPage />}/>  
         </Route>
 
