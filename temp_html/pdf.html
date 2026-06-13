@@ -1,147 +1,52 @@
-import { useEffect } from "react";
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Centered Button</title>
 
-function ExamProtection({ isExamActive }) {
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    // 1. Detect tab switch / minimize / another app
-    useEffect(() => {
-        if (!isExamActive) return;
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: Arial, sans-serif;
+        }
 
-        const handleVisibility = () => {
-            if (document.hidden) {
-                console.log("User left tab/window");
+        button {
+            padding: 12px 24px;
+            font-size: 16px;
+            cursor: pointer;
+            animation: vibrate 2s linear 0s infinite
+        }
+
+        @keyframes vibrate {
+            0% {
+                transform: translate(0,0);
             }
-        };
-
-        document.addEventListener(
-            "visibilitychange",
-            handleVisibility
-        );
-
-        return () => {
-            document.removeEventListener(
-                "visibilitychange",
-                handleVisibility
-            );
-        };
-    }, [isExamActive]);
-
-
-
-    // 2. Prevent refresh / close / typing another URL
-    useEffect(() => {
-        if (!isExamActive) return;
-
-        const handleBeforeUnload = (e) => {
-            e.preventDefault();
-            e.returnValue = "";
-        };
-
-        window.addEventListener(
-            "beforeunload",
-            handleBeforeUnload
-        );
-
-        return () => {
-            window.removeEventListener(
-                "beforeunload",
-                handleBeforeUnload
-            );
-        };
-    }, [isExamActive]);
-
-
-
-    // 3. Detect browser losing focus
-    useEffect(() => {
-        if (!isExamActive) return;
-
-        const handleBlur = () => {
-            console.log("Browser lost focus");
-        };
-
-        window.addEventListener("blur", handleBlur);
-
-        return () => {
-            window.removeEventListener(
-                "blur",
-                handleBlur
-            );
-        };
-    }, [isExamActive]);
-
-
-
-    // 4. Intercept internal navigation links
-    useEffect(() => {
-        if (!isExamActive) return;
-
-        const handleClick = (e) => {
-            const anchor = e.target.closest("a");
-
-            if (!anchor) return;
-
-            const confirmed = window.confirm(
-                "Leave exam?"
-            );
-
-            if (!confirmed) {
-                e.preventDefault();
+            5% {
+                transform: translate(5px, 5px);
             }
-        };
-
-        document.addEventListener(
-            "click",
-            handleClick
-        );
-
-        return () => {
-            document.removeEventListener(
-                "click",
-                handleClick
-            );
-        };
-    }, [isExamActive]);
-
-
-
-    // 5. Prevent browser back button
-    useEffect(() => {
-        if (!isExamActive) return;
-
-        window.history.pushState(
-            null,
-            "",
-            window.location.href
-        );
-
-        const handlePopState = () => {
-            const confirmed = window.confirm(
-                "Leave exam?"
-            );
-
-            if (!confirmed) {
-                window.history.pushState(
-                    null,
-                    "",
-                    window.location.href
-                );
+            10% {
+                transform: translate(0px, 0px);
             }
-        };
-
-        window.addEventListener(
-            "popstate",
-            handlePopState
-        );
-
-        return () => {
-            window.removeEventListener(
-                "popstate",
-                handlePopState
-            );
-        };
-    }, [isExamActive]);
-
-
-
-    return null;
-}
+            15% {
+                transform: translate(-5px, -5px);
+            }
+            20% {
+                transform: translate(0px, 0px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <button>Click Me</button>   
+</body>
+</html>

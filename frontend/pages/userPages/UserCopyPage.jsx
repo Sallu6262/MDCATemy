@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react'
 import SavedCopy from '../../components/userComponents/SavedCopy';
 import MistakesCopy from '../../components/userComponents/MistakesCopy';
 import '../../src/animation.css';
+import Skeleton from '../../components/skeletonComponents/Skeleton';
+import MCQListSkeleton from '../../components/skeletonComponents/MCQListSkeleton'
 
 const UserCopyPage = () => {
     const sessionState = JSON.parse(sessionStorage.getItem("isSavedCopy"));
@@ -12,6 +14,8 @@ const UserCopyPage = () => {
     const [pendingMistakes, setPendingMistakes] = useState(0);
     const [totalSaved, setTotalSaved] = useState({});
     const [totalWrong, setTotalWrong] = useState({});
+
+    const [loading, setLoading] = useState(true);
 
     const API_URL = import.meta.env.VITE_API_URL;
 
@@ -53,6 +57,8 @@ const UserCopyPage = () => {
                     english: data2.data.english,
                     logical_reasoning: data2.data.logical_reasoning  
                 });
+
+                setLoading(false);
             }
         }
 
@@ -80,8 +86,7 @@ const UserCopyPage = () => {
                     `
                 }
             </style>
-
-            <main className="fade-in flex-1 overflow-hidden pb-[58px] lg:pb-0">
+            <main className="fade-in my-copy-page flex-1 overflow-hidden lg:pb-0">
                 <div className="h-full overflow-y-auto">
                 <div className="px-4 lg:px-8 py-6 max-w-4xl mx-auto">
 
@@ -108,9 +113,13 @@ const UserCopyPage = () => {
                     </div>
 
                     {
-                        mistakeOrSave 
-                        ? <SavedCopy setSavedMcqs={setSavedMcqs} savedMcqs={savedMcqs} totalSaved={totalSaved}/> 
-                        : <MistakesCopy setTotalWrong={setTotalWrong} totalWrong={totalWrong} wrongMcqs={wrongMcqs} setPendingMistakes={setPendingMistakes} totalMistakes={totalMistakes} pendingMistakes={pendingMistakes} setWrongMcqs={setWrongMcqs}/>
+                        loading ? 
+                        <MCQListSkeleton /> :
+                        (
+                            mistakeOrSave 
+                            ? <SavedCopy setSavedMcqs={setSavedMcqs} savedMcqs={savedMcqs} totalSaved={totalSaved}/> 
+                            : <MistakesCopy setTotalWrong={setTotalWrong} totalWrong={totalWrong} wrongMcqs={wrongMcqs} setPendingMistakes={setPendingMistakes} totalMistakes={totalMistakes} pendingMistakes={pendingMistakes} setWrongMcqs={setWrongMcqs}/>
+                        )
                     }
 
                 </div>

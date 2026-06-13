@@ -6,6 +6,7 @@ import QuizMakingStep4 from '../../../components/userComponents/QuizBuilderCompo
 import ExamTakingScreen from '../../../components/userComponents/ExamTakingScreen';
 import { useNavigate, useOutletContext } from 'react-router-dom';
 import SmartSelect from '../../../components/userComponents/QuizBuilderComponents/SmartSelect/SmartSelect';
+import Skeleton from '../../../components/skeletonComponents/Skeleton';
 
 const QuizMakingPage = () => {
     const [step, setStep] = useState(1);
@@ -27,6 +28,9 @@ const QuizMakingPage = () => {
     const [showAccuracy, setShowAccuracy] = useState(true);
 
     const [smartSelectHidden, setSmartSelectHidden] = useState(true);
+    const [examCreatedFromSmartSelect, setExamCreatedFromSmartSelect] = useState(false);
+
+    const [loading, setLoading] = useState(true);
 
     const API_URL = import.meta.env.VITE_API_URL;
     const {syllabusAndIDs} = useOutletContext();
@@ -72,6 +76,7 @@ const QuizMakingPage = () => {
             if(data.status === 'success'){
                 // console.log(data.data)
                 setPerformance(data.data);
+                setLoading(false);
             }
         }
 
@@ -154,16 +159,19 @@ const QuizMakingPage = () => {
                     //         }
                     //     })
                     // })
+                    const topics = new Set();
 
                     Object.keys(filteredSubjects).forEach(subject => {
                         Object.keys(filteredSubjects[subject]).forEach(chapter => {
                             if(selectedChapters.has(chapter)){
                                 filteredSubjects[subject][chapter].forEach(topic => {
-                                    selectedTopics.add(topic.id);
+                                    topics.add(topic.id);
                                 })
                             }
                         })
                     })
+
+                    setSelectedTopics(topics);
                 }
 
                 // console.log(smartSelectHidden, prev, isWeakestChapterOrSubject);
@@ -171,6 +179,10 @@ const QuizMakingPage = () => {
                 if(!smartSelectHidden && prev === 1){
                     if(isWeakestChapterOrSubject === 1) return prev + 2;
                     else if(isWeakestChapterOrSubject === 2) return prev + 1;
+                }
+
+                if(smartSelectHidden && prev === 3){
+                    setExamCreatedFromSmartSelect(false);
                 }
 
                 return prev < 5 ? prev + 1 : prev
@@ -185,13 +197,17 @@ const QuizMakingPage = () => {
         setStep(smartSelectHidden ? 1 : 0);
         setFilteredSubjects({});
         setFilteredChapters({});
-        setSelectedSubjects(() => new Set());
-        setSelectedChapters(() => new Set());
-        setSelectedTopics(() => new Set());
+        setSelectedSubjects(new Set());
+        setSelectedChapters(new Set());
+        setSelectedTopics(new Set());
+        setErrorMessage("");
+        setExamCreatedFromSmartSelect(prev => !prev);
     }
 
     return (
-        <>
+        loading ? 
+        <Skeleton /> :
+        <div className="quiz-making-page flex min-h-0 flex-1 flex-col">
             {
                 !smartSelectHidden ? 
                 <SmartSelect 
@@ -215,6 +231,7 @@ const QuizMakingPage = () => {
                     subjectAccuracy={performance?.subjects}
                     chapterAccuracy={performance?.chapters}
                     topicAccuracy={performance?.topics}
+                    setExamCreatedFromSmartSelect={setExamCreatedFromSmartSelect}
                 />
                 : ''
             }
@@ -233,29 +250,25 @@ const QuizMakingPage = () => {
                     </header>
 
                     <div className="mx-auto flex max-w-3xl flex-col gap-4">
-                        <div className="grid grid-cols-4 items-start gap-1 sm:flex sm:items-center sm:gap-2">
-                            <div className="flex flex-1 items-center gap-2">
-                                <div className={`mx-auto flex h-7 w-7 items-center justify-center rounded-full border-2 border-[#0E0F0E] [font-family:Poppins,sans-serif] text-sm font-black ${step >= 1 ? 'text-[#0E0F0E] shadow-[2px_2px_0px_rgba(0,0,0,0.5)] bg-[#FFC600]' : 'text-[#8B8E8B] bg-[#0E0F0E]'} sm:mx-0`}>1</div>
-                                <span className={`hidden [font-family:Poppins,sans-serif] text-sm font-black uppercase tracking-[0.1em] sm:inline ${step >= 1 ? '' : 'text-[#8B8E8B]'}`}>Subjects</span>
-                                <span className={`mt-1 block w-full text-center [font-family:Poppins,sans-serif] text-[10px] font-black uppercase tracking-[0.06em] sm:hidden ${step >= 1 ? '' : 'text-[#8B8E8B]'}`}>Subj</span>
+                        <div className="grid grid-cols-2 gap-x-3 gap-y-4 sm:flex sm:items-center sm:gap-2">
+                            <div className="flex min-w-0 flex-col items-center gap-1.5 sm:flex-1 sm:flex-row sm:items-center sm:gap-2">
+                                <div className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full border-2 [font-family:Poppins,sans-serif] text-sm font-black ${step >= 1 ? 'border-[#0E0F0E] bg-[#FFC600] text-[#0E0F0E] shadow-[2px_2px_0px_rgba(0,0,0,0.5)]' : 'quiz-step-inactive border-[#2D302D] bg-[#0E0F0E] text-[#8B8E8B]'}`}>1</div>
+                                <span className={`w-full text-center [font-family:Poppins,sans-serif] text-[11px] font-black uppercase leading-tight sm:w-auto sm:text-sm sm:tracking-[0.1em] ${step >= 1 ? '' : 'text-[#8B8E8B]'}`}>Subjects</span>
                                 <div className="hidden h-[2px] flex-1 bg-[#2D302D] sm:block"></div>
                             </div>
-                            <div className="flex flex-1 items-center gap-2">
-                                <div className={`mx-auto flex h-7 w-7 items-center justify-center rounded-full border-2 border-[#2D302D] [font-family:Poppins,sans-serif] text-sm font-black ${step >= 2 ? 'text-[#0E0F0E] shadow-[2px_2px_0px_rgba(0,0,0,0.5)] bg-[#FFC600]' : 'text-[#8B8E8B] bg-[#0E0F0E]'} sm:mx-0`}>2</div>
-                                <span className={`hidden [font-family:Poppins,sans-serif] text-sm font-black uppercase tracking-[0.1em] sm:inline ${step >= 2 ? '' : 'text-[#8B8E8B]'} `}>Chapters</span>
-                                <span className={`mt-1 block w-full text-center [font-family:Poppins,sans-serif] text-[10px] font-black uppercase tracking-[0.06em] sm:hidden ${step >= 2 ? '' : 'text-[#8B8E8B]'}`}>Chap</span>
+                            <div className="flex min-w-0 flex-col items-center gap-1.5 sm:flex-1 sm:flex-row sm:items-center sm:gap-2">
+                                <div className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full border-2 [font-family:Poppins,sans-serif] text-sm font-black ${step >= 2 ? 'border-[#0E0F0E] bg-[#FFC600] text-[#0E0F0E] shadow-[2px_2px_0px_rgba(0,0,0,0.5)]' : 'quiz-step-inactive border-[#2D302D] bg-[#0E0F0E] text-[#8B8E8B]'}`}>2</div>
+                                <span className={`w-full text-center [font-family:Poppins,sans-serif] text-[11px] font-black uppercase leading-tight sm:w-auto sm:text-sm sm:tracking-[0.1em] ${step >= 2 ? '' : 'text-[#8B8E8B]'}`}>Chapters</span>
                                 <div className="hidden h-[2px] flex-1 bg-[#2D302D] sm:block"></div>
                             </div>
-                            <div className="flex flex-1 items-center gap-2">
-                                <div className={`mx-auto flex h-7 w-7 items-center justify-center rounded-full border-2 border-[#2D302D] [font-family:Poppins,sans-serif] text-sm font-black ${step >= 3 ? 'text-[#0E0F0E] shadow-[2px_2px_0px_rgba(0,0,0,0.5)] bg-[#FFC600]' : 'text-[#8B8E8B] bg-[#0E0F0E]'} sm:mx-0`}>3</div>
-                                <span className={`hidden [font-family:Poppins,sans-serif] text-sm font-black uppercase tracking-[0.1em] sm:inline ${step >= 3 ? '' : 'text-[#8B8E8B]'} `}>Topics</span>
-                                <span className={`mt-1 block w-full text-center [font-family:Poppins,sans-serif] text-[10px] font-black uppercase tracking-[0.06em] sm:hidden ${step >= 3 ? '' : 'text-[#8B8E8B]'}`}>Topic</span>
+                            <div className="flex min-w-0 flex-col items-center gap-1.5 sm:flex-1 sm:flex-row sm:items-center sm:gap-2">
+                                <div className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full border-2 [font-family:Poppins,sans-serif] text-sm font-black ${step >= 3 ? 'border-[#0E0F0E] bg-[#FFC600] text-[#0E0F0E] shadow-[2px_2px_0px_rgba(0,0,0,0.5)]' : 'quiz-step-inactive border-[#2D302D] bg-[#0E0F0E] text-[#8B8E8B]'}`}>3</div>
+                                <span className={`w-full text-center [font-family:Poppins,sans-serif] text-[11px] font-black uppercase leading-tight sm:w-auto sm:text-sm sm:tracking-[0.1em] ${step >= 3 ? '' : 'text-[#8B8E8B]'}`}>Topics</span>
                                 <div className="hidden h-[2px] flex-1 bg-[#2D302D] sm:block"></div>
                             </div>
-                            <div className="flex flex-1 items-center gap-2">
-                                <div className={`mx-auto flex h-7 w-7 items-center justify-center rounded-full border-2 border-[#2D302D] [font-family:Poppins,sans-serif] text-sm font-black ${step >= 4 ? 'text-[#0E0F0E] shadow-[2px_2px_0px_rgba(0,0,0,0.5)] bg-[#FFC600]' : 'text-[#8B8E8B] bg-[#0E0F0E]'} sm:mx-0`}>4</div>
-                                <span className={`hidden [font-family:Poppins,sans-serif] text-sm font-black uppercase tracking-[0.1em] sm:inline ${step >= 4 ? '' : 'text-[#8B8E8B]'} `}>Settings</span>
-                                <span className={`mt-1 block w-full text-center [font-family:Poppins,sans-serif] text-[10px] font-black uppercase tracking-[0.06em] sm:hidden ${step >= 4 ? '' : 'text-[#8B8E8B]'}`}>Set</span>
+                            <div className="flex min-w-0 flex-col items-center gap-1.5 sm:flex-1 sm:flex-row sm:items-center sm:gap-2">
+                                <div className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full border-2 [font-family:Poppins,sans-serif] text-sm font-black ${step >= 4 ? 'border-[#0E0F0E] bg-[#FFC600] text-[#0E0F0E] shadow-[2px_2px_0px_rgba(0,0,0,0.5)]' : 'quiz-step-inactive border-[#2D302D] bg-[#0E0F0E] text-[#8B8E8B]'}`}>4</div>
+                                <span className={`w-full text-center [font-family:Poppins,sans-serif] text-[11px] font-black uppercase leading-tight sm:w-auto sm:text-sm sm:tracking-[0.1em] ${step >= 4 ? '' : 'text-[#8B8E8B]'}`}>Settings</span>
                             </div>
                         </div>
 
@@ -265,7 +278,7 @@ const QuizMakingPage = () => {
                                 <div className="flex items-center gap-2 px-1">
                                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" className="text-[#FFC600]"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
                                 <span className="text-sm font-semibold text-[#8B8E8B]/70">Show accuracy</span>
-                                <button onClick={() => setShowAccuracy(prev => !prev)} className={`cursor-pointer relative h-5 w-9 rounded-full ${showAccuracy ? 'bg-[#FFC600]' : 'bg-gray-800'}`}><span className={`absolute ${showAccuracy ? 'left-[18px]' : 'left-[0px]'} top-[3px] h-3.5 w-3.5 rounded-full bg-white`}></span></button>
+                                <button onClick={() => setShowAccuracy(prev => !prev)} className={`cursor-pointer relative h-5 w-9 rounded-full ${showAccuracy ? 'bg-[#FFC600]' : 'quiz-toggle-off bg-gray-800'}`}><span className={`absolute ${showAccuracy ? 'left-[18px]' : 'left-[0px]'} top-[3px] h-3.5 w-3.5 rounded-full bg-white`}></span></button>
                                 </div>
 
                                 <button type='button' 
@@ -273,7 +286,7 @@ const QuizMakingPage = () => {
                                         setSmartSelectHidden(false);
                                         resetData(false);
                                     }} 
-                                    className="cursor-pointer inline-flex w-full items-center justify-center gap-1.5 rounded-lg border border-[#2D302D] bg-[#0E0F0E]/30 px-3 py-1.5 [font-family:Poppins,sans-serif] text-xs font-black uppercase tracking-[0.06em] text-[#8B8E8B] transition hover:border-[#FFC600]/60 hover:bg-[#FFC600]/5 hover:text-white sm:w-auto">
+                                    className="quiz-btn-secondary cursor-pointer inline-flex w-full items-center justify-center gap-1.5 rounded-lg border border-[#2D302D] bg-[#0E0F0E]/30 px-3 py-1.5 [font-family:Poppins,sans-serif] text-xs font-black uppercase tracking-[0.06em] text-[#8B8E8B] transition hover:border-[#FFC600]/60 hover:bg-[#FFC600]/5 hover:text-white sm:w-auto">
                                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" className="text-[#FFC600]"><path d="M12 3l1.9 5.6L19.5 10l-4.6 2.4L13 18l-1-5.6L7.5 10l5.6-1.4L12 3z"/></svg>
                                         Smart Select  
                                     <span className="rounded-full bg-[#FFC600]/20 px-1.5 py-0.5 text-[10px] text-[#FFC600]">NEW</span>
@@ -282,8 +295,8 @@ const QuizMakingPage = () => {
                         }
 
                         {step === 1 || !smartSelectHidden ? <QuizMakingStep1 subjectAccuracy={performance?.subjects} showAccuracy={showAccuracy} smartSelectHidden={smartSelectHidden} selectedSubjects={selectedSubjects} setSelectedSubjects={setSelectedSubjects}/> : ''}
-                        {step === 2 && smartSelectHidden ? <QuizMakingStep2 chapterAccuracy={performance?.chapters} filteredSubjects={filteredSubjects} selectedChapters={selectedChapters} setSelectedChapters={setSelectedChapters}/> : ''}
-                        {step === 3 && smartSelectHidden ? <QuizMakingStep3 filteredSubjects={filteredSubjects} topicAccuracy={performance?.topics} filteredChapters={filteredChapters} selectedTopics={selectedTopics} setSelectedTopics={setSelectedTopics} mcqDistributionPerTopic={mcqDistributionPerTopic}/> : ''}
+                        {step === 2 && smartSelectHidden ? <QuizMakingStep2 showAccuracy={showAccuracy} chapterAccuracy={performance?.chapters} filteredSubjects={filteredSubjects} selectedChapters={selectedChapters} setSelectedChapters={setSelectedChapters}/> : ''}
+                        {step === 3 && smartSelectHidden ? <QuizMakingStep3 showAccuracy={showAccuracy} filteredSubjects={filteredSubjects} topicAccuracy={performance?.topics} filteredChapters={filteredChapters} selectedTopics={selectedTopics} setSelectedTopics={setSelectedTopics} mcqDistributionPerTopic={mcqDistributionPerTopic}/> : ''}
                         {step === 4 && smartSelectHidden ? <QuizMakingStep4 selectedTopics={selectedTopics} mcqDistributionPerTopic={mcqDistributionPerTopic} setStep={setStep} selectedSubjects={filterSubjectIDs()}/> : ''}
 
                         {
@@ -294,8 +307,11 @@ const QuizMakingPage = () => {
                                     {
                                         step > 1 ?
                                         <button
-                                            onClick={() => {setErrorMessage(""); setStep(prev => prev > 1 ? prev - 1 : prev)}}
-                                            className="inline-block cursor-pointer items-center rounded-xl border-2 border-[#2D302D] px-5 py-3 [font-family:Poppins,sans-serif] text-sm font-black uppercase tracking-[0.08em] text-[#8B8E8B]"
+                                            onClick={() => {
+                                                setErrorMessage(""); 
+                                                setStep(prev => prev > 1 ? (examCreatedFromSmartSelect && prev === 4 ? 1 : prev - 1) : prev);
+                                            }}
+                                            className="quiz-btn-secondary inline-block cursor-pointer items-center rounded-xl border-2 border-[#2D302D] px-5 py-3 [font-family:Poppins,sans-serif] text-sm font-black uppercase tracking-[0.08em] text-[#8B8E8B]"
                                             >Back
                                         </button> : ''
                                     }
@@ -315,7 +331,7 @@ const QuizMakingPage = () => {
                 </div>
                 </div>
             </main> 
-        </>
+        </div>
     )
 }
 

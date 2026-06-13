@@ -2,39 +2,22 @@ import React from 'react'
 import '../../src/animation.css'
 import { useNavigate, useParams } from 'react-router-dom'
 import sendErrorSuccessMessage from '../../utils/sendErrorSuccessMessage'
+import {clearLocalStorage} from '../../utils/HelperObjects';
 
-const InternetConnectionLostPopUp = ({ connectionRestored = false, isQuiz, setIsOnline, setIsExamHappeningParent, startTimer, exam}) => {
+const InternetConnectionLostPopUp = ({quitExam, connectionRestored = false, isQuiz, setIsOnline, setIsExamHappeningParent, startTimer, exam}) => {
     const navigate = useNavigate();
     const {examType} = useParams();
     const API_URL = import.meta.env.VITE_API_URL;
 
-    const quizExam = async () => {
-        if(!isQuiz){
-            const res = await fetch(`${API_URL}/tests/discard`, {
-                method: "POST",
-                credentials: 'include',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    test_id: exam?.test_id
-                })
-            });
-
-            if(res.ok){
-                sendErrorSuccessMessage('success', `${isQuiz ? 'Quiz' : 'Test'} quitted. Redirecting...`);
-            }
-        }
-
-        setIsExamHappeningParent(false);
-        navigate(`/dashboard/${examType}`);
-    }
-
     const submitOfflineExam = async () => {
-        localStorage.setItem("exam", JSON.stringify({
-            ...exam,
-            examStatus: "NOT_SUBMITTED"
-        }))
+        if(exam?.isMistakeCopyExam){
+            clearLocalStorage();
+        } else {
+            localStorage.setItem("exam", JSON.stringify({
+                ...exam,
+                examStatus: "NOT_SUBMITTED"
+            }));
+        }
 
         setIsExamHappeningParent(false);
         navigate(`/dashboard/${examType}`);
@@ -96,7 +79,7 @@ const InternetConnectionLostPopUp = ({ connectionRestored = false, isQuiz, setIs
                             </button>
                             <button
                                 type="button"
-                                onClick={quizExam}
+                                onClick={() => quitExam(null)}
                                 className="cursor-pointer rounded-xl border border-red-400/35 bg-red-500/15 px-4 py-3 text-sm font-black uppercase tracking-[0.08em] text-red-300 transition-colors hover:bg-red-500/25"
                             >
                                 Quit Quiz

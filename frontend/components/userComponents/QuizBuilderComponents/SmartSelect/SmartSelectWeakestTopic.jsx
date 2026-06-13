@@ -1,82 +1,87 @@
 import React, { useEffect, useState } from 'react'
+import { accuracyToTextColor } from '../../../../utils/HelperObjects';
 
-const SmartSelectWeakestTopic = ({topicsCache, setTopicsCache, selectedSubjects, selectedChapters, isWeakestChapterOrSubject, setSubjectCache, setChapterCache, subjectCache, chapterCache, filterChapterIDs, filterSubjectIDs, setQuizMakingStep, selectedTopics, setSelectedTopics, mcqDistributionPerTopic}) => {
+const TopicSkeleton = () => {
+    return (
+        <div className="rounded-3xl bg-white/5 p-6 space-y-4">
+            {[...Array(6)].map((_, i) => (
+                <div key={i} className="h-16 w-full rounded-xl bg-white/10"></div>
+            ))}
+      </div>
+    )
+}
+
+const SmartSelectWeakestTopic = ({setExamCreatedFromSmartSelect, setSmartSelectHidden, subjectIDsCache, chapterIDsCache, setSubjectIDsCache, setChapterIDsCache, weakTopics, setWeakTopics, isWeakestChapterOrSubject, filterChapterIDs, filterSubjectIDs, setQuizMakingStep, setSelectedTopics, mcqDistributionPerTopic}) => {
     const [numberOfWeakestTopics, setNumberOfWeakestTopics] = useState(5);
     const [numberChoice, setNumberChoice] = useState("5");
-    const [weakestTopics, setWeakestTopics] = useState([]);
+    const [limitChanged, setLimitChanged] = useState(false);
+
+    const [loading, setLoading] = useState(false);
 
     const API_URL = import.meta.env.VITE_API_URL;
 
-    const filterTopics = () => {
+    const fetchWeakestTopics = async (subjectIDs, chapterIDs) => {
+        const res = await fetch(`${API_URL}/users/weakest-topics`, {
+            method: 'POST',
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                limit: numberOfWeakestTopics,
+                subject_ids: isWeakestChapterOrSubject === 1 ? [...subjectIDs] : null,
+                chapter_ids: isWeakestChapterOrSubject === 2 ? [...chapterIDs] : null
+            })
+        });
 
+        console.log('db call');
+
+        if(res.ok){            
+            const data = await res.json();
+
+            return data.status === 'success' ? data.data : [];
+        }
+
+        return [];
     }
 
     useEffect(() => {
-        const fetchWeakestTopics = async () => {
+        const ApplyCacheAndFetchTopics = async () => {
             const subjectIDs = filterSubjectIDs();
             const chapterIDs = filterChapterIDs();
-
-            [...subjectCache]?.forEach(subject => {
-                if(subjectIDs.has(subject)) subjectIDs.delete(subject);
-            });
-
-            [...chapterCache]?.forEach(chapter => {
-                if(chapterIDs.has(chapter)) chapterIDs.delete(chapter);
-            })
-
-            if(isWeakestChapterOrSubject === 1 && subjectIDs.size === 0){
-                setWeakestTopics(filterTopics());
-                return;
-            } else if(isWeakestChapterOrSubject === 2 && chapterIDs.size === 0){
-                setWeakestTopics(filterTopics());
-                return;
+            
+            if(!limitChanged){
+                const checkSubjectCache = subjectIDsCache.size > 0 && [...subjectIDs].every(id => subjectIDsCache.has(id));
+                const checkChapterCache = chapterIDsCache.size > 0 && [...chapterIDs].every(id => chapterIDsCache.has(id));
+                
+                if(isWeakestChapterOrSubject === 1 && checkSubjectCache) return;
+                if(isWeakestChapterOrSubject === 2 && checkChapterCache) return;
             }
 
-            setSubjectCache(prev => {
-                const newSet = new Set(prev);
-                [...subjectIDs].forEach(id => {
-                    if(!newSet.has(id)) newSet.add(id);
-                })
-                return newSet;
-            });
-
-            setChapterCache(prev => {
-                const newSet = new Set(prev);
-                [...chapterIDs].forEach(id => {
-                    if(!newSet.has(id)) newSet.add(id);
-                })
-                return newSet;
-            });
-
-            // console.log(chapterIDs, subjectIDs);
-
-            const res = await fetch(`${API_URL}/users/weakest-topics`, {
-                method: 'POST',
-                credentials: 'include',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    limit: numberOfWeakestTopics,
-                    subject_ids: [...subjectIDs],
-                    chapter_ids: [...chapterIDs]
-                })
-            });
-
-            const data = await res.json();
-
-            if(data.status === 'success'){
-                let topics = data.data;
-            }
+            setLoading(true);
+            const data = await fetchWeakestTopics(subjectIDs, chapterIDs);
+                
+            setLimitChanged(false);
+            setLoading(false);
+            setChapterIDsCache(chapterIDs);
+            setSubjectIDsCache(subjectIDs);
+            setWeakTopics(data);
         }
-
-        fetchWeakestTopics();
-    }, []);
+        
+        ApplyCacheAndFetchTopics();
+    }, [limitChanged]);
+    
+    // console.log(limitChanged);
+    // console.log(subjectIDsCache, chapterIDsCache);
 
     return (
         <>
             <div className="flex items-center justify-between border-b border-[#2D302D] px-5 py-3">
-                <button onClick={() => setQuizMakingStep(0)} className="cursor-pointer flex items-center gap-2" type='button'>
+                <button onClick={() => {
+                    setQuizMakingStep(0);
+                    setChapterIDsCache(new Set());
+                    setSubjectIDsCache(new Set());
+                }} className="cursor-pointer flex items-center gap-2" type='button'>
                     <div
                         aria-label="Back"
                         className="flex h-7 w-7 cursor-pointer items-center justify-center rounded-lg bg-[#0E0F0E]/40 text-[#8B8E8B]"
@@ -103,7 +108,10 @@ const SmartSelectWeakestTopic = ({topicsCache, setTopicsCache, selectedSubjects,
                                 type="button"
                                 onClick={() => {
                                     setNumberChoice(num);
-                                    if (num !== "Custom") setNumberOfWeakestTopics(+num);
+                                    if (num !== "Custom"){
+                                        setNumberOfWeakestTopics(+num);
+                                        setLimitChanged(true);
+                                    }
                                 }}
                                 className={`cursor-pointer rounded-lg border px-4 py-2 [font-family:Poppins,sans-serif] text-[13px] font-black ${
                                     numberChoice === num
@@ -121,7 +129,10 @@ const SmartSelectWeakestTopic = ({topicsCache, setTopicsCache, selectedSubjects,
                                 max={15}
                                 step={1}
                                 value={numberOfWeakestTopics}
-                                onChange={e => setNumberOfWeakestTopics(Math.min(+e.target.value, 15))}
+                                onChange={e => {
+                                    setNumberOfWeakestTopics(Math.min(+e.target.value, 15));
+                                    setLimitChanged(true);
+                                }}
                                 className="h-9 w-16 rounded-lg border border-[#2D302D] bg-[#181A18] px-3 text-center [font-family:Poppins,sans-serif] text-sm font-black text-white focus:border-[#FFC600] focus:outline-none"
                                 aria-label="Custom number of weakest topics"
                             />
@@ -135,49 +146,33 @@ const SmartSelectWeakestTopic = ({topicsCache, setTopicsCache, selectedSubjects,
                     </p>
                     <div className="max-h-[36vh] space-y-1.5 overflow-y-auto pr-1">
                         {
-
+                            loading ? 
+                            <TopicSkeleton /> :
+                            weakTopics?.map((topic, i) => {
+                                return (
+                                    <div key={i} className="cursor-pointer flex items-center gap-3 rounded-xl border border-[#2D302D] bg-[#0E0F0E]/40 px-3.5 py-2.5">
+                                        <span className="w-5 text-right [font-family:Poppins,sans-serif] text-[10px] font-black text-[#8B8E8B]/40">{i+1}</span>
+                                        <div className="min-w-0 flex-1">
+                                            <p className="truncate [font-family:Poppins,sans-serif] text-[12px] font-black text-white">{topic.topic_name}</p>
+                                            <p className="truncate text-[10px] text-[#8B8E8B]/60">{topic.subject_name} · {topic.chapter_name}</p>
+                                        </div>
+                                        <span className={`rounded-full border px-2 py-0.5 [font-family:Poppins,sans-serif] text-[10px] font-black ${accuracyToTextColor(topic.tmi)}`}>{topic.tmi}%</span>
+                                        <span className="inline-flex items-center gap-1 rounded-full border  pr-2 py-0.5 text-xs font-black text-gray-200"><span className="h-1.5 w-1.5 rounded-full"></span>{mcqDistributionPerTopic[topic.topic_id] ?? 0}</span>
+                                    </div>
+                                )
+                            })
                         }
-
-                        <div className="flex items-center gap-3 rounded-xl border border-[#2D302D] bg-[#0E0F0E]/40 px-3.5 py-2.5">
-                            <span className="w-5 text-right [font-family:Poppins,sans-serif] text-[10px] font-black text-[#8B8E8B]/40">2</span>
-                            <div className="min-w-0 flex-1">
-                                <p className="truncate [font-family:Poppins,sans-serif] text-[12px] font-black text-white">Paper Folding</p>
-                                <p className="truncate text-[10px] text-[#8B8E8B]/60">Logical Reasoning · Spatial Reasoning</p>
-                            </div>
-                            <span className="rounded-full border border-red-400/25 bg-red-400/10 px-2 py-0.5 [font-family:Poppins,sans-serif] text-[10px] font-black text-red-400">48%</span>
-                        </div>
-
-                        <div className="flex items-center gap-3 rounded-xl border border-[#2D302D] bg-[#0E0F0E]/40 px-3.5 py-2.5">
-                            <span className="w-5 text-right [font-family:Poppins,sans-serif] text-[10px] font-black text-[#8B8E8B]/40">3</span>
-                            <div className="min-w-0 flex-1">
-                                <p className="truncate [font-family:Poppins,sans-serif] text-[12px] font-black text-white">Gibbs Free Energy</p>
-                                <p className="truncate text-[10px] text-[#8B8E8B]/60">Chemistry · Thermochemistry</p>
-                            </div>
-                            <span className="rounded-full border border-red-400/25 bg-red-400/10 px-2 py-0.5 [font-family:Poppins,sans-serif] text-[10px] font-black text-red-400">44%</span>
-                        </div>
-
-                        <div className="flex items-center gap-3 rounded-xl border border-[#2D302D] bg-[#0E0F0E]/40 px-3.5 py-2.5">
-                            <span className="w-5 text-right [font-family:Poppins,sans-serif] text-[10px] font-black text-[#8B8E8B]/40">4</span>
-                            <div className="min-w-0 flex-1">
-                                <p className="truncate [font-family:Poppins,sans-serif] text-[12px] font-black text-white">Doppler Effect</p>
-                                <p className="truncate text-[10px] text-[#8B8E8B]/60">Physics · Waves &amp; Sound</p>
-                            </div>
-                            <span className="rounded-full border border-red-400/25 bg-red-400/10 px-2 py-0.5 [font-family:Poppins,sans-serif] text-[10px] font-black text-red-400">55%</span>
-                        </div>
-
-                        <div className="flex items-center gap-3 rounded-xl border border-[#2D302D] bg-[#0E0F0E]/40 px-3.5 py-2.5">
-                            <span className="w-5 text-right [font-family:Poppins,sans-serif] text-[10px] font-black text-[#8B8E8B]/40">5</span>
-                            <div className="min-w-0 flex-1">
-                                <p className="truncate [font-family:Poppins,sans-serif] text-[12px] font-black text-white">Solvay Process</p>
-                                <p className="truncate text-[10px] text-[#8B8E8B]/60">Chemistry · Industrial Chemistry</p>
-                            </div>
-                            <span className="rounded-full border border-red-400/25 bg-red-400/10 px-2 py-0.5 [font-family:Poppins,sans-serif] text-[10px] font-black text-red-400">55%</span>
-                        </div>
                     </div>
                 </div>
 
                 <button
                     type="button"
+                    onClick={() => {
+                        setSelectedTopics(weakTopics.map(topic => topic.topic_id));
+                        setQuizMakingStep(prev => prev + 1);
+                        setSmartSelectHidden(true);
+                        setExamCreatedFromSmartSelect(true);
+                    }}
                     className="block w-full cursor-pointer rounded-xl border-2 border-[#0E0F0E] bg-[#FFC600] py-3 text-center [font-family:Poppins,sans-serif] text-[13px] font-black text-[#0E0F0E] shadow-[3px_3px_0px_rgba(0,0,0,0.4)]"
                 >
                     Add {numberOfWeakestTopics} Topics to Test

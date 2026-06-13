@@ -9,6 +9,10 @@ const ExamPage = () => {
     const {examType} = useParams();
 
     useEffect(() => {
+        if(['quiz-builder', 'test-series', 'my-copy'].every(type => type !== examType)){
+            navigate('/page-not-found');
+        }
+
         const getExam = JSON.parse(localStorage.getItem("exam"));
         const reload = localStorage.getItem("reload");
 

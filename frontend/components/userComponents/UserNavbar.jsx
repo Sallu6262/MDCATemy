@@ -39,7 +39,7 @@ const UserNavbar = () => {
     const myCopyAllowedRoles = ['QUIZ_ONLY', 'DUAL_ACCESS', 'TEST_ONLY', "TRIBE_MEMBER"];
 
     return (
-        <aside className="order-2 fixed bottom-0 left-0 right-0 z-40 w-full border-t border-[#2E302E] bg-[#222422] px-1 pb-[max(0.35rem,env(safe-area-inset-bottom))] pt-1.5 lg:static lg:order-1 lg:z-auto lg:max-w-[240px] lg:flex-shrink-0 lg:overflow-hidden lg:border-r lg:border-t-0 lg:bg-[#181A18] lg:p-0">
+        <aside className="order-2 max-lg:fixed max-lg:inset-x-0 max-lg:bottom-0 z-50 w-full border-t border-[#2E302E] bg-[#222422] px-1 pb-[max(0.35rem,env(safe-area-inset-bottom))] pt-1.5 lg:static lg:order-1 lg:z-auto lg:max-w-[240px] lg:flex-shrink-0 lg:overflow-hidden lg:border-r lg:border-t-0 lg:bg-[#181A18] lg:p-0">
             <div className="mb-5 hidden border-b border-[#2E302E] px-4 pb-5 pt-6 lg:block">
                     <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#FFC600]">Student Panel</p>
                     <h1 className="mt-3 text-2xl font-black tracking-tight text-white">MDCATEMY</h1>
@@ -106,7 +106,6 @@ const UserNavbar = () => {
                   onClick={(e) => {
                     if(!checkAccess(myCopyAllowedRoles)) e.preventDefault();
                   }}
-                  end
                   className={({ isActive }) => `${tabBase} ${!checkAccess(myCopyAllowedRoles) ? 'cursor-not-allowed' : ''} ${isActive ? "bg-[#FFC600]/10 text-[#FFC600]" : "text-[#A8ACA8] hover:bg-[#2A2C2A]/40 hover:text-white"}`}
                 >
                     {({ isActive }) => (
@@ -138,7 +137,7 @@ const UserNavbar = () => {
                 </NavLink>
             </nav>
 
-            <div className="border-t border-[#2E302E] py-3 flex items-center gap-3 px-3">
+            <div className="hidden border-t border-[#2E302E] py-3 lg:flex items-center gap-3 px-3">
                 <div className="rounded-full bg-[#FFC600]/15 border border-[#FFC600]/30 flex items-center justify-center flex-shrink-0 w-[32px] h-[32px]">
                 <span className="font-[Poppins] font-black text-[#FFC600] text-[11px]">{name}</span>
                 </div>

@@ -1,6 +1,8 @@
 const API_URL = import.meta.env.VITE_API_URL;
 
-export const subjectFilter = async (isMistake, url, setURL, subject, setPageNumber, setTotalPages, setMcqs, total, setSubject, subjectNumber) => {
+export const subjectFilter = async (isMistake, url, setURL, subject, setPageNumber, setTotalPages, setMcqs, total, setSubject, subjectNumber, setLoading) => {
+    setLoading(true);
+
     const urlType = isMistake ? 'users/mistakes' : 'users/bookmarks';
     // url = url.replace(`${isMistake ? 'bookmarks' : 'mistakes'}`, `${isMistake ? 'mistakes' : 'bookmarks'}`);
     subject = subject.toLowerCase();
@@ -26,10 +28,13 @@ export const subjectFilter = async (isMistake, url, setURL, subject, setPageNumb
         setMcqs(data.data?.mcqs);
         setURL(url);
         setSubject(subjectNumber);
+        setLoading(false);
     }
 } 
 
-export const pageFilter = async (isMistake, url, setURL, isPageIncreased, pageNumber, setPageNumber, setMcqs) => {
+export const pageFilter = async (isMistake, url, setURL, isPageIncreased, pageNumber, setPageNumber, setMcqs, setLoading) => {
+    setLoading(true);
+    
     url = url.replace(`page=${pageNumber}`, `page=${isPageIncreased ? pageNumber + 1 : pageNumber - 1}`);
 
     const res = await fetch(url, {
@@ -45,10 +50,13 @@ export const pageFilter = async (isMistake, url, setURL, isPageIncreased, pageNu
         setPageNumber(prev => isPageIncreased ? prev + 1 : prev - 1);
         setMcqs(data.data?.mcqs);
         setURL(url);
+        setLoading(false);
     }
 }
 
-export const searchFilter = async (isMistake, url, setURL, setPageNumber, setTotalPages, setMcqs, search) => {
+export const searchFilter = async (isMistake, url, setURL, setPageNumber, setTotalPages, setMcqs, search, setLoading) => {
+    setLoading(true);
+    
     url += `&search=${search}`;
 
     const res = await fetch(url, {
@@ -60,9 +68,11 @@ export const searchFilter = async (isMistake, url, setURL, setPageNumber, setTot
 
     // console.log(url);
     if(data.status === 'success'){
+        console.log(data);
         setPageNumber(1);
-        setTotalPages(Math.ceil((data.data.biology + data.data.physics + data.data.chemistry + data.data.english + data.data.logical_reasoning) / 10));
+        setTotalPages(Math.ceil(data.data.total_count / 10));
         setMcqs(data.data?.mcqs);
         setURL(url);
+        setLoading(false);
     }
 } 

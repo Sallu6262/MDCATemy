@@ -25,9 +25,9 @@ const MainLandingPage = () => {
         </span>
       </div>
 
-      {/* Hero — desktop */}
-      <section className="relative h-[420px] overflow-hidden bg-[#f5f5f5] max-[900px]:flex max-[900px]:h-auto max-[900px]:min-h-0 max-[900px]:flex-col">
-        <div className="absolute bottom-0 left-0 w-[300px] max-[900px]:hidden">
+      {/* Hero */}
+      <section className="relative h-[420px] overflow-hidden bg-[#f5f5f5] max-[1100px]:flex max-[1100px]:h-auto max-[1100px]:min-h-0 max-[1100px]:flex-col">
+        <div className="absolute bottom-0 left-0 w-[300px] max-[1100px]:hidden">
           <img
             src={hayanImg}
             alt="Hayan Khan — Founder"
@@ -35,39 +35,38 @@ const MainLandingPage = () => {
           />
         </div>
 
-        <div className="absolute left-1/2 top-1/2 flex w-[580px] -translate-x-1/2 -translate-y-1/2 flex-col items-center text-center max-[900px]:static max-[900px]:order-1 max-[900px]:w-full max-[900px]:translate-none max-[900px]:px-6 max-[900px]:pt-12 max-[900px]:pb-9">
-          <h1 className="mb-4 text-[3.6rem] font-black leading-[1.05] tracking-[-2px] text-[#1a1a1a] whitespace-nowrap max-[900px]:text-[2.2rem] max-[900px]:tracking-[-1px] max-[900px]:whitespace-normal">
-            DO YOU WANT TO CRACK
-            <br />
-            MDCAT 2026?
-          </h1>
-          <p className="mb-8 text-[1.3rem] font-normal leading-[1.65] text-[#1a1a1a] max-[900px]:text-base">
-            Train with the team that has only one goal.
-            <br />
-            <strong className="font-bold text-[#1a1a1a]">To get you into a medical college.</strong>
-          </p>
-          <Link
-            to="/batch-enrollment"
-            className={`${ctaBtn} px-[72px] py-[22px] text-[17px] tracking-[1.5px] max-[900px]:w-full max-[900px]:px-6 max-[900px]:py-[18px] max-[900px]:text-sm`}
-          >
-            YES, I WANT TO CRACK IT
-          </Link>
-        </div>
-
-        <div className="absolute bottom-0 right-0 w-[300px] max-[900px]:hidden">
+        <div className="absolute bottom-0 right-0 w-[300px] max-[1100px]:hidden">
           <img
             src={salmanImg}
             alt="Salman Javed — Physics Instructor"
             className="block h-[380px] w-[300px] object-cover object-top"
           />
         </div>
-      </section>
 
-      {/* Mobile founders row */}
-      <div className="hidden max-[900px]:flex items-end justify-center overflow-hidden">
-        <img src={hayanImg} alt="Hayan Khan" className="block w-1/2 max-w-[210px]" />
-        <img src={salmanImg} alt="Salman Javed" className="block w-1/2 max-w-[210px]" />
-      </div>
+        <div className="hidden max-[1100px]:order-1 max-[1100px]:flex items-end justify-center overflow-hidden">
+          <img src={hayanImg} alt="Hayan Khan" className="block w-1/2 max-w-[210px]" />
+          <img src={salmanImg} alt="Salman Javed" className="block w-1/2 max-w-[210px]" />
+        </div>
+
+        <div className="absolute left-1/2 top-1/2 flex w-[580px] -translate-x-1/2 -translate-y-1/2 flex-col items-center text-center max-[1100px]:static max-[1100px]:order-2 max-[1100px]:w-full max-[1100px]:translate-none max-[1100px]:px-6 max-[1100px]:pt-6 max-[1100px]:pb-9">
+          <h1 className="mb-4 text-[3.6rem] font-black leading-[1.05] tracking-[-2px] text-[#1a1a1a] whitespace-nowrap max-[1100px]:text-[2.2rem] max-[1100px]:tracking-[-1px] max-[1100px]:whitespace-normal">
+            DO YOU WANT TO CRACK
+            <br />
+            MDCAT 2026?
+          </h1>
+          <p className="mb-8 text-[1.3rem] font-normal leading-[1.65] text-[#1a1a1a] max-[1100px]:text-base">
+            Train with the team that has only one goal.
+            <br />
+            <strong className="font-bold text-[#1a1a1a]">To get you into a medical college.</strong>
+          </p>
+          <Link
+            to="/batch-enrollment"
+            className={`${ctaBtn} px-[72px] py-[22px] text-[17px] tracking-[1.5px] max-[1100px]:w-full max-[1100px]:px-6 max-[1100px]:py-[18px] max-[1100px]:text-sm`}
+          >
+            YES, I WANT TO CRACK IT
+          </Link>
+        </div>
+      </section>
 
       {/* Free study material */}
       <section id="study-material" className="bg-white px-6 py-[52px] pb-[60px]">

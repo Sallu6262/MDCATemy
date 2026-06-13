@@ -36,8 +36,8 @@ const WrongMCQCard = ({mcq, setNotMasteredMcqs, setPendingMistakes, setWrongMcqs
             </div>
         }   
         else {
-            return <div className="flex items-center gap-3 px-3 py-2.5 rounded-xl border border-[#2E302E]/50 opacity-50">
-                <div className="w-5 h-5 rounded-md flex items-center justify-center flex-shrink-0 text-[14px] font-mono font-bold bg-[#2A2C2A] text-[#A8ACA8]">{optionChar}</div>
+            return <div className="quiz-answer-inactive flex items-center gap-3 px-3 py-2.5 rounded-xl border border-[#2E302E]/50">
+                <div className="copy-option-badge-inactive w-5 h-5 rounded-md flex items-center justify-center flex-shrink-0 text-[14px] font-mono font-bold">{optionChar}</div>
                 <span className="font-[Inter] text-[13px] flex-1 text-[#A8ACA8]">{optionValue}</span>
             </div>
         }
@@ -72,12 +72,12 @@ const WrongMCQCard = ({mcq, setNotMasteredMcqs, setPendingMistakes, setWrongMcqs
     }
 
     return (
-        <div className="mistake-card bg-[#222422] border border-[#2E302E] rounded-2xl overflow-hidden">
+        <div className="copy-mcq-card mistake-card bg-[#222422] border border-[#2E302E] rounded-2xl overflow-hidden">
             <div className="p-4">
                 <div className="flex items-center gap-2 mb-3 flex-wrap">
                 <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: `${subjectToColor[mcq?.subject_name]}` }}></span>
                 <span className="text-[14px] font-[Inter] font-bold text-[#A8ACA8] uppercase tracking-[0.1em]">{mcq?.subject_name}</span>
-                <span className="text-[#2E302E]">·</span>
+                <span className="text-white/20">·</span>
                 <span className="text-[14px] font-[Inter] text-[#A8ACA8]/70">{mcq?.chapter_name}</span>
                 <span className={`ml-auto px-2 py-0.5 rounded-full border text-[13px] font-[Inter] font-black uppercase tracking-[0.08em] ${difficultyToColor[mcq?.difficulty]}`}>{mcq?.difficulty}</span>
                 </div>
@@ -116,10 +116,10 @@ const WrongMCQCard = ({mcq, setNotMasteredMcqs, setPendingMistakes, setWrongMcqs
                         {displayMCQOption('D', mcq?.option_d)}
 
                     </div>
-                    <div className="callout-yellow bg-[#181A18] rounded-r-xl p-3.5 mb-3">
+                    <div className="copy-callout callout-yellow bg-[#181A18] rounded-r-xl p-3.5 mb-3">
                         <p className="text-[13px] font-[Inter] font-black uppercase tracking-[0.12em] text-[#FFC600] mb-1.5">Explanation</p>
                         <p className="text-white/85 font-[Inter] text-[13px] leading-relaxed">
-                        {mcq?.explanation}
+                        {mcq?.explanation ?? 'No explanation for this MCQ.'}
                         </p>
                     </div>
                 </div>
@@ -141,7 +141,7 @@ const WrongMCQCard = ({mcq, setNotMasteredMcqs, setPendingMistakes, setWrongMcqs
                 <span className={`${error ? 'text-red-500' : 'text-green-500'}`}>{message}</span>
                 {
                     !mcq?.is_mastered ?
-                    <button onClick={masterMCQ} className={`${masterLoading ? 'cursor-not-allowed' : 'cursor-pointer'} flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/25 text-emerald-400 text-[13px] font-[Inter] font-bold hover:bg-emerald-500/20 transition-all`}>
+                    <button onClick={masterMCQ} className={`copy-action-btn ${masterLoading ? 'cursor-not-allowed' : 'cursor-pointer'} flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/25 text-emerald-400 text-[13px] font-[Inter] font-bold hover:bg-emerald-500/20 transition-all`}>
                         <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                         <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/>
                         <path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/>

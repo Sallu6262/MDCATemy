@@ -1,0 +1,145 @@
+import React, { useEffect, useState } from 'react';
+import '../../../src/animation.css';
+import { Link, useOutletContext } from 'react-router-dom';
+import Skeleton from '../../../components/skeletonComponents/Skeleton';
+import ImagePopUp from '../../../components/ImagePopUp';
+
+const ScorePredictorPage = () => {
+  const [leaderboard, setLeaderboard] = useState([]);
+  const {studentAnalytics, student} = useOutletContext();
+
+  const [loading, setLoading] = useState(true);
+  const [popUpHidden, setPopUpHidden] = useState(true);
+
+  const API_URL = import.meta.env.VITE_API_URL;
+
+  useEffect(() => {
+    const fetchLeaderBoard = async() => {
+      const res = await fetch(`${API_URL}/users/leaderboard`,{
+        method: 'GET',
+        credentials: 'include'
+      });
+
+      const data = await res.json();
+
+      if(data.status === 'success'){
+        setLeaderboard(data.data);
+        setLoading(false);
+      }
+    }
+
+    fetchLeaderBoard();
+  }, []);
+
+  return (
+    <>
+      <style>{`
+        .card { background:var(--ui-panel); border:1px solid rgb(var(--ui-text-rgb) / 0.08); border-radius:1rem; box-shadow:0 2px 8px rgba(0,0,0,.30), 0 8px 24px rgba(0,0,0,.20); padding:1rem 1.25rem; }
+      `}</style>
+
+        {
+          !popUpHidden &&
+          <ImagePopUp setPopUpHidden={setPopUpHidden}/>
+        }
+
+        {
+          loading ?
+          <Skeleton /> :
+          <main className="fade-in score-predictor-page user-dashboard-page relative flex-1 overflow-y-auto lg:pb-0 w-full bg-[#181A18]">
+            <div className="w-full px-4 pt-4 pb-8 space-y-5 lg:max-w-5xl lg:mx-auto lg:px-8">
+              <Link to="/dashboard" className="inline-flex items-center gap-1.5 text-[#A8ACA8] text-[14px] font-[Inter] hover:text-white transition-colors">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <polyline points="15 18 9 12 15 6" />
+                </svg>
+                Back to Dashboard
+              </Link>
+
+              <section className="card w-full max-w-3xl mx-auto !px-5 sm:!px-6 !pt-6 !pb-7">
+                <div className="flex items-start justify-between mb-4 gap-4">
+                  <div>
+                    <p className="font-['Inter'] font-bold text-[12px] uppercase tracking-[0.14em] text-white/40">Score Predictor</p>
+                    <h3 className="font-['Poppins'] font-bold text-[24px] text-white/95 leading-tight mt-1">Your Predicted Score</h3>
+                    <p className="font-['Inter'] text-[14px] text-white/55 mt-1">Accuracy × MDCAT subject weights</p>
+                  </div>
+                  <div className="text-right">
+                    <p className="font-['Inter'] text-[12px] uppercase tracking-wider text-white/35">Target</p>
+                    <p className="font-['Poppins'] font-black text-[24px] leading-none text-white/90 mt-1">{studentAnalytics?.target_marks ?? 0}</p>
+                  </div>
+                </div>
+
+                <div className="relative flex-shrink-0">
+                  <svg viewBox="0 -10 200 115" className="w-[80%] max-w-[420px] mx-auto block">
+                    <path className="dash-gauge-red" d="M 14.00 100.00 A 86 86 0 0 1 39.21 39.21 L 52.62 52.62 A 67 67 0 0 0 33.00 100.00 Z" fill="#EF4444" />
+                    <path className="dash-gauge-orange" d="M 39.21 39.21 A 86 86 0 0 1 100.00 14.00 L 100.00 33.00 A 67 67 0 0 0 52.62 52.62 Z" fill="#F97316" />
+                    <path className="dash-gauge-amber" d="M 100.00 14.00 A 86 86 0 0 1 160.79 39.21 L 147.38 52.62 A 67 67 0 0 0 100.00 33.00 Z" fill="#EAB308" />
+                    <path className="dash-gauge-green" d="M 160.79 39.21 A 86 86 0 0 1 186.00 100.00 L 167.00 100.00 A 67 67 0 0 0 147.38 52.62 Z" fill="#22C55E" />
+                    <text x="14" y="100" textAnchor="end" dominantBaseline="middle" fontSize="9" fontFamily="Inter,sans-serif" fontWeight="500" fill="rgb(var(--ui-text-rgb) / 0.38)">0</text>
+                    <text x="39.21" y="39.21" textAnchor="end" dominantBaseline="middle" fontSize="9" fontFamily="Inter,sans-serif" fontWeight="500" fill="rgb(var(--ui-text-rgb) / 0.38)">45</text>
+                    <text x="100" y="1" textAnchor="middle" dominantBaseline="middle" fontSize="9" fontFamily="Inter,sans-serif" fontWeight="500" fill="rgb(var(--ui-text-rgb) / 0.38)">90</text>
+                    <text x="160.79" y="39.21" textAnchor="start" dominantBaseline="middle" fontSize="9" fontFamily="Inter,sans-serif" fontWeight="500" fill="rgb(var(--ui-text-rgb) / 0.38)">135</text>
+                    <text x="186" y="100" textAnchor="start" dominantBaseline="middle" fontSize="9" fontFamily="Inter,sans-serif" fontWeight="500" fill="rgb(var(--ui-text-rgb) / 0.38)">180</text>
+                    <g transform={`translate(100 100) rotate(${-90 + (studentAnalytics?.predicted_score ?? 0)})`}>
+                      <path className="dash-gauge-needle" d="M 3,0 C 2.2,-28 1,-60 0,-62 C -1,-60 -2.2,-28 -3,0 C -1.5,3 1.5,3 3,0 Z" />
+                    </g>
+                    <circle className="dash-gauge-needle" cx="100" cy="100" r="6" />
+                    <circle cx="100" cy="100" r="2.8" fill="#FFC600" />
+                  </svg>
+
+                  <div className="mt-3 bottom-1 left-0 right-0 flex justify-center pointer-events-none">
+                    <div className="text-center">
+                      <span className="dash-accent-amber font-['Poppins'] font-black leading-none" style={{ fontSize: '52px' }}>{(studentAnalytics?.predicted_score ?? 0)}</span>
+                      <span className="font-['Inter'] text-[16px] text-white/45 ml-1">/ 180</span>
+                    </div>
+                  </div>
+                </div>
+
+                <button
+                  type='button'
+                  onClick={() => setPopUpHidden(false)}
+                  className="cursor-pointer quiz-btn-secondary dashboard-surface-btn flex items-center justify-center gap-1.5 w-full mt-4 mb-5 py-3 rounded-xl border border-[#FFC600]/25 bg-[#FFC600]/[0.06] font-['Inter'] font-semibold text-[14px] text-[#E0A800] hover:bg-[#FFC600]/[0.12] transition-colors"
+                >
+                  Understand Score Predictor Algorithm
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6" /></svg>
+                </button>
+
+                <div className="border-t border-white/[0.06] pt-4">
+                  <div className="flex items-center gap-2 mb-3">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#E0A800" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6" /><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18" /><path d="M4 22h16" /><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22" /><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22" /><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z" /></svg>
+                    <p className="font-['Inter'] font-bold text-[12px] uppercase tracking-[0.12em] text-white/45">Leaderboard</p>
+                  </div>
+
+                  <div className="space-y-1.5">
+                    {/* <div className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl">
+                      <span className="font-['Poppins'] font-bold text-[13px] w-5 text-center text-white/40">🥇</span>
+                      <div className="w-8 h-8 rounded-full flex items-center justify-center font-['Poppins'] font-bold text-[10px]" style={{ background: '#10B98122', color: '#10B981' }}>FN</div>
+                      <span className="flex-1 font-['Inter'] text-[14px] truncate text-white/70">Fatima Noor</span>
+                      <span className="font-['Poppins'] font-bold text-[15px]" style={{ color: '#22C55E' }}>178</span>
+                    </div> */}
+                    {
+                      leaderboard?.map((score, i) => {
+                        let icon = i + 1;
+                        if(i === 0) icon = '🥇';
+                        else if(i === 1) icon = '🥈';
+                        else if(i === 2) icon = '🥉';
+
+                        return (
+                          <div key={score.id} className={`flex items-center gap-2.5 px-3 py-2.5 rounded-xl ${student.id === score.id && '!bg-[#FFC600]/10 border !border-[#FFC600]'}`}>
+                            <span className="font-['Poppins'] font-bold text-[13px] w-5 text-center text-white/40">{icon}</span>
+                            <div className="dash-bg-emerald dash-accent-emerald w-8 h-8 rounded-full flex items-center justify-center font-['Poppins'] font-bold text-[10px]">{score?.name.split(' ').map(n => n?.[0]?.toUpperCase())?.join('')}</div>
+                            <span className="flex-1 font-['Inter'] text-[14px] truncate text-white/70">{score?.name}</span>
+                            <span className="dash-accent-emerald font-['Poppins'] font-bold text-[15px]">{score?.predicted_score ?? 0}</span>
+                          </div>
+                        )
+                      })
+                    }
+                  </div>
+                </div>
+              </section>
+            </div>
+          </main>
+        }
+    </>
+  );
+};
+
+export default ScorePredictorPage;

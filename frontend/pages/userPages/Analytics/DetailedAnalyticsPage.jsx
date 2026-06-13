@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useOutletContext, useParams } from 'react-router-dom';
-import {formatName, subjectToColor} from '../../utils/HelperObjects'
+import { Link, Navigate, useNavigate, useOutletContext, useParams } from 'react-router-dom';
+import {formatName, subjectToColor} from '../../../utils/HelperObjects'
 
 const DetailedAnalyticsPage = ({isSubjectOrChapter}) => {
     const {syllabusAndIDs, studentAnalytics: sa} = useOutletContext();
@@ -12,13 +12,23 @@ const DetailedAnalyticsPage = ({isSubjectOrChapter}) => {
     const [formattedSubject, setFormattedSubject] = useState(subject);
     const [formattedChapter, setFormattedChapter] = useState(chapter ?? "None");
 
+    const navigate = useNavigate();
+
     const formatTopic = (name) => {
         return name.toLowerCase().replaceAll(' ','_');
     }
     
     useEffect(() => {
+        if(!['biology','physics','chemistry','english','logical-reasoning'].some(sub => subject === sub))
+            navigate('/page-not-found');
+
         if(syllabusAndIDs?.syllabus){
-            setChapters(Object.keys(syllabusAndIDs.syllabus[subject.replaceAll('-','_')]));
+            const tempC = Object.keys(syllabusAndIDs.syllabus[subject.replaceAll('-','_')]);
+            
+            if(!tempC.some(chap => chapter === chap))
+                navigate('/page-not-found');
+
+            setChapters(tempC);
             setFormattedSubject(formatName(subject));
 
             if(!isSubjectOrChapter){

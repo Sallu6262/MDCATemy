@@ -1,7 +1,7 @@
 import { Link, useOutletContext } from 'react-router-dom';
-import '../../src/animation.css';
+import '../../../src/animation.css';
 import React, { use, useEffect, useState } from 'react'
-import { subjectToColor } from '../../utils/HelperObjects';
+import { accuracyToTextColor, subjectToColor } from '../../../utils/HelperObjects';
 
 //weekly activity remaining + all other things
 
@@ -654,14 +654,9 @@ const UserAnalyticsPage = () => {
                                         <p className="text-[#A8ACA8] text-[13px] font-inter">{topic.subject_name} · {topic.chapter_name}</p>
                                         </div>
                                         <div className="text-right flex-shrink-0">
-                                        <p className="font-poppins font-black text-red-400 text-base">{topic.tmi}%</p>
+                                        <p className={`font-poppins font-black ${accuracyToTextColor(topic.tmi)} text-base`}>{topic.tmi}%</p>
                                         <p className="text-[#A8ACA8] text-[12px] font-inter">correct</p>
                                         </div>
-                                        <Link to="/dashboard/quiz-builder" className="w-7 h-7 bg-[#FFC600]/10 border border-[#FFC600]/20 rounded-md flex items-center justify-center text-[#FFC600] hover:bg-[#FFC600]/20 transition-colors">
-                                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                                                <polyline points="9 18 15 12 9 6"/>
-                                            </svg>
-                                        </Link>
                                     </div>
                                 )
                             })

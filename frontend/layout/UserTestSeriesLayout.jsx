@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import UpcomingTestCard from '../components/userComponents/UpcomingTestCard'
 import { useNavigate, useOutletContext, Outlet } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+import Skeleton from '../components/skeletonComponents/Skeleton';
 
 const UserTestSeriesLayout = () => {
     const [upcomingTests, setUpcomingTests] = useState([]);
@@ -11,6 +12,8 @@ const UserTestSeriesLayout = () => {
 
     const API_URL = import.meta.env.VITE_API_URL;
     const navigate = useNavigate();
+
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchUpcomingAndPreviousTests = async () => {
@@ -31,6 +34,7 @@ const UserTestSeriesLayout = () => {
             if(data1.status === 'success' && data2.status === 'success'){
                 setUpcomingTests(data1.data);
                 setPreviousTests(data2.data);
+                setLoading(false);
                 // console.log(data1.data);
             }
         }
@@ -52,7 +56,11 @@ const UserTestSeriesLayout = () => {
                 }
             </style>
             
-            <Outlet context={{upcomingTests, previousTests, setIsExamHappening, isExamHappening}}/>
+            {
+                loading ? 
+                <Skeleton /> :
+                <Outlet context={{upcomingTests, previousTests, setIsExamHappening, isExamHappening}}/>
+            }
         </>
     )
 }

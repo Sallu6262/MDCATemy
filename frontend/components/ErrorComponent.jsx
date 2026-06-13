@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-const ErrorComponent = ({status, error, text}) => {
+const ErrorComponent = ({status, error, text, student = null, admin = null}) => {
     return (
         <section className="min-h-screen antialiased bg-[#121212] text-white font-[Inter,sans-serif] flex flex-col items-center justify-center px-6 py-16">
             <div className="max-w-lg w-full text-center">
@@ -11,10 +11,10 @@ const ErrorComponent = ({status, error, text}) => {
                 {text}
             </p>
             <Link
-                to='/'
+                to={student ? '/dashboard' : (admin ? '/admin' : '/')}
                 className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#FFC600] px-8 py-3.5 text-sm font-black uppercase tracking-wider text-[#181A18] no-underline transition hover:opacity-90 hover:shadow-[0_8px_32px_rgba(255,198,0,0.35)]"
             >
-                Back to home
+                Back to {student || admin ? 'Dashboard' : 'Home'}
             </Link>
             </div>
             <p className="mt-16 text-xs text-white/25">MDCATEMY</p>

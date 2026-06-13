@@ -1,9 +1,0 @@
-After Finals:
-1. fix exam taking screen  
-2. smart select in quiz builder
-3. re test all mistakes in mistakes copy
-4. change and fix landing page + other static pages
-5. aggregate calculator
-
-optional: 
-integrate skeleton UI
